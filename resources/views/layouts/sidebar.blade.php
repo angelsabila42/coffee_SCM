@@ -24,6 +24,12 @@
                         </a>
                     </li>
                     <li>
+                        <a class="nav-link" href="{{route('analytics')}}">
+                            <i class="nc-icon nc-chart-bar-32"></i>
+                            <p>Analytics</p>
+                        </a>
+                    </li>
+                    <li>
                         <a class="nav-link" href="./table.html">
                             <i class="nc-icon nc-notes"></i>
                             <p>Table List</p>
