@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@lightbp.com',
             'password' => Hash::make('secret'),
+            
         ]);
     }
 }
