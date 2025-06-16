@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\SalesReport;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,6 +20,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@lightbp.com',
             'password' => Hash::make('secret'),
+            
+        ]);
+
+        $this->call([
+            SalesReportSeeder::class,
         ]);
     }
 }

@@ -187,8 +187,8 @@ demo = {
         Chartist.Pie('#chartPreferences', dataPreferences, optionsPreferences);
 
         Chartist.Pie('#chartPreferences', {
-            labels: ['53%', '36%', '11%'],
-            series: [53, 36, 11]
+            labels: ['60%', '40%'],
+            series: [60, 40]
         });
 
 
@@ -256,7 +256,7 @@ demo = {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             series: [
                 [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
-                [412, 243, 280, 580, 453, 353, 300, 364, 368, 410, 636, 695]
+                //[412, 243, 280, 580, 453, 353, 300, 364, 368, 410, 636, 695]
             ]
         };
 

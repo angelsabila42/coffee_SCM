@@ -8,12 +8,32 @@ use App\Http\Controllers\LeaveHistoryController;
 
 
 //Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
+use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes();
+//Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+Route::get('/home/report',[ReportController::class,'index'])->name('reports');
+Route::resource('deliveries', DeliveryController::class);
+Route::resource('invoices', InvoiceController::class);
+Route::resource('payments', PaymentController::class);
+
+Route::get('/orders', function () {
+    return view('orders');
+});
+Route::get('/order', function () {
+    return view('order');
+});
+
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
