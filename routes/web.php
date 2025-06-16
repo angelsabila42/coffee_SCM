@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -12,4 +15,7 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+Route::resource('deliveries', DeliveryController::class);
+Route::resource('invoices', InvoiceController::class);
+Route::resource('payments', PaymentController::class);
 
