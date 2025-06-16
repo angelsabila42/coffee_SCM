@@ -30,6 +30,24 @@
                         </a>
                     </li>
                     <li>
+                        <a class="nav-link" href="{{route('deliveries.index')}}">
+                            <i class="nc-icon nc-delivery-fast"></i>
+                            <p>Delivery Requests</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{route('invoices.index')}}">
+                            <i class="nc-icon nc-single-copy-04"></i>
+                            <p>Invoices</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{route('payments.index')}}">
+                            <i class="nc-icon nc-money-coins"></i>
+                            <p>Payments</p>
+                        </a>
+                    </li>
+                    <li>
                         <a class="nav-link" href="./table.html">
                             <i class="nc-icon nc-notes"></i>
                             <p>Table List</p>
