@@ -2,10 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AnalyticsController;
-use App\Http\Controllers\DeliveryController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\WorkAssignmentController;
 use App\Http\Controllers\LeaveHistoryController;
@@ -26,14 +22,6 @@ Route::resource('invoices', InvoiceController::class);
 Route::resource('payments', PaymentController::class);
 
 
-Route::get('/orders', function () {
-    return view('orders');
-});
-Route::get('/order', function () {
-    return view('order');
-});
-
-?>  
 
 
 //staff management routes
@@ -59,4 +47,3 @@ Route::prefix('staff-management')->name('staff_management.')->group(function () 
    
 });
 
- Stashed changes
