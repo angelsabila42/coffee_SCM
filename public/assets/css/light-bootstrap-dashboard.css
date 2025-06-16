@@ -5317,4 +5317,74 @@ License - nucleoapp.com/license/
     content: "\ea64";
 }
 
+/*Custom css*/
+.custom-tab-link{
+    color: #848884;
+    font-weight: 500;
+    /*display: inline-block;
+    padding: 10px 0;
+    position: relative;
+    text-decoration: none;
+    transition: color 0.2s ease;*/
+}
+
+.custom-tab{
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+    gap: 2rem;
+    padding-left: 1rem;
+    list-style: none;
+}
+
+.custom-tab-link.active{
+    color:#000000;
+}
+
+/*Underline effect for active tab*/
+.custom-tab-link.active::after{
+    content: '';
+    position: absolute;
+    left:0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background-color:#36454F;
+    border-radius: 2px;
+}
+
+.custom-tab-link:hover{
+    color: #36454F;
+}
+
+/*Headings*/
+.heading-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-botton: 1.5rem;
+}
+
+.text-amber{
+    color: #78350f;
+}
+
+.form{
+    position: relative;
+}
+
+ .nc-zoom-split{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    
+}
+
+.form-input{
+    height: 35px;
+    text-indent: 33px;
+   
+   
+}
+
+
 /* all icon font classes list here */

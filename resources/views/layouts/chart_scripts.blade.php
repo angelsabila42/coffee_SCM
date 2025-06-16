@@ -142,7 +142,6 @@ chart: {
  var options = {
           series: [44, 55],
           chart: {
-          width: 380,
           type: 'pie',
         },
 
