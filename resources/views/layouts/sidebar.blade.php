@@ -45,6 +45,11 @@
                         <a class="nav-link" href="{{route('payments.index')}}">
                             <i class="nc-icon nc-money-coins"></i>
                             <p>Payments</p>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{route('reports')}}">
+                            <i class="nc-icon nc-notes"></i>
+                            <p>Reports</p>
                         </a>
                     </li>
                     <li>
@@ -75,12 +80,6 @@
                         <a class="nav-link" href="./notifications.html">
                             <i class="nc-icon nc-bell-55"></i>
                             <p>Notifications</p>
-                        </a>
-                    </li>
-                    <li class="nav-item active active-pro">
-                        <a class="nav-link active" href="upgrade.html">
-                            <i class="nc-icon nc-alien-33"></i>
-                            <p>Upgrade to PRO</p>
                         </a>
                     </li>
                 </ul>
