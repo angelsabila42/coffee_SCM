@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class QA extends Model
+{
+    protected$fillable = ['start_date', 'end_start'];
+
+    /** @use HasFactory<\Database\Factories\QAFactory> */
+    use HasFactory;
+}
