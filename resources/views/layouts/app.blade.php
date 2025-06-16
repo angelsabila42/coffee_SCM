@@ -13,10 +13,13 @@
             <!-- End Navbar -->
             <div class="content">
 
-             <x-page-header>
+             <x-page-header >
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
              @yield('page-title','Untitled')
+             @yield('report-btn')
+            </div>
             {{--@livewire('counter') example--}}
-             </x-page-header>
+            </x-page-header>
                 
                 <div class="container-fluid">
                      @yield('content')
