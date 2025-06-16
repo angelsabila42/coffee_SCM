@@ -2781,7 +2781,14 @@ Copyright (c) 2015 Daniel Eden
     border-radius: 4px;
     background-color: #FFFFFF;
     margin-bottom: 30px;
+     flex: 1;
 }
+
+.col-md-5, .col-md-7{
+    display: flex;
+    flex-direction: column;
+}
+
 
 .card .card-image {
     width: 100%;
@@ -3238,7 +3245,7 @@ Copyright (c) 2015 Daniel Eden
 
 .ct-series-a .ct-slice-pie,
 .ct-series-a .ct-area {
-    fill: #1DC7EA;
+    fill:rgb(29, 234, 135);
 }
 
 .ct-series-b .ct-point,
@@ -3250,7 +3257,7 @@ Copyright (c) 2015 Daniel Eden
 
 .ct-series-b .ct-slice-pie,
 .ct-series-b .ct-area {
-    fill: #FB404B;
+    fill:rgb(255, 165, 0);
 }
 
 .ct-series-c .ct-point,
@@ -5309,5 +5316,75 @@ License - nucleoapp.com/license/
 .nc-zoom-split::before {
     content: "\ea64";
 }
+
+/*Custom css*/
+.custom-tab-link{
+    color: #848884;
+    font-weight: 500;
+    /*display: inline-block;
+    padding: 10px 0;
+    position: relative;
+    text-decoration: none;
+    transition: color 0.2s ease;*/
+}
+
+.custom-tab{
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+    gap: 2rem;
+    padding-left: 1rem;
+    list-style: none;
+}
+
+.custom-tab-link.active{
+    color:#000000;
+}
+
+/*Underline effect for active tab*/
+.custom-tab-link.active::after{
+    content: '';
+    position: absolute;
+    left:0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background-color:#36454F;
+    border-radius: 2px;
+}
+
+.custom-tab-link:hover{
+    color: #36454F;
+}
+
+/*Headings*/
+.heading-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-botton: 1.5rem;
+}
+
+.text-amber{
+    color: #78350f;
+}
+
+.form{
+    position: relative;
+}
+
+ .nc-zoom-split{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    
+}
+
+.form-input{
+    height: 35px;
+    text-indent: 33px;
+   
+   
+}
+
 
 /* all icon font classes list here */

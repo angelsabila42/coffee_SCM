@@ -24,6 +24,35 @@
                         </a>
                     </li>
                     <li>
+                        <a class="nav-link" href="{{route('analytics')}}">
+                            <i class="nc-icon nc-chart-bar-32"></i>
+                            <p>Analytics</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{route('deliveries.index')}}">
+                            <i class="nc-icon nc-delivery-fast"></i>
+                            <p>Delivery Requests</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{route('invoices.index')}}">
+                            <i class="nc-icon nc-single-copy-04"></i>
+                            <p>Invoices</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{route('payments.index')}}">
+                            <i class="nc-icon nc-money-coins"></i>
+                            <p>Payments</p>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{route('reports')}}">
+                            <i class="nc-icon nc-notes"></i>
+                            <p>Reports</p>
+                        </a>
+                    </li>
+                    <li>
                         <a class="nav-link" href="./table.html">
                             <i class="nc-icon nc-notes"></i>
                             <p>Table List</p>
@@ -51,12 +80,6 @@
                         <a class="nav-link" href="./notifications.html">
                             <i class="nc-icon nc-bell-55"></i>
                             <p>Notifications</p>
-                        </a>
-                    </li>
-                    <li class="nav-item active active-pro">
-                        <a class="nav-link active" href="upgrade.html">
-                            <i class="nc-icon nc-alien-33"></i>
-                            <p>Upgrade to PRO</p>
                         </a>
                     </li>
                 </ul>
