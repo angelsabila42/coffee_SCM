@@ -11,7 +11,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes();
+//Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
@@ -19,3 +19,11 @@ Route::resource('deliveries', DeliveryController::class);
 Route::resource('invoices', InvoiceController::class);
 Route::resource('payments', PaymentController::class);
 
+Route::get('/orders', function () {
+    return view('orders');
+});
+Route::get('/order', function () {
+    return view('order');
+});
+
+?>  
