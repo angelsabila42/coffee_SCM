@@ -36,15 +36,10 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="{{route('invoices.index')}}">
-                            <i class="nc-icon nc-single-copy-04"></i>
-                            <p>Invoices</p>
+                        <a class="nav-link" href="{{route('orders.index')}}">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Orders</p>
                         </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="{{route('payments.index')}}">
-                            <i class="nc-icon nc-money-coins"></i>
-                            <p>Payments</p>
                     </li>
                     <li>
                         <a class="nav-link" href="{{route('reports')}}">
