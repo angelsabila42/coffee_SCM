@@ -20,7 +20,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="./user.html">
+                        <a class="nav-link" href="">
                            <i class="fas fa-box"></i>
                             <p>orders</p>
                         </a>
@@ -147,18 +147,18 @@
           <button class="active">Outgoing</button>
         </div>
         <div class="right">
-          <i class="fas fa-filter"></i>
+          <!--<i class="fas fa-filter">--></i>
           <button style="border-radius: 50px ">+</button><label>New</label>
         </div>
       </div>
 
-      <div class="card-body table-full-width table-responsive">
+      <!--<div class="card-body table-full-width table-responsive">
                                     <table class="table table-hover table-striped">
                                         <thead>
                                             <th>orderID</th>
                                             <th>Importer<br>Name</th>
-                                            <th>Coffee<br>Type</th>
                                             <th>Quantity</th>
+                                            <th>Coffee<br>Type</th>
                                             <th>Delivery<br>Country</th>
                                             <th>Status</th>
                                             <th>Order<br>date</th>
@@ -227,7 +227,113 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                </div>-->
+                                <div>
+   <div class="col-md-12">
+   <div class="d-flex justify justify-content-between align-items-center">
+                    
+                    <!--Search bar-->
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="form">
+                                <i class="nc-icon nc-zoom-split"></i>
+                            <input type="text" class="form-control form-input" placeholder="Search">
+                        </div>
+                    </div>
+                    <!--<div class="d-flex align-items-center">
+                            <label class="text-muted mr-2 mb-0">User Type :</label>
+                            <select> 
+                                <option value="">All</option>
+                                <option value="0">User</option>
+                                <option value="1">Admin</option>
+                            </select>
+                    </div>-->
+                </div>
+                            <div class="card card-plain table-plain-bg">
+                                <div class="card-header ">
+                                    <!--h4 class="card-title">Table on Plain Background</h4>
+                                    <p class="card-category">Here is a subtitle for this table</p-->
                                 </div>
+                                <div class="card-body table-full-width table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="bg-light">
+                                            <th class="font-weight-bold">ID</th>
+                                            <th class="text-amber">Importer<br>Name</th>
+                                            <th>Quantity</th>
+                                            <th>Coffee<br>Type</th>
+                                            <th>Delivery<br>Country</th>
+                                            <th>Status</th>
+                                            <th>Order<br>date</th>
+                                            <th>Actions</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>NX-001</td>
+                                                <td>Hermanos</td>
+                                                <td>Arabica</td>
+                                                <td>3000 kg</td>
+                                                <td>Germany</td>
+                                                <td>Accepted</td>
+                                                <td>19 May</td>
+                                                <td class="actions"><a>delete</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>NX-002</td>
+                                                <td>Bellwether</td>
+                                                <td>Robusta</td>
+                                                <td>5000 kg</td>
+                                                <td>United Kingdom</td>
+                                                <td>Sent</td>
+                                                <td>18 May</td>
+                                                <td class="actions"><a>delete</a></td>
+                                            </tr>
+                                            <tr>
+                                                 <td>NX-003</td>
+                                                <td>Nespresso</td>
+                                                <td>Arabica</td>
+                                                <td>4000 kg</td>
+                                                <td>Germany</td>
+                                                <td>Cancelled</td>
+                                                <td>17 May</td>
+                                                 <td class="actions"><a>delete</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>NX-004</td>
+                                               <td>L'OR</td>
+                                               <td>Arabica</td>
+                                               <td>1000 kg</td>
+                                               <td>Spain</td>
+                                               <td>Accepted</td>
+                                               <td>23 Apr</td>
+                                               <td class="actions"><a>delete</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>NX-005</td>
+                                                <td>Mason Porter</td>
+                                                <td>Arabica</td>
+                                                <td>4000 kg</td>
+                                                <td>Germany</td>
+                                                <td>Cancelled</td>
+                                                <td>17 May</td>
+                                                <td class="actions"><a>delete</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>NX-006</td>
+                                                <td>Hermanos</td>
+                                                <td>Arabica</td>
+                                                <td>3000 kg</td>
+                                                <td>Germany</td>
+                                                <td>Accepted</td>
+                                                <td>19 May</td>
+                                                <td class="actions"><a>delete</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+</div>
+
+
       <div class="pagination">
         <button>1</button>
         <button class="active">2</button>
