@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vendor', function (Blueprint $table) {
+        Schema::create('importer_models', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name');
-            $table->text('password');
-            $table->text('email');
-            $table->integer('phone_number');
-            $table->string('street');
-            $table->string('city');
-
+            $table -> string('name');
+            $table -> string('email');
+            $table -> string('password');
+            $table -> string('country');
+            $table -> integer('phone_number');
+             $table -> string('address');
+              
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vendor');
+        Schema::dropIfExists('importer_models');
     }
 };
