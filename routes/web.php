@@ -8,6 +8,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -19,12 +20,10 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
 Route::get('/home/report',[ReportController::class,'index'])->name('reports');
 Route::resource('deliveries', DeliveryController::class);
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::resource('invoices', InvoiceController::class);
 Route::resource('payments', PaymentController::class);
 
-Route::get('/orders', function () {
-    return view('orders');
-});
 Route::get('/order', function () {
     return view('order');
 });
