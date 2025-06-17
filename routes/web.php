@@ -7,6 +7,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -27,10 +28,21 @@ Route::get('/orders', function () {
 Route::get('/order', function () {
     return view('order');
 });
+ my_branch3
 Route::get('/inventory', function () {
     return view('inventory');
 });
 Route::get('/form_modal', function () {
     return view('form_modal');
 });
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+
 
