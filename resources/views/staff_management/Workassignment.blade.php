@@ -117,6 +117,7 @@
     </div>
 </div>
 
+@extends('layouts.table')
 <table class="table table-bordered">
     <thead>
         <tr>
