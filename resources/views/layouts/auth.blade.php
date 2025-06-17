@@ -21,6 +21,7 @@
     }
     .wrapper label {
         font-weight: 600;
+        margin-left: 0px;
         margin-bottom: 8px;
         display: inline-block;
         color: #fff;
@@ -30,7 +31,7 @@
         font-size: 1.08rem;
         letter-spacing: 0.5px;
         box-shadow: 0 2px 8px rgba(142,197,252,0.10);
-        transition: background 0.2s, color 0.2s;
+        transition: background  0.2s, color 0.2s;
     }
 
     .wrapper label:focus,
@@ -91,6 +92,7 @@
         font-weight: 600;
         transition: background 0.2s, color 0.2s;
         box-shadow: 0 2px 8px rgba(142,197,252,0.08);
+        margin-bottom: 5px
     }
 
     button:hover, input[type="submit"]:hover, .btn:hover {
@@ -100,7 +102,7 @@
         .wrapper {
         max-width: 800px;
         margin: 40px auto;
-        background: #fff;
+        background: white;
         border-radius: 16px;
         box-shadow: 0 4px 24px rgba(80, 80, 120, 0.10);
         padding: 56px 48px; /* Increased padding for more space */
