@@ -27,15 +27,15 @@ class authController extends Controller
             switch ($request->category)
               {
                 case 'staff':
-                    return redirect()->route('others');
+                    return redirect()->route('staff');
                 case 'importer':
-                    return redirect()->route('others');
+                    return redirect()->route('importer');
                 case 'vendor':
                     return redirect('/reg/vendor');
                 case 'transporter':
-                    return redirect()->route('others');
+                    return redirect()->route('transporter');
                 default:
-                    return redirect('/reg'); // fallback
+                    return redirect('/reg'); 
              }
             }
 

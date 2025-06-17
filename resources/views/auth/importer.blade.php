@@ -5,20 +5,17 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header" style="color:white; background-color:rgb(127, 127, 226);font-size:larger;
-                border-radius:10px;">{{ __('VENDOR REGISTRATION FORM') }}</div>
+                 <div class="card-header" style="color:white; background-color:rgb(127, 127, 226);font-size:larger;
+                border-radius:10px;">{{ __('IMPORTER REGISTRATION') }}</div>
+                <div class="card-header">{{ __('Register here') }}</div>
                      {{-- <div class="card-header">{{ __('BUSINESS INFORMATION') }}</div> --}}
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('store.vendor') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('store.importer') }}" >
                         @csrf
 
-                     
-
-                         <div class="card-header">{{ __('CONTACT DETAILS') }}</div>
-
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Full name') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name">
@@ -30,6 +27,9 @@
                                 @enderror
                             </div>
                         </div>
+
+                        
+
                          <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
@@ -44,11 +44,25 @@
                             </div>
                         </div>
 
+                         <div class="row mb-3">
+                            <label for="country" class="col-md-4 col-form-label text-md-end">{{ __('Country') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="country" type="text" class="form-control @error('country') is-invalid @enderror" name="country" value="{{ old('country') }}" required autocomplete="country">
+
+                                @error('country')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="row mb-3">
                             <label for="phone_number" class="col-md-4 col-form-label text-md-end">{{ __('Phone number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone_number"  placeholder="start with 07" type="number" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" value="{{ old('phone_number') }}" required autocomplete="phone_number">
+                                <input id="phone_number" placeholder="start with 07" type="number" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" value="{{ old('phone_number') }}" required autocomplete="phone_number">
 
                                 @error('phone_number')
                                     <span class="invalid-feedback" role="alert">
@@ -59,31 +73,19 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="street" class="col-md-4 col-form-label text-md-end">{{ __('street') }}</label>
+                            <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="street" type="text" class="form-control @error('street') is-invalid @enderror" name="street" value="{{ old('street') }}" required autocomplete="street">
+                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required autocomplete="address">
 
-                                @error('street')
+                                @error('address')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <label for="city" class="col-md-4 col-form-label text-md-end">{{ __('city') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="city" type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" required autocomplete="city">
-
-                                @error('city')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                      
                         
 
                         
@@ -108,20 +110,9 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" value="{{ old('password_confirmation') }}" required autocomplete="new-password">
                             </div>
                         </div>
-                        <div class="card-header">{{ __('UPLOAD ATTACHMENTS') }}</div>
-                        <div style="display: flex">
-                             <label for="document" class="col-md-4 col-form-label text-md-end">{{ __('document') }}</label>
+                      
 
-                         <input id="document" type="file" class="form-control @error('document') is-invalid @enderror" name="document" required accept=".pdf" >
-                       
-                        </div>
-
-                         {{-- <div style="display: flex">
-                          <label for="business_license" class="col-md-4 col-form-label text-md-end">{{ __('business_license') }}</label>
-
-                         <input id="business_license" type="file" class="form-control @error('business_license') is-invalid @enderror" name="business_license" required >
-                         </div>
-                        --}}
+                         
                          <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

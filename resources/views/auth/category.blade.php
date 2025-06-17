@@ -1,9 +1,12 @@
   @extends('layouts.auth')
+  @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('SELECT CATEGORY') }}</div>
+                <div class="card-header"
+                style="color:white; background-color:rgb(127, 127, 226);font-size:larger;
+                border-radius:10px;">{{ __('SELECT CATEGORY') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('select.category') }}">
@@ -50,3 +53,4 @@
         </div>
     </div>
 </div>
+@endsection
