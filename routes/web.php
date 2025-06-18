@@ -39,6 +39,9 @@ Route::resource('payments', PaymentController::class);
 Route::get('/order', function () {
     return view('order');
 });
+Route::get('/orders', function () {
+    return view('orders');
+});
 
 Route::get('/inventory', function () {
     return view('inventory');

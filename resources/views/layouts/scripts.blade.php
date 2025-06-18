@@ -15,8 +15,8 @@
 <script src="{{asset('assets/js/light-bootstrap-dashboard.js?v=2.0.0 ')}}" type="text/javascript"></script>
 <!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
 
-<!--script src="{{asset('assets/js/demo.js')}}"></script-->
-<!--script src= "{{--asset('/assets/js/custom.js')}}"></script-->
+<script src="{{asset('assets/js/demo.js')}}"></script>
+<script src= "{{asset('/assets/js/custom.js')}}"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {
