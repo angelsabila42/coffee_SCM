@@ -63,3 +63,55 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## How to Run This Project
+
+1. **Clone the repository**  
+   ```sh
+   git clone <repository-url>
+   cd coffee_SCM
+   ```
+
+2. **Install PHP dependencies**  
+   ```sh
+   composer install
+   ```
+
+3. **Install Node.js dependencies**  
+   ```sh
+   npm install
+   ```
+
+4. **Copy environment file and set up environment variables**  
+   ```sh
+   cp .env.example .env
+   ```
+   Edit `.env` as needed (database, etc).
+
+5. **Generate application key**  
+   ```sh
+   php artisan key:generate
+   ```
+
+6. **Run database migrations**  
+   ```sh
+   php artisan migrate
+   ```
+
+7. **Start the development servers**  
+   You can run both the backend and frontend together:
+   ```sh
+   composer run dev
+   ```
+   Or, run them separately in different terminals:
+   - Start Laravel backend:  
+     ```sh
+     php artisan serve
+     ```
+   - Start Vite frontend:  
+     ```sh
+     npm run dev
+     ```
+
+8. **Access the application**  
+   Open [http://localhost:8000](http://localhost:8000) in your browser.
