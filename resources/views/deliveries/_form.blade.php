@@ -11,6 +11,17 @@
 <div class="form-group">
     <label for="dispatch_date_time">Dispatch Date and Time:</label>
     <input type="datetime-local" class="form-control" id="dispatch_date_time" name="dispatch_date_time" value="{{ old('dispatch_date_time', isset($delivery) ? \Carbon\Carbon::parse($delivery->dispatch_date_time)->format('Y-m-d\TH:i') : '') }}">
+    
+<form wire:submit.prevent="submit">
+    <label for="coffee_type">Select Coffee Type:</label>
+    <select wire:model="coffee_type" id="coffee_type" class="form-control">
+        <option value="arabica">Arabica</option>
+        <option value="robusta">Robusta</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+
 </div>
 
 <div class="form-group">
@@ -23,10 +34,7 @@
     <input type="number" class="form-control" id="quantity" name="quantity" value="{{ old('quantity', $delivery->quantity ?? '') }}" required min="1">
 </div>
 
-<div class="form-group">
-    <label for="coffee_type">Coffee Type:</label>
-    <input type="text" class="form-control" id="coffee_type" name="coffee_type" value="{{ old('coffee_type', $delivery->coffee_type ?? '') }}" required>
-</div>
+
 
 <div class="form-group">
     <label for="coffee_grade">Coffee Grade:</label>

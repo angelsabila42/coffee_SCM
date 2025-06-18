@@ -17,13 +17,13 @@
              </a>
         </li> 
         <li class="sidebar-item">
-             <a href="#" class="sidebar-link">
+             <a href="{{url('/orders')}}" class="sidebar-link">
              <i class="nc-icon nc-notes"></i>
              <span>Orders</span>
              </a>
         </li> 
         <li class="sidebar-item">
-             <a href="#" class="sidebar-link">
+             <a href="{{route('payments.index')}}" class="sidebar-link">
              <i class="nc-icon nc-money-coins"></i>
              <span>Transactions</span>
              </a>
@@ -48,12 +48,12 @@
         </li>
              <li class="sidebar-item">
              <a href="{{route('reports')}}" class="sidebar-link">
-             <i class="nc-icon nc-notes"></i>
+             <i class='bx bxs-report'></i>
              <span>Report</span>
              </a>
         </li>
              <li class="sidebar-item">
-             <a href="#" class="sidebar-link">
+             <a href="{{url('/inventory')}}" class="sidebar-link">
              <i class='bx bx-package' ></i>
              <span>Inventory</span>
              </a>
