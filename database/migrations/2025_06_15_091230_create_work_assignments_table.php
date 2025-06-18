@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('work_assignments', function (Blueprint $table) {
             $table->string('assignment_id', 7)->primary(); 
             $table->foreignId('staff_id')->constrained('staff')->onDelete('cascade'); // Foreign key to staff table and cascade on delete ie delete staff, deletes assignments
-            $table->string('staff_name', 20); 
-            $table->string('center_name', 20);
+            $table->string('work_center', 20);
             $table->string('role', 50); // Role at the time of assignment
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();;
             $table->timestamps();
         });
     }

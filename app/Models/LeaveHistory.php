@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Staff;
 
 class LeaveHistory extends Model
 {
@@ -15,13 +16,12 @@ class LeaveHistory extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'leave_id',
         'staff_id',
-        'staff_name',
+        'work_center',
         'leave_type',
         'start_date',
         'end_date',
-        'status',
+        
     ];
 
     /**
@@ -36,9 +36,8 @@ class LeaveHistory extends Model
      *
      * @var bool
      */
-    public $incrementing = false;
-
-     // Define relationship with Staff model
+    protected $keyType = 'string';
+     // relationship with Staff model
     public function staff()
     {
         return $this->belongsTo(Staff::class);

@@ -11,8 +11,6 @@ class Staff extends Model
 
     /**
      * The attributes are mass assignable.
-     *
-     * @var array<int, string>
      */
     protected $fillable = [
         'full_name',
@@ -23,7 +21,7 @@ class Staff extends Model
         'email',
        
         ];
-         // Define relationships to WorkAssignment and Leave
+         //  relationships for WorkAssignment and Leave
     public function workAssignments()
     {       // // A Staff member has many WorkAssignments
         return $this->hasMany(WorkAssignment::class);

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Staff;
 
 class WorkAssignment extends Model
 {
@@ -17,8 +18,7 @@ class WorkAssignment extends Model
     protected $fillable = [
         'assignment_id',
         'staff_id',
-        'staff_name',
-        'center_name',
+        'work_center',
         'role',
         'start_date',
         'end_date',
@@ -37,6 +37,7 @@ class WorkAssignment extends Model
      * @var bool
      */
     public $incrementing = false;
+    protected $keyType = 'string';
 
      public function staff()
     {
