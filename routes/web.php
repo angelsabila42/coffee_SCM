@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AnalyticsControl;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\authController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\vendorController;
@@ -15,7 +15,6 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\OrderController;
 
 
@@ -40,7 +39,7 @@ Route::resource('payments', PaymentController::class);
 Route::get('/order', function () {
     return view('order');
 });
- my_branch3
+ //my_branch3
 Route::get('/inventory', function () {
     return view('inventory');
 });
