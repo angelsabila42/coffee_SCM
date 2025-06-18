@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Staff;
+use App\Models\WorkAssignment;
+use App\Models\LeaveHistory; 
 
 class StaffController extends Controller
 {
@@ -11,8 +13,17 @@ class StaffController extends Controller
 
 public function staff()
 {
-    $staff = Staff::all();
-    return view('staff_management.staff', compact('staff'));
+        $staff = Staff::all(); // All staff for the main table
+        $totalStaffCount = Staff::count();
+        $absentStaffCount = Staff::where('status', 'On Leave')->count(); 
+        $warehouseCount = 4; 
+
+         $workAssignments = WorkAssignment::with('staff')->get(); 
+         $leaveHistory = LeaveHistory::with('staff')->get(); // Fetching leave history for the Leave History tab
+        $staffMembersForDropdown =  Staff::select('id', 'full_name')->get(); // For staff dropdowns in modals
+
+       
+       return view('staff_management.staff', compact('staff','totalStaffCount', 'absentStaffCount', 'warehouseCount','workAssignments', 'staffMembersForDropdown','leaveHistory'));
 }
 public function store(Request $request)
 {
@@ -37,10 +48,13 @@ public function destroy($id)
 
     return redirect()->route('staff_management.staff')->with('success', 'Staff deleted successfully!');
 }
-  public function edit(Staff $staff)
-    {
-        // This method might return a view with the edit form or data for an AJAX modal.
-        // For a modal, you might return a JSON response or a partial view.
-        return response()->json($staff); 
+
+public function show(Staff $staff) 
+{
+    return response()->json($staff);
+}
+public function edit(Staff $staff)
+ {
+         return redirect()->route('staff_management.staff')->with('success', 'Staff updated successfully!');
     }
 }

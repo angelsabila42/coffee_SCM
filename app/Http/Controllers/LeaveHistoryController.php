@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\LeaveHistory;
+use App\Models\Staff;
+
 
 class LeaveHistoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    
+    public function leavehistory()
     {
-        //
+        // Fetch all leave history records
+        $leaveHistory = LeaveHistory::with('staff')->get();
+
+        // Return the view with the leave history data
+        return view('staff_management.staff', compact('leaveHistory'));
     }
 
     /**
@@ -19,7 +24,7 @@ class LeaveHistoryController extends Controller
      */
     public function create()
     {
-        //
+        return redirect()->route('staff_management.staff')->with('error', 'Direct access to create form not allowed.');
     }
 
     /**
@@ -27,21 +32,54 @@ class LeaveHistoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+         $validatedData = $request->validate([
+            'staff_id' => 'required|exists:staff,id',
+            'leave_type' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'status' => 'required|in:Pending,Approved,Rejected,Cancelled',
+            
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+        $latestLeave = LeaveHistory::orderBy('leave_id', 'desc')->first();
+        $nextIdNum = ($latestLeave) ? (int)substr($latestLeave->leave_id, 1) + 1 : 1;
+        $validatedData['leave_id'] = 'L' . str_pad($nextIdNum, 3, '0', STR_PAD_LEFT);
+
+        try {
+            $staffMember = Staff::find($validatedData['staff_id']);
+            if ($staffMember) {
+                $validatedData['full_name'] = $staffMember->full_name;
+
+                LeaveHistory::create($validatedData);
+
+                // Redirect back to the staff management page with a success message
+                // and keep the "Leave History" tab active.
+                return redirect()->route('staff_management.staff')
+                                 ->with('success_leave_history', 'Leave record added successfully!')
+                                 ->with('active_tab', 'leave');
+            } else {
+                return redirect()->back()
+                                 ->with('error', 'Staff member not found.')
+                                 ->withInput()
+                                 ->with('open_leavehistory_modal', true);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                             ->withErrors($e->errors())
+                             ->withInput()
+                             ->with('open_leavehistory_modal', true); // Flag to reopen modal
+        }
+    }
+     function show(string $id)
     {
-        //
+        $leaveHistory = LeaveHistory::findOrFail($id);
+        return response()->json($leaveHistory->load('staff'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    function edit(string $id)
     {
         //
     }
@@ -49,16 +87,34 @@ class LeaveHistoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    function update(Request $request, string $id)
     {
-        //
+         $validatedData = $request->validate([
+            'staff_id' => 'required|exists:staff,id',
+            'leave_type' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'status' => 'required|in:Pending,Approved,Rejected,Cancelled',
+            'reason' => 'nullable|string',
+        ]);
+
+        // No need to generate leave_id for update, it already exists
+        $leaveHistory->update($validatedData);
+
+        return redirect()->route('staff_management.staff')
+                         ->with('success_leave_history', 'Leave record updated successfully!')
+                         ->with('open_leavehistory_modal', true)
+                         ->with('active_tab', 'leave');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    function destroy(string $id)
     {
-        //
+        $leaveHistory->delete();
+        return redirect()->route('staff_management.staff')
+                         ->with('success_leave_history', 'Leave record deleted successfully!')
+                         ->with('active_tab', 'leave');
     }
 }

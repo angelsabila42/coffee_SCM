@@ -5,9 +5,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\WorkAssignmentController;
 use App\Http\Controllers\LeaveHistoryController;
-
-
-//Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InvoiceController;
@@ -35,14 +32,6 @@ Route::get('/order', function () {
 });
 
 
-
-
-
-//staff management routes
-//Route::get('/staff', [StaffController::class, 'staff'])->name('staff_management.staff');
-//Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
-//Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
-
 Route::prefix('staff-management')->name('staff_management.')->group(function () {
 
     Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
@@ -53,11 +42,18 @@ Route::prefix('staff-management')->name('staff_management.')->group(function () 
 
 
     // --- Work Assignment Routes ---
-    Route::get('/work-assignments', [WorkAssignmentController::class, 'workassign'])->name('work-assignments.workassign'); // List all assignments
-    Route::post('/work-assignments', [WorkAssignmentController::class, 'store'])->name('work-assignments.store'); // Store new assignment
+    Route::get('/workassignment', [WorkAssignmentController::class, 'workassign'])->name('workassignment.workassign'); // List all assignments
+    Route::post('/workassignment', [WorkAssignmentController::class, 'store'])->name('workassignment.store'); // Store new assignment
     //  routes for update and delete 
-    Route::put('/work-assignments/{workAssignment}', [WorkAssignmentController::class, 'update'])->name('work-assignments.update');
-    Route::delete('/work-assignments/{workAssignment}', [WorkAssignmentController::class, 'destroy'])->name('work-assignments.destroy');
+    Route::put('/workassignment/{workAssignment}', [WorkAssignmentController::class, 'update'])->name('workassignment.update');
+    Route::delete('/workassignment/{workAssignment}', [WorkAssignmentController::class, 'destroy'])->name('workassignment.destroy');
    
+
+    // --- Leave History Routes ---
+    Route::get('/leavehistory', [LeaveHistoryController::class, 'leavehistory'])->name('leavehistory.leavehistory'); // List all leave history
+    Route::post('/leavehistory', [LeaveHistoryController::class, 'store'])->name('leavehistory.store'); // Store new leave record
+    Route::get('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'show'])->name('leavehistory.show'); // Show specific leave record
+    Route::put('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'update'])->name('leavehistory.update'); // Update leave record
+    Route::delete('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'destroy'])->name('leavehistory.destroy'); // Delete leave record
 });
 

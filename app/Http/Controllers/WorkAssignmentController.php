@@ -5,53 +5,68 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\WorkAssignment;
 use App\Models\Staff;
+use Illuminate\Validation\ValidationException;
 
 class WorkAssignmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function WorkAssign()
+    public function workAssign()
     {
         // Get all assignments, eager load staff relationship
         $workAssignments = WorkAssignment::with('staff')->get();
-        return view('staff_management.workassignment', compact('workAssignments'));
+        $staffMembersForDropdown = Staff::all(['id', 'full_name']);
+        return view('staff_management.Workassignment', compact('workAssignments','staffMembersForDropdown'));
     }
 
     /* Store a newly created work assignment in storage. */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'staff_id' => 'required|exists:staff,id', // Ensure staff_id exists in staff table
-            'center_name' => 'required|string|max:255',
-            'role' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
+       try {
+            $validatedData = $request->validate([
+                'staff_id' => 'required|exists:staff,id', // Ensures staff_id exists in staff table
+                'work_center' => 'required|string|max:255', 
+                'role' => 'required|string|max:255',
+                'start_date' => 'required|date',
+                'end_date' => 'nullable|date|after_or_equal:start_date', // Changed to nullable based on typical assignment
+            ]); 
 
-        // IMPORTANT: Review assignment_id generation.
-        // If 'assignment_id' is your primary key and needs to be unique and non-sequential,
-        // consider Laravel's UUIDs/ULIDs:
-        // 1. Add `use Illuminate\Support\Str;`
-        // 2. $validatedData['assignment_id'] = (string) Str::uuid(); // For UUID
-        // 3. Ensure your migration uses $table->uuid('assignment_id')->primary(); or $table->ulid('assignment_id')->primary();
-        
-        $latestAssignment = WorkAssignment::orderBy('id', 'desc')->first();
-        $nextIdNum = ($latestAssignment) ? (int)substr($latestAssignment->assignment_id, 1) + 1 : 1;
-        $validatedData['assignment_id'] = 'A' . str_pad($nextIdNum, 3, '0', STR_PAD_LEFT);
+            // --- Assignment ID Generation ---
+            // Current sequential 'A001', 'A002' approach:
+            $latestAssignment = WorkAssignment::orderBy('assignment_id', 'desc')->first();
+            $nextIdNum = ($latestAssignment) ? (int)substr($latestAssignment->assignment_id, 1) + 1 : 1;
+            $validatedData['assignment_id'] = 'A' . str_pad($nextIdNum, 3, '0', STR_PAD_LEFT);
 
 
 
-        WorkAssignment::create($validatedData);
+            // Create the Work Assignment record
+            WorkAssignment::create($validatedData);
 
-        return redirect()->back()->with('success', 'Work assignment added successfully!');
+            // Redirect back with success message and keep the "Work Assignment History" tab active
+            return redirect()->route('staff_management.staff')
+                             ->with('success_work_assignment', 'Work assignment added successfully!')
+                             ->with('active_tab', 'work');
+
+        } catch (ValidationException $e) {
+            // Redirect back with input and errors, also set a session flag to reopen the modal
+            return redirect()->back()
+                             ->withErrors($e->errors())
+                             ->withInput()
+                             ->with('open_work_assignment_modal', true) // Flag to reopen modal
+                             ->with('active_tab', 'work'); // Keep work assignment tab active
+
+        } catch (\Exception $e) {
+            // Catch any other unexpected errors
+            return redirect()->back()
+                             ->with('error_work_assignment', 'Failed to add work assignment: ' . $e->getMessage())
+                             ->with('active_tab', 'work');
+        }
     }
+}
 
    
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(WorkAssignment $workAssignment)
+     function edit(WorkAssignment $workAssignment)
     {
         return response()->json($workAssignment);
     }
@@ -59,7 +74,7 @@ class WorkAssignmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, WorkAssignment $workAssignment)
+     function update(Request $request, WorkAssignment $workAssignment)
     {
         $validatedData = $request->validate([
             'staff_id' => 'required|exists:staff,id',
@@ -78,9 +93,8 @@ class WorkAssignmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WorkAssignment $workAssignment)
+     function destroy(WorkAssignment $workAssignment)
     {
         $workAssignment->delete();
         return redirect()->back()->with('success', 'Work assignment deleted successfully!');
     }
-}

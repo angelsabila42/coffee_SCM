@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leave_history', function (Blueprint $table) {
+        Schema::create('leave_histories', function (Blueprint $table) {
             $table->string('leave_id',5)->primary(); 
             $table->foreignId('staff_id')->constrained('staff')->onDelete('cascade'); // Foreign key to staff table
-            $table->string('staff_name',20); 
-            $table->string('type',15); // e.g., "Sick Leave", "Annual Leave"
+            //$table->string('full_name',20); 
+            $table->string('leave_type',15); // e.g., "Sick Leave", "Annual Leave"
             $table->string('status',15); // e.g., "Approved", "Pending"
             $table->date('start_date');
             $table->date('end_date');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leave_history');
+        Schema::dropIfExists('leave_histories');
     }
 };
