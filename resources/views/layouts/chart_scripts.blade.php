@@ -138,6 +138,7 @@ chart: {
 </script>
 
 <!--Apex Pie chart-->
+<!--1-->
 <script>
  var options = {
           series: [44, 55],
@@ -171,7 +172,42 @@ chart: {
         chart.render();
 </script>
 
+<!--2-->
+<script>
+ var options = {
+          series: [15, 85],
+          chart: {
+          type: 'pie',
+        },
+
+        legend: {
+              position: 'bottom'
+            },
+
+        fill: {
+          colors:['#f59e0b','#10b981']
+        },    
+
+        labels: ['Completed', 'Pending'],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart-z"), options);
+        chart.render();
+</script>
+
 <!--Apex Column Chart-->
+<!--analytics-->
 <script>
 var options = {
           series: [{
@@ -225,5 +261,62 @@ var options = {
         };
 
         var chart = new ApexCharts(document.querySelector("#chart-e"), options);
+        chart.render();
+</script>
+
+<!--Home-->
+<script>
+var options = {
+          series: [{
+          name: 'Net Profit',
+          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+        }, {
+          name: 'Revenue',
+          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+        }, {
+          name: 'Free Cash Flow',
+          data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+        }],
+          chart: {
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            borderRadius: 5,
+            borderRadiusApplication: 'end'
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+        },
+        yaxis: {
+          title: {
+            text: '$ (thousands)'
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return "$ " + val + " thousands"
+            }
+          }
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart-y"), options);
         chart.render();
 </script>
