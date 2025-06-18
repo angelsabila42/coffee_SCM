@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('layouts.head')
 <body>
-    <div id="app">
+    <div >
         <main>       
             <div class="wrapper">
         @include('layouts.sidebar')
