@@ -4,8 +4,8 @@
 <body>
     <div >
         <main>       
-            <div class="wrapper">
-        @include('layouts.sidebar')
+            <div id="wrapper">
+        @include('layouts.sidebar2')
         
         <div class="main-panel">
             <!-- Navbar -->
