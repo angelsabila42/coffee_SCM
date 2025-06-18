@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('layouts.head')
-<style>
+
+ <style>
     body {
         font-family: 'Segoe UI', Arial, sans-serif;
         background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
@@ -181,7 +182,7 @@
         color: #6f4e37 !important;
         text-decoration: underline;
     }
-</style>
+</style> 
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm">
