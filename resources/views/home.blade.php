@@ -2,208 +2,145 @@
 @section('page-title', 'Dashboard')
 
 @section('content')
+<!--top cards-->
+<div class="row ">
+      <div class="col-md-3" >
+         <div class="card rounded-sm">
+            <div class="card-header ">
+               <h4 class="card-title">Total Orders</h4>
+            </div>
+               <div class="card-body ">
+                  <!--Apex Pie Chart-->
+                  <h6>21,324</h6>
+               </div>
+         </div>
+      </div>
+        <div class="col-md-3" >
+         <div class="card rounded-sm">
+            <div class="card-header ">
+               <h4 class="card-title">Total Income</h4>
+            </div>
+               <div class="card-body ">
+                  <h6>$1,453,221,324</h6>
+               </div>
+            </div>
+        </div>
+         <div class="col-md-3" >
+         <div class="card rounded-sm">
+            <div class="card-header ">
+               <h4 class="card-title">Partners</h4>
+            </div>
+               <div class="card-body ">
+                  <h6>100</h6>
+               </div>
+         </div>
+      </div>
+       <div class="col-md-3" >
+         <div class="card rounded-sm">
+            <div class="card-header ">
+               <h4 class="card-title">Active Deliveries</h4>
+            </div>
+               <div class="card-body ">
+                  <h6>8</h6>
+               </div>
+         </div>
+      </div>
+</div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-7">
                             <div class="card ">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Email Statistics</h4>
-                                    <p class="card-category">Last Campaign Performance</p>
-                                </div>
-                                <div class="card-body ">
-                                    <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Bounce
-                                        <i class="fa fa-circle text-warning"></i> Unsubscribe
-                                    </div>
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-clock-o"></i> Campaign sent 2 days ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card ">
-                                <div class="card-header ">
-                                    <h4 class="card-title">Users Behavior</h4>
-                                    <p class="card-category">24 Hours performance</p>
-                                </div>
-                                <div class="card-body ">
-                                    <div id="chartHours" class="ct-chart"></div>
-                                </div>
-                                <div class="card-footer ">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Click
-                                        <i class="fa fa-circle text-warning"></i> Click Second Time
-                                    </div>
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-history"></i> Updated 3 minutes ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card ">
-                                <div class="card-header ">
-                                    <h4 class="card-title">2017 Sales</h4>
-                                    <p class="card-category">All products including Taxes</p>
+                                    <h4 class="card-title">Sales Performance</h4>
                                 </div>
                                 <div class="card-body ">
                                     <div id="chartActivity" class="ct-chart"></div>
                                 </div>
                                 <div class="card-footer ">
                                     <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Tesla Model S
-                                        <i class="fa fa-circle text-danger"></i> BMW 5 Series
+                                        <i class="fa fa-circle text-info"></i> Sales
                                     </div>
                                     <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-check"></i> Data information certified
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card  card-tasks">
+                <div class="col-md-5">
+                   <div class="card ">
+                     <div class="card-header ">
+                     <h4 class="card-title">Sales Per type</h4>
+                     </div>
+                        <!--Apex donut chart-->
+                        <div class="card-body ">
+                           <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
+                                    <div class="legend">
+                                        <i class="fa fa-circle text-success"></i> Arabica
+                                        <i class="fa fa-circle text-warning"></i> Robusta
+                           </div>
+                        </div>
+                  </div>
+               </div>
+            </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card table-plain-bg">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Tasks</h4>
-                                    <p class="card-category">Backend development</p>
+                                    <h4 class="card-title">Recent Orders</h4>
                                 </div>
-                                <div class="card-body ">
-                                    <div class="table-full-width">
-                                        <table class="table">
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" value="">
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Sign contract for "What are conference organizers afraid of?"</td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" value="" checked>
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" value="" checked>
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                                                    </td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" checked>
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Create 4 Invisible User Experiences you Never Knew About</td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" value="">
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Read "Following makes Medium better"</td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <label class="form-check-label">
-                                                                <input class="form-check-input" type="checkbox" value="" disabled>
-                                                                <span class="form-check-sign"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>Unfollow 5 enemies from twitter</td>
-                                                    <td class="td-actions text-right">
-                                                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-link">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="card-footer ">
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="now-ui-icons loader_refresh spin"></i> Updated 3 minutes ago
-                                    </div>
+                                <div class="card-body table-full-width table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Salary</th>
+                                            <th>Country</th>
+                                            <th>City</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Dakota Rice</td>
+                                                <td>$36,738</td>
+                                                <td>Niger</td>
+                                                <td>Oud-Turnhout</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Minerva Hooper</td>
+                                                <td>$23,789</td>
+                                                <td>Curaçao</td>
+                                                <td>Sinaai-Waas</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Sage Rodriguez</td>
+                                                <td>$56,142</td>
+                                                <td>Netherlands</td>
+                                                <td>Baileux</td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>Philip Chaney</td>
+                                                <td>$38,735</td>
+                                                <td>Korea, South</td>
+                                                <td>Overland Park</td>
+                                            </tr>
+                                            <tr>
+                                                <td>5</td>
+                                                <td>Doris Greene</td>
+                                                <td>$63,542</td>
+                                                <td>Malawi</td>
+                                                <td>Feldkirchen in Kärnten</td>
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>Mason Porter</td>
+                                                <td>$78,615</td>
+                                                <td>Chile</td>
+                                                <td>Gloucester</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </div>
 @endsection

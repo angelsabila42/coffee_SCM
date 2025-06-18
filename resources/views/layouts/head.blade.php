@@ -12,10 +12,12 @@
 
     <!-- Fonts  and  icons-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" />
     <link href="{{asset('assets/css/light-bootstrap-dashboard.css?v=2.0.0')}}" rel="stylesheet" />
+    <!--link href="{--{asset('assets/css/custom.css')}--}" rel="stylesheet"-->
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])

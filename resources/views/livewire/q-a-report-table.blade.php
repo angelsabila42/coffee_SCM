@@ -9,14 +9,14 @@
                             <input type="text" class="form-control form-input" placeholder="Search">
                         </div>
                     </div>
-                    <div class="d-flex align-items-center">
+                    <!--div class="d-flex align-items-center">
                             <label class="text-muted mr-2 mb-0">User Type :</label>
                             <select> 
                                 <option value="">All</option>
                                 <option value="0">User</option>
                                 <option value="1">Admin</option>
                             </select>
-                    </div>
+                    </div-->
                 </div>
                             <div class="card card-plain table-plain-bg">
                                 <div class="card-header ">

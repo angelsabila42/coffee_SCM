@@ -39,7 +39,7 @@ Route::resource('payments', PaymentController::class);
 Route::get('/order', function () {
     return view('order');
 });
- //my_branch3
+
 Route::get('/inventory', function () {
     return view('inventory');
 });
@@ -54,8 +54,9 @@ Route::get('/login', function () {
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
-
+Route::get('/home/dashboard', function(){
+    return view('home');
+});
 
 
 

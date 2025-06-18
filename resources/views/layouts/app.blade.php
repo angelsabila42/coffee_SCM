@@ -2,10 +2,10 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('layouts.head')
 <body>
-    <div id="app">
+    <div >
         <main>       
-            <div class="wrapper">
-        @include('layouts.sidebar')
+            <div id="wrapper">
+        @include('layouts.sidebar2')
         
         <div class="main-panel">
             <!-- Navbar -->
