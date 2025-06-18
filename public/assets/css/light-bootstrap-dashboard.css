@@ -5317,7 +5317,7 @@ License - nucleoapp.com/license/
     content: "\ea64";
 }
 
-/*Custom css*/
+/****Custom css****/
 .custom-tab-link{
     color: #848884;
     font-weight: 500;
@@ -5368,6 +5368,7 @@ License - nucleoapp.com/license/
     color: #78350f;
 }
 
+/*Forms*/
 .form{
     position: relative;
 }
@@ -5381,10 +5382,23 @@ License - nucleoapp.com/license/
 
 .form-input{
     height: 35px;
-    text-indent: 33px;
-   
-   
+    text-indent: 33px;  
 }
 
+/*pagination*/
+.pagination .page-item.active .page-link{
+    background-color: #DAA06D; /* Use your preferred color */
+    border-color: #DAA06D;
+    color: #fff;
+}
+
+.page-link{
+    color: #000000;
+}
+
+.size-6{
+    width: 18px;
+    height: 18px;
+}
 
 /* all icon font classes list here */

@@ -12,7 +12,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-//Auth::routes();
+Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
@@ -26,6 +26,9 @@ Route::get('/orders', function () {
 });
 Route::get('/order', function () {
     return view('order');
+});
+Route::get('/home/dashboard', function(){
+    return view('home');
 });
 
 
