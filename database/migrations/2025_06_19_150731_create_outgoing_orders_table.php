@@ -13,8 +13,15 @@ return new class extends Migration
     {
         Schema::create('outgoing_orders', function (Blueprint $table) {
             $table->id();
+            $table->string('orderID')->unique();
             $table->timestamps();
-        });
+            $table->integer('quantity');
+            $table->string('status');
+            $table->date('deadline');
+            $table->foreignId('vendor_id')->constrained('vendor')->onDelete('cascade'); 
+            $table->foreignId('work_center')->constrained()->onDelete('cascade');      
+            
+            });
     }
 
     /**
