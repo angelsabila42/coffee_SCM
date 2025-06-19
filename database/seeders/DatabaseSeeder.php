@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\SalesReport;
+use App\Models\DeliveryReport;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -25,6 +26,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             SalesReportSeeder::class,
+            DeliveryReportSeeder::class,
+            WorkCenterSeeder::class,
         ]);
     }
 }

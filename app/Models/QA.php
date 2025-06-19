@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class QA extends Model
 {
-    protected$fillable = ['start_date', 'end_start'];
+    protected$fillable = ['reportID', 'start_date', 'end_start'];
 
     /** @use HasFactory<\Database\Factories\QAFactory> */
     use HasFactory;
