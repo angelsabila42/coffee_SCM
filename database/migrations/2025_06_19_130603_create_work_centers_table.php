@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('incoming_orders', function (Blueprint $table) {
+        Schema::create('work_centers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-              $table->integer('quantity');
-              $table->date('order_date');
-              $table->string('status');
-              
+            $table->string('workCenterID')->unique();
+            $table->string('location');
+            $table->string('centerName');
+            
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('incoming_orders');
+        Schema::dropIfExists('work_centers');
     }
 };

@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\DeliveryReport;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\SalesReport;
 use App\Helpers\Helper;
-
-class SalesReportSeeder extends Seeder
+class DeliveryReportSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +14,8 @@ class SalesReportSeeder extends Seeder
     public function run(): void
     {
          for($i=0; $i<30; $i++){
-            $report= SalesReport::factory()->make();
-            $report->reportID = Helper::generateID(SalesReport::class,'reportID',5,'DR');
+            $report= DeliveryReport::factory()->make();
+            $report->reportID = Helper::generateID(DeliveryReport::class,'reportID',5,'DR');
             $report->save();
          }
     }
