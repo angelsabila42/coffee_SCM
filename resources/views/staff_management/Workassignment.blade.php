@@ -101,7 +101,8 @@
     <thead>
         <tr>
             <th>Assignment ID</th>
-            <th>Staff ID</th> 
+            <th>Staff ID</th>
+            <th>Staff Name</th>
             <th>Work Center</th>
             <th>Role</th>
             <th>Start Date</th>
@@ -112,21 +113,21 @@
     <tbody>
         @forelse ($workAssignments as $assignment)
             <tr>
-                <td>{{ $assignment->assignment_id }}</td> 
-                <td>{{ $assignment->staff_id }}</td> 
+                <td>{{ $assignment->assignment_id }}</td>
+                <td>{{ $assignment->staff_id }}</td>
+                <td>{{ $assignment->staff->full_name ?? 'N/A' }}</td>
                 <td>{{ $assignment->work_center }}</td>
                 <td>{{ $assignment->role }}</td>
                 <td>{{ $assignment->start_date }}</td>
                 <td>{{ $assignment->end_date ?? 'N/A' }}</td>
-                
                 <td>
                     <button type="button" class="btn btn-sm btn-info edit-work-assignment-btn me-1"
                             data-bs-toggle="modal"
                             data-bs-target="#editWorkAssignmentModal"
-                            data-id="{{ $assignment->id }}">
+                            data-id="{{ $assignment->assignment_id }}">
                         Edit
                     </button>
-                    <form action="{{ route('staff_management.workassignment.destroy', $assignment->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this assignment?');">
+                    <form action="{{ route('staff_management.workassignment.destroy', $assignment->assignment_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this assignment?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -176,8 +177,14 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="edit_wa_assignment_type" class="form-label">Assignment Type</label>
-                            <input type="text" class="form-control" id="edit_wa_assignment_type" name="assignment_type" required>
+                            <label for="edit_wa_role" class="form-label">Role</label>
+                            <select class="form-select" id="edit_wa_role" name="role" required>
+                                <option value="">Select Role</option>
+                                <option value="Logistics Supervisor">Logistics Supervisor</option>
+                                <option value="Supervisor">Supervisor</option>
+                                <option value="Warehouse Clerk">Warehouse Clerk</option>
+                                <option value="QA">QA</option>
+                            </select>
                         </div>
                     </div>
 
@@ -192,22 +199,6 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="edit_wa_status" class="form-label">Status</label>
-                        <select class="form-select" id="edit_wa_status" name="status" required>
-                            <option value="">Select Status</option>
-                            <option value="Pending">Pending</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Cancelled">Cancelled</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="edit_wa_description" class="form-label">Description (Optional)</label>
-                        <textarea class="form-control" id="edit_wa_description" name="description" rows="3"></textarea>
-                    </div>
-
                     <div class="d-flex justify-content-end mt-4">
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Update Assignment</button>
@@ -217,3 +208,56 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Edit Work Assignment Modal logic
+    const editWorkAssignmentModal = document.getElementById('editWorkAssignmentModal');
+    const editWorkAssignmentForm = document.getElementById('editWorkAssignmentForm');
+    let currentEditAssignmentId = null;
+
+    // Delegate click event for edit buttons
+    document.querySelectorAll('.edit-work-assignment-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+            const assignmentId = btn.getAttribute('data-id');
+            currentEditAssignmentId = assignmentId;
+            // Fetch assignment data
+            fetch('/staff-management/workassignment/' + assignmentId)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('edit_wa_id').value = data.assignment_id;
+                    document.getElementById('edit_wa_staff_id').value = data.staff_id;
+                    document.getElementById('edit_wa_work_center').value = data.work_center;
+                    document.getElementById('edit_wa_role').value = data.role;
+                    document.getElementById('edit_wa_start_date').value = data.start_date;
+                    document.getElementById('edit_wa_end_date').value = data.end_date || '';
+                   
+                    // Set form action
+                    editWorkAssignmentForm.setAttribute('action', '/staff-management/workassignment/' + data.assignment_id);
+                    // Show modal (in case not triggered by data-bs-toggle)
+                    var modal = bootstrap.Modal.getOrCreateInstance(editWorkAssignmentModal);
+                    modal.show();
+                })
+                .catch(error => {
+                    alert('Failed to load assignment data.');
+                    console.error(error);
+                });
+        });
+    });
+    // Ensure form action is set before submit
+    editWorkAssignmentForm.addEventListener('submit', function(e) {
+        if (!editWorkAssignmentForm.action.match(/\/staff-management\/workassignment\/[\w-]+$/)) {
+            e.preventDefault();
+            if (currentEditAssignmentId) {
+                editWorkAssignmentForm.setAttribute('action', '/staff-management/workassignment/' + currentEditAssignmentId);
+                editWorkAssignmentForm.submit();
+            } else {
+                alert('Assignment ID missing. Please try again.');
+            }
+        }
+    });
+});
+</script>

@@ -57,4 +57,19 @@ public function edit(Staff $staff)
  {
          return redirect()->route('staff_management.staff')->with('success', 'Staff updated successfully!');
     }
+public function update(Request $request, Staff $staff)
+{
+    $request->validate([
+        'full_name' => 'required|string|max:255',
+        'work_center' => 'required|string|max:255',
+        'role' => 'required|string|max:255',
+        'status' => 'required|string',
+        'phone_number' => 'required|string',
+        'email' => 'required|email'
+    ]);
+
+    $staff->update($request->all());
+
+    return redirect()->route('staff_management.staff')->with('success', 'Staff updated successfully!');
+}
 }
