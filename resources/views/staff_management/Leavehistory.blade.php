@@ -1,4 +1,3 @@
-
 <!-- Validation -->
 @if ($errors->any() && session('open_leavehistory_modal'))
     <div class="alert alert-danger mt-3">
@@ -126,7 +125,7 @@
     <tbody>
         @forelse ($leaveHistory as $leave)
             <tr>
-                <td>{{ $leave->id }}</td>
+                <td>{{ $leave->leave_id }}</td>
                 <td>{{ $leave->staff_id }}</td> {{-- Access via relationship --}}
                 <td>{{ $leave->staff->full_name ?? 'N/A' }}</td> {{-- Access via relationship --}}
                 <td>{{ $leave->staff->work_center ?? 'N/A' }}</td> 
@@ -139,10 +138,10 @@
                     <button type="button" class="btn btn-sm btn-info edit-leave-record-btn me-1"
                             data-bs-toggle="modal"
                             data-bs-target="#editLeaveRecordModal"
-                            data-id="{{ $leave->id }}">
+                            data-id="{{ $leave->leave_id }}">
                         Edit
                     </button>
-                    <form action="{{ route('staff_management.leave-history.destroy', $leave->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this leave record?');">
+                    <form action="{{ route('staff_management.leavehistory.destroy', $leave->leave_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this leave record?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>

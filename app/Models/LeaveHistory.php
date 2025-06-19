@@ -16,12 +16,14 @@ class LeaveHistory extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'leave_id',
         'staff_id',
         'work_center',
         'leave_type',
         'start_date',
         'end_date',
-        
+        'status',
+        'full_name',
     ];
 
     /**
@@ -36,8 +38,11 @@ class LeaveHistory extends Model
      *
      * @var bool
      */
-    protected $keyType = 'string';
-     // relationship with Staff model
+    public $incrementing = false;
+
+    /**
+     * relationship with Staff model
+     */
     public function staff()
     {
         return $this->belongsTo(Staff::class);

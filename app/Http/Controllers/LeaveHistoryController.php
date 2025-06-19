@@ -98,6 +98,7 @@ class LeaveHistoryController extends Controller
             'reason' => 'nullable|string',
         ]);
 
+        $leaveHistory = LeaveHistory::findOrFail($id);
         // No need to generate leave_id for update, it already exists
         $leaveHistory->update($validatedData);
 
@@ -112,6 +113,7 @@ class LeaveHistoryController extends Controller
      */
     function destroy(string $id)
     {
+        $leaveHistory = LeaveHistory::findOrFail($id);
         $leaveHistory->delete();
         return redirect()->route('staff_management.staff')
                          ->with('success_leave_history', 'Leave record deleted successfully!')
