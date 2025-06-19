@@ -26,9 +26,7 @@ return new class extends Migration
             $table->foreignId('incoming_order_id')->constrained()->onDelete('cascade');
             $table->foreignId('outgoing_order_id')->constrained()->onDelete('cascade');
             $table->foreignId('delivery_id')->constrained()->onDelete('cascade');
-            $table->foreignId('importer_model_id')->constrained()->onDelete('cascade');
-            $table->foreignId('delivery_id')->constrained()->onDelete('cascade');
-
+           
         });
     }
 
