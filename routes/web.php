@@ -19,7 +19,6 @@ use App\Http\Controllers\OrderController;
 
 
 
-
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -35,6 +34,7 @@ Route::resource('deliveries', DeliveryController::class);
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::resource('invoices', InvoiceController::class);
 Route::resource('payments', PaymentController::class);
+
 
 Route::get('/order', function () {
     return view('order');

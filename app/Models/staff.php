@@ -10,12 +10,12 @@ class staff extends Model
 
     protected $fillable = [
 
-         'name',
+        'name',
         'email',
         'phone_number',
         'role',
         'status',
-         'password',
+        'password',
         'confirm password',
 
     ];
