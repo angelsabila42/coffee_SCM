@@ -6,7 +6,7 @@
         Tip 2: you can also add an image using data-image tag
     -->
             <div class="sidebar-wrapper">
-                <div class="logo">
+                <div class="l0go">
                    <!-- <a href="http://www.creative-tim.com" class="simple-text">
                         Creative Tim
                     </a>-->
