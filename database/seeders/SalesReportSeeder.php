@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\SalesReport;
+use App\Helpers\Helper;
 
 class SalesReportSeeder extends Seeder
 {
@@ -13,6 +14,10 @@ class SalesReportSeeder extends Seeder
      */
     public function run(): void
     {
-        SalesReport::factory()->count(30)->create();
+         for($i=0; $i<30; $i++){
+            $report= SalesReport::factory()->make();
+            $report->reportID = Helper::generateID(SalesReport::class,'reportID',5,'DR');
+            $report->save();
+         }
     }
 }

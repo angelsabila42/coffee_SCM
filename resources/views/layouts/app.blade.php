@@ -1,37 +1,72 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+@include('layouts.head')
+<body>
+    <div >
+        <main>       
+            <div id="wrapper" x-data= "sideBar">
+        @include('layouts.sidebar2')
+        
+        <div class="main-panel" x-transition:enter = transition: all 0.25s ease-in-out,
+            x-transition:leave = transition: all 0.25s ease-in-out>
+            <!-- Navbar -->
+          @include('layouts.nav')
+            <!-- End Navbar -->
+            <div class="content">
 
-        {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
-        <title>Globabean connect</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-              {{-- <main>
-                {{ $slot }}
-            </main>  --}}
+             <x-page-header >
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+             @yield('page-title','Untitled')
+             @yield('report-btn')
+            </div>
+            {{--@livewire('counter') example--}}
+            </x-page-header>
+                
+                <div class="container-fluid">
+                     @yield('content')
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <nav>
+                        <ul class="footer-menu">
+                            <li>
+                                <a href="#">
+                                    Home
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Company
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Portfolio
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Blog
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="copyright text-center">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
+                        </p>
+                    </nav>
+                </div>
+            </footer>
         </div>
-    </body>
+    </div>
+        </main>
+    </div>
+    @include('layouts.scripts')
+    @yield('analytics')
+    @livewireScripts
+</body>
 </html>

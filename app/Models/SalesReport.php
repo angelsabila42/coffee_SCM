@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SalesReport extends Model
 {
-    protected$fillable = ['start_date', 'end_start'];
+    protected$fillable = ['reportID', 'start_date', 'end_start'];
     
     /** @use HasFactory<\Database\Factories\SalesReportFactory> */
     use HasFactory;
