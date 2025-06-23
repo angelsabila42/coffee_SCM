@@ -16,6 +16,9 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\InventoryController;
+//use App\Models\inventory;
+
 
 
 
@@ -77,3 +80,15 @@ Route::post('/reg/vendor', [vendorController::class, 'store'])->name('store.vend
 Route::post('/reg/staff', [staffController::class, 'store'])->name('store.staff');
 Route::post('/reg/transporter', [transporterController::class, 'store'])->name('store.transporter');
 Route::post('/reg/importer', [ImporterModelController::class, 'store'])->name('store.importer');
+
+//inventory routes
+Route::post('form_modal',[InventoryController::class,'add']);//for adding data in the inventory table
+Route::get('/inventory',[InventoryController::class,'ern']);//for fetching data from the table to the view table
+Route::get('/inventory',[InventoryController::class,'mut']);//for the search input
+Route::delete('/inventory/{id}',[InventoryController::class,'destroy'])->name('inventory.destroy');//for deleting a record
+Route::get('/inventory',[InventoryController::class,'alber']);
+
+Route::get('/stock', function () {
+    return view('stock');
+});
+Route::get('/stock/{id}',[InventoryController::class,'geor'])->name('stock');

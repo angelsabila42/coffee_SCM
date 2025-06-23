@@ -78,10 +78,11 @@
 <body>
   <div class="form-container">
     <h2>New Stock</h2>
-    <form action="">
+    <form action="form_modal" method="POST">
+      @csrf
       <div class="form-group">
         <label for="coffeeType">Coffee Type</label>
-        <select id="coffeeType" required>
+        <select id="coffeeType" name="coffee_type" required>
           <option selected disabled>Select</option>
           <option>Arabica</option>
           <option>Robusta</option>
@@ -90,50 +91,52 @@
 
       <div class="form-group">
         <label for="quantity">Quantity (kgs)</label>
-        <input type="number" id="quantity" placeholder="kgs" required>
+        <input type="number" id="quantity" name="quantity" placeholder="kgs" required>
       </div>
 
       <div class="form-group">
         <label for="grade">Grade</label>
-        <select id="grade" required>
+        <select id="grade" name="grade" required>
           <option selected disabled>Select</option>
-          <option>A</option>
-          <option>B</option>
-          <option>C</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="minThreshold">Min Threshold</label>
-        <input type="number" id="minThreshold" required>
+        <label for="minThreshold">Threshold</label>
+        <input type="number" id="minThreshold" name="threshold" required>
       </div>
 
       <div class="form-group">
         <label for="status">Status</label>
-        <select id="status" required>
+        <select id="status" name="status" required>
           <option selected disabled>Select</option>
-          <option>Available</option>
-          <option>Pending</option>
+          <option>In stock</option>
+          <option>low</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="warehouse">Warehouse</label>
-        <select id="warehouse" required>
+        <select id="warehouse" name="warehouse_name" required>
           <option selected disabled>Select</option>
-          <option>Main</option>
-          <option>Branch 1</option>
+          <option>Mbale</option>
+          <option>Kampala</option>
+           <option>Mbarara</option>
+           <option>Mukono</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="dateAdded">Date Added</label>
-        <input type="date" id="dateAdded" value="2025-05-30" required>
+        <input type="date" id="dateAdded" name="last_updated" value="2025-05-30" required>
       </div>
 
       <div class="button-group">
         <button type="submit" class="btn-add">Add</button>
-        <button type="button" class="btn-cancel">Cancel</button>
+       <a href="{{url('/inventory')}}"> <button type="button" class="btn-cancel">Cancel</button><a>
       </div>
     </form>
   </div>
