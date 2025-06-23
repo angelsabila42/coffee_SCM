@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('orderID')->unique();
             $table->timestamps();
             $table->integer('quantity');
+            $table->string('coffeeType');
             $table->string('status');
             $table->date('deadline');
             $table->string('Grade');
