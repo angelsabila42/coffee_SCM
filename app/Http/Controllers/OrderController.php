@@ -15,8 +15,6 @@ class OrderController extends Controller
 
     public function index()
     {
-        $invoices = Invoice::paginate(10);
-        $payments = Payment::paginate(10);
-        return view('orders.index', compact('invoices', 'payments'));
+        return view('orders');
     }
 } 

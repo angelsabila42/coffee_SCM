@@ -18,8 +18,9 @@ return new class extends Migration
             $table->integer('quantity');
             $table->string('status');
             $table->date('deadline');
+            $table->string('coffeeType');
             $table->foreignId('vendor_id')->constrained('vendor')->onDelete('cascade'); 
-            $table->foreignId('work_center')->constrained()->onDelete('cascade');      
+            $table->foreignId('work_center_id')->constrained()->onDelete('cascade');      
             
             });
     }

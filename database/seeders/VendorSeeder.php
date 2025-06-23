@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\OutgoingOrder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Vendor;
 
-class OutgoingOrderSeeder extends Seeder
+class VendorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        OutgoingOrder::factory()->count(30)->create();
+        Vendor::factory()->count(20)->create();
     }
 }

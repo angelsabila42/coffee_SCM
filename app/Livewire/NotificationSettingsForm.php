@@ -21,8 +21,6 @@ class NotificationSettingsForm extends Component
    
     public function render()
     {
-        return view('livewire.notification-settings-form',[
-            'order'=> OutgoingOrder::paginate(10)
-        ]);
+        return view('livewire.notification-settings-form');
     }
 }

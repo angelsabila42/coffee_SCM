@@ -1,23 +1,22 @@
-<div>
-<aside id="sidebar">
+<aside id="sidebar" :class= "{'expand':isExpanded}">
     <div class="d-flex justify-content-between p-4">
-        <div class="sidebar-logo mr-1">
+        <div class="sidebar-logo mr-1" >
             <a href="#">GlobalBean Connect</a>
         </div>
     
-    <button type="button" class="toggle-btn border-0">
-        <i id="icon" class='bx bxs-chevrons-right'></i>
+    <button type="button" class="toggle-btn border-0"  x-on:click= "toggle">
+        <i id="icon" :class = "isExpanded ? 'bx bxs-chevrons-left' : 'bx bxs-chevrons-right'"> </i>
     </button>
     </div>
     <ul class="sidebar-nav">
         <li class="sidebar-item">
-             <a href="/home/dashboard" class="sidebar-link">
+             <a href="{{route('home')}}" class="sidebar-link">
              <i class="nc-icon nc-grid-45"></i>
              <span>Dashboard</span>
              </a>
         </li> 
         <li class="sidebar-item">
-             <a href="{{url('/orders')}}" class="sidebar-link">
+             <a href="{{route('orders')}}" class="sidebar-link">
              <i class="nc-icon nc-notes"></i>
              <span>Orders</span>
              </a>
@@ -71,4 +70,3 @@
         </li>
     </ul>
 </aside>
-</div>

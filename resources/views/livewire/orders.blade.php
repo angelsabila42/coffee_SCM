@@ -2,9 +2,8 @@
 <!--div class="d-flex justify-content-between align-items-center"-->
 <div>
   <ul class= "pt-4 nav nav-tabs">
-    <li><a href = "#" class="nav-link custom-tab-link {{$activeTab === "Sales" ? 'active' : ''}}" wire:click= "setActiveTab('Sales')">Sales</a></li>
-    <li><a href = "#" class="nav-link custom-tab-link {{$activeTab === "Delivery" ? 'active' : ''}}" wire:click= "setActiveTab('Delivery')">Delivery</a></li>
-    <li><a href = "#" class="nav-link custom-tab-link {{$activeTab === "QA" ? 'active' : ''}}" wire:click= "setActiveTab('QA')">QA</a></li>
+    <li><a href = "#" class="nav-link custom-tab-link {{$activeTab === "Incoming" ? 'active' : ''}}" wire:click= "setActiveTab('Incoming')">Incoming</a></li>
+    <li><a href = "#" class="nav-link custom-tab-link {{$activeTab === "Outgoing" ? 'active' : ''}}" wire:click= "setActiveTab('Outgoing')">Outgoing</a></li>
   </ul>
 </div>
 
@@ -20,29 +19,23 @@
 </div-->
 <!--/div-->
 
-    @if($activeTab === 'Sales')
+    @if($activeTab === 'Incoming')
     <div class = "tab-content">
     <div>
-      <!--h4 class = "card-header">Sales</h4-->
+      <h4 class = "card-header">Incoming Orders</h4>
         <p class = "card-body pt-0">
-          @livewire('sales-report-table')
+          @livewire('incoming-order-table')
         </p>
     </div>
-    @elseif($activeTab === 'Delivery')
+    @elseif($activeTab === 'Outgoing')
        <div>
-      <!--h4 class= "card-header">Delivery</h4-->
+      <h4 class= "card-header">Outgoing Orders</h4>
         <p class= "card-body pt-0">
-          @livewire('delivery-report-table')
-        </p>
-      </div>
-     @elseif($activeTab === 'QA')
-       <div>
-        <!--h4 class= "card-header">QA</h4-->
-        <p class = "card-body pt-0">
-          @livewire('q-a-report-table')
+          @livewire('outgoing-order-table')
         </p>
       </div>
     @endif
 </div>
 </div>
+
 

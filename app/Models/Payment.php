@@ -31,6 +31,10 @@ class Payment extends Model
     /**
      * Get the invoice that the payment belongs to.
      */
+
+    public function notification(){
+        return $this->belongsTo(Notification::class);
+    } 
     public function invoice()
     {
         return $this->belongsTo(Invoice::class);
