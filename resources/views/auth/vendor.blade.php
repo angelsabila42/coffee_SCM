@@ -5,12 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header" style="color:white; background-color:rgb(127, 127, 226);font-size:larger;
+                <div class="card-header" style="color:white; font-size:larger;
                 border-radius:10px;">{{ __('VENDOR REGISTRATION FORM') }}</div>
                      {{-- <div class="card-header">{{ __('BUSINESS INFORMATION') }}</div> --}}
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('store.vendor') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('java.store') }}" enctype="multipart/form-data">
                         @csrf
 
                      
