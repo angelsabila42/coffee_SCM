@@ -4,10 +4,11 @@
 <body>
     <div >
         <main>       
-            <div id="wrapper">
+            <div id="wrapper" x-data= "sideBar">
         @include('layouts.sidebar2')
         
-        <div class="main-panel">
+        <div class="main-panel" x-transition:enter = transition: all 0.25s ease-in-out,
+            x-transition:leave = transition: all 0.25s ease-in-out>
             <!-- Navbar -->
           @include('layouts.nav')
             <!-- End Navbar -->

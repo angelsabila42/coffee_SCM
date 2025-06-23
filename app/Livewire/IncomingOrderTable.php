@@ -4,16 +4,17 @@ namespace App\Livewire;
 
 use App\Helpers\Helper;
 use Livewire\Component;
+use App\Models\IncomingOrder;
 use Livewire\WithPagination;
 
-class IncomingOrder extends Component
+class IncomingOrderTable extends Component
 {
      use WithPagination;
 
          public $orderID, $quantity,$status, $deadline, $grade, $destination;
 
     public function mount(){
-        $this->orderID= Helper::generateID(IncomingOrder::class,'orderID',5,'OX');
+        $this->orderID= Helper::generateID(IncomingOrder::class,'orderID',5,'IX');
 
     }
 
@@ -31,8 +32,8 @@ class IncomingOrder extends Component
 
     public function render()
     {
-        return view('livewire.incoming-order',[
-            'order'=> IncomingOrder::paginate(10)
+        return view('livewire.incoming-order-table',[
+            'orders'=> IncomingOrder::paginate(10)
         ]);
     }
 }

@@ -9,20 +9,12 @@ use Livewire\WithPagination;
 
 class OutgoingOrderTable extends Component
 {
-    public $orderID, $quantity,$status, $deadline;
+    use WithPagination;
+
+    public $orderID;
 
     public function mount(){
         $this->orderID= Helper::generateID(OutgoingOrder::class,'orderID',5,'OX');
-
-    }
-
-       public function save(){
-        OutgoingOrder::create([
-            'orderID'=> $this->orderID,
-            'quantity'=>$this->quantity,
-            'status'=> $this->status,
-            'deadline'=> $this->deadline
-        ]);
 
     }
 
@@ -31,6 +23,8 @@ class OutgoingOrderTable extends Component
    }
     public function render()
     {
-        return view('livewire.outgoing-order');
+        return view('livewire.outgoing-order-table',[
+            'orders'=>OutgoingOrder::paginate(10)
+        ]);
     }
 }

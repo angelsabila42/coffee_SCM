@@ -1,21 +1,41 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\V1;
+
+use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\VendorResource;
+use App\Http\Resources\V1\VendorCollection;
+use Services\V1\VendorQuery;
 use App\Models\User;
-use App\Models\vendor;
-use Illuminate\Http\Request;
+use App\Models\Vendor;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
-class vendorController extends Controller
+class VendorController extends Controller
 {
-
-    
+       
 //   'name',
 //         'email',
 //        'email',
 //         'phone_number',
 //         'street',
 //         'city',
+
+    public function index(Request $request){
+
+        $filter = new VendorQuery();
+        $queryItems = $filter->Transform($request);
+
+        if(count($queryItems) == 0){
+            return new VendorCollection(Vendor::paginate());
+        }else{
+             return new VendorCollection(Vendor::where($queryItems)->paginate());
+        }
+    }
+
+    public function show(Vendor $vendor){
+        return new VendorResource($vendor);
+    }
     public function store(Request $req){
 
     $validated = $req->validate([
@@ -32,7 +52,7 @@ class vendorController extends Controller
      $validated['password'] = Hash::make($validated['password']);
      $filepath = $req->file('document')->store('vendor_files','public');
     
-    vendor::create($validated);
+    Vendor::create($validated);
      $fields = collect($validated)->only([
         'name','email','password'
          ])->toArray();

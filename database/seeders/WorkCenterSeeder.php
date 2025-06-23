@@ -14,11 +14,6 @@ class WorkCenterSeeder extends Seeder
      */
     public function run(): void
     {
-           for($i=0; $i<5; $i++){
-            $center = WorkCenter::factory()->make();
-            $center->workCenterID = Helper::generateID(WorkCenter::class,'workCenterID',5,"WK");
-            $center->save();
-                
-            }
+          WorkCenter::factory()->count(5)->create();
     }
 }
