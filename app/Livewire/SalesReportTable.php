@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Helpers\Helper;
 use App\Models\SalesReport;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,6 +12,19 @@ class SalesReportTable extends Component
     use WithPagination;
    // public $perPage = 5;
 
+    public $reportID, $start_period, $end_period;
+
+   public function mount(){
+    $this->reportID = Helper::generateID(SalesReport::class,'reportID',5,'DR');
+   }
+
+   public function save(){
+    SalesReport::create([
+        'reportID'=> $this->reportID,
+        'start_period'=>$this->start_period,
+        'end_period' => $this->end_period
+    ]);
+   }
    public function delete(SalesReport $salesReport){
     $salesReport->delete();
    }
