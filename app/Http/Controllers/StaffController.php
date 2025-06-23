@@ -1,45 +1,75 @@
 <?php
 
 namespace App\Http\Controllers;
- use App\Models\staff;
-//use Illuminate\Foundation\Auth\User;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-class staffController extends Controller
+use Illuminate\Http\Request;
+use App\Models\Staff;
+use App\Models\WorkAssignment;
+use App\Models\LeaveHistory; 
+
+class StaffController extends Controller
 {
 
 
+public function staff()
+{
+        $staff = Staff::all(); // All staff for the main table
+        $totalStaffCount = Staff::count();
+        $absentStaffCount = Staff::where('status', 'On Leave')->count(); 
+        $warehouseCount = 4; 
 
- public function staff(){
-    return view('auth.staff');
- }
+         $workAssignments = WorkAssignment::with('staff')->get(); 
+         $leaveHistory = LeaveHistory::with('staff')->get(); // Fetching leave history for the Leave History tab
+        $staffMembersForDropdown =  Staff::select('id', 'full_name')->get(); // For staff dropdowns in modals
 
+       
+       return view('staff_management.staff', compact('staff','totalStaffCount', 'absentStaffCount', 'warehouseCount','workAssignments', 'staffMembersForDropdown','leaveHistory'));
+}
+public function store(Request $request)
+{
+    $request->validate([
+        'full_name' => 'required|string|max:255',
+        'work_center' => 'required|string|max:255',
+        'role' => 'required|string|max:255',
+        'status' => 'required|string',
+        'phone_number' => 'required|string',
+        'email' => 'required|email'
+    ]);
 
-    
-     public function store(Request $req){
+    Staff::create($request->all());
 
-    $validated = $req->validate([
-        'name' => 'required',
-        'email' => 'required|email|unique:staff,email',
-        'password' => ['required','confirmed','min:8'],
-        'role' => '',
-         'status' => '',
-          'phone_number' => 'required|regex:/^07[0-9]{8}$/',
-         
-        
+    return redirect()->route('staff_management.staff')->with('success', 'Staff added successfully!');
+}
 
-    ]);   
-     $validated['password'] = Hash::make($validated['password']);
-    
-    staff::create($validated);
+public function destroy($id)
+{
+    $staff = Staff::findOrFail($id);
+    $staff->delete();
 
-    $fields = collect($validated)->only([
-        'name','email','password'
-         ])->toArray();
+    return redirect()->route('staff_management.staff')->with('success', 'Staff deleted successfully!');
+}
 
-    User::create($fields);
-    return redirect()->back();
+public function show(Staff $staff) 
+{
+    return response()->json($staff);
+}
+public function edit(Staff $staff)
+ {
+         return redirect()->route('staff_management.staff')->with('success', 'Staff updated successfully!');
     }
+public function update(Request $request, Staff $staff)
+{
+    $request->validate([
+        'full_name' => 'required|string|max:255',
+        'work_center' => 'required|string|max:255',
+        'role' => 'required|string|max:255',
+        'status' => 'required|string',
+        'phone_number' => 'required|string',
+        'email' => 'required|email'
+    ]);
+
+    $staff->update($request->all());
+
+    return redirect()->route('staff_management.staff')->with('success', 'Staff updated successfully!');
+}
 }
