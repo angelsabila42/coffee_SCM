@@ -27,4 +27,8 @@ class Delivery extends Model
         'eta',
         'date_ordered',
     ];
+
+      public function notification(){
+        return $this->belongsTo(Notification::class);
+    }
 }

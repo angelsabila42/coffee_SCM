@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\SalesReport;
 use App\Models\DeliveryReport;
+use App\Models\OutgoingOrder;
 use App\Models\User;
+use App\Models\WorkCenter;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +27,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
+            VendorSeeder::class,
+            WorkCenterSeeder::class,
+            OutgoingOrderSeeder::class,
             SalesReportSeeder::class,
             DeliveryReportSeeder::class,
             WorkCenterSeeder::class,

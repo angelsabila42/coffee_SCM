@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\OutgoingOrder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class OutgoingOrderSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        OutgoingOrder::factory()->count(30)->create();
     }
 }
