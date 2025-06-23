@@ -1,9 +1,11 @@
 <div class="wrapper">
+
 <div>
 <aside id="sidebar">
     <div class="d-flex justify-content-between p-4">
         <div class="sidebar-logo mr-1">
             <a href="#">GlobalBean Connect</a>
+
         </div>
     
     <button type="button" class="toggle-btn border-0">
