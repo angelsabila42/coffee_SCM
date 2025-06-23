@@ -1,9 +1,11 @@
 <div class="wrapper">
-        <div>
+
+<div>
 <aside id="sidebar">
     <div class="d-flex justify-content-between p-4">
         <div class="sidebar-logo mr-1">
             <a href="#">GlobalBean Connect</a>
+
         </div>
     
     <button type="button" class="toggle-btn border-0">
@@ -76,65 +78,29 @@
 
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+           <nav class="navbar navbar-expand-lg " color-on-scroll="500">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#pablo"></a>
-                    <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-bar burger-lines"></span>
-                        <span class="navbar-toggler-bar burger-lines"></span>
-                        <span class="navbar-toggler-bar burger-lines"></span>
-                    </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="nav navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a href="#" class="nav-link" data-toggle="dropdown">
-                                    <i class="nc-icon nc-palette"></i>
-                                    <span class="d-lg-none">Dashboard</span>
-                                </a>
+                                <!--the company log will go here or at top of the side bar-->
                             </li>
                             <li class="dropdown nav-item">
-                                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                                    <i class="nc-icon nc-planet"></i>
-                                    <span class="notification">5</span>
-                                    <span class="d-lg-none">Notification</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Notification 1</a>
-                                    <a class="dropdown-item" href="#">Notification 2</a>
-                                    <a class="dropdown-item" href="#">Notification 3</a>
-                                    <a class="dropdown-item" href="#">Notification 4</a>
-                                    <a class="dropdown-item" href="#">Another notification</a>
-                                </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nc-icon nc-zoom-split"></i>
-                                    <span class="d-lg-block">&nbsp;Search</span>
-                                </a>
-                            </li>
+                                <input type="text" placeholder="Search" style="border-radius: 30px">
+                            </li> 
                         </ul>
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="#pablo">
-                                    <span class="no-icon">Account</span>
+                                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                                    <i class="fas fa-bell"></i>
+                                    <span class="notification">5</span>
                                 </a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="no-icon">Dropdown</span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                    <div class="divider"></div>
-                                    <a class="dropdown-item" href="#">Separated link</a>
-                                </div>
                             </li>
                             <li class="nav-item">
+                                <span>Arnest</span>
                                 <a class="nav-link" href="#pablo">
-                                    <span class="no-icon">Log out</span>
+                                    <img src="" alt="profile pic">
+                                    {{-- <span class="no-icon">Log out</span> --}}
                                 </a>
                             </li>
                         </ul>
@@ -144,16 +110,92 @@
             <!-- End Navbar -->
             <!--cards--> 
             <h3>Inventory Management</h3>
-             <div class="row g-4 mb-4">
-    <div class="col-md-3"><div class="card"><div class="card-body"><strong>1</strong><br>Blelow Minimum</div></div></div>
-    <div class="col-md-3"><div class="card"><div class="card-body"><strong>115000kg</strong><br>Total Stock</div></div></div>
-    <div class="col-md-3"><div class="card"><div class="card-body"><strong>4</strong><br>Warehouses</div></div></div>
-    
-  </div>
+            <div class="row g-4 mb-4">
+                 <div class="col-md-3"><div class="card"><div class="crad" ><strong>{{$belowMinimumCount}}</strong><br>Blelow Minimum</div></div></div>
+                 <div class="col-md-3"><div class="card"><div class="crad"><strong>{{$totalStock}}kg</strong><br>Total Stock</div></div></div>
+                 <div class="col-md-3"><div class="card"><div class="crad"><strong>{{$totalWarehouses}}</strong><br>Warehouses</div></div></div>
+            </div>
+  <div class="content">
+                
+      <div class="top-controls">
+        <div class="tabs">
+         <h3>Inventory</h3>
+        </div>
+        <div class="right">
+          <!--<i class="fas fa-filter">--></i>
+          <a href="{{url('/form_modal')}}"><button style="border-radius: 50px ">+</button></a><label>New</label>
+        </div>
+      </div>
+
+    <div>
+   <div class="col-md-12">
+   <div class="d-flex justify justify-content-between align-items-center">
+                    
+                    <!--Search bar-->
+                   <!-- <div class="d-flex justify-content-center align-items-center">
+                        <div class="form">
+                                <i class="nc-icon nc-zoom-split"></i>
+                            <input type="text" class="form-control form-input" placeholder="Search">
+                        </div>
+                    </div>-->
+                    <form method="GET" action="{{url('/inventory')}}"class="mb-3">
+                        <input type="text" name="search" class="form-control" placeholder="search..."
+                        value="{{$search ?? ''}}">
+                    </form>
+                    <p> searched: <strong>{{ $search ?? 'Nothing '}}</strong></p>
+                </div>
+                            <div class="card card-plain table-plain-bg">
+                                <div class="card-header ">
+                                    <!--h4 class="card-title">Table on Plain Background</h4>
+                                    <p class="card-category">Here is a subtitle for this table</p-->
+                                </div>
+                                <div class="card-body table-full-width table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="bg-light">
+                                            <th class="font-weight-bold" style="text-transform: none">id</th>
+                                            <th class="text-amber" style="text-transform: none">coffee_type</th>
+                                            <th style="text-transform: none" >grade</th>
+                                            <th style="text-transform: none">warehouse_name</th>
+                                            <th style="text-transform: none">quantity</th>
+                                            <th style="text-transform: none">threshold</th>
+                                            <th style="text-transform: none">status</th>
+                                            <th style="text-transform: none">last_updated</th>
+                                            <th style="text-transform: none">Actions</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($inventories as $item)
+                                            <tr onclick = "window.location='{{route('stock', $item->id)}}'">
+                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{$item->coffee_type}}</td>
+                                                <td>{{$item->grade}}</td>
+                                                <td>{{$item->warehouse_name}}</td>
+                                                <td>{{$item->quantity}}</td>
+                                                <td>{{$item->threshold}}</td>
+                                                <td>{{$item->status}}</td>
+                                                <td>{{$item->last_updated}}</td>
+                                                <td>
+                                                    <form action="{{route('inventory.destroy', $item->id)}}"
+                                                          method="POST" onsubmit="return confirm('Are you sure you want to 
+                                                          deletethis record?');">
+                                                       @csrf
+                                                       @method('DELETE')
+                                                       <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                           
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                </div>
 
             
 
-      <div class="pagination">
+      {{-- <div class="pagination">
         <button>1</button>
         <button class="active">2</button>
         <button>3</button>
@@ -163,7 +205,7 @@
         <button>7</button>
         <button>...</button>
         <button>20</button>
-      </div>
+      </div> --}}
     </div>
             <!-- my work-->
             <!--<footer class="footer">
