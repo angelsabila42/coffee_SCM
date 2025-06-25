@@ -32,11 +32,11 @@ class transporterController extends Controller
     
     transporter::create($validated);
 
-     $fields = collect($validated)->only([
-        'name','email','password'
-         ])->toArray();
+   //   $fields = collect($validated)->only([
+   //      'name','email','password'
+   //       ])->toArray();
 
-    User::create($fields);
-    return redirect()->back();
+   //  User::create($fields);
+   //  return redirect()->back();
     }
 }

@@ -345,6 +345,7 @@ a.sidebar-link:hover{
 .absent-staff-card,
 .warehouse-card {
   background-image: linear-gradient(to right, #462d06, #422903);
+}
 
 }
 
@@ -417,3 +418,4 @@ body {
   color: #dc3545;
   font-size: 3rem;
 }
+

@@ -22,17 +22,17 @@ class InventoryController extends Controller
         if($request){
             echo "stock added";
         }else{
-            echo "student not added";
+            echo "stock not added";
         }
        
     }
     public function mut(Request $request){
  $search = $request->input('search');
-  //dd($search);
+//   dd($search);
         $inventories = \App\Models\inventory::query()->when($search, function ($query, $search){
-           $query->whereRaw('LOWER(coffee_type) LIKE ?',  ["%{search}%"])
-            ->orwhereRaw('LOWER(warehouse_name) LIKE ?',  ["%{search}%"])
-            ->orwhereRaw('LOWER(grade) LIKE ?',  ["%{search}%"]);
+           $query->where('coffee_type', 'like', "%{search}%")
+            ->orwhere('warehouse_name', 'like', "%{search}%")
+            ->orwhere('grade', 'like', "%{search}%");
         })
         ->get();
         return view('inventory', compact('inventories', 'search'));
@@ -58,4 +58,15 @@ class InventoryController extends Controller
      $inventory = inventory::findOrFail($id);
      return view('stock', compact('inventory'));
 }
+//     public function index()
+// {
+//     $items = Inventory::all();
+
+//     // Fake static values; ideally pull from DB
+//     $coffeeTypes = ['Robusta', 'Arabica'];
+//     $warehouses = ['Kampala', 'Mbale', 'Mukono', 'Mbarara'];
+
+//     return view('inventory.index', compact('items', 'coffeeTypes', 'warehouses'));
+// }
+
 }

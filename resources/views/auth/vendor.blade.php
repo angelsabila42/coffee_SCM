@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header" style="color:white; font-size:larger;
+                <div class="card-header" style="color:rgb(29, 14, 14); background-color:rgb(236, 245, 245); font-size:larger;
                 border-radius:10px;">{{ __('VENDOR REGISTRATION FORM') }}</div>
                      {{-- <div class="card-header">{{ __('BUSINESS INFORMATION') }}</div> --}}
 
@@ -15,7 +15,7 @@
 
                      
 
-                         <div class="card-header">{{ __('CONTACT DETAILS') }}</div>
+                         <div class="card-header" style="color:rgb(29, 14, 14); background-color:rgb(236, 245, 245);">{{ __('CONTACT DETAILS') }}</div>
 
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Full name') }}</label>
@@ -108,24 +108,29 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" value="{{ old('password_confirmation') }}" required autocomplete="new-password">
                             </div>
                         </div>
-                        <div class="card-header">{{ __('UPLOAD ATTACHMENTS') }}</div>
-                        <div style="display: flex">
-                             <label for="document" class="col-md-4 col-form-label text-md-end">{{ __('document') }}</label>
+                        <div class="card-header" style="color:rgb(29, 14, 14); background-color:rgb(236, 245, 245);">{{ __('UPLOAD ATTACHMENTS (Pdf format only)') }}</div>
+                           <div style="display: flex">
+                             <label for="UCDA" class="col-md-4 col-form-label text-md-end">{{ __('certificate from UCDA') }}</label>
 
-                         <input id="document" type="file" class="form-control @error('document') is-invalid @enderror" name="document" required accept=".pdf" >
+                             <input id="UCDA" type="file" class="form-control @error('UCDA') is-invalid @enderror" name="UCDA" >
+                            </div>
+                          <div style="display: flex">
+                             <label for="financial_statement" class="col-md-4 col-form-label text-md-end">{{ __('financial_statement') }}</label>
+
+                             <input id="financial_statement" type="file" class="form-control @error('financial_statement') is-invalid @enderror" name="financial_statement" >
                        
-                        </div>
+                            </div>
 
-                         {{-- <div style="display: flex">
-                          <label for="business_license" class="col-md-4 col-form-label text-md-end">{{ __('business_license') }}</label>
+                         <div style="display: flex">
+                          <label for="national_id" class="col-md-4 col-form-label text-md-end">{{ __('national_id') }}</label>
 
-                         <input id="business_license" type="file" class="form-control @error('business_license') is-invalid @enderror" name="business_license" required >
+                         <input id="national_id" type="file" class="form-control @error('national_id') is-invalid @enderror" name="national_id"  >
                          </div>
-                        --}}
+                       
                          <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                    {{ __('Save') }}
                                 </button>
                             </div>
                         </div>
