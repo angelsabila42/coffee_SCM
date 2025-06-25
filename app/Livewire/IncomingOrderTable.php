@@ -14,7 +14,7 @@ class IncomingOrderTable extends Component
     public $orderID, $quantity,$status, $deadline, $grade, $destination;
 
     public function mount(){
-        $this->orderID= Helper::generateID(IncomingOrder::class,'orderID',5,'IX');
+        $this->orderID= Helper::generateID(IncomingOrder::class,'orderID','IX',5);
 
     }
 

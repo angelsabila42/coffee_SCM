@@ -14,7 +14,7 @@ class DeliveryReportTable extends Component
    public $reportID, $start_period, $end_period;
 
    public function mount(){
-    $this->reportID = Helper::generateID(DeliveryReport::class,'reportID',5,'DR');
+    $this->reportID = Helper::generateID(DeliveryReport::class,'reportID','DR',5);
    }
 
    public function save(){

@@ -29,7 +29,7 @@
 
                    <div>
                     @once  
-                    <livewire:'create-order-modal'/>
+                    <livewire:create-order-modal/>
                     @endonce
                    </div>
 
