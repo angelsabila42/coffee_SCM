@@ -5,9 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                 <div class="card-header"style="color:white; background-color:rgb(127, 127, 226);font-size:larger;
+                 <div class="card-header" style="color:rgb(29, 14, 14); background-color:rgb(236, 245, 245); font-size:larger;
                 border-radius:10px;">{{ __('TRANSPORTER REGISTRATION') }}</div>
-                <div class="card-header">{{ __('Register here') }}</div>
+                <div class="card-header"  style="color:rgb(29, 14, 14); background-color:rgb(236, 245, 245); font-size:larger;
+                border-radius:10px;">{{ __('Register here') }}</div>
                      {{-- <div class="card-header">{{ __('BUSINESS INFORMATION') }}</div> --}}
 
                 <div class="card-body">
@@ -121,7 +122,7 @@
                          <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                    {{ __('Save') }}
                                 </button>
                             </div>
                         </div>
