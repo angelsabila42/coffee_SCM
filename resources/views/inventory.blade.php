@@ -1,6 +1,8 @@
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    @extends('layouts.head')
+    @extends('layouts.head1')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .row.g-4.mb-4{
             padding: 20px;
@@ -54,6 +56,15 @@
     th{
       text-transform: none;
     }
+    #able{
+      background-color: rgba(0, 128, 0, 0.89);
+      border-radius: 5px;
+      width: 50px;
+      cursor: pointer;
+    }
+     #able:hover{
+      background-color: rgba(0, 128, 0, 0.993); 
+     }
     </style>
 </head>
 <body>
@@ -62,5 +73,5 @@
 
 </body>
 @extends('layouts.scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </html>
-
