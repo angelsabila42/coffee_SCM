@@ -10,10 +10,56 @@
     </div>
 @endif
 
-<h3>Leave History</h3>
-<button type="button" class="btn btn-primary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#addLeaveRecordModal">
-    Add Leave Record
-</button>
+{{-- Leave History Table in a white card --}}
+<div class="card mt-4">
+    <div class="card-header d-flex justify-content-between align-items-center bg-white">
+        <h4 class="mb-0">Leave History</h4>
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addLeaveRecordModal">
+            + New
+        </button>
+    </div>
+    <div class="card-body table-full-width table-responsive">
+        <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
+            <thead>
+                <tr>
+                    <th>Leave ID</th>
+                    <th>Staff</th>
+                    <th>Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($leaveHistory as $leave)
+                    <tr>
+                        <td>{{ $leave->id ?? ($leave->leave_id ?? '') }}</td>
+                        <td>{{ $leave->staff->full_name ?? $leave->staff_id }}</td>
+                        <td>{{ $leave->leave_type }}</td>
+                        <td>{{ $leave->start_date }}</td>
+                        <td>{{ $leave->end_date }}</td>
+                        <td>{{ $leave->status }}</td>
+                        <td>
+                            <div>
+                            <button type="button" class="btn btn-sm btn-info edit-leave-record-btn" data-id="{{ $leave->id }}">Edit</button>
+                            <form action="{{ route('staff_management.leavehistory.destroy', $leave) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this leave record?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center">No leave records found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {{-- Add Leave Record Modal --}}
 <div class="modal fade" id="addLeaveRecordModal" tabindex="-1" aria-labelledby="addLeaveRecordModalLabel" aria-hidden="true">
@@ -108,54 +154,6 @@
     </div>
 </div>
 
-<table class="table table-bordered mt-3">
-    <thead>
-        <tr>
-            <th>Leave ID</th>
-            <th>Staff ID</th>
-            <th>Full Name</th>
-            <th>Work Center</th>
-            <th>Leave Type</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse ($leaveHistory as $leave)
-            <tr>
-                <td>{{ $leave->leave_id }}</td>
-                <td>{{ $leave->staff_id }}</td> {{-- Access via relationship --}}
-                <td>{{ $leave->staff->full_name ?? 'N/A' }}</td> {{-- Access via relationship --}}
-                <td>{{ $leave->staff->work_center ?? 'N/A' }}</td> 
-                <td>{{ $leave->leave_type }}</td>
-                <td>{{ $leave->start_date }}</td>
-                <td>{{ $leave->end_date }}</td>
-                <td>{{ $leave->status }}</td>
- 
-                <td>
-                    <button type="button" class="btn btn-sm btn-info edit-leave-record-btn me-1"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editLeaveRecordModal"
-                            data-id="{{ $leave->leave_id }}">
-                        Edit
-                    </button>
-                    <form action="{{ route('staff_management.leavehistory.destroy', $leave->leave_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this leave record?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="9" class="text-center">No leave records found.</td>
-            </tr>
-        @endforelse
-    </tbody>
-</table>
-
 <!-- Edit Leave Record Modal -->
 <div class="modal fade" id="editLeaveRecordModal" tabindex="-1" aria-labelledby="editLeaveRecordModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -226,3 +224,36 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Delegated event handler for leave history edit buttons
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('edit-leave-record-btn')) {
+            const leaveId = event.target.getAttribute('data-id');
+            fetch('/staff-management/leavehistory/' + leaveId)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(function(data) {
+                    document.getElementById('edit_lh_id').value = data.id;
+                    document.getElementById('edit_lh_staff_id').value = data.staff_id;
+                    document.getElementById('edit_lh_leave_type').value = data.leave_type;
+                    document.getElementById('edit_lh_start_date').value = data.start_date;
+                    document.getElementById('edit_lh_end_date').value = data.end_date;
+                    document.getElementById('edit_lh_status').value = data.status;
+                    document.getElementById('editLeaveRecordForm').setAttribute('action', '/staff-management/leavehistory/' + data.id);
+                    var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('editLeaveRecordModal'));
+                    modal.show();
+                })
+                .catch(error => {
+                    alert('Failed to load leave record data.');
+                    console.error(error);
+                });
+        }
+    });
+});
+</script>
+@endpush
