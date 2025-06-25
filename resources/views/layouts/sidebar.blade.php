@@ -62,7 +62,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="./icons.html">
+                        <a class="nav-link" href="{{ route('staff_management.staff') }}">
                             <i class="nc-icon nc-atom"></i>
                             <p>Staff Management</p>
                         </a>
