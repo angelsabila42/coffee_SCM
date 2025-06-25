@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\importerModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,13 @@ class IncomingOrderFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'quantity'=> fake()->numberBetween(100,1000),
+            'status'=> fake()->randomElement(['Pending','Confirmed','Delievered','Requested','Cancelled']),
+            'deadline'=> fake()->dateTimeBetween('now','+2 weeks'),
+            'grade'=> fake()->randomElement(['A','B', 'C', 'screen 8']),
+            'coffeeType'=> fake()->randomElement(['Arabica','Robusta']),
+            'destination'=> fake()->country(),
+            'importer_model_id'=> importerModel::inRandomOrder()->first()->id,
         ];
     }
 }

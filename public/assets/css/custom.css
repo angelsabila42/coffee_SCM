@@ -287,6 +287,15 @@ a.sidebar-link:hover{
   cursor:pointer;
 }
 
+
+.cur{
+  cursor: pointer;
+}
+
+/*Flash*/
+.bg-green-light{
+  background-color: #f0fdf4;
+
 .card-row-custom .custom-card {
   border: none;
   color: #fff;
@@ -331,4 +340,5 @@ a.sidebar-link:hover{
 .absent-staff-card,
 .warehouse-card {
   background-image: linear-gradient(to right, #462d06, #422903);
+
 }

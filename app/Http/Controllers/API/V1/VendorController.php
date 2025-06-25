@@ -5,7 +5,10 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\VendorResource;
 use App\Http\Resources\V1\VendorCollection;
-use Services\V1\VendorQuery;
+use App\Filter\V1\VendorFilter;
+use App\Http\Requests\V1\StoreVendorRequest;
+use App\Http\Requests\V1\UpdateVendorRequest;
+use App\Http\Resources\V1\VendorDropDownResource;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Hash;
@@ -24,19 +27,31 @@ class VendorController extends Controller
 
     public function index(Request $request){
 
-        $filter = new VendorQuery();
-        $queryItems = $filter->Transform($request);
+        $filter = new VendorFilter();
+        $filterItems = $filter->Transform($request);
 
-        if(count($queryItems) == 0){
-            return new VendorCollection(Vendor::paginate());
-        }else{
-             return new VendorCollection(Vendor::where($queryItems)->paginate());
-        }
+        $vendors = Vendor::where($filterItems)->paginate();
+
+         return new VendorCollection($vendors->appends($request->query()));
     }
 
     public function show(Vendor $vendor){
         return new VendorResource($vendor);
     }
+
+    /*public function store(StoreVendorRequest $request){
+      return new VendorResource(Vendor::create($request->all()));
+
+    }*/
+
+    public function update(UpdateVendorRequest $request, Vendor $vendor){
+      $vendor->update($request->all());
+    }
+
+    public function dropdown(){
+      return VendorDropDownResource::collection(Vendor::select('id', 'name')->get());
+    }
+
 
    public function pdfValidation(Request $request){
      $pdf =$request->file('document');
@@ -68,7 +83,7 @@ class VendorController extends Controller
 
     # code...
 
-    public function store(Request $req){
+   public function store(Request $req){
 
 
       $validated = $req->validate([
