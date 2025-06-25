@@ -4,34 +4,47 @@
     <h2>Staff Management</h2>
 
     <!-- Summary Cards -->
-    <div class="row mb-4">
-        <div class="col">
-            <div class="card text-center">
-                <div class="card-body">
-                   {{-- Dynamically get total staff count --}}
-                    <h3>{{ $totalStaffCount ?? 0 }}</h3> 
-                    <p>Staff</p>
+   <div class="row mb-4 card-row-custom">
+    <div class="col-md-4 mb-3">
+        <div class="card custom-card staff-card">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="icon-wrapper">
+                    <i class="fas fa-users"></i>
                 </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card text-center">
-                <div class="card-body">
-                    {{-- Dynamically get absent staff count --}}
-                    <h3>{{ $absentStaffCount ?? 0 }}</h3> {{-- $absentStaffCount is passed from controller --}}
-                    <p>Absent Staff</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card text-center">
-                <div class="card-body">
-                   <h3>4</h3>
-                    <p>Warehouses</p>
+                <div class="text-right">
+                    <div class="main-number">{{ $totalStaffCount ?? 0 }}</div>
+                    <div class="sub-text">Staff</div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-md-4 mb-3">
+        <div class="card custom-card absent-staff-card">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="icon-wrapper">
+                    <i class="fas fa-user-minus"></i>
+                </div>
+                <div class="text-right">
+                    <div class="main-number">{{ $absentStaffCount ?? 0 }}</div>
+                    <div class="sub-text">Absent Staff</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card custom-card warehouse-card">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="icon-wrapper">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+                <div class="text-right">
+                    <div class="main-number">4</div>
+                    <div class="sub-text">Warehouses</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- Tabs -->
     <ul class="nav nav-tabs" id="staffTabs" role="tablist">
@@ -78,12 +91,7 @@
         </ul>
     </div>
 @endif
-    <div class="tab-content mt-3">
-        {{-- Staff Tab Content --}}
-        <div class="tab-pane fade show active" id="staff" role="tabpanel" aria-labelledby="staff-tab">
-            <button type="button" class="btn btn-primary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#addStaffModal">
-                Add Staff
-            </button>
+    
 
             <!-- Add Staff Modal -->
             <div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">
@@ -259,9 +267,21 @@
                 </div>
             </div>
 
-            <table class="table table-bordered mt-3"> 
-                <thead>
-                    <tr>
+    <div class="tab-content mt-3">
+        {{-- Staff Tab Content --}}
+        <div class="tab-pane fade show active" id="staff" role="tabpanel" aria-labelledby="staff-tab">
+            <div class="card mt-4">
+                <div class="card-header d-flex justify-content-between align-items-center bg-white">
+                    <h4 class="mb-0">Staff</h4>
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+                        + New
+                    </button>
+                </div>
+                 <div class="card-body table-full-width table-responsive">
+                    <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
+
+                        <thead>
+                        <tr>
                         <th>Staff ID</th>
                         <th>Full Name</th>
                         <th>Work Center</th>
@@ -269,7 +289,7 @@
                         <th>Status</th>
                         <th>Phone Number</th>
                         <th>Email</th>
-                        <th>Actions</th>
+                        <th >Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -284,19 +304,21 @@
                             <td>{{ $member->email }}</td>
                             <td>
                                 {{-- Edit Button --}}
-                                <button type="button" class="btn btn-sm btn-info edit-staff-btn me-1"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#editStaffModal"
-                                        data-id="{{ $member->id }}">
-                                    Edit
-                                </button>
-
+                                <div class= "d inline">
+                                    <button type="button" class="btn btn-sm btn-info edit-staff-btn"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#editStaffModal"
+                                      data-id="{{ $member->id }}">
+                                         Edit
+                                     </button>
+                                
                                 {{-- Delete Form --}}
                                 <form action="{{ route('staff_management.staff.destroy', $member->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete {{ $member->full_name }}?');" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
                                 </form>
+                            </div>
                             </td>
                         </tr>
                     @empty
@@ -306,8 +328,12 @@
                     @endforelse
                 </tbody>
             </table>
-        </div> 
-        <!-- Work Assignment History Tab Content -->s
+        </div> <!-- end card-body -->
+    </div> <!-- end card -->
+</div> <!-- end tab-pane for staff -->
+
+
+        <!-- Work Assignment History Tab Content -->
         <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
             @include('staff_management.Workassignment', [
                 'workAssignments' => $workAssignments, 
