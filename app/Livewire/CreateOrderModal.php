@@ -13,7 +13,7 @@ class CreateOrderModal extends Component
 {
     public $status, $orderID;
 
-    #[Rule('required|numeric|min:20')]    
+   /* #[Rule('required|numeric|min:20')]    
     public $quantity;
 
     #[Rule('required|exists:vendor,id')]
@@ -33,7 +33,7 @@ class CreateOrderModal extends Component
 
     }
     
-       public function save(){
+       /*public function save(){
 
         $this->validate();
 
@@ -54,7 +54,7 @@ class CreateOrderModal extends Component
 
         $this->redirect('/home/orders', navigate:true);
 
-    }
+    }*/
     public function render()
     {
         return view('livewire.create-order-modal');
