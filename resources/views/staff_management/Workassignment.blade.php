@@ -10,11 +10,6 @@
     </div>
 @endif
 
-<h3>Work Assignment History</h3>
-<button type="button" class="btn btn-primary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#addWorkAssignmentModal">
-    Assign Work
-</button>
-
 {{-- Add Work Assignment Modal --}}
 <div class="modal fade" id="addWorkAssignmentModal" tabindex="-1" aria-labelledby="addWorkAssignmentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -97,50 +92,56 @@
     </div>
 </div>
 
-<table class="table table-bordered mt-3">
-    <thead>
-        <tr>
-            <th>Assignment ID</th>
-            <th>Staff ID</th>
-            <th>Staff Name</th>
-            <th>Work Center</th>
-            <th>Role</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse ($workAssignments as $assignment)
-            <tr>
-                <td>{{ $assignment->assignment_id }}</td>
-                <td>{{ $assignment->staff_id }}</td>
-                <td>{{ $assignment->staff->full_name ?? 'N/A' }}</td>
-                <td>{{ $assignment->work_center }}</td>
-                <td>{{ $assignment->role }}</td>
-                <td>{{ $assignment->start_date }}</td>
-                <td>{{ $assignment->end_date ?? 'N/A' }}</td>
-                <td>
-                    <button type="button" class="btn btn-sm btn-info edit-work-assignment-btn me-1"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editWorkAssignmentModal"
-                            data-id="{{ $assignment->assignment_id }}">
-                        Edit
-                    </button>
-                    <form action="{{ route('staff_management.workassignment.destroy', $assignment->assignment_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this assignment?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="9" class="text-center">No work assignments found.</td>
-            </tr>
-        @endforelse
-    </tbody>
-</table>
+{{-- Work Assignment Table in a white card --}}
+<div class="card mt-4">
+    <div class="card-header d-flex justify-content-between align-items-center bg-white">
+        <h4 class="mb-0">Work Assignment History</h4>
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addWorkAssignmentModal">
+            + New
+        </button>
+    </div>
+    <div class="card-body table-full-width table-responsive">
+        <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
+            <thead>
+                <tr>
+                    <th>Assignment ID</th>
+                    <th>Staff</th>
+                    <th>Work Center</th>
+                    <th>Role</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($workAssignments as $assignment)
+                    <tr>
+                        <td>{{ $assignment->assignment_id }}</td>
+                        <td>{{ $assignment->staff->full_name ?? $assignment->staff_id }}</td>
+                        <td>{{ $assignment->work_center }}</td>
+                        <td>{{ $assignment->role }}</td>
+                        <td>{{ $assignment->start_date }}</td>
+                        <td>{{ $assignment->end_date ?? 'N/A' }}</td>
+                        <td>
+                            <div>
+                            <button type="button" class="btn btn-sm btn-info edit-work-assignment-btn" data-id="{{ $assignment->assignment_id }}">Edit</button>
+                            <form action="{{ route('staff_management.workassignment.destroy', $assignment->assignment_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this assignment?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center">No work assignments found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <!-- Edit Work Assignment Modal  -->
 <div class="modal fade" id="editWorkAssignmentModal" tabindex="-1" aria-labelledby="editWorkAssignmentModalLabel" aria-hidden="true">
