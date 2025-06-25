@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\SalesReport;
 use App\Models\DeliveryReport;
+use App\Models\importerModel;
+use App\Models\IncomingOrder;
 use App\Models\OutgoingOrder;
 use App\Models\User;
 use App\Models\WorkCenter;
@@ -28,7 +30,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             VendorSeeder::class,
+            importerModelSeeder::class,
             WorkCenterSeeder::class,
+            IncomingOrderSeeder::class,
             OutgoingOrderSeeder::class,
             SalesReportSeeder::class,
             DeliveryReportSeeder::class,

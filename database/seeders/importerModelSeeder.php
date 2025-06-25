@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\IncomingOrder;
+use App\Models\importerModel;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class IncomingOrderSeeder extends Seeder
+class importerModelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        IncomingOrder::factory()->count(30)->create();
+        importerModel::factory()->count(20)->create();
     }
 }

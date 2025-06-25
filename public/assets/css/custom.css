@@ -286,3 +286,12 @@ a.sidebar-link:hover{
 .fa-xmark{
   cursor:pointer;
 }
+
+.cur{
+  cursor: pointer;
+}
+
+/*Flash*/
+.bg-green-light{
+  background-color: #f0fdf4;
+}
