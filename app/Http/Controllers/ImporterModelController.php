@@ -32,11 +32,11 @@ class ImporterModelController extends Controller
     
     importerModel::create($validated);
 
-     $fields = collect($validated)->only([
-        'name','email','password'
-         ])->toArray();
+    //  $fields = collect($validated)->only([
+    //     'name','email','password'
+    //      ])->toArray();
 
-    User::create($fields);
-    return redirect()->back();
+    // User::create($fields);
+    // return redirect()->back();
     }
 }

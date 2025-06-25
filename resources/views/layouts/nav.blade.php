@@ -1,4 +1,4 @@
-  <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+  {{-- <nav class="navbar navbar-expand-lg " color-on-scroll="500">
                 <div class="container-fluid">
                     
                     <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,6 +59,35 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#pablo">
                                     <span class="no-icon">Log out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav> --}}
+            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <ul class="nav navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <!--the company log will go here or at top of the side bar-->
+                            </li>
+                            <li class="dropdown nav-item">
+                                <input type="text" placeholder="Search" style="border-radius: 30px">
+                            </li> 
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                                    <i class="fas fa-bell"></i>
+                                    <span class="notification">5</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <span>Username</span>
+                                <a class="nav-link" href="#pablo">
+                                    <img src="" alt="profile pic">
+                                    {{-- <span class="no-icon">Log out</span> --}}
                                 </a>
                             </li>
                         </ul>

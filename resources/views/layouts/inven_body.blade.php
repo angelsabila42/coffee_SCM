@@ -1,11 +1,9 @@
 <div class="wrapper">
-
 <div>
 <aside id="sidebar">
     <div class="d-flex justify-content-between p-4">
         <div class="sidebar-logo mr-1">
             <a href="#">GlobalBean Connect</a>
-
         </div>
     
     <button type="button" class="toggle-btn border-0">
@@ -121,11 +119,13 @@
         <div class="tabs">
          <h3>Inventory</h3>
         </div>
-        <div class="right">
+         <div class="right">
           <!--<i class="fas fa-filter">--></i>
-          <a href="{{url('/form_modal')}}"><button style="border-radius: 50px ">+</button></a><label>New</label>
-        </div>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addInventoryModal">+New</button>
+          {{-- <a href="{{url('/form_modal')}}"><button id="able">+New</button></a> --}}
+        </div> 
       </div>
+      @extends('layouts.stock_modal')
 
     <div>
    <div class="col-md-12">
@@ -142,7 +142,7 @@
                         <input type="text" name="search" class="form-control" placeholder="search..."
                         value="{{$search ?? ''}}">
                     </form>
-                    <p> searched: <strong>{{ $search ?? 'Nothing '}}</strong></p>
+                    {{-- <p> searched: <strong>{{ $search ?? 'Nothing '}}</strong></p> --}}
                 </div>
                             <div class="card card-plain table-plain-bg">
                                 <div class="card-header ">
@@ -179,7 +179,7 @@
                                                           deletethis record?');">
                                                        @csrf
                                                        @method('DELETE')
-                                                       <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                       <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>

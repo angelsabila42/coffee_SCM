@@ -42,12 +42,17 @@
                         <td>{{ $leave->status }}</td>
                         <td>
                             <div>
-                            <button type="button" class="btn btn-sm btn-info edit-leave-record-btn" data-id="{{ $leave->id }}">Edit</button>
-                            <form action="{{ route('staff_management.leavehistory.destroy', $leave) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this leave record?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
-                            </form>
+                                <button type="button" class="btn btn-sm btn-info edit-leave-record-btn" 
+                                    data-id="{{ $leave->id }}" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#editLeaveRecordModal">
+                                    Edit
+                                </button>
+                                <form action="{{ route('staff_management.leavehistory.destroy', $leave) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this leave record?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -154,7 +159,7 @@
     </div>
 </div>
 
-<!-- Edit Leave Record Modal -->
+<!-- Edit Leave Record Modal -->n
 <div class="modal fade" id="editLeaveRecordModal" tabindex="-1" aria-labelledby="editLeaveRecordModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -228,15 +233,15 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Delegated event handler for leave history edit buttons
-    document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('edit-leave-record-btn')) {
-            const leaveId = event.target.getAttribute('data-id');
+    var editLeaveModal = document.getElementById('editLeaveRecordModal');
+    if (editLeaveModal) {
+        editLeaveModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            if (!button) return;
+            var leaveId = button.getAttribute('data-id');
+            if (!leaveId) return;
             fetch('/staff-management/leavehistory/' + leaveId)
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(function(data) {
                     document.getElementById('edit_lh_id').value = data.id;
                     document.getElementById('edit_lh_staff_id').value = data.staff_id;
@@ -245,15 +250,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('edit_lh_end_date').value = data.end_date;
                     document.getElementById('edit_lh_status').value = data.status;
                     document.getElementById('editLeaveRecordForm').setAttribute('action', '/staff-management/leavehistory/' + data.id);
-                    var modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('editLeaveRecordModal'));
-                    modal.show();
                 })
                 .catch(error => {
                     alert('Failed to load leave record data.');
                     console.error(error);
                 });
-        }
-    });
+        });
+    }
 });
 </script>
 @endpush
