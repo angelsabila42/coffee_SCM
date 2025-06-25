@@ -101,7 +101,7 @@ class vendorController extends Controller
 
           User::create($fields);*/
         return redirect()->back();
-        return response()->json(['message' => 'Vendor registered successfully']);
+       // return response()->json(['message' => 'Vendor registered successfully']);
 
         }
     }
