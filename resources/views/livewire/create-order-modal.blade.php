@@ -1,5 +1,5 @@
  <!--New Button-->
-                    <div  x-data="newBtn">
+                    <div  x-data="orderModal" x-init= "init()">
                         <button @@click= "showModal= true" class="btn btn-success btn-fill btn-sm"><i class="fa-solid fa-plus pt-1 mr-3"></i>New</button>
                             <div class="overlay" x-show="showModal">
                                 <div class = "custom-modal">
@@ -16,19 +16,22 @@
                                             <div class= "row ml-25">
                                                 <div class="form-group pr-4 w-50">
                                                     <label for="vendor">Vendor Name</label>
-                                                    <select id="vendor" class="form-control" x-model= "selectedVendor">
+                                                    <select id="vendor" class="form-control" x-model= "selectedVendor" @@change= "$wire.set('vendor_id',selectedVendor)">
                                                         <option value="">Select Vendor</option>
 
-                                                        <template x-for= "name in vendorNames" :key = "name">
-                                                            <option :value= "name" x-text= "name"></option>
+                                                        <template x-for= "vendor in vendors" :key = "vendor.id">
+                                                            <option :value= "vendor.id" x-text= "vendor.name"></option>
                                                         </template>
  
                                                     </select>
+                                                    <div>
+                                                    @error('vendor_id') <span class="error">{{ $message }}</span> @enderror
+                                                    </div>
                                                 </div>
 
                                                 <div class="form-group w-25 pl-4">
                                                     <label for="type">Coffee Type</label>
-                                                    <select id="type" class="form-control" x-model= "selectedType">
+                                                    <select id="type" class="form-control" x-model= "selectedType"  @@change= "$wire.set('coffeeType',selectedType)">
                                                         <option value="">Select type</option>
 
                                                         <template x-for= "type in typeNames" :key = "type">
@@ -36,6 +39,9 @@
                                                         </template>
 
                                                     </select>
+                                                    <div>
+                                                    @error('coffeeType') <span class="error">{{ $message }}</span> @enderror
+                                                    </div>
                                                 </div>
 
                                             </div>
@@ -43,31 +49,40 @@
                                             <div class= "row ml-25">
                                                 <div class="form-group pr-4 w-50">
                                                     <label for="qtn">Quantity</label>
-                                                    <input type="text" class="form-control" id="qtn" placeholder="kgs">
+                                                    <input type="text" class="form-control" id="qtn" placeholder="kgs" wire:model="quantity">
+                                                        <div>
+                                                            @error('quantity') <span class="error">{{ $message }}</span> @enderror
+                                                        </div>
                                                 </div>
 
                                                 <div class="form-group w-50 pl-4">
-                                                    <label for="type">Warehouse</label>
-                                                    <select id="type" class="form-control" x-model= "selectedCenter">
+                                                    <label for="center">Warehouse</label>
+                                                    <select id="center" class="form-control" x-model= "selectedCenter" @@change= "$wire.set('work_center_id',selectedCenter)">
                                                         <option class= "text-muted" value="">Select Warehouse</option>
 
-                                                        <template x-for= "center in centers" :key = "center">
-                                                            <option :value= "center" x-text= "center"></option>
+                                                        <template x-for= "center in centers" :key = "center.id">
+                                                            <option :value= "center.id" x-text= "center.name"></option>
                                                         </template>
 
                                                     </select>
+                                                    <div>
+                                                    @error('work_center_id') <span class="error">{{ $message }}</span> @enderror
+                                                    </div>
                                                 </div>
 
                                             </div>
                                             <div class= "row ml-25">
                                                 <div class="form-group pr-4 w-50">
                                                     <label for="date">Deadline</label>
-                                                    <input type="date" class="form-control" id="date">
+                                                    <input type="date" class="form-control" id="date" wire:model="deadline">
+                                                        <div>
+                                                            @error('deadline') <span class="error">{{ $message }}</span> @enderror
+                                                        </div>
                                                 </div>    
                                             </div>
 
                                             <div class= "row mr-2">
-                                            <button  class="btn save mr-2" wire:click = "save" >Save
+                                            <button  class="btn save mr-2" type="submit" >Save
                                                     <div wire:loading>
                                                         <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                             <style>.spinner_DupU{animation:spinner_sM3D 1.2s infinite}.spinner_GWtZ{animation-delay:.1s}.spinner_dwN6{animation-delay:.2s}.spinner_46QP{animation-delay:.3s}.spinner_PD82{animation-delay:.4s}.spinner_eUgh{animation-delay:.5s}.spinner_eUaP{animation-delay:.6s}.spinner_j38H{animation-delay:.7s}.spinner_tVmX{animation-delay:.8s}.spinner_DQhX{animation-delay:.9s}.spinner_GIL4{animation-delay:1s}.spinner_n0Yb{animation-delay:1.1s}
