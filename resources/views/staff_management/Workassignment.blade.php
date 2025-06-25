@@ -124,7 +124,7 @@
                         <td>{{ $assignment->end_date ?? 'N/A' }}</td>
                         <td>
                             <div>
-                            <button type="button" class="btn btn-sm btn-info edit-work-assignment-btn" data-id="{{ $assignment->assignment_id }}">Edit</button>
+                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editWorkAssignmentModal" data-id="{{ $assignment->assignment_id }}">Edit</button>
                             <form action="{{ route('staff_management.workassignment.destroy', $assignment->assignment_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this assignment?');">
                                 @csrf
                                 @method('DELETE')
@@ -212,53 +212,26 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Edit Work Assignment Modal logic
-    const editWorkAssignmentModal = document.getElementById('editWorkAssignmentModal');
-    const editWorkAssignmentForm = document.getElementById('editWorkAssignmentForm');
-    let currentEditAssignmentId = null;
-
-    // Delegate click event for edit buttons
-    document.querySelectorAll('.edit-work-assignment-btn').forEach(function(btn) {
-        btn.addEventListener('click', function(event) {
-            const assignmentId = btn.getAttribute('data-id');
-            currentEditAssignmentId = assignmentId;
-            // Fetch assignment data
-            fetch('/staff-management/workassignment/' + assignmentId)
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
-                .then(data => {
-                    document.getElementById('edit_wa_id').value = data.assignment_id;
-                    document.getElementById('edit_wa_staff_id').value = data.staff_id;
-                    document.getElementById('edit_wa_work_center').value = data.work_center;
-                    document.getElementById('edit_wa_role').value = data.role;
-                    document.getElementById('edit_wa_start_date').value = data.start_date;
-                    document.getElementById('edit_wa_end_date').value = data.end_date || '';
-                   
-                    // Set form action
-                    editWorkAssignmentForm.setAttribute('action', '/staff-management/workassignment/' + data.assignment_id);
-                    // Show modal (in case not triggered by data-bs-toggle)
-                    var modal = bootstrap.Modal.getOrCreateInstance(editWorkAssignmentModal);
-                    modal.show();
-                })
-                .catch(error => {
-                    alert('Failed to load assignment data.');
-                    console.error(error);
-                });
-        });
-    });
-    // Ensure form action is set before submit
-    editWorkAssignmentForm.addEventListener('submit', function(e) {
-        if (!editWorkAssignmentForm.action.match(/\/staff-management\/workassignment\/[\w-]+$/)) {
-            e.preventDefault();
-            if (currentEditAssignmentId) {
-                editWorkAssignmentForm.setAttribute('action', '/staff-management/workassignment/' + currentEditAssignmentId);
-                editWorkAssignmentForm.submit();
-            } else {
-                alert('Assignment ID missing. Please try again.');
-            }
-        }
+    var editWorkAssignmentModal = document.getElementById('editWorkAssignmentModal');
+    editWorkAssignmentModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var assignmentId = button.getAttribute('data-id');
+        if (!assignmentId) return;
+        fetch('/staff-management/workassignment/' + assignmentId)
+            .then(response => response.json())
+            .then(function(data) {
+                document.getElementById('edit_wa_id').value = data.assignment_id;
+                document.getElementById('edit_wa_staff_id').value = data.staff_id;
+                document.getElementById('edit_wa_work_center').value = data.work_center;
+                document.getElementById('edit_wa_role').value = data.role;
+                document.getElementById('edit_wa_start_date').value = data.start_date;
+                document.getElementById('edit_wa_end_date').value = data.end_date || '';
+                document.getElementById('editWorkAssignmentForm').setAttribute('action', '/staff-management/workassignment/' + data.assignment_id);
+            })
+            .catch(error => {
+                alert('Failed to load assignment data.');
+                console.error(error);
+            });
     });
 });
 </script>
