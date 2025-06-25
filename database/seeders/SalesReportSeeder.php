@@ -16,7 +16,7 @@ class SalesReportSeeder extends Seeder
     {
          for($i=0; $i<30; $i++){
             $report= SalesReport::factory()->make();
-            $report->reportID = Helper::generateID(SalesReport::class,'reportID',5,'DR');
+            $report->reportID = Helper::generateID(SalesReport::class,'reportID','SR',5);
             $report->save();
          }
     }

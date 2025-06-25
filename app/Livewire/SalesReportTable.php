@@ -15,7 +15,7 @@ class SalesReportTable extends Component
     public $reportID, $start_period, $end_period;
 
    public function mount(){
-    $this->reportID = Helper::generateID(SalesReport::class,'reportID',5,'DR');
+    $this->reportID = Helper::generateID(SalesReport::class,'reportID','SR',5 );
    }
 
    public function save(){

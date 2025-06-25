@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sales_reports', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('reportID');
+            $table->string('reportID')->unique();
             $table->date('start_period');
             $table->date('end_period');
         });

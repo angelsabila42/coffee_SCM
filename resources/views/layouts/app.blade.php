@@ -23,14 +23,8 @@
 
              <x-page-header >
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-
                 @yield('page-title')
                 @yield('report-btn')
-{{-- 
-             @yield('page-title','Untitled')
-             @yield('report-btn') --}}  //
-             //commented out by IAM wen merging
-
             </div>
             {{--@livewire('counter') example--}}
             </x-page-header>

@@ -23,7 +23,7 @@ class OutgoingOrderTable extends Component
     public $orderID;
 
     public function mount(){
-        $this->orderID= Helper::generateID(OutgoingOrder::class,'orderID',5,'OX');
+        $this->orderID= Helper::generateID(OutgoingOrder::class,'orderID','OX',5);
 
     }
 
