@@ -72,14 +72,71 @@ document.addEventListener('alpine:init', ()=>{
         }
     }));
 
-    Alpine.data('newBtn',() => ({
+    Alpine.data('orderModal',() => ({
         showModal: false,
         selectedVendor: '',
         selectedType: '',
         selectedCenter: '',
-        centers: ['Mbale','Mukono','Kasese','Kampala'],
         typeNames: ['Arabica', 'Robusta'],
-        vendorNames: ['Elgon Farmers', 'Endiiro', 'Kasese Coffee'],
+        vendors: [],
+        centers: [],
+
+        async init(){
+            try{
+            const vendorRes = await fetch('/api/v1/vendor/dropdown');
+            const centerRes = await fetch('/api/v1/work-center/dropdown');
+
+            const vendorData = await vendorRes.json();
+            const centersData = await centerRes.json();
+
+            this.vendors = vendorData.data;
+            this.centers = centersData.data;
+
+            console.log(this.vendors);
+            console.log(this.centers);
+
+            }catch(error){
+                console.error('Fetch request failed', error);
+            }
+
+            window.addEventListener('reset-alpine-dropdown', () => {
+            this.selectedCenter= '';
+            this.selectedType= '';
+            this.selectedVendor= '';
+        });
+
+        }
+
+    }));
+
+    Alpine.data('confirmDeleteModal', () => ({
+        orderID: null,
+
+        init() {
+            window.addEventListener('open-delete-modal', (e) => { 
+                this.orderID = e.detail.id;
+
+                $('#confirmModal').modal('show');
+            });
+        },
+
+        confirmDelete(){
+            try{Livewire.dispatch('deleteConfirmed', {id:this.orderID});
+
+            $('#confirmModal').modal('hide');}
+            catch(error){
+                console.warn('Livewire Component Missing', error);
+            }
+        }
+    }));
+
+    Alpine.data('tab',() => ({
+        showTab1: true,
+        showTab2: false,
+    }));
+
+    Alpine.data('badge',() => ({
+        badges: ['Pending', 'Delivered', 'Confirmed', 'Cancelled', 'Requested']
     }))
 
 

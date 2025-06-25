@@ -138,7 +138,7 @@
     <hr>
 
     <h5 class="mt-4">Inventory Log</h5>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-hover">
       <thead class="table-light">
         <tr>
           <th>Date</th>
@@ -158,8 +158,8 @@
           <td>-100</td>
         </tr>
       </tbody>
-    </table>
-  </div>
+    </table> 
+  
     <!--end of this body-->
         </div>
     </div>

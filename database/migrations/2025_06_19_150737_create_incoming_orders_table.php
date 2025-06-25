@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('deadline');
             $table->string('Grade');
             $table->string('destination');
-            $table->foreignId('vendor_id')->constrained('vendor')->onDelete('cascade');    
+            $table->foreignId('importer_model_id')->constrained()->onDelete('cascade');    
 
         });
     }

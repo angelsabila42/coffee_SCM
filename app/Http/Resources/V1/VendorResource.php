@@ -17,17 +17,10 @@ class VendorResource extends JsonResource
         return [
             'id'=> $this-> id,
             'name'=> $this-> name,
+            'email'=> $this->email,
             'phoneNumber'=> $this-> phone_number,
             'street'=> $this-> street,
             'city'=> $this-> city
         ];
     }
 }
-/*'name',
-        'email',
-        'password',
-        'phone_number',
-        'street',
-        'city',
-        'confirm password',
-    ]; */

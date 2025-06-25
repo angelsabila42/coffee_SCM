@@ -2,8 +2,8 @@
 <!--div class="d-flex justify-content-between align-items-center"-->
 <div>
   <ul class= "pt-4 nav nav-tabs">
-    <li><a href = "#" class="nav-link custom-tab-link {{$activeTab === "Incoming" ? 'active' : ''}}" wire:click= "setActiveTab('Incoming')">Incoming</a></li>
-    <li><a href = "#" class="nav-link custom-tab-link {{$activeTab === "Outgoing" ? 'active' : ''}}" wire:click= "setActiveTab('Outgoing')">Outgoing</a></li>
+    <li><a  class="nav-link custom-tab-link cur {{$activeTab === "Incoming" ? 'active' : ''}}" wire:click= "setActiveTab('Incoming')">Incoming</a></li>
+    <li><a  class="nav-link custom-tab-link cur {{$activeTab === "Outgoing" ? 'active' : ''}}" wire:click= "setActiveTab('Outgoing')">Outgoing</a></li>
   </ul>
 </div>
 
@@ -23,16 +23,16 @@
     <div class = "tab-content">
     <div>
       <h4 class = "card-header">Incoming Orders</h4>
-        <p class = "card-body pt-0">
-          @livewire('incoming-order-table')
-        </p>
+        <div class = "card-body pt-0">
+          <livewire:incoming-order-table wire:navigate />
+        </div>
     </div>
     @elseif($activeTab === 'Outgoing')
        <div>
       <h4 class= "card-header">Outgoing Orders</h4>
-        <p class= "card-body pt-0">
-          @livewire('outgoing-order-table')
-        </p>
+        <div class= "card-body pt-0">
+          <livewire:outgoing-order-table wire:navigate />
+        </div>
       </div>
     @endif
 </div>
