@@ -36,7 +36,7 @@ use App\Http\Controllers\InventoryController;
 Route::get('/vendor', function () {
     return view('auth.vendor');
 })->name('vendor');
-
+Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
@@ -56,9 +56,12 @@ Route::get('/alpine',function(){
 Route::get('/inventory', function () {
     return view('inventory');
 });
+Route::get('/form_modal', function () {
+    return view('form_modal');
+});
 
 Route::get('/dashboard', function () {
-    return view('analytics');
+    return view('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -84,11 +87,11 @@ Route::get('/home/dashboard', function(){
 
 Route::prefix('staff-management')->name('staff_management.')->group(function () {
 
-    Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
+   /* Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
     Route::get('/staff/{staff}', [StaffController::class, 'show'])->name('staff.show');
     Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
-    Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
+    Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');*/
 
 
     // --- Work Assignment Routes ---
@@ -129,14 +132,18 @@ Route::post('/reg/importer', [ImporterModelController::class, 'store'])->name('s
 Route::get("/java",[vendorController::class, 'store'])-> name('java');
 Route::post("/java",[vendorController::class, 'register'])-> name('java.store');
 //inventory routes
-Route::post('form_modal',[InventoryController::class,'add']);//for adding data in the inventory table
+// Route::post('form_modal',[InventoryController::class,'add']);//for adding data in the inventory table
 Route::get('/inventory',[InventoryController::class,'ern']);//for fetching data from the table to the view table
 Route::get('/inventory',[InventoryController::class,'mut']);//for the search input
 Route::delete('/inventory/{id}',[InventoryController::class,'destroy'])->name('inventory.destroy');//for deleting a record
 Route::get('/inventory',[InventoryController::class,'alber']);
+Route::post('/inventory', [InventoryController::class, 'add'])->name('inventory.add');//for adding data in the inventory table
 
 Route::get('/stock', function () {
     return view('stock');
 });
 Route::get('/stock/{id}',[InventoryController::class,'geor'])->name('stock');
 
+Route::get('/transporter', function () {
+    return view('transporter');
+});

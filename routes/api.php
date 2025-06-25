@@ -12,6 +12,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::prefix('v1')->group(function(){
+    Route::get('vendor/dropdown',[VendorController::class, 'dropdown']);
+    Route::get('work-center/dropdown',[WorkCenterController::class, 'dropdown']);
     Route::apiResource('incoming-order',IncomingOrderController::class);
     Route::apiResource('outgoing-order',OutgoingOrderController::class);
     Route::apiResource('vendor',VendorController::class);

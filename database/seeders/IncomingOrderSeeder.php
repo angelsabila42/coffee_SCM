@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\IncomingOrder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class IncomingOrderSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        IncomingOrder::factory()->count(30)->create();
     }
 }
