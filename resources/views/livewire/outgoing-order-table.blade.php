@@ -27,9 +27,11 @@
                         </button>
                     </div>
 
+                   <div>
                     @once  
-                    @livewire('create-order-modal')
+                    <livewire:'create-order-modal'/>
                     @endonce
+                   </div>
 
                 </div>
                             <div class="card card-plain table-plain-bg">
