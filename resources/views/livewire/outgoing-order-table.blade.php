@@ -1,5 +1,4 @@
 <div>
-    <div>
         <div class="col-md-12">
                 <div class="d-flex justify justify-content-between align-items-center">
                     
@@ -28,7 +27,9 @@
                         </button>
                     </div>
 
+                    @once  
                     @livewire('create-order-modal')
+                    @endonce
 
                 </div>
                             <div class="card card-plain table-plain-bg">
@@ -37,6 +38,7 @@
                                     <p class="card-category">Here is a subtitle for this table</p-->
                                 </div>
                                 <div class="card-body table-full-width table-responsive">
+                                <div x-data= "confirmDeleteModal">
                                     <table class="table table-hover">
                                         <thead class="bg-light">
                                             <th>OrderID</th>
@@ -59,20 +61,24 @@
                                                 <td class=""> {{$order->deadline}} </td>
                                                 <td class=""> {{$order->created_at}} </td>
                                                 <td class=" d-flex justify-content-center align-items-center">
-                                                <button wire:click="delete({{$order->id}})" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
+                                                <button class="btn btn-danger btn-sm btn-fill py-1 px-3" @@click= "$dispatch('open-delete-modal', {id:{{$order->id}}})">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
                                                 </td>
                                             </tr>
                                          @endforeach    
                                         </tbody>
                                     </table>
+
+                                    </div>
                                 </div>
-                                <div class="py-4 px-3">
-                   
-                            </div>
+                                 @once
+                                 @livewire('confirm-delete-modal')
+                                @endonce
                         </div>
                     </div>
         <div class="d-flex justify-content-center align-items-center col-md-12">
         {{$orders->links('pagination::bootstrap-4')}}
         </div>
 </div>
-</div>
+

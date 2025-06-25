@@ -18,7 +18,7 @@ return new class extends Migration
             $table -> string('email');
             $table -> string('password');
             $table -> string('country');
-            $table -> integer('phone_number');
+            $table->string('phone_number',20);
              $table -> string('address');
               
         });
