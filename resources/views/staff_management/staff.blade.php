@@ -4,34 +4,47 @@
     <h2>Staff Management</h2>
 
     <!-- Summary Cards -->
-    <div class="row mb-4">
-        <div class="col">
-            <div class="card text-center">
-                <div class="card-body">
-                   {{-- Dynamically get total staff count --}}
-                    <h3>{{ $totalStaffCount ?? 0 }}</h3> 
-                    <p>Staff</p>
+   <div class="row mb-4 card-row-custom">
+    <div class="col-md-4 mb-3">
+        <div class="card custom-card staff-card">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="icon-wrapper">
+                    <i class="fas fa-users"></i>
                 </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card text-center">
-                <div class="card-body">
-                    {{-- Dynamically get absent staff count --}}
-                    <h3>{{ $absentStaffCount ?? 0 }}</h3> {{-- $absentStaffCount is passed from controller --}}
-                    <p>Absent Staff</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card text-center">
-                <div class="card-body">
-                   <h3>4</h3>
-                    <p>Warehouses</p>
+                <div class="text-right">
+                    <div class="main-number">{{ $totalStaffCount ?? 0 }}</div>
+                    <div class="sub-text">Staff</div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-md-4 mb-3">
+        <div class="card custom-card absent-staff-card">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="icon-wrapper">
+                    <i class="fas fa-user-minus"></i>
+                </div>
+                <div class="text-right">
+                    <div class="main-number">{{ $absentStaffCount ?? 0 }}</div>
+                    <div class="sub-text">Absent Staff</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card custom-card warehouse-card">
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <div class="icon-wrapper">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+                <div class="text-right">
+                    <div class="main-number">4</div>
+                    <div class="sub-text">Warehouses</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- Tabs -->
     <ul class="nav nav-tabs" id="staffTabs" role="tablist">
