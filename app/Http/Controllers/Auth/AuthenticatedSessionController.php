@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,7 +32,20 @@ class AuthenticatedSessionController extends Controller
        // return redirect()->intended(route('category', absolute: false));
         $request->session()->forget('url.intended');
         //dd('here');
-        return redirect()->route('transporter');
+        return redirect()->route('home');
+
+            $user = Auth::user();
+
+    // // Check which table the user belongs to and redirect accordingly
+    // if (\DB::table('staff')->where('email', $user->email)->exists()) {
+    //     return redirect()->route('staff.dashboard'); // Define this route in web.php
+    // }
+    // if (\DB::table('vendor')->where('email', $user->email)->exists()) {
+    //     return redirect()->route('vendor.dashboard'); // Define this route in web.php
+    // }
+    // if (\DB::table('importer')->where('email', $user->email)->exists()) {
+    //     return redirect()->route('importer.dashboard'); // Define this route in web.php
+    // }
     }
 
     /**
