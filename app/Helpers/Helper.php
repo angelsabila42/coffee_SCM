@@ -3,7 +3,7 @@ namespace App\Helpers;
 
 class Helper{
 
-    public static function generateID($model, $trow, $length=5, $prefix){
+    public static function generateID($model, $trow, $prefix, $length=5){
         $data = $model::orderBy('id','desc')->first();  //In the given model, find the latest row
         if(!$data){
             $last_number = 1;   //In case there are no records, the last digit in the id is 1

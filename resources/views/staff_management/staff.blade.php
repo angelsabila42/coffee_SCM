@@ -78,12 +78,7 @@
         </ul>
     </div>
 @endif
-    <div class="tab-content mt-3">
-        {{-- Staff Tab Content --}}
-        <div class="tab-pane fade show active" id="staff" role="tabpanel" aria-labelledby="staff-tab">
-            <button type="button" class="btn btn-primary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#addStaffModal">
-                Add Staff
-            </button>
+    
 
             <!-- Add Staff Modal -->
             <div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">
@@ -259,9 +254,21 @@
                 </div>
             </div>
 
-            <table class="table table-bordered mt-3"> 
-                <thead>
-                    <tr>
+    <div class="tab-content mt-3">
+        {{-- Staff Tab Content --}}
+        <div class="tab-pane fade show active" id="staff" role="tabpanel" aria-labelledby="staff-tab">
+            <div class="card mt-4">
+                <div class="card-header d-flex justify-content-between align-items-center bg-white">
+                    <h4 class="mb-0">Staff</h4>
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+                        + New
+                    </button>
+                </div>
+                 <div class="card-body table-full-width table-responsive">
+                    <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
+
+                        <thead>
+                        <tr>
                         <th>Staff ID</th>
                         <th>Full Name</th>
                         <th>Work Center</th>
@@ -269,7 +276,7 @@
                         <th>Status</th>
                         <th>Phone Number</th>
                         <th>Email</th>
-                        <th>Actions</th>
+                        <th >Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -284,19 +291,21 @@
                             <td>{{ $member->email }}</td>
                             <td>
                                 {{-- Edit Button --}}
-                                <button type="button" class="btn btn-sm btn-info edit-staff-btn me-1"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#editStaffModal"
-                                        data-id="{{ $member->id }}">
-                                    Edit
-                                </button>
-
+                                <div class= "d inline">
+                                    <button type="button" class="btn btn-sm btn-info edit-staff-btn"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#editStaffModal"
+                                      data-id="{{ $member->id }}">
+                                         Edit
+                                     </button>
+                                
                                 {{-- Delete Form --}}
                                 <form action="{{ route('staff_management.staff.destroy', $member->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete {{ $member->full_name }}?');" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
                                 </form>
+                            </div>
                             </td>
                         </tr>
                     @empty
@@ -306,8 +315,12 @@
                     @endforelse
                 </tbody>
             </table>
-        </div> 
-        <!-- Work Assignment History Tab Content -->s
+        </div> <!-- end card-body -->
+    </div> <!-- end card -->
+</div> <!-- end tab-pane for staff -->
+
+
+        <!-- Work Assignment History Tab Content -->
         <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
             @include('staff_management.Workassignment', [
                 'workAssignments' => $workAssignments, 
