@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('orderID')->unique();
             $table->timestamps();
             $table->integer('quantity');
-            $table->string('status');
+            $table->string('status')->default('Requested');
             $table->date('deadline');
             $table->string('coffeeType');
             $table->foreignId('vendor_id')->constrained('vendor')->onDelete('cascade'); 

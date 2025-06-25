@@ -36,7 +36,7 @@ use App\Http\Controllers\InventoryController;
 Route::get('/vendor', function () {
     return view('auth.vendor');
 })->name('vendor');
-
+Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
@@ -61,7 +61,7 @@ Route::get('/form_modal', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('analytics');
+    return view('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -87,11 +87,11 @@ Route::get('/home/dashboard', function(){
 
 Route::prefix('staff-management')->name('staff_management.')->group(function () {
 
-    Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
+   /* Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
     Route::get('/staff/{staff}', [StaffController::class, 'show'])->name('staff.show');
     Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
-    Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
+    Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');*/
 
 
     // --- Work Assignment Routes ---
