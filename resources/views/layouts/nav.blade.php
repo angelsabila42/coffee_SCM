@@ -30,8 +30,10 @@
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
+                                <span class="mr-4">
                                     <i class="nc-icon nc-zoom-split"></i>
-                                    <span class="d-lg-block">&nbsp;Search</span>
+                                </span>
+                                    <span class="d-lg-block ">&nbsp;Search</span>
                                 </a>
                             </li>
                         </ul>
