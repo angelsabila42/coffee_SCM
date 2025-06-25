@@ -11,7 +11,7 @@ class IncomingOrderTable extends Component
 {
      use WithPagination;
 
-         public $orderID, $quantity,$status, $deadline, $grade, $destination;
+    public $orderID, $quantity,$status, $deadline, $grade, $destination;
 
     public function mount(){
         $this->orderID= Helper::generateID(IncomingOrder::class,'orderID',5,'IX');

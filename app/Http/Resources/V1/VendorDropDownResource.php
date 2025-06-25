@@ -5,7 +5,7 @@ namespace App\Http\Resources\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VendorResource extends JsonResource
+class VendorDropDownResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,10 +17,6 @@ class VendorResource extends JsonResource
         return [
             'id'=> $this-> id,
             'name'=> $this-> name,
-            'email'=> $this->email,
-            'phoneNumber'=> $this-> phone_number,
-            'street'=> $this-> street,
-            'city'=> $this-> city
         ];
     }
 }
