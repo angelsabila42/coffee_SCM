@@ -108,11 +108,34 @@
             <!-- End Navbar -->
             <!--cards--> 
             <h3>Inventory Management</h3>
-            <div class="row g-4 mb-4">
-                 <div class="col-md-3"><div class="card"><div class="crad" ><strong>{{$belowMinimumCount}}</strong><br>Blelow Minimum</div></div></div>
-                 <div class="col-md-3"><div class="card"><div class="crad"><strong>{{$totalStock}}kg</strong><br>Total Stock</div></div></div>
-                 <div class="col-md-3"><div class="card"><div class="crad"><strong>{{$totalWarehouses}}</strong><br>Warehouses</div></div></div>
+           <div class="row mb-4">
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                   {{-- Dynamically get below minimum count--}} 
+                    <p>Blelow Minimum</p>
+                    <h3>{{$belowMinimumCount}}</h3> 
+                </div>
             </div>
+        </div>
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    {{-- Dynamically get total quantity count --}}
+                    <p>Total Stock</p>
+                    <h3>{{$totalStock}}kg</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col" >
+            <div class="card ">
+                <div class="card-body">
+                   <p>Warehouses</p>
+                   <h3>{{$totalWarehouses}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
   <div class="content">
                 
       <div class="top-controls">
