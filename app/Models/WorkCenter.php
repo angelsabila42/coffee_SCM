@@ -12,7 +12,7 @@ class WorkCenter extends Model
 
       public static function booted(){
         static::creating(function($work){
-            $work-> workCenterID = Helper::generateID(WorkCenter::class,'workCenterID',5,'WK');
+            $work-> workCenterID = Helper::generateID(WorkCenter::class,'workCenterID','WK',5);
         });
     }
 

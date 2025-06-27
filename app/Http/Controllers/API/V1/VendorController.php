@@ -53,67 +53,102 @@ class VendorController extends Controller
     }
 
 
+
+ public function vendor(){
+        return view('auth.vendor');
+    }
+
+
+
+
    public function pdfValidation(Request $request){
-     $pdf =$request->file('document');
-      $pdf= base64_encode(file_get_contents($pdf->getRealPath()
-    ));
-   $res = Http::Post('http://localhost:8081/api/verify',[
-   
-    'pdf' => $pdf,
-   ]);
-   return $res->body();
-}
-
-  public function register(Request $request){
-     $pdf =$request->file('document');
-      $pdf= base64_encode(file_get_contents($pdf->getRealPath()
-    ));
-
-   $res = Http::Post('http://localhost:8081/api/verify',[
-        'name' => $request->input('name'),
-        'email' => $request->input('email'),
-        'password' => $request->input('password'),
-        'confpassword' => $request->input('password_confirmation'),
-
-    'pdf' => $pdf,
-   ]);
-   return $res->body();
-  }
-  
-
-    # code...
-
-   public function store(Request $req){
 
 
-      $validated = $req->validate([
-         'name' => 'required',
-        'email' => 'required|email|unique:vendor,email',
-        'password' => ['required','confirmed','min:8'],
-        'street' => '',
-         'city' => '',
-        'phone_number' => 'required|regex:/^07[0-9]{8}$/',
-       // 'document' => 'required|file|mimes:pdf',
+     $financialStatement = $request->file('financial_statement');
+    $nationalId = $request->file('national_id');
+    $ucda = $request->file('UCDA');
+
+    // file encoding
+    $financialStatementBase64 = base64_encode(file_get_contents($financialStatement->getRealPath()));
+    $nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()));
+    $ucdaBase64 = base64_encode(file_get_contents($ucda->getRealPath()));
+
+    // java_data_validation
+    $java_data_validation = [
+        'userName' => $request->input('name'),
+        'id' => $nationalIdBase64,
+        'idname' => $nationalId->getClientOriginalName(),
+        'financialStatus' => $financialStatementBase64,
+        'financialStatusName' => $financialStatement->getClientOriginalName(),
+       'ucdaCertificate' => $ucdaBase64,
+       'ucdaCertificateName' => $ucda->getClientOriginalName(),
+    ];
+     $res = Http::post('http://localhost:8081/api/verify', $java_data_validation);
+
+      
+
+        if ($res->successful()) {
+
+          if (str_contains($res->body(),'successful')) {
+
+      
+      
+          $this->store($request);
+          
+
+             return response()->json(['message' => 'Vendor registered successfully']);
+
+           // return response()->json(['message' => 'PDF is valid'], 200);
+      } else {
+        // return $res->body();
+          return response()->json(['validation failed' => 'please upload valid documents '], 400);
+      }
+      
+      # code...
+      
+    }
+
+      else {
+            return response()->json(['message' => $res->body()], 500);  
+        }
+
+      }
+
+
+
+          public function store(Request $req){
+
+
+          $validated = $req->validate([
+              'name' => 'required',
+            'email' => 'required|email|unique:vendor,email',
+            'password' => ['required','confirmed','min:8'],
+            'street' => '',
+              'city' => '',
+            'phone_number' => 'required|regex:/^07[0-9]{8}$/',
+            // 'document' => 'required|file|mimes:pdf',
+            
+
+        ]);   
+        $validated['password'] = Hash::make($validated['password']);
+         // $filepath = $req->file('financial_statement')->store('vendor_files','public');
         
 
-   ]);   
-   $validated['password'] = Hash::make($validated['password']);
-     $filepath = $req->file('document')->store('vendor_files','public');
-    
 
-    Vendor::create($validated);
+        vendor::create($validated);
+/*$fields = collect($validated)->only([
+              'name','email','password'
+              ])->toArray();
 
-     $fields = collect($validated)->only([
-        'name','email','password'
-         ])->toArray();
+          User::create($fields);*/
+        return redirect()->back();
+       // return response()->json(['message' => 'Vendor registered successfully']);
 
-    User::create($fields);
-    return redirect()->back();
-
+        }
     }
-}
 
-   
+
+// end of vendorController.php   
     
     
     

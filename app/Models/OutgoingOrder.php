@@ -12,7 +12,7 @@ class OutgoingOrder extends Model
 
     public static function booted(){
         static::creating(function($order){
-            $order-> orderID = Helper::generateID(OutgoingOrder::class,'orderID',5,'OX');
+            $order-> orderID = Helper::generateID(OutgoingOrder::class,'orderID','OX',5);
         });
     }
 

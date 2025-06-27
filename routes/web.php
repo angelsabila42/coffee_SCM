@@ -4,19 +4,24 @@ use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\ProfileController;
 
 
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\API\V1\VendorController;
+use App\Http\Controllers\staffController;
+use App\Http\Controllers\transporterController;
+
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\StaffController;
+
 use App\Http\Controllers\WorkAssignmentController;
 use App\Http\Controllers\LeaveHistoryController;
 
 use App\Http\Controllers\authController;
 use App\Http\Controllers\Auth\LoginController;
 
-use App\Http\Controllers\API\V1\VendorController;
+//use App\Http\Controllers\API\V1\VendorController; commented out by IAM wen merging
 
-use App\Http\Controllers\transporterController;
 
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\ReportController;
@@ -29,6 +34,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ImporterModelController;
 use Illuminate\Validation\Rules\Email;
 
+
 use App\Http\Controllers\InventoryController;
 //use App\Models\inventory;
 
@@ -37,6 +43,13 @@ Route::get('/vendor', function () {
     return view('auth.vendor');
 })->name('vendor');
 Route::get('/', [HomeController::class, 'index'])->name('index');
+
+Route::get('/', function () {
+    return view('auth.login');
+});
+
+
+
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
@@ -74,7 +87,8 @@ require __DIR__.'/auth.php';
 
 
 // custom auth routes
-Route::post('/reg/vendor', [vendorController::class, 'store'])->name('store.vendor');
+
+Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vendor');
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -124,13 +138,25 @@ Route::post('/reg', [authController::class, 'handleSelection'])->name('select.ca
 
 //registration routes
 Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vendor');
+
+
+
+
+Route::middleware('auth')->group(function(){
+Route::get('/reg/vendor', [VendorController::class, 'vendor'])->name('vendor');
+Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
+
+Route::get('/reg/importer', [ImporterModelController::class, 'importer'])->name('importer');
+//Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vendor');
+
+
 Route::post('/reg/transporter', [transporterController::class, 'store'])->name('store.transporter');
 Route::post('/reg/importer', [ImporterModelController::class, 'store'])->name('store.importer');
 
 
 
-Route::get("/java",[vendorController::class, 'store'])-> name('java');
-Route::post("/java",[vendorController::class, 'register'])-> name('java.store');
+Route::get("/java",[VendorController::class, 'store'])-> name('java');
+Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
 //inventory routes
 // Route::post('form_modal',[InventoryController::class,'add']);//for adding data in the inventory table
 Route::get('/inventory',[InventoryController::class,'ern']);//for fetching data from the table to the view table
@@ -147,3 +173,12 @@ Route::get('/stock/{id}',[InventoryController::class,'geor'])->name('stock');
 Route::get('/transporter', function () {
     return view('transporter');
 });
+
+Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
+
+
+
+}
+
+);
+
