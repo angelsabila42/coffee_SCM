@@ -87,11 +87,11 @@ Route::get('/home/dashboard', function(){
 
 Route::prefix('staff-management')->name('staff_management.')->group(function () {
 
-   /* Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
+    Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
     Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
     Route::get('/staff/{staff}', [StaffController::class, 'show'])->name('staff.show');
     Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
-    Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');*/
+    Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
 
 
     // --- Work Assignment Routes ---
