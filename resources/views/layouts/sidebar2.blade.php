@@ -47,7 +47,7 @@
         </li>
              <li class="sidebar-item">
              <a href="{{route('reports')}}" class="sidebar-link">
-             <i class='bx bxs-report'></i>
+             <i class='bx bx-file'></i>
              <span>Report</span>
              </a>
         </li>

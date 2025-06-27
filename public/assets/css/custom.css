@@ -148,6 +148,8 @@ button[type="submit"] {
   transform: translateY(-100vh);
 }
 
+/*Sidebar*/
+
 a{
     text-decoration: none !important;
 }
@@ -246,6 +248,7 @@ li{
     color: #fff;
     font-size: 1.15rem;
     font-weight:600;
+   // font-family: open sans
 
 }
 
@@ -255,7 +258,8 @@ a.sidebar-link{
     color:#FFF;
     display:block;
     white-space:nowrap;
-    font-weight:700;
+    font-weight:500;
+    //font-family: open sans;
     border-left: 3px solid transparent;
 }
 
@@ -295,6 +299,7 @@ a.sidebar-link:hover{
 /*Flash*/
 .bg-green-light{
   background-color: #f0fdf4;
+}
 
 .card-row-custom .custom-card {
   border: none;
@@ -342,5 +347,75 @@ a.sidebar-link:hover{
   background-image: linear-gradient(to right, #462d06, #422903);
 }
 
+}
 
+/*Bootstrap 4 example tabs*/
+body {
+    //background: #f8f9fa;
+    padding: 2rem 0;
+}
+
+/* Modern Filled Tabs */
+.modern-tabs {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+}
+
+.modern-tabs .nav-tabs {
+    border: none;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.modern-tabs .nav-link {
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.modern-tabs .nav-link:hover {
+    background: #f8f9fa;
+    color: #000000;
+}
+
+.modern-tabs .nav-link.active {
+    background: #e0cfc1!important;
+    color:  #4b2e2e !important;
+}
+
+.card-header{
+  background: #fff !important;
+  border-bottom: 0 ! important;
+}
+
+/* Content Animation */
+.tab-pane.fade {
+    transition: all 0.2s ease-out;
+}
+
+.tab-pane.fade.show {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.d-warning-icon{
+  color: #dc3545;
+  font-size: 3rem;
+}
 

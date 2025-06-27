@@ -15,7 +15,7 @@ class DeliveryReportSeeder extends Seeder
     {
          for($i=0; $i<30; $i++){
             $report= DeliveryReport::factory()->make();
-            $report->reportID = Helper::generateID(DeliveryReport::class,'reportID',5,'DR');
+            $report->reportID = Helper::generateID(DeliveryReport::class,'reportID','DR',5);
             $report->save();
          }
     }
