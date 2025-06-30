@@ -38,6 +38,7 @@ use Illuminate\Validation\Rules\Email;
 use App\Http\Controllers\InventoryController;
 //use App\Models\inventory;
 
+use App\Http\Controllers\InvoiceExportController;
 
 Route::get('/vendor', function () {
     return view('auth.vendor');
@@ -181,4 +182,16 @@ Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.sto
 }
 
 );
+
+// Transporter Delivery Dashboard
+Route::get('/deliveries/transporter', function () {
+    return view('deliveries.transporter-dashboard');
+})->name('deliveries.transporter');
+
+// Vendor Transactions Dashboard
+Route::get('/transactions/vendor', function () {
+    return view('transactions.vendor-dashboard');
+})->name('transactions.vendor');
+
+Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
 
