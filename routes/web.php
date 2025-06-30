@@ -39,9 +39,9 @@ use App\Http\Controllers\InventoryController;
 //use App\Models\inventory;
 
 
-Route::get('/vendor', function () {
-    return view('auth.vendor');
-})->name('vendor');
+Route::get('/home', function () {
+    return view('index');
+})->name('index');
 Route::get('/', [HomeController::class, 'index'])->name('index');
 
 Route::get('/', function () {
@@ -175,8 +175,9 @@ Route::get('/transporter', function () {
 });
 
 Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
-
+// ipmorter dashboard routes
 Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
+Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
 }
 
 );
