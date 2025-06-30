@@ -38,7 +38,10 @@ use Illuminate\Validation\Rules\Email;
 use App\Http\Controllers\InventoryController;
 //use App\Models\inventory;
 
+<<<<<<< HEAD
 use App\Http\Controllers\InvoiceExportController;
+=======
+>>>>>>> b17db6023c5db3de8d636ae3eb35cfc861a6f34d
 
 Route::get('/vendor', function () {
     return view('auth.vendor');

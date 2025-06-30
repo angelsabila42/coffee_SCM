@@ -2442,6 +2442,7 @@
             "time": "2025-04-12T22:26:52+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "masterminds/html5",
             "version": "2.9.0",
             "source": {
@@ -2509,6 +2510,8 @@
             "time": "2024-03-31T07:05:07+00:00"
         },
         {
+=======
+>>>>>>> b17db6023c5db3de8d636ae3eb35cfc861a6f34d
             "name": "monolog/monolog",
             "version": "3.9.0",
             "source": {

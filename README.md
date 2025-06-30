@@ -115,8 +115,3 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 8. **Access the application**  
    Open [http://localhost:8000](http://localhost:8000) in your browser.
-
-# DO NOT COMMIT SECRETS HERE
-# [REDACTED]
-
-
