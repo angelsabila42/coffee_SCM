@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Hash;
 
 class ImporterModelController extends Controller
 {
+
+    public function index(){
+        return view ('importer_dashboard');
+    }
     
  public function importer(){
     return view('auth.importer');

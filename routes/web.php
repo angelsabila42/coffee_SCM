@@ -176,8 +176,7 @@ Route::get('/transporter', function () {
 
 Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
 
-
-
+Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
 }
 
 );
