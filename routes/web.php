@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\V1\VendorController;
-use App\Http\Controllers\staffController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\transporterController;
-
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\WorkAssignmentController;
@@ -182,3 +182,9 @@ Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.sto
 
 );
 
+
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.  index');
+    Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
+    Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');

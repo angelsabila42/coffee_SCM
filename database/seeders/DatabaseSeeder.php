@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             SalesReportSeeder::class,
             DeliveryReportSeeder::class,
             WorkCenterSeeder::class,
+            ChatTestSeeder::class, // Add chat test data
         ]);
     }
 }
