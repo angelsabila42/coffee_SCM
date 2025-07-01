@@ -38,10 +38,11 @@ use Illuminate\Validation\Rules\Email;
 use App\Http\Controllers\InventoryController;
 //use App\Models\inventory;
 
+use App\Http\Controllers\InvoiceExportController;
 
-Route::get('/vendor', function () {
-    return view('auth.vendor');
-})->name('vendor');
+Route::get('/home', function () {
+    return view('index');
+})->name('index');
 Route::get('/', [HomeController::class, 'index'])->name('index');
 
 Route::get('/', function () {
@@ -176,11 +177,29 @@ Route::get('/transporter', function () {
 
 Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
 
+// ipmorter dashboard routes
+Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
+Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
+
+
+
 
 
 }
 
 );
+
+// Transporter Delivery Dashboard
+Route::get('/deliveries/transporter', function () {
+    return view('deliveries.transporter-dashboard');
+})->name('deliveries.transporter');
+
+// Vendor Transactions Dashboard
+Route::get('/transactions/vendor', function () {
+    return view('transactions.vendor-dashboard');
+})->name('transactions.vendor');
+
+Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
 
 
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.  index');

@@ -38,6 +38,12 @@
                         </a>
                     </li>
                     <li>
+                        <a class="nav-link" href="{{route('deliveries.transporter')}}">
+                            <i class="nc-icon nc-delivery-fast"></i>
+                            <p>Transporter Delivery</p>
+                        </a>
+                    </li>
+                    <li>
                         <a class="nav-link" href="{{route('orders.index')}}">
                             <i class="nc-icon nc-paper-2"></i>
                             <p>Orders</p>
@@ -47,7 +53,13 @@
                         <a class="nav-link" href="{{route('payments.index')}}">
                             <i class="nc-icon nc-money-coins"></i>
                             <p>Payments</p>
-                            </a>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{route('transactions.vendor')}}">
+                            <i class="nc-icon nc-money-coins"></i>
+                            <p>Vendor Transactions</p>
+                        </a>
                     </li>
                     <li>
                         <a class="nav-link" href="{{route('reports')}}">
