@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\V1\VendorController;
-use App\Http\Controllers\staffController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\transporterController;
-
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\WorkAssignmentController;
@@ -189,6 +189,10 @@ Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->n
 });
 
 
+// Transporter Delivery Dashboard
+Route::get('/deliveries/transporter', function () {
+    return view('deliveries.transporter-dashboard');
+})->name('deliveries.transporter');
 
 // Vendor Transactions Dashboard
 Route::get('/transactions/vendor', function () {
@@ -232,3 +236,17 @@ Route::post('/drivers/store', function (\Illuminate\Http\Request $request) {
 
 Route::resource('drivers', \App\Http\Controllers\DriverController::class);
 
+
+// --- Chat Routes (must be authenticated) ---
+Route::middleware('auth')->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat');
+    Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
+    Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+});
+
+// Session keep-alive route for AJAX ping (prevents session expiry during chat)
+Route::get('/keep-alive', function () {
+    return response()->json(['alive' => true]);
+})->middleware('auth');

@@ -1,4 +1,3 @@
-
 <!--   Core JS Files   -->
 <script src="{{asset('assets/js/core/jquery.3.2.1.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/js/core/popper.min.js')}}" type="text/javascript"></script>
@@ -29,4 +28,10 @@
        // demo.showNotification();
 
     });
-</script>         
+</script>
+<script>
+// Session keep-alive ping to prevent session expiry during chat
+setInterval(function() {
+    fetch('/keep-alive', { method: 'GET', credentials: 'same-origin' });
+}, 5 * 60 * 1000); // every 5 minutes
+</script>
