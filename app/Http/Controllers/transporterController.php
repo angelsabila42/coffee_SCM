@@ -5,8 +5,12 @@ use App\Models\User;
 use App\Models\transporter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+
 use App\Models\Invoice;
 use App\Models\Payment;
+
+use App\Models\Notification;
+
 
 class transporterController extends Controller
 {
