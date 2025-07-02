@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\V1\VendorController;
-use App\Http\Controllers\staffController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\transporterController;
-
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\WorkAssignmentController;
@@ -56,6 +56,12 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
 Route::get('/home/report',[ReportController::class,'index'])->name('reports');
+
+// Transporter Delivery Dashboard
+Route::get('/deliveries/transporter', function () {
+    return view('deliveries.transporter-dashboard');
+})->name('deliveries.transporter');
+
 Route::resource('deliveries', DeliveryController::class);
 Route::get('/home/orders', [OrderController::class, 'index'])->name('orders');
 Route::resource('invoices', InvoiceController::class);
@@ -182,13 +188,14 @@ Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->nam
 Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
 
 Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
+});
+
 
 
 //transporter transactions
 Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');
-}
 
-);
+
 
 // Transporter Delivery Dashboard
 Route::get('/deliveries/transporter', function () {
@@ -201,4 +208,53 @@ Route::get('/transactions/vendor', function () {
 })->name('transactions.vendor');
 
 Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
+Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
+Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
 
+Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
+Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
+Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
+
+Route::get('/drivers/create', function () {
+    return view('drivers.create');
+})->name('drivers.create');
+
+Route::get('/deliveries/{id}', function ($id) {
+    $delivery = \App\Models\Delivery::findOrFail($id);
+    return view('deliveries.show', compact('delivery'));
+})->name('deliveries.show');
+
+Route::post('/drivers/store', function (\Illuminate\Http\Request $request) {
+    $validated = $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'phone' => 'nullable',
+        'address' => 'nullable',
+    ]);
+    $user = new \App\Models\User();
+    $user->name = $validated['name'];
+    $user->email = $validated['email'];
+    $user->phone = $validated['phone'] ?? null;
+    $user->address = $validated['address'] ?? null;
+    $user->role = 'driver';
+    $user->password = bcrypt('password');
+    $user->save();
+    return redirect()->route('drivers.create')->with('success', 'Driver added successfully!');
+})->name('drivers.store');
+
+Route::resource('drivers', \App\Http\Controllers\DriverController::class);
+
+
+// --- Chat Routes (must be authenticated) ---
+Route::middleware('auth')->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat');
+    Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
+    Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+});
+
+// Session keep-alive route for AJAX ping (prevents session expiry during chat)
+Route::get('/keep-alive', function () {
+    return response()->json(['alive' => true]);
+})->middleware('auth');

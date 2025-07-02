@@ -34,6 +34,18 @@
             </div>
         </div>
     </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <button class="btn btn-outline-primary btn-sm @if($statusFilter === 'Active') active @endif" wire:click="setStatusFilter('Active')">Active</button>
+            <button class="btn btn-outline-warning btn-sm @if($statusFilter === 'Pending') active @endif" wire:click="setStatusFilter('Pending')">Pending</button>
+            <button class="btn btn-outline-success btn-sm @if($statusFilter === 'Completed') active @endif" wire:click="setStatusFilter('Completed')">Completed</button>
+            <button class="btn btn-outline-danger btn-sm @if($statusFilter === 'Delayed') active @endif" wire:click="setStatusFilter('Delayed')">Delayed</button>
+        </div>
+        <div>
+            <button class="btn btn-secondary btn-sm mr-2" wire:click="goToAddDriver">Add Driver</button>
+            <button class="btn btn-info btn-sm" wire:click="downloadFilteredCsv">Download CSV</button>
+        </div>
+    </div>
     <div class="card mb-4">
         <div class="card-header">Current Deliveries</div>
         <div class="card-body p-0">
@@ -60,7 +72,10 @@
                             <td>{{ $delivery->status }}</td>
                             <td>{{ $delivery->eta }}</td>
                             <td>{{ $delivery->date_ordered }}</td>
-                            <td><!-- Actions here --></td>
+                            <td>
+                                <button class="btn btn-success btn-sm" wire:click="markCompleted({{ $delivery->id }})">Mark as Completed</button>
+                                <button class="btn btn-primary btn-sm" wire:click="goToViewDelivery({{ $delivery->id }})">View</button>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
