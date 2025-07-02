@@ -33,14 +33,26 @@
              <span>Deliveries</span>
              </a>
         </li> 
-             <li class="sidebar-item">
+        <li class="sidebar-item">
+             <a href="{{ route('deliveries.transporter') }}" class="sidebar-link">
+                 <i class="nc-icon nc-delivery-fast"></i>
+                 <span>Transporter Delivery</span>
+             </a>
+        </li>
+        <li class="sidebar-item">
+             <a href="{{route('transactions.vendor')}}" class="sidebar-link">
+             <i class="nc-icon nc-money-coins"></i>
+             <span>Vendor Transactions</span>
+             </a>
+        </li>
+        <li class="sidebar-item">
              <a href="{{route('analytics')}}" class="sidebar-link">
              <i class="nc-icon nc-chart-bar-32"></i>
              <span>Analytics</span>
              </a>
         </li>
              <li class="sidebar-item">
-             <a href="#" class="sidebar-link">
+             <a href="{{ route('chat') }}" class="sidebar-link">
              <i class="nc-icon nc-chat-round"></i>
              <span>Chat</span>
              </a>

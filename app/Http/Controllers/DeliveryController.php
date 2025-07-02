@@ -99,6 +99,7 @@ class DeliveryController extends Controller
 
         return redirect()->route('deliveries.index')->with('success', 'Delivery request deleted successfully!');
     }
+
  public function merc()
     {
      $deliveries = Delivery::all();
@@ -114,4 +115,13 @@ class DeliveryController extends Controller
         return 
         redirect()->back()->with('success', 'Record deleted successfully.');
     } 
+
+
+    /**
+     * Display the transporter dashboard.
+     */
+    public function transporterDashboard()
+    {
+        return view('deliveries.transporter-dashboard');
+  
 }
