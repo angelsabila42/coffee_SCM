@@ -230,3 +230,5 @@ Route::post('/drivers/store', function (\Illuminate\Http\Request $request) {
     return redirect()->route('drivers.create')->with('success', 'Driver added successfully!');
 })->name('drivers.store');
 
+Route::resource('drivers', \App\Http\Controllers\DriverController::class);
+
