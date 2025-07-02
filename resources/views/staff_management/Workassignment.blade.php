@@ -124,12 +124,12 @@
                         <td>{{ $assignment->end_date ?? 'N/A' }}</td>
                         <td>
                             <div>
-                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editWorkAssignmentModal" data-id="{{ $assignment->assignment_id }}">Edit</button>
-                            <form action="{{ route('staff_management.workassignment.destroy', $assignment->assignment_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this assignment?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
-                            </form>
+                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editWorkAssignmentModal" data-id="{{ $assignment->assignment_id }}">Edit</button>
+                                <form action="{{ route('staff_management.workassignment.destroy', $assignment->assignment_id) }}" method="POST" style="display: none;" id="delete-work-form-{{ $assignment->assignment_id }}">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <button class="btn btn-sm btn-danger" onclick="confirmDeleteWorkAssignment('{{ $assignment->assignment_id }}')"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -234,4 +234,20 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 });
+
+function confirmDeleteWorkAssignment(assignmentId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-work-form-' + assignmentId).submit();
+        }
+    })
+}
 </script>

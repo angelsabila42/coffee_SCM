@@ -48,11 +48,11 @@
                                     data-bs-target="#editLeaveRecordModal">
                                     Edit
                                 </button>
-                                <form action="{{ route('staff_management.leavehistory.destroy', $leave) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this leave record?');">
+                                <form action="{{ route('staff_management.leavehistory.destroy', $leave) }}" method="POST" style="display: none;" id="delete-leave-form-{{ $leave->id }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
                                 </form>
+                                <button class="btn btn-sm btn-danger" onclick="confirmDeleteLeaveHistory('{{ $leave->id }}')"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -230,7 +230,6 @@
     </div>
 </div>
 
-@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var editLeaveModal = document.getElementById('editLeaveRecordModal');
@@ -258,5 +257,20 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+function confirmDeleteLeaveHistory(leaveId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-leave-form-' + leaveId).submit();
+        }
+    })
+}
 </script>
-@endpush
