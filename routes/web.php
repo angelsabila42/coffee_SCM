@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Vendor\VendorReportsController;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\ProfileController;
 
@@ -13,6 +14,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\transporterController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Vendor\VendorHomeController;
 
 use App\Http\Controllers\WorkAssignmentController;
 use App\Http\Controllers\LeaveHistoryController;
@@ -31,11 +33,15 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 
 
-use App\Http\Controllers\ImporterModelController;
+use App\Http\Controllers\API\V1\ImporterModelController;
+use App\Http\Controllers\ImporterOrderController;
 use Illuminate\Validation\Rules\Email;
 
 
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\API\V1\OutgoingOrderController;
+use App\Http\Controllers\Vendor\VendorOrderController;
+
 //use App\Models\inventory;
 
 use App\Http\Controllers\InvoiceExportController;
@@ -50,12 +56,23 @@ Route::get('/', function () {
 });
 
 
-
+/*Dashboard routes*/
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
 
-
+/*Analytics route*/
 Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+
+/*Report routes*/
 Route::get('/home/report',[ReportController::class,'index'])->name('reports');
+Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name('vendor.reports');
+
+/*Order Routes*/
+Route::get('/home/orders', [OrderController::class, 'index'])->name('orders');
+Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
+Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
+Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
+
 
 // Transporter Delivery Dashboard
 Route::get('/deliveries/transporter', function () {
@@ -63,9 +80,13 @@ Route::get('/deliveries/transporter', function () {
 })->name('deliveries.transporter');
 
 Route::resource('deliveries', DeliveryController::class);
-Route::get('/home/orders', [OrderController::class, 'index'])->name('orders');
+
+/*transactions Routes*/
 Route::resource('invoices', InvoiceController::class);
 Route::resource('payments', PaymentController::class);
+
+/*Delivery Routes*/
+Route::resource('deliveries', DeliveryController::class);
 
 
 Route::get('/alpine',function(){
@@ -81,7 +102,7 @@ Route::get('/form_modal', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('home');
+    return view('Dashboards.home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -102,7 +123,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::get('/home/dashboard', function(){
-    return view('home');
+    return view('Dashboards.home');
 });
 
 
@@ -195,13 +216,13 @@ Route::post('/editprofile',[ProfileController::class,'changePassword'])->name('e
 
 Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
 
+
 // importer  routes
 Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
 Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
 
 Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
 });
-
 
 
 //transporter transactions

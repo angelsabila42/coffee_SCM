@@ -16,6 +16,18 @@ class OutgoingOrder extends Model
         });
     }
 
+    public function getStatusBadgeAttribute()
+    {
+        return match (ucfirst(strtolower($this->status))){
+            'Requested' => 'badge-primary',
+            'Pending' => 'badge-warning',
+            'Cancelled' => 'badge-danger',
+            'Delivered' => 'badge-secondary',
+            'Confirmed' => 'badge-success',
+            default=> 'badge-light'
+           };
+    }
+
     public function vendor(){
         return $this->belongsTo(Vendor::class);
     }

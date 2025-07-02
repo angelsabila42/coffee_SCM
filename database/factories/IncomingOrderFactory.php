@@ -19,7 +19,7 @@ class IncomingOrderFactory extends Factory
     {
         return [
             'quantity'=> fake()->numberBetween(100,1000),
-            'status'=> fake()->randomElement(['Pending','in transit','Delievered']),
+            'status'=> fake()->randomElement(['Pending','Confirmed','Delivered','In transit','Requested','Cancelled']),
             'deadline'=> fake()->dateTimeBetween('now','+2 weeks'),
             'grade'=> fake()->randomElement(['A','B', 'C', 'screen 8']),
             'coffeeType'=> fake()->randomElement(['Arabica','Robusta']),

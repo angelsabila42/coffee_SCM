@@ -13,6 +13,6 @@ class IncomingOrderSeeder extends Seeder
      */
     public function run(): void
     {
-        IncomingOrder::factory()->count(30)->create();
+        IncomingOrder::factory()->count(50)->create();
     }
 }

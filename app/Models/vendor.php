@@ -24,6 +24,10 @@ class Vendor extends Model
          return $this->hasMany(OutgoingOrder::class);
     }
 
+    public function invoice(){
+        return $this->belongsTo(Invoice::class);
+    }
+
     
 
 }

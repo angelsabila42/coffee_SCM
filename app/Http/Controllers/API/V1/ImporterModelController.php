@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+
+namespace App\Http\Controllers\API\V1;
+
+use App\Http\Controllers\Controller;
 use App\Models\IncomingOrder;
 use App\Models\Payment;
 use App\Models\User;
@@ -52,7 +55,6 @@ public function destroy(IncomingOrder $order)
     return redirect()->back()->with('success', 'Order deleted successfully!');
 }
 
-
      public function store(Request $req){
 
     $validated = $req->validate([
@@ -60,8 +62,8 @@ public function destroy(IncomingOrder $order)
         'email' => 'required|email|unique:importer_models,email',
         'password' => ['required','confirmed','min:8'],
         'country' => '',
-         'address' => '',
-          'phone_number' => 'required|regex:/^07[0-9]{8}$/',
+        'address' => '',
+        'phone_number' => 'required|regex:/^07[0-9]{8}$/',
          
         
 

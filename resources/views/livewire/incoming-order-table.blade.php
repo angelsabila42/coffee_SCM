@@ -2,37 +2,32 @@
 <div>
 
         <div class="col-md-12">
-                <div class="d-flex justify justify-content-between align-items-center">
-                    
+                <div x-data="advancedFilter">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+               
+                    <div class="d-flex flex-wrap align-items-center gap-3">
                     <!--Search bar-->
-                    <div class="d-flex justify-content-center align-items-center">
                         <div class="form mr-3">
-                         <label class="">Start Date: </label>
-                            <input type="date" class="form-control">
+                                <span></span><i class="nc-icon nc-zoom-split"></i></span>
+                            <input type="text" class="form-control form-input" placeholder="Search" wire:model.live.debounce.250ms= "search"/>
                         </div>
-                        <div class="form mr-3">
-                          <label class="">End Date: </label>
-                            <input type="date" class="form-control">
-                        </div>
-                          <button class="btn btn-primary btn-fill btn-sm mt-4"><!--i class="fa-solid fa-plus pt-1 mr-3"-->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mt-1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 
-                            1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 
-                             2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
-                            </svg>
+
+                    <div class="ml-2">
+                        <button @@click= "toggle" class="btn btn-light btn-fill btn-sm d-flex align-items-center cur ">
+                            <span class="mr-2"><i class='bx bx-filter'></i></span>Filter
                         </button>
                     </div>
-
+                    </div>
                 </div>
-                            <div class="card card-plain table-plain-bg">
-                                <div class="card-header ">
-                                    <!--h4 class="card-title">Table on Plain Background</h4>
-                                    <p class="card-category">Here is a subtitle for this table</p-->
-                                </div>
+
+                @include('livewire.filters.incoming-order-filter')
+        
+            </div>
+                        <div class="card card-plain table-plain-bg">
                                 <div class="card-body table-full-width table-responsive">
                                     <table class="table table-hover">
                                         <thead class="bg-light">
-                                             <th>OrderID</th>
+                                            <th>OrderID</th>
                                             <th>Importer Name</th>
                                             <th>Coffee Type</th>
                                             <th>Quantity</th>
@@ -48,7 +43,19 @@
                                                 <td class=""> {{$order->importerModel->name}} </td>
                                                 <td class=""> {{$order->coffeeType}} </td>
                                                 <td class=""> {{$order->quantity}} </td>
-                                                <td class=""> {{$order->status}} </td>
+                                                <td x-data= "{selectedStatus: '{{$order->status}}',
+                                                    statuses: ['Requested','Pending', 'Cancelled', 'Delivered', 'Confirmed' ]}"
+                                                    x-init="console.log('Selected:', selectedStatus)">
+                                                    <select 
+                                                    class="form-control form-control-sm badge badge-sm {{$order->status_badge}}"
+                                                    x-model= "selectedStatus"
+                                                    @@change= "$dispatch('statusChanged', {id: {{$order->id}}, status: $event.target.value})">
+                                                           <option :value="selectedStatus">{{$order->status}}</option>
+                                                            <template x-for= "status in statuses" :key = "status + '-{{$order->id}}'">
+                                                                <option :value= "status" x-text= "status"></option>
+                                                            </template>
+                                                    </select> 
+                                                </td>
                                                 <td class=""> {{$order->destination}} </td>
                                                 <td class=""> {{$order->created_at}} </td>
                                                 <td class=" d-flex justify-content-center align-items-center">
@@ -65,7 +72,7 @@
                         </div>
                     </div>
         <div class="d-flex justify-content-center align-items-center col-md-12">
-        {{$orders->links('pagination::bootstrap-4')}}
+        {{$orders->links()}}
         </div>
 </div>
         

@@ -2,78 +2,41 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('layouts.head')
 <body>
-{{--@if(session('success')){
-    <div id="flash" class= "p-4 text-center alert alert-success font-weight-bold " >
-    {{session('success')}}
-    </div>
-}
-@endif--}}
 
-    <div >
+    <div>
         <main>       
             <div id="wrapper" x-data= "sideBar">
-        @include('layouts.sidebar2')
+                @include('layouts.sidebar2')
         
-        <div class="main-panel" x-transition:enter = transition: all 0.25s ease-in-out,
-            x-transition:leave = transition: all 0.25s ease-in-out>
-            <!-- Navbar -->
-          @include('layouts.nav')
-            <!-- End Navbar -->
-            <div class="content">
+                <div class="main-panel" x-transition:enter = transition: all 0.25s ease-in-out,
+                x-transition:leave = transition: all 0.25s ease-in-out>
 
-             <x-page-header >
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-                @yield('page-title')
-                @yield('report-btn')
-            </div>
-            {{--@livewire('counter') example--}}
-            </x-page-header>
+                    <!-- Navbar -->
+                    @include('layouts.nav')
+                    <!-- End Navbar -->
+
+                    <x-session-message/>
+
+                    <div class="content">
+                        <x-page-header >
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+                            @yield('page-title')
+                            @yield('report-btn')
+                        </div>
+                        {{--@livewire('counter') example--}}
+                        </x-page-header>
                 
-                <div class="container-fluid">
-                     @yield('content')
+                        <div class="container-fluid">
+                            @yield('content')
+                        </div>
+                    </div>
+
+                    @include('layouts.footer')
                 </div>
-            </div>
-            <footer class="footer">
-                <div class="container-fluid">
-                    <nav>
-                        <ul class="footer-menu">
-                            <li>
-                                <a href="#">
-                                    Home
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Company
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Portfolio
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Blog
-                                </a>
-                            </li>
-                        </ul>
-                        <p class="copyright text-center">
-                            ©
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>
-                            <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
-                        </p>
-                    </nav>
-                </div>
-            </footer>
-        </div>
-    </div>
+              </div>
         </main>
     </div>
-    @include('layouts.scripts')
-    @yield('analytics')
-    @livewireScripts
+    @include('layouts.scripts.scripts')
+    @include('layouts.scripts.chart_scripts')
 </body>
 </html>

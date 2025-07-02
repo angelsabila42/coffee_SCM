@@ -235,6 +235,6 @@
             </div>
         </main>
     </div>
-    @include('layouts.scripts')
+    @include('layouts.scripts.scripts')
 </body>
 </html>

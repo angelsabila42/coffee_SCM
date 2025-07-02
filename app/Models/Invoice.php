@@ -38,8 +38,16 @@ class Invoice extends Model
     /**
      * Get the invoice items for the invoice.
      */
-    public function Notification(){
+    public function notification(){
         return $this->belongsTo(Notification::class);
+    }
+
+    public function importer(){
+        return $this->hasMany(importerModel::class);
+    }
+
+    public function vendor(){
+        return $this->hasMany(Vendor::class);
     }
 
     public function items()

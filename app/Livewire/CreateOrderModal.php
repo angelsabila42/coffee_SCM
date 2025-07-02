@@ -13,7 +13,7 @@ class CreateOrderModal extends Component
 {
     public $status, $orderID;
 
-   /* #[Rule('required|numeric|min:20')]    
+    #[Rule('required|numeric|min:20')]    
     public $quantity;
 
     #[Rule('required|exists:vendor,id')]
@@ -28,12 +28,12 @@ class CreateOrderModal extends Component
     #[Rule( 'required|string')]
     public $coffeeType;
     
-     public function mount(){
-        $this->orderID= Helper::generateID(OutgoingOrder::class,'orderID',5,'OX');
+       public function mount(){
+        $this->orderID= Helper::generateID(OutgoingOrder::class,'orderID','OX',5);
 
     }
     
-       /*public function save(){
+       public function save(){
 
         $this->validate();
 
@@ -50,11 +50,13 @@ class CreateOrderModal extends Component
         $this->reset(['quantity','coffeeType', 'status', 'deadline', 'vendor_id', 'work_center_id']);
         $this->dispatch('reset-alpine-dropdown');
 
-        $this->orderID = Helper::generateID(OutgoingOrder::class,'orderID',5,'OX');
+        $this->orderID = Helper::generateID(OutgoingOrder::class,'orderID','OX',5);
 
-        $this->redirect('/home/orders', navigate:true);
+        session()->flash('success','Order Sent!');
 
-    }*/
+        $this->redirect('/home/orders');
+
+    }
     public function render()
     {
         return view('livewire.create-order-modal');

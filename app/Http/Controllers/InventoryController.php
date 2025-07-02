@@ -29,10 +29,12 @@ class InventoryController extends Controller
     public function mut(Request $request){
  $search = $request->input('search');
 //   dd($search);
-        $inventories = \App\Models\inventory::query()->when($search, function ($query, $search){
+
+        $inventories = inventory::query()->when($search, function ($query, $search){
            $query->where('coffee_type', 'like', "%{$search}%")
             ->orwhere('warehouse_name', 'like', "%{$search}%")
             ->orwhere('grade', 'like', "%{$search}%");
+
         })
         ->get();
         return view('inventory', compact('inventories', 'search'));

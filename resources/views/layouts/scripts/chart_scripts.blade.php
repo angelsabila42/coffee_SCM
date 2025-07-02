@@ -27,8 +27,8 @@ var options = {
         }
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart-b"), options);
-        chart.render();
+        var chartB = new ApexCharts(document.querySelector("#chart-b"), options);
+        chartB.render();
 </script>
 
 <!--Apex donut chart-->
@@ -68,8 +68,8 @@ var options = {
         }]
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart-d"), options);
-        chart.render();
+        var chartD = new ApexCharts(document.querySelector("#chart-d"), options);
+        chartD.render();
 </script>
 
 <!--Apex Line Chart-->
@@ -115,8 +115,8 @@ var options = {
         }
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart-l"), options);
-        chart.render();
+        var chartL = new ApexCharts(document.querySelector("#chart-l"), options);
+        chartL.render();
 </script>
 
 <!--Animations-->
@@ -168,8 +168,8 @@ chart: {
         }]
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart-c"), options);
-        chart.render();
+        var chartC = new ApexCharts(document.querySelector("#chart-c"), options);
+        chartC.render();
 </script>
 
 <!--2-->
@@ -202,13 +202,14 @@ chart: {
         }]
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart-z"), options);
-        chart.render();
+        var chartZ = new ApexCharts(document.querySelector("#chart-z"), options);
+        chartZ.render();
 </script>
 
 <!--Apex Column Chart-->
 <!--analytics-->
 <script>
+document.addEventListener('DOMContentLoaded', () => {
 var options = {
           series: [{
           name: 'Net Profit',
@@ -260,63 +261,50 @@ var options = {
         }
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart-e"), options);
-        chart.render();
+        var chartE = new ApexCharts(document.querySelector("#chart-e"), options);
+        chartE.render();
+});
 </script>
 
 <!--Home-->
 <script>
-var options = {
+document.addEventListener('DOMContentLoaded', () => {
+        var options = {
           series: [{
-          name: 'Net Profit',
-          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        }, {
-          name: 'Revenue',
-          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-        }, {
-          name: 'Free Cash Flow',
-          data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+            data: [10, 70, 35, 51, 49, 62, 69, 91, 148]
         }],
           chart: {
-          type: 'bar',
-          height: 350
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            borderRadius: 5,
-            borderRadiusApplication: 'end'
+          height: '100%',
+          type: 'line',
+          sparkline: {
+            enabled: true
           },
+          toolbar: {
+            enabled: false
+          },
+          zoom: {
+            enabled: false
+          }
         },
         dataLabels: {
           enabled: false
         },
         stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
-        },
-        xaxis: {
-          categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-        },
-        yaxis: {
-          title: {
-            text: '$ (thousands)'
-          }
-        },
-        fill: {
-          opacity: 1
+          curve: 'straight',
+          width: 1,
         },
         tooltip: {
-          y: {
-            formatter: function (val) {
-              return "$ " + val + " thousands"
-            }
-          }
+          enabled: false
+        },
+        markers: {
+          size: 0,
+        },
+        xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
         }
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart-y"), options);
-        chart.render();
+        var chartJ = new ApexCharts(document.querySelector("#chart-j"), options);
+        chartJ.render();
+})
 </script>

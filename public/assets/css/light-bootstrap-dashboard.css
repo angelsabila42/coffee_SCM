@@ -5375,7 +5375,7 @@ License - nucleoapp.com/license/
 
  .nc-zoom-split{
     position: absolute;
-    top: 10px;
+    top: 20px;
     left: 10px;
     
 }
@@ -5387,9 +5387,9 @@ License - nucleoapp.com/license/
 
 /*pagination*/
 .pagination .page-item.active .page-link{
-    background-color: #DAA06D; /* Use your preferred color */
-    border-color: #DAA06D;
-    color: #fff;
+    background-color: #DAA06D !important; /* Use your preferred color */
+    border-color: #DAA06D !important;
+    color: #fff !important;
 }
 
 .page-link{

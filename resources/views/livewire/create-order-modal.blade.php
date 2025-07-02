@@ -1,20 +1,7 @@
- <!--New Button-->
-                    <div  x-data="orderModal" x-init= "init()">
-                        <button @@click= "showModal= true" class="btn btn-success btn-fill btn-sm"><i class="fa-solid fa-plus pt-1 mr-3"></i>New</button>
-                            <div class="overlay" x-show="showModal">
-                                <div class = "custom-modal">
-                                <div class="container">
-                                <div class="d-flex justify-content-between">
-                                <h3 class="mt-3">Create New Order</h3>
-                                <span @@click="showModal = false"><i class="fa-solid fa-xmark"></i></span>
-                                </div>
-                                   
-                                   <h5 class="mt-3 mb-0">OrderID: {{$orderID}} </h5>
-
-                                        <form class="mb-0 p-0" wire:submit.prevent= "save">
+<form class="mb-0 p-0" wire:submit.prevent= "save">
                                         
                                             <div class= "row ml-25">
-                                                <div class="form-group pr-4 w-50">
+                                                <div class="form-group pr-4 w-50 ">
                                                     <label for="vendor">Vendor Name</label>
                                                     <select id="vendor" class="form-control" x-model= "selectedVendor" @@change= "$wire.set('vendor_id',selectedVendor)">
                                                         <option value="">Select Vendor</option>
@@ -107,8 +94,3 @@
                                             </div>
                                 
                                         </form>
-                                </div>
-                                </div>
-                            </div>
-                    </div>
-

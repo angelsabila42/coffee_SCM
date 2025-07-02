@@ -125,3 +125,4 @@ class DeliveryController extends Controller
         return view('deliveries.transporter-dashboard');
   
 }
+}
