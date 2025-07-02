@@ -34,9 +34,9 @@
              </a>
         </li> 
         <li class="sidebar-item">
-             <a href="{{route('deliveries.transporter')}}" class="sidebar-link">
-             <i class="nc-icon nc-delivery-fast"></i>
-             <span>Transporter Delivery</span>
+             <a href="{{ route('deliveries.transporter') }}" class="sidebar-link">
+                 <i class="nc-icon nc-delivery-fast"></i>
+                 <span>Transporter Delivery</span>
              </a>
         </li>
         <li class="sidebar-item">

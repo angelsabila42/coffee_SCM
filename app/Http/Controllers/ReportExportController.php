@@ -80,4 +80,31 @@ class ReportExportController extends Controller
             fclose($handle);
         }, 200, $headers);
     }
+
+    public function receiptCsv($id)
+    {
+        $payment = Payment::findOrFail($id);
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="receipt_' . $payment->receipt_number . '.csv"',
+        ];
+        $columns = ['Receipt #', 'Invoice #', 'Payer', 'Amount Paid', 'Date Paid', 'Payment Mode', 'Status', 'Coffee Type', 'Description', 'Recipient Name'];
+        return new StreamedResponse(function () use ($payment, $columns) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, $columns);
+            fputcsv($handle, [
+                $payment->receipt_number,
+                optional($payment->invoice)->invoice_number,
+                $payment->payer,
+                $payment->amount_paid,
+                $payment->date_paid,
+                $payment->payment_mode,
+                $payment->status,
+                $payment->coffee_type,
+                $payment->payment_description,
+                $payment->recipient_name,
+            ]);
+            fclose($handle);
+        }, 200, $headers);
+    }
 } 

@@ -56,6 +56,12 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
 Route::get('/home/report',[ReportController::class,'index'])->name('reports');
+
+// Transporter Delivery Dashboard
+Route::get('/deliveries/transporter', function () {
+    return view('deliveries.transporter-dashboard');
+})->name('deliveries.transporter');
+
 Route::resource('deliveries', DeliveryController::class);
 Route::get('/home/orders', [OrderController::class, 'index'])->name('orders');
 Route::resource('invoices', InvoiceController::class);
@@ -180,19 +186,9 @@ Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.sto
 // ipmorter dashboard routes
 Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
 Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
+});
 
 
-
-
-
-}
-
-);
-
-// Transporter Delivery Dashboard
-Route::get('/deliveries/transporter', function () {
-    return view('deliveries.transporter-dashboard');
-})->name('deliveries.transporter');
 
 // Vendor Transactions Dashboard
 Route::get('/transactions/vendor', function () {
@@ -200,4 +196,37 @@ Route::get('/transactions/vendor', function () {
 })->name('transactions.vendor');
 
 Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
+Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
+Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
+
+Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
+Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
+Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
+
+Route::get('/drivers/create', function () {
+    return view('drivers.create');
+})->name('drivers.create');
+
+Route::get('/deliveries/{id}', function ($id) {
+    $delivery = \App\Models\Delivery::findOrFail($id);
+    return view('deliveries.show', compact('delivery'));
+})->name('deliveries.show');
+
+Route::post('/drivers/store', function (\Illuminate\Http\Request $request) {
+    $validated = $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'phone' => 'nullable',
+        'address' => 'nullable',
+    ]);
+    $user = new \App\Models\User();
+    $user->name = $validated['name'];
+    $user->email = $validated['email'];
+    $user->phone = $validated['phone'] ?? null;
+    $user->address = $validated['address'] ?? null;
+    $user->role = 'driver';
+    $user->password = bcrypt('password');
+    $user->save();
+    return redirect()->route('drivers.create')->with('success', 'Driver added successfully!');
+})->name('drivers.store');
 
