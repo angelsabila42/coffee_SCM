@@ -55,9 +55,19 @@ class ChatController extends Controller
 
     public function store(Request $request, $conversationId)
     {
-        $request->validate([
+        $validator = \Validator::make($request->all(), [
             'message' => 'required|string|max:1000'
         ]);
+
+        if ($validator->fails()) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'status' => 'error',
+                    'errors' => $validator->errors()->all()
+                ], 422);
+            }
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $conversation = Conversation::where('id', $conversationId)
             ->where(function($query) {
@@ -83,6 +93,9 @@ class ChatController extends Controller
             'sender_type' => User::class,
             'message' => $request->message
         ]);
+
+        // Broadcast the message event
+        event(new \App\Events\MessageSent($message));
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([

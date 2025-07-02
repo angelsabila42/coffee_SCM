@@ -181,13 +181,7 @@ Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.sto
 Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
 Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
 
-
-
-
-
-}
-
-);
+});
 
 // Transporter Delivery Dashboard
 Route::get('/deliveries/transporter', function () {
@@ -202,8 +196,16 @@ Route::get('/transactions/vendor', function () {
 Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
 
 
-    Route::get('/chat', [ChatController::class, 'index'])->name('chat.  index');
+// --- Chat Routes (must be authenticated) ---
+Route::middleware('auth')->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat');
     Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
     Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
     Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
     Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+});
+
+// Session keep-alive route for AJAX ping (prevents session expiry during chat)
+Route::get('/keep-alive', function () {
+    return response()->json(['alive' => true]);
+})->middleware('auth');

@@ -52,7 +52,7 @@
              </a>
         </li>
              <li class="sidebar-item">
-             <a href="#" class="sidebar-link">
+             <a href="{{ route('chat') }}" class="sidebar-link">
              <i class="nc-icon nc-chat-round"></i>
              <span>Chat</span>
              </a>

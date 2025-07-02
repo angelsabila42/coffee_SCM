@@ -338,7 +338,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                // Detect if response is HTML (not JSON)
+                const contentType = response.headers.get('content-type') || '';
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+                if (contentType.includes('application/json')) {
+                    return response.json();
+                } else {
+                    // Likely a session timeout or error page
+                    throw new Error('Session expired or server error. Please refresh the page and log in again.');
+                }
+            })
             .then(data => {
                 if (data.message_html) {
                     messagesContainer.insertAdjacentHTML('beforeend', data.message_html);
@@ -347,11 +359,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     scrollToBottom();
                 } else if (data.redirect) {
                     window.location.href = data.redirect;
+                } else if (data.status === 'error' && data.errors) {
+                    alert('Error: ' + data.errors.join('\n'));
                 }
             })
             .catch(error => {
                 console.error('Error sending message:', error);
+                // Try to detect common auth/session errors
+                let msg = error.message || '';
+                // Show the full error in an alert for debugging
+                alert('Debug info (show this to your developer):\n' + msg);
+                if (msg.includes('419') || msg.toLowerCase().includes('csrf')) {
+                    alert('Your session has expired (CSRF error). Please refresh the page and try again.');
+                } else if (msg.includes('401')) {
+                    alert('You are not authenticated. Please log in again.');
+                } else if (msg.includes('403')) {
+                    alert('You are not authorized to send messages in this conversation.');
+                } else {
+                    alert('Send failed: ' + msg);
+                }
             });
+
         });
 
         messageInput.addEventListener('keydown', function(e) {
