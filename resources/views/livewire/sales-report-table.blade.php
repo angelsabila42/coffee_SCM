@@ -19,9 +19,11 @@
                              2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
                             </svg>
                         </button>
+
+                    <!--generate Report Button-->    
                     </div>
-                    <button class="btn btn-success btn-fill btn-sm"><i class="fa-solid fa-plus pt-1 mr-3"></i>Generate Report</button>
-                </div>
+                        <button class="btn btn-success btn-fill btn-sm"><i class="fa-solid fa-plus pt-1 mr-3"></i>Generate Report</button>
+                    </div>
                             <div class="card card-plain table-plain-bg">
                                 <div class="card-header ">
                                     <!--h4 class="card-title">Table on Plain Background</h4>

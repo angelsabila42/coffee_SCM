@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\V1;
+
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\importerModel;
 use Illuminate\Http\Request;
@@ -13,8 +15,6 @@ class ImporterModelController extends Controller
     return view('auth.importer');
  }
 
-
-    
      public function store(Request $req){
 
     $validated = $req->validate([
@@ -22,8 +22,8 @@ class ImporterModelController extends Controller
         'email' => 'required|email|unique:importer_models,email',
         'password' => ['required','confirmed','min:8'],
         'country' => '',
-         'address' => '',
-          'phone_number' => 'required|regex:/^07[0-9]{8}$/',
+        'address' => '',
+        'phone_number' => 'required|regex:/^07[0-9]{8}$/',
          
         
 

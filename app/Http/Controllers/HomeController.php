@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $orders = DB::table('incoming_orders')
+                  ->count();
+        $partners = DB::table('importer_models')
+                  ->count(); 
+        $income = DB::table('payments')
+                  ->count();
+        $deliveries = DB::table('deliveries')
+                  ->count(); 
+
+        return view('Dashboards.home', [
+            'order'=> $orders,
+            'partners' => $partners,
+            'income' => $income,
+            'deliveries' => $deliveries
+        ]);
     }
 }

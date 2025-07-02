@@ -9,7 +9,7 @@ class importerModel extends Model
 {
   use HasFactory;
       protected $fillable = [
-          'name',
+        'name',
         'email',
         'password',
          'country',
@@ -17,4 +17,8 @@ class importerModel extends Model
         'address',
         'confirm password',
      ];
+
+     public function incoming_order(){
+        return $this->hasMany(IncomingOrder::class);
+    }
 }

@@ -25,20 +25,7 @@ class Helper{
         return $prefix.'-'.$zeros.$last_number;  
        
     }
-
-    /*if (!function_exists('changeBadgeStatus')){
-      
-         function changeBadgeStatus(string $status):string{
-           return match (ucfirst(strtolower('status')){
-            'Requested' => 'badge-primary',
-            'Pending' => 'badge-warning',
-            'Cancelled' => 'badge-danger',
-            'Delivered' => 'badge-secondary',
-            'Accepted' => 'badge-success'
-           }
-)
-         }
-
-    }*/
 }
+
+
 ?>

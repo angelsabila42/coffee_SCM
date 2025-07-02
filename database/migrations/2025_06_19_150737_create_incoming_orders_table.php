@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('coffeeType');
             $table->string('status');
             $table->date('deadline');
-            $table->string('Grade');
+            $table->string('grade');
             $table->string('destination');
             $table->foreignId('importer_model_id')->constrained()->onDelete('cascade');    
 

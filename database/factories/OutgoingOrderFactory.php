@@ -20,7 +20,7 @@ class OutgoingOrderFactory extends Factory
     {
         return [
             'quantity'=> fake()->numberBetween(100,1000),
-            'status'=> fake()->randomElement(['Pending','Confirmed','Delievered','Requested','Cancelled']),
+            'status'=> fake()->randomElement(['Pending','Confirmed','Delivered','Requested','Cancelled']),
             'deadline'=> fake()->dateTimeBetween('now','+2 weeks'),
             'coffeeType'=> fake()->randomElement(['Arabica','Robusta']),
             'vendor_id'=> Vendor::inRandomOrder()->first()->id,

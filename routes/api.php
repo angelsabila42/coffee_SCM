@@ -14,6 +14,8 @@ Route::get('/user', function (Request $request) {
 Route::prefix('v1')->group(function(){
     Route::get('vendor/dropdown',[VendorController::class, 'dropdown']);
     Route::get('work-center/dropdown',[WorkCenterController::class, 'dropdown']);
+    Route::get('outgoing-order/dropdown',[OutgoingOrderController::class, 'dropdown']);
+    Route::get('incoming-order/dropdown',[IncomingOrderController::class, 'dropdown']);
     Route::apiResource('incoming-order',IncomingOrderController::class);
     Route::apiResource('outgoing-order',OutgoingOrderController::class);
     Route::apiResource('vendor',VendorController::class);

@@ -72,12 +72,43 @@ document.addEventListener('alpine:init', ()=>{
         }
     }));
 
-    Alpine.data('orderModal',() => ({
+    Alpine.data('advancedFilter', () => ({
+        showFilter: false,
+        selectedCountry: '',
+        selectedGrade: '',
+        grades: [],
+        countries: [],
+
+        async init(){
+            try{
+            const countryRes = await fetch('/api/v1/incoming-order/dropdown');                
+            const countryData = await countryRes.json();
+            this.countries = countryData.data;
+
+            console.log(this.countries);
+
+            }catch(error){
+                console.error('Fetch request failed', error);
+            }
+        },
+
+        toggle(){
+            this.showFilter = !this.showFilter;
+        }
+
+    }))
+
+
+    Alpine.data('adminOrderModal',() => ({
         showModal: false,
         selectedVendor: '',
+        selectedCountry: '',
+        selectedGrade: '',
         selectedType: '',
         selectedCenter: '',
         typeNames: ['Arabica', 'Robusta'],
+        grades: ['A','B', 'C', 'screen 8'],
+        countries: [],
         vendors: [],
         centers: [],
 
@@ -85,15 +116,19 @@ document.addEventListener('alpine:init', ()=>{
             try{
             const vendorRes = await fetch('/api/v1/vendor/dropdown');
             const centerRes = await fetch('/api/v1/work-center/dropdown');
+            const countryRes = await fetch('/api/v1/incoming-order/dropdown');                
 
             const vendorData = await vendorRes.json();
             const centersData = await centerRes.json();
+            const countryData = await countryRes.json();
 
             this.vendors = vendorData.data;
             this.centers = centersData.data;
+            this.countries = countryData.data;
 
             console.log(this.vendors);
             console.log(this.centers);
+            console.log(this.countries);
 
             }catch(error){
                 console.error('Fetch request failed', error);
@@ -103,6 +138,40 @@ document.addEventListener('alpine:init', ()=>{
             this.selectedCenter= '';
             this.selectedType= '';
             this.selectedVendor= '';
+        });
+
+        }
+
+    }));
+
+    Alpine.data('importerOrderModal',() => ({
+        showModal: false,
+        selectedDestination: '',
+        selectedGrade: '',
+        selectedType: '',
+        typeNames: ['Arabica', 'Robusta'],
+        grades: ['A','B', 'C', 'screen 8'],
+        destination: [],
+
+
+        async init(){
+            try{
+            const destinationRes = await fetch('/api/v1/incoming-order/dropdown');                
+
+            const countryData = await countryRes.json();
+
+            this.countries = countryData.data;
+
+            console.log(this.countries);
+
+            }catch(error){
+                console.error('Fetch request failed', error);
+            }
+
+            window.addEventListener('reset-alpine-dropdown', () => {
+            this.selectedGrade= '';
+            this.selectedType= '';
+            this.selectedCountry= '';
         });
 
         }
@@ -135,9 +204,17 @@ document.addEventListener('alpine:init', ()=>{
         showTab2: false,
     }));
 
-    Alpine.data('badge',() => ({
-        badges: ['Pending', 'Delivered', 'Confirmed', 'Cancelled', 'Requested']
-    }))
-
-
 })
+
+/*document.addEventListener('livewire:load', () => {
+    Livewire.on('show-toast', (message) => {
+    window.dispatchEvent(new CustomEvent('show-toast', {
+        detail: { message }
+    }));
+});
+});
+
+window.addEventListener('show-toast', e => {
+    alert(e.detail.message);
+});*/
+
