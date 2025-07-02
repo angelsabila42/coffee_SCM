@@ -6,11 +6,24 @@ use App\Models\transporter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+use App\Models\Invoice;
+use App\Models\Payment;
+
+use App\Models\Notification;
+
+
 class transporterController extends Controller
 {
     
  public function transporter(){
     return view('auth.transporter');
+ }
+
+ public function transactions(){
+
+        $invoices = Invoice::paginate(5);
+          $payments = Payment::paginate(5);
+    return view('transporter_transactions', compact('invoices', 'payments'));
  }
 
 

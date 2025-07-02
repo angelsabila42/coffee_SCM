@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\V1\VendorController;
-use App\Http\Controllers\staffController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\transporterController;
-
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Vendor\VendorHomeController;
 
@@ -44,10 +44,11 @@ use App\Http\Controllers\Vendor\VendorOrderController;
 
 //use App\Models\inventory;
 
+use App\Http\Controllers\InvoiceExportController;
 
-Route::get('/vendor', function () {
-    return view('auth.vendor');
-})->name('vendor');
+Route::get('/home', function () {
+    return view('index');
+})->name('index');
 Route::get('/', [HomeController::class, 'index'])->name('index');
 
 Route::get('/', function () {
@@ -71,6 +72,14 @@ Route::get('/home/orders', [OrderController::class, 'index'])->name('orders');
 Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
 Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
 Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
+
+
+// Transporter Delivery Dashboard
+Route::get('/deliveries/transporter', function () {
+    return view('deliveries.transporter-dashboard');
+})->name('deliveries.transporter');
+
+Route::resource('deliveries', DeliveryController::class);
 
 /*transactions Routes*/
 Route::resource('invoices', InvoiceController::class);
@@ -192,10 +201,93 @@ Route::get('/stock/{id}',[InventoryController::class,'geor'])->name('stock');
 Route::get('/transporter', function () {
     return view('transporter');
 });
+Route::get('/editprofile', function () {
+    return view('editprofile');
+});
+Route::get('/transporter',[DeliveryController::class,'merc']);
+Route::delete('/transporter/{id}',[DeliveryController::class,'dismiss'])->name('transporter.dismiss');
+
+//editing profile
+Route::get('/editprofile',[ProfileController::class,'edit'])->name('editprofile');
+Route::post('/editprofile',[ProfileController::class,'update'])->name('editprofile');
+Route::post('/editprofile',[ProfileController::class,'changePassword'])->name('editprofile');
+// end of Arnest added
+
 
 Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
 
-}
 
-);
+// importer  routes
+Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
+Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
 
+Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
+});
+
+
+//transporter transactions
+Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');
+
+
+
+// Transporter Delivery Dashboard
+Route::get('/deliveries/transporter', function () {
+    return view('deliveries.transporter-dashboard');
+})->name('deliveries.transporter');
+
+// Vendor Transactions Dashboard
+Route::get('/transactions/vendor', function () {
+    return view('transactions.vendor-dashboard');
+})->name('transactions.vendor');
+
+Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
+Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
+Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
+
+Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
+Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
+Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
+
+Route::get('/drivers/create', function () {
+    return view('drivers.create');
+})->name('drivers.create');
+
+Route::get('/deliveries/{id}', function ($id) {
+    $delivery = \App\Models\Delivery::findOrFail($id);
+    return view('deliveries.show', compact('delivery'));
+})->name('deliveries.show');
+
+Route::post('/drivers/store', function (\Illuminate\Http\Request $request) {
+    $validated = $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'phone' => 'nullable',
+        'address' => 'nullable',
+    ]);
+    $user = new \App\Models\User();
+    $user->name = $validated['name'];
+    $user->email = $validated['email'];
+    $user->phone = $validated['phone'] ?? null;
+    $user->address = $validated['address'] ?? null;
+    $user->role = 'driver';
+    $user->password = bcrypt('password');
+    $user->save();
+    return redirect()->route('drivers.create')->with('success', 'Driver added successfully!');
+})->name('drivers.store');
+
+Route::resource('drivers', \App\Http\Controllers\DriverController::class);
+
+
+// --- Chat Routes (must be authenticated) ---
+Route::middleware('auth')->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat');
+    Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
+    Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+});
+
+// Session keep-alive route for AJAX ping (prevents session expiry during chat)
+Route::get('/keep-alive', function () {
+    return response()->json(['alive' => true]);
+})->middleware('auth');

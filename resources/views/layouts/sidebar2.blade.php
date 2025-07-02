@@ -8,5 +8,7 @@
         <i id="icon" :class = "isExpanded ? 'bx bxs-chevrons-left' : 'bx bxs-chevrons-right'"> </i>
     </button>
     </div>
+
     @yield('sidebar-item')
+
 </aside>

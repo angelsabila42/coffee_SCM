@@ -1,2 +1,5 @@
 @extends('layouts.app')
-@section('page-title', 'Transporters Dashboard')
+@section('page-title', 'Transporter')
+@section('content')
+@include('layouts.transporters-content')
+@endsection

@@ -1,0 +1,83 @@
+[33md580bd6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Remove sensitive information from README.md
+[33m22bbf6d[m Add Transporter Delivery and Vendor Transactions features
+[33m3bcda97[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'main' of https://github.com/angelsabila42/coffee_SCM
+[33m585eef2[m uncommented
+[33mefdacbe[m Merge pull request #22 from angelsabila42/erne
+[33m646f7da[m[33m ([m[1;31morigin/erne[m[33m)[m added new changes
+[33mf04591e[m[33m ([m[1;31morigin/feature_dashboard[m[33m)[m Deleted and rebuilt lock files
+[33m1df5378[m Rebuilt lock files after conflict
+[33m5c02a56[m Merge pull request #21 from angelsabila42/feature_orders
+[33mf133cbd[m[33m ([m[1;31morigin/feature_orders[m[33m)[m Merge branch 'main' into feature_orders
+[33md5d4c6d[m ixed Pagination issue
+[33m74ef414[m Merged  and resolved conflicts
+[33m6b60476[m[33m ([m[1;31morigin/IAM[m[33m)[m commit 1
+[33m817b6fe[m Merge pull request #19 from angelsabila42/chatadmin
+[33mee7154c[m[33m ([m[1;31morigin/chatadmin[m[33m)[m Merge branch 'main' into chatadmin
+[33m9f1e455[m more changes
+[33m3c26a13[m Merge pull request #16 from angelsabila42/my_branch5
+[33m102bfd6[m[33m ([m[1;31morigin/my_branch5[m[33m)[m Merge branch 'main' into my_branch5
+[33m9e2b11c[m Merge pull request #17 from angelsabila42/feature_orders
+[33mf563bfa[m Merge branch 'main' into feature_orders
+[33m5f54de7[m Merge branch 'main' into my_branch5
+[33m8b75d93[m Merge pull request #18 from angelsabila42/chatadmin
+[33m584a0c8[m eddited the cards
+[33m5490706[m Set up API routes, fixed the create order modal and sidebar
+[33m0b168db[m i edited the nav bar and worked on the inventory pages
+[33mbc6f21d[m Merge pull request #15 from angelsabila42/chatadmin
+[33m16e5ec9[m made some changes to buttons
+[33m2c2d831[m created middleware files
+[33ma2893f2[m edited git.ignore
+[33m51615b3[m Merge branch 'main' of https://github.com/angelsabila42/coffee_SCM
+[33mcd05278[m staff model
+[33m27a0eac[m Resolved merge conflicts
+[33m998e08e[m Added laravel Sanctum
+[33md0519a5[m Merge pull request #12 from angelsabila42/pr-11
+[33ma5b6a56[m[33m ([m[1;31morigin/pr-11[m[33m)[m resoved all the conflicts
+[33m8a2258d[m yap
+[33m553e9ba[m Merge pull request #10 from angelsabila42/work-distribution
+[33m9ef2cbd[m Merge pull request #8 from angelsabila42/my_branch4
+[33mef2c3e5[m[33m ([m[1;31morigin/my_branch4[m[33m)[m more changes on the inventory
+[33m6752c85[m breeze
+[33ma635c8e[m[33m ([m[1;31morigin/work-distribution[m[33m)[m edit and assign button and more clickable staff rows
+[33m61a575b[m Merge pull request #7 from angelsabila42/prototype_1
+[33m274157c[m[33m ([m[1;31morigin/prototype_1[m[33m)[m Added database tables
+[33m33f5d2c[m Added database tables
+[33m90183af[m Merge branch 'prototype_1' Current State
+[33m2c08421[m Current State
+[33m17804c9[m Merge pull request #6 from angelsabila42/IAM
+[33mef77c9d[m Merge branch 'main' into IAM
+[33m3b74669[m Update web.php
+[33m2e3dcfc[m Solved merge conflicts
+[33mda6adc5[m work assignment table, leave history table and staff
+[33m69d9d10[m Solved merge conflicts
+[33m68e0aa0[m Merge pull request #5 from angelsabila42/IAM
+[33mcb11e6a[m Merge branch 'main' into IAM
+[33m5a7b54a[m removed the pop up messages
+[33mecf2a4b[m Solved merge conflicts
+[33m3f8e9a1[m[33m ([m[1;31morigin/feature_report_02[m[33m)[m Added a second sidebar option and reports table, set up structure of dashboard
+[33mbda8dde[m Merge branch 'main' of https://github.com/angelsabila42/coffee_SCM
+[33mb833338[m feat: Implement OrderController and create orders index view with invoices and payments tables
+[33me5c4041[m Update auth.blade.php
+[33mdb921f4[m curerntly
+[33m9465d60[m Merge pull request #3 from angelsabila42/my_branch3
+[33m17281e8[m[33m ([m[1;31morigin/my_branch3[m[33m)[m Merge branch 'main' into my_branch3
+[33m2ba712d[m changed table structure
+[33m88d144f[m feat: Add login and logout routes with corresponding controller actions
+[33m14c8832[m resolved merge conflict and added staff + work assignment views
+[33m7b6c101[m tables for workdistribution
+[33m0f1613d[m Update web.php
+[33m3ad2541[m tables for workdistribution
+[33mb50d895[m Fixed merge conflicts
+[33m6935d0b[m Fixed a merge error
+[33mbd1285d[m[33m ([m[1;31morigin/feature_reports[m[33m)[m Added the table
+[33m6efa536[m Merge branch 'main' of https://github.com/angelsabila42/coffee_SCM
+[33mdf2d0d9[m feat: Add invoice, invoice items, and payment management features
+[33m225e65b[m Merge pull request #1 from angelsabila42/my_branch i have added some pages
+[33mfb7c556[m this is it sofar
+[33m2d6e529[m[33m ([m[1;31morigin/my_branch[m[33m)[m added oreder pages
+[33mc09b142[m[33m ([m[1;31morigin/feature_components[m[33m)[m Installed Laravel Livewire, modified the dashboard slightly
+[33m0867dcf[m[33m ([m[1;31morigin/tabitha_feature_analytics[m[33m)[m Added an analytics page and customised it
+[33mec39c7e[m[33m ([m[1;31morigin/chat[m[33m)[m Set up light Bootstrap and configured it
+[33mda1e9c4[m Merge remote README into Laravel project(main)
+[33m2f19e53[m Initial commit with Laravel project files
+[33m49b09c6[m Initial commit

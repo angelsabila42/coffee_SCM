@@ -76,43 +76,38 @@
 
         <div class="main-panel">
             <!-- Navbar -->
-           <nav class="navbar navbar-expand-lg " color-on-scroll="500">
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <ul class="nav navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <!--the company log will go here or at top of the side bar-->
-                            </li>
-                            <li class="dropdown nav-item">
-                                <input type="text" placeholder="Search" style="border-radius: 30px">
-                            </li> 
-                        </ul>
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item">
-                                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                                    <i class="fas fa-bell"></i>
-                                    <span class="notification">5</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <span>Arnest</span>
-                                <a class="nav-link" href="#pablo">
-                                    <img src="" alt="profile pic">
-                                    {{-- <span class="no-icon">Log out</span> --}}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+          @include('layouts.nav')
             <!-- End Navbar -->
             <!--cards--> 
             <h3>Inventory Management</h3>
-            <div class="row g-4 mb-4">
-                 <div class="col-md-3"><div class="card"><div class="crad" ><strong>{{$belowMinimumCount}}</strong><br>Blelow Minimum</div></div></div>
-                 <div class="col-md-3"><div class="card"><div class="crad"><strong>{{$totalStock}}kg</strong><br>Total Stock</div></div></div>
-                 <div class="col-md-3"><div class="card"><div class="crad"><strong>{{$totalWarehouses}}</strong><br>Warehouses</div></div></div>
+           <div class="row mb-4">
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                   {{-- Dynamically get below minimum count--}} 
+                    <p>Blelow Minimum</p>
+                    <h3>{{$belowMinimumCount}}</h3> 
+                </div>
             </div>
+        </div>
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    {{-- Dynamically get total quantity count --}}
+                    <p>Total Stock</p>
+                    <h3>{{$totalStock}}kg</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col" >
+            <div class="card ">
+                <div class="card-body">
+                   <p>Warehouses</p>
+                   <h3>{{$totalWarehouses}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
   <div class="content">
                 
       <div class="top-controls">
@@ -141,10 +136,11 @@
                     <form method="GET" action="{{url('/inventory')}}"class="mb-3">
                         <input type="text" name="search" class="form-control" placeholder="search..."
                         value="{{$search ?? ''}}">
-                    </form>
-                    {{-- <p> searched: <strong>{{ $search ?? 'Nothing '}}</strong></p> --}}
+                    </form> 
                 </div>
-                            <div class="card card-plain table-plain-bg">
+                <p>Robusta in stock: {{ $robustaStock }} kg</p>
+                <p>Arabica in stock: {{ $arabicaStock }} kg</p>
+                    <div class="card card-plain table-plain-bg">
                                 <div class="card-header ">
                                     <!--h4 class="card-title">Table on Plain Background</h4>
                                     <p class="card-category">Here is a subtitle for this table</p-->
@@ -175,8 +171,7 @@
                                                 <td>{{$item->last_updated}}</td>
                                                 <td>
                                                     <form action="{{route('inventory.destroy', $item->id)}}"
-                                                          method="POST" onsubmit="return confirm('Are you sure you want to 
-                                                          deletethis record?');">
+                                                          method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
                                                        @csrf
                                                        @method('DELETE')
                                                        <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>

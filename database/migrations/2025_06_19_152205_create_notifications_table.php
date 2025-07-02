@@ -17,15 +17,8 @@ return new class extends Migration
             $table->timestamps();
             $table->boolean('is_read');
             $table->text('message');
-            $table->foreignId('staff_id')->constrained('staff')->onDelete('cascade');
-            $table->foreignId('vendor_id')->constrained('vendor')->onDelete('cascade');
-            $table->foreignId('transporters_id')->constrained()->onDelete('cascade');
-            $table->foreignId('importer_model_id')->constrained()->onDelete('cascade');
-            $table->foreignId('invoice_id')->constrained()->onDelete('cascade');
-            $table->foreignId('payment_id')->constrained()->onDelete('cascade');
-            $table->foreignId('incoming_order_id')->constrained()->onDelete('cascade');
-            $table->foreignId('outgoing_order_id')->constrained()->onDelete('cascade');
-            $table->foreignId('delivery_id')->constrained()->onDelete('cascade');
+            $table->string('type'); //eg delivery inventory etc
+           
            
         });
     }
