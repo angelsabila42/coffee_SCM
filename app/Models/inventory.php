@@ -9,7 +9,7 @@ class inventory extends Model
     protected $fillable=[
         'coffee_type',
         'grade',
-        'garehouse_name',
+        'warehouse_name',
         'quantity',
         'threshold',
         'status',

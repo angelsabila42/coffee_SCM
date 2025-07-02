@@ -100,11 +100,28 @@ class DeliveryController extends Controller
         return redirect()->route('deliveries.index')->with('success', 'Delivery request deleted successfully!');
     }
 
+ public function merc()
+    {
+     $deliveries = Delivery::all();
+     $pending = Delivery::where('status', 'pending')->count();
+     $completed = Delivery::where('status', 'completed')->count();
+     $delayed = Delivery::where('status', 'delayed')->count();
+     $active = Delivery::where('status', 'active')->count();
+        return view('transporter', compact('pending', 'completed', 'delayed', 'active', 'deliveries', ));
+    }
+      public function dismiss($id){
+        $delivery = Delivery::findOrFail($id);
+        $delivery->delete();
+        return 
+        redirect()->back()->with('success', 'Record deleted successfully.');
+    } 
+
+
     /**
      * Display the transporter dashboard.
      */
     public function transporterDashboard()
     {
         return view('deliveries.transporter-dashboard');
-    }
+  
 }
