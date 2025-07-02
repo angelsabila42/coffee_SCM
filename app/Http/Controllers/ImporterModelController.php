@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\IncomingOrder;
+use App\Models\Payment;
 use App\Models\User;
 use App\Models\importerModel;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,10 +13,17 @@ class ImporterModelController extends Controller
 {
 
 
+    public function payments(){
+        return view('importer_payments');
+    }
+
+
+
      
 
     public function index(){
-          $orders = IncomingOrder::paginate();
+          $orders = IncomingOrder::paginate(6);
+
 
           $ordersSent = IncomingOrder::count();
           $pending = IncomingOrder::where('status', 'Pending')->count();
@@ -22,6 +31,14 @@ class ImporterModelController extends Controller
           $delivered = IncomingOrder::where('status', 'Delievered')->count();
         return view ('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
     }
+   
+    public function transactions(){
+
+        $invoices = Invoice::paginate(5);
+          $payments = Payment::paginate(5);
+    return view('importer_transactions', compact('invoices', 'payments'));
+ }
+      
     
  public function importer(){
     return view('auth.importer');

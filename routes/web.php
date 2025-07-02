@@ -177,14 +177,15 @@ Route::get('/transporter', function () {
 
 Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
 
-// ipmorter dashboard routes
+// importer  routes
 Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
+Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
+
 Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
 
 
-
-
-
+//transporter transactions
+Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');
 }
 
 );

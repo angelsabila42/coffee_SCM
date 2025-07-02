@@ -16,11 +16,11 @@
         </div>
         <div class="col ">
             <div class="card ">
-                <div class="card-body rounded d-flex ">
+                <div class="card-body rounded d-flex bg-primary text-white">
                     {{-- Dynamically get absent staff count --}}
                     
                     <div class="mx-3">
-                        <span >Pending</span>
+                        <span class="fw-bold" >Pending</span>
                     <h3>{{ $pending }}</h3>
                     </div>
                     <i class="fa-solid fa-spinner"></i>
@@ -29,7 +29,7 @@
         </div>
         <div class="col" >
             <div class="card ">
-                <div class="card-body d-flex justify-content-column ">
+                <div class="card-body d-flex justify-content-column bg-info ">
                     
                    <div class="mx-2">
                       <p class="fw-bold ">In transit</p>
@@ -43,10 +43,10 @@
         </div>
         <div class="col">
             <div class="card ">
-                <div class="card-body d-flex">
+                <div class="card-body d-flex text-white bg-success">
                     <div class="mx-2">
                     {{-- Dynamically get present staff count --}}
-                    <p>Delivered</p>
+                    <p class="fw-bold ">Delivered</p>
                     <h3>{{ $delivered }}</h3>
                     </div>
                 <i class="fa-solid fa-thumbs-up"></i>
@@ -76,13 +76,13 @@
                 <table class="table table-hover table-bordered">
                     <thead class="bg-ligh bg-dark ">
                         <tr>
-                        <th class="font-weight-bold text-white bg-dark">OrderID</th>
-                        <th class="text-amber text-white bg-dark">Coffee Type</th>
-                        <th class="text-amber text-white bg-dark">Quantity</th>
-                        <th class="text-amber text-white bg-dark">Status</th>
-                        <th class="text-amber text-white bg-dark">Order date</th>
-                        <th class="text-amber text-white bg-dark">Last update</th>
-                        <th class="text-amber text-white bg-dark">Actions</th>
+                        <th class="font-weight-bold text-white bg-dark fs-5 rounded-pill">OrderID</th>
+                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Coffee Type</th>
+                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Quantity</th>
+                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Status</th>
+                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Order date</th>
+                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Last update</th>
+                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,7 +101,7 @@
                             @csrf
                             @method('DELETE')
                             </form>
-                            <button class="btn btn-sm btn-danger" onclick="confirmDelete('{{ $order->id }}')">Delete</button>
+                            <button class="btn btn-sm btn-danger" onclick="confirmDelete('{{ $order->id }}')"><i class="fa-solid fa-trash"></i></button>
                           
                         </td>
                     </tr>
