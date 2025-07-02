@@ -3,18 +3,18 @@
         <div class="col">
             <div class="card ">
                 <div class="card-body">
-                   {{-- Dynamically get total staff count --}}
+                   {{-- Dynamically get active deliveries count --}}
                     <p>Active Deliveries</p>
-                    <h3>3</h3> 
+                    <h3>{{$active}}</h3> 
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="card ">
                 <div class="card-body">
-                    {{-- Dynamically get absent staff count --}}
+                    {{-- Dynamically get pending deliveries count --}}
                     <p>Pending Deliveries</p>
-                    <h3>4</h3>
+                    <h3>{{$pending}}</h3>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
             <div class="card ">
                 <div class="card-body">
                    <p>Completed</p>
-                   <h3>4</h3>
+                   <h3>{{$completed}}</h3>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
             <div class="card ">
                 <div class="card-body">
                     <p>Delayed</p>
-                    <h3>4</h3>
+                    <h3>{{$delayed}}</h3>
                 </div>
             </div>
         </div>
@@ -66,16 +66,26 @@
                         <th>Actions</th>
                     </thead>
                     <tbody>
+                    @foreach($deliveries as $item)
                     <tr>
-                        <td>NX-009</td>
-                        <td>Arabica</td>
-                        <td>3000kg</td>
-                        <td>Mbale</td>
-                        <td>Mombasa</td>
-                        <td>Acccepted</td>
-                        <td>2025-09-05</td>
-                        <td>Deleted</td>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$item->coffee_type}}</td>
+                        <td>{{$item->quantity}}</td>
+                        <td>{{$item->pickup_location}}</td>
+                        <td>{{$item->delivery_destination}}</td>
+                        <td>{{$item->status}}</td>
+                        <td>{{$item->date_ordered}}</td>
+                        <td>
+                            <form action="{{route('transporter.dismiss', $item->id)}}"
+                                method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+
+                        </td>
                     </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

@@ -173,6 +173,18 @@ Route::get('/stock/{id}',[InventoryController::class,'geor'])->name('stock');
 Route::get('/transporter', function () {
     return view('transporter');
 });
+Route::get('/editprofile', function () {
+    return view('editprofile');
+});
+Route::get('/transporter',[DeliveryController::class,'merc']);
+Route::delete('/transporter/{id}',[DeliveryController::class,'dismiss'])->name('transporter.dismiss');
+
+//editing profile
+Route::get('/editprofile',[ProfileController::class,'edit'])->name('editprofile');
+Route::post('/editprofile',[ProfileController::class,'update'])->name('editprofile');
+Route::post('/editprofile',[ProfileController::class,'changePassword'])->name('editprofile');
+// end of Arnest added
+
 
 Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
 

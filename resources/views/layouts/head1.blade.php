@@ -17,7 +17,7 @@
 
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" />
     <link href="{{asset('assets/css/light-bootstrap-dashboard.css?v=2.0.0')}}" rel="stylesheet" />
-     <link href="{{asset('assets/css/custom.css1')}}" rel="stylesheet"> 
+     <link href="{{asset('assets/css/custom1.css')}}" rel="stylesheet"> 
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])

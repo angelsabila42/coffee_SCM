@@ -30,9 +30,9 @@ class InventoryController extends Controller
  $search = $request->input('search');
 //   dd($search);
         $inventories = \App\Models\inventory::query()->when($search, function ($query, $search){
-           $query->where('coffee_type', 'like', "%{search}%")
-            ->orwhere('warehouse_name', 'like', "%{search}%")
-            ->orwhere('grade', 'like', "%{search}%");
+           $query->where('coffee_type', 'like', "%{$search}%")
+            ->orwhere('warehouse_name', 'like', "%{$search}%")
+            ->orwhere('grade', 'like', "%{$search}%");
         })
         ->get();
         return view('inventory', compact('inventories', 'search'));
@@ -52,21 +52,15 @@ class InventoryController extends Controller
         $belowMinimumCount = inventory::where('status', 'low')->count();
         $totalStock = inventory::sum('quantity');
         $totalWarehouses = inventory::distinct('warehouse_name')->count('warehouse_name');
-        return view('inventory', compact('belowMinimumCount', 'totalStock', 'totalWarehouses', 'inventories'));
+
+        // calculate total stock
+        $robustaStock = inventory::where('coffee_type', 'Robusta')->sum('quantity');
+        $arabicaStock = inventory::where('coffee_type', 'Arabica')->sum('quantity');
+
+        return view('inventory', compact('belowMinimumCount', 'totalStock', 'totalWarehouses', 'inventories', 'robustaStock', 'arabicaStock',));
     }
     public function geor($id){
      $inventory = inventory::findOrFail($id);
      return view('stock', compact('inventory'));
 }
-//     public function index()
-// {
-//     $items = Inventory::all();
-
-//     // Fake static values; ideally pull from DB
-//     $coffeeTypes = ['Robusta', 'Arabica'];
-//     $warehouses = ['Kampala', 'Mbale', 'Mukono', 'Mbarara'];
-
-//     return view('inventory.index', compact('items', 'coffeeTypes', 'warehouses'));
-// }
-
 }
