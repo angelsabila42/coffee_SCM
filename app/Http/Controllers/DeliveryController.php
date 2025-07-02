@@ -99,4 +99,12 @@ class DeliveryController extends Controller
 
         return redirect()->route('deliveries.index')->with('success', 'Delivery request deleted successfully!');
     }
+
+    /**
+     * Display the transporter dashboard.
+     */
+    public function transporterDashboard()
+    {
+        return view('deliveries.transporter-dashboard');
+    }
 }

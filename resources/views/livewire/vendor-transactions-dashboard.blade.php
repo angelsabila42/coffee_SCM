@@ -59,7 +59,10 @@
         </div>
     @elseif($activeTab === 'payments')
         <div class="card">
-            <div class="card-header">Payments</div>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Payments</span>
+                <a href="{{ route('reports.payment.csv') }}" class="btn btn-success btn-sm">Download CSV</a>
+            </div>
             <div class="card-body p-0">
                 <table class="table mb-0">
                     <thead>
@@ -92,7 +95,8 @@
                                 <td>{{ $payment->recipient_name }}</td>
                                 <td>
                                     @if($payment->receipt_file_path)
-                                        <a href="{{ asset('storage/' . $payment->receipt_file_path) }}" class="btn btn-sm btn-success" target="_blank">Download</a>
+                                        <!-- <a href="{{ asset('storage/' . $payment->receipt_file_path) }}" class="btn btn-sm btn-success" target="_blank">Download</a> -->
+                                        <a href="{{ route('reports.receipt.csv', $payment->id) }}" class="btn btn-sm btn-primary ml-1">Download</a>
                                     @else
                                         N/A
                                     @endif

@@ -38,7 +38,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="{{route('deliveries.transporter')}}">
+                        <a class="nav-link" href="{{ route('deliveries.transporter') }}">
                             <i class="nc-icon nc-delivery-fast"></i>
                             <p>Transporter Delivery</p>
                         </a>
