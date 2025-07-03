@@ -20,6 +20,10 @@ class WorkCenter extends Model
     public function outgoingOrder(){
         return $this->hasMany(OutgoingOrder::class);
     }
+
+    public function vendorDispatch(){
+        return $this->belongsTo(WorkCenter::class);
+    }
     /** @use HasFactory<\Database\Factories\WorkCenterFactory> */
     use HasFactory;
 }

@@ -39,6 +39,7 @@ class VendorController extends Controller
         return new VendorResource($vendor);
     }
 
+
     /*public function store(StoreVendorRequest $request){
       return new VendorResource(Vendor::create($request->all()));
 

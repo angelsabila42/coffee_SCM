@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('status')->default('Requested');
             $table->date('deadline');
             $table->string('coffeeType');
+            $table->text('declineReason')->nullable();
             $table->foreignId('vendor_id')->constrained('vendor')->onDelete('cascade'); 
             $table->foreignId('work_center_id')->constrained()->onDelete('cascade');      
             

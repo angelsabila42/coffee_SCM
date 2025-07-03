@@ -34,7 +34,7 @@
                                         </thead>
                                         <tbody>
                                         @foreach($orders as $order)
-                                            <tr wire:key= "{{$order->id}}">
+                                            <tr wire:key= "{{$order->id}}" onclick="window.location= '{{route('vendor.order.show', $order->id)}}' " class="cur">
                                                 <td class=""> {{$order->orderID}} </td>
                                                 <td class=""> {{$order->coffeeType}} </td>
                                                 <td class=""> {{$order->quantity}} </td>
