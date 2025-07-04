@@ -1,36 +1,48 @@
 {{-- summary cards --}}
     <div class="row mb-4">
         <div class="col">
-            <div class="card ">
-                <div class="card-body">
-                   {{-- Dynamically get active deliveries count --}}
-                    <p>Active Deliveries</p>
-                    <h3>{{$active}}</h3> 
+            <div class="card rounded-2 kpi-card ">
+                <div class=" d-flex card-body justify-content-between">
+                  <div >
+                    {{-- Dynamically get active deliveries count --}}
+                       <p>Active Deliveries</p>
+                       <h3>{{$active}}</h3> 
+                  </div>
+                 <i class="fas fa-check-circle text-success stat-icon bg-success-soft"></i>
                 </div>
             </div>
         </div>
         <div class="col">
-            <div class="card ">
-                <div class="card-body">
+            <div class="card rounded-2 kpi-card ">
+                <div class=" d-flex card-body justify-content-between">
+                    <div >
                     {{-- Dynamically get pending deliveries count --}}
-                    <p>Pending Deliveries</p>
-                    <h3>{{$pending}}</h3>
+                       <p>Pending Deliveries</p>
+                       <h3>{{$pending}}</h3>
+                    </div>
+                    <i class="fa-solid fa-clock stat-icon bg-warning-soft"></i>
                 </div>
             </div>
         </div>
         <div class="col" >
-            <div class="card ">
-                <div class="card-body">
-                   <p>Completed</p>
-                   <h3>{{$completed}}</h3>
+            <div class="card rounded-2 kpi-card">
+                <div class=" d-flex card-body justify-content-between">
+                    <div>
+                      <p>Completed</p>
+                      <h3>{{$completed}}</h3>
+                   </div>
+                   <i class="fa-solid fa-circle-check stat-icon bg-success"></i>
                 </div>
             </div>
         </div>
         <div class="col">
-            <div class="card ">
-                <div class="card-body">
-                    <p>Delayed</p>
-                    <h3>{{$delayed}}</h3>
+            <div class="card rounded-2 kpi-card ">
+                <div class=" d-flex card-body justify-content-between">
+                    <div>
+                       <p>Delayed</p>
+                       <h3>{{$delayed}}</h3>
+                    </div>
+                    <i class="fas fa-hourglass-half text-warning stat-icon bg-danger-soft"></i>
                 </div>
             </div>
         </div>
@@ -90,5 +102,6 @@
                 </table>
             </div>
         </div>
+        {{ $deliveries->links('pagination::bootstrap-5') }}
     </div>
 </div>

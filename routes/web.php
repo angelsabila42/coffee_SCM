@@ -216,10 +216,12 @@ Route::post('/editprofile',[ProfileController::class,'changePassword'])->name('e
 
 Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
 
-
+Route::middleware('auth')->group(function(){
 // importer  routes
 Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
 Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
+
+});
 
 Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
 });
