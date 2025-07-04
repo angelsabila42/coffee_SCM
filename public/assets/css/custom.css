@@ -287,10 +287,14 @@ a.sidebar-link:hover{
 .exit{
   background-color:  #800000!important;
   color: #fff !important;
+  border: none;
+  cursor: pointer;
 }
 .save{
   background-color: #808000 !important;
   color: #fff !important;
+  border: none;
+  cursor: pointer;
 }
 
 .cur{

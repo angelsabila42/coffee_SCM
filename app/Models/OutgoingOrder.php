@@ -8,7 +8,7 @@ use App\Helpers\Helper;
 
 class OutgoingOrder extends Model
 {
-    protected $fillable = ['orderID','quantity', 'coffeeType','status','deadline', 'vendor_id', 'work_center_id'];
+    protected $fillable = ['orderID','quantity', 'coffeeType','status','deadline', 'vendor_id', 'work_center_id', 'declineReason'];
 
     public static function booted(){
         static::creating(function($order){
@@ -21,7 +21,7 @@ class OutgoingOrder extends Model
         return match (ucfirst(strtolower($this->status))){
             'Requested' => 'badge-primary',
             'Pending' => 'badge-warning',
-            'Cancelled' => 'badge-danger',
+            'Declined' => 'badge-danger',
             'Delivered' => 'badge-secondary',
             'Confirmed' => 'badge-success',
             default=> 'badge-light'
@@ -39,6 +39,11 @@ class OutgoingOrder extends Model
       public function notification(){
         return $this->belongsTo(Notification::class);
     }
+
+    public function vendorDispatch(){
+        return $this->hasMany(WorkCenter::class);
+    }
+
     /** @use HasFactory<\Database\Factories\OutgoingOrderFactory> */
     use HasFactory;
 }

@@ -47,17 +47,100 @@
 </div>
 
     <!-- Tabs -->
-    <ul class="nav nav-tabs" id="staffTabs" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="staff-tab" data-bs-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="true">Staff</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="work-tab" data-bs-toggle="tab" href="#work" role="tab" aria-controls="work" aria-selected="false">Work Assignment History</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="leave-tab" data-bs-toggle="tab" href="#leave" role="tab" aria-controls="leave" aria-selected="false">Leave History</a>
-        </li>
-    </ul>
+    <div class="modern-tabs mb-5">
+        <ul class="nav nav-tabs" id="staffTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="staff-tab" data-bs-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="true">Staff</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="work-tab" data-bs-toggle="tab" href="#work" role="tab" aria-controls="work" aria-selected="false">Work Assignment History</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="leave-tab" data-bs-toggle="tab" href="#leave" role="tab" aria-controls="leave" aria-selected="false">Leave History</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="staffTabsContent">
+            {{-- Staff Tab Content --}}
+            <div class="tab-pane fade show active" id="staff" role="tabpanel" aria-labelledby="staff-tab">
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center bg-white">
+                        <h4 class="mb-0">Staff</h4>
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+                            + New
+                        </button>
+                    </div>
+                     <div class="card-body table-full-width table-responsive">
+                        <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
+
+                            <thead>
+                            <tr>
+                            <th>Staff ID</th>
+                            <th>Full Name</th>
+                            <th>Work Center</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                            <th >Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($staff as $member)
+                            <tr class="staff-row" data-id="{{ $member->id }}" style="cursor:pointer;">
+                                <td>{{ $member->id }}</td>
+                                <td>{{ $member->full_name }}</td>
+                                <td>{{ $member->work_center }}</td>
+                                <td>{{ $member->role }}</td>
+                                <td>{{ $member->status }}</td>
+                                <td>{{ $member->phone_number }}</td>
+                                <td>{{ $member->email }}</td>
+                                <td>
+                                    {{-- Edit Button --}}
+                                    <div class= "d inline">
+                                        <button type="button" class="btn btn-sm btn-info edit-staff-btn"
+                                          data-bs-toggle="modal"
+                                          data-bs-target="#editStaffModal"
+                                          data-id="{{ $member->id }}">
+                                             Edit
+                                         </button>
+                                    
+                                    {{-- Delete Form --}}
+                                    <form action="{{ route('staff_management.staff.destroy', $member->id) }}" method="POST" style="display: none;" id="delete-form-{{ $member->id }}">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                    <button class="btn btn-sm btn-danger" onclick="confirmDeleteStaff('{{ $member->id }}', '{{ $member->full_name }}')"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center">No staff members found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div> 
+        </div> 
+    </div> 
+
+
+            <!-- Work Assignment History Tab Content -->
+            <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
+                @include('staff_management.Workassignment', [
+                    'workAssignments' => $workAssignments, 
+                    'staffMembersForDropdown' => $staffMembersForDropdown
+                ])
+            </div>
+            <!-- Leave History Tab Content -->
+            <div class="tab-pane fade" id="leave" role="tabpanel" aria-labelledby="leave-tab">
+                @include('staff_management.Leavehistory', [
+                    'leaveHistory' => $leaveHistory,
+                    'staffMembersForDropdown' => $staffMembersForDropdown
+                ])
+            </div>
+        </div>
+    </div>
 
     {{-- Universal Session Messages  --}}
     @if(session('success'))
@@ -267,88 +350,6 @@
                 </div>
             </div>
 
-    <div class="tab-content mt-3">
-        {{-- Staff Tab Content --}}
-        <div class="tab-pane fade show active" id="staff" role="tabpanel" aria-labelledby="staff-tab">
-            <div class="card mt-4">
-                <div class="card-header d-flex justify-content-between align-items-center bg-white">
-                    <h4 class="mb-0">Staff</h4>
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addStaffModal">
-                        + New
-                    </button>
-                </div>
-                 <div class="card-body table-full-width table-responsive">
-                    <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
-
-                        <thead>
-                        <tr>
-                        <th>Staff ID</th>
-                        <th>Full Name</th>
-                        <th>Work Center</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Phone Number</th>
-                        <th>Email</th>
-                        <th >Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($staff as $member)
-                        <tr class="staff-row" data-id="{{ $member->id }}" style="cursor:pointer;">
-                            <td>{{ $member->id }}</td>
-                            <td>{{ $member->full_name }}</td>
-                            <td>{{ $member->work_center }}</td>
-                            <td>{{ $member->role }}</td>
-                            <td>{{ $member->status }}</td>
-                            <td>{{ $member->phone_number }}</td>
-                            <td>{{ $member->email }}</td>
-                            <td>
-                                {{-- Edit Button --}}
-                                <div class= "d inline">
-                                    <button type="button" class="btn btn-sm btn-info edit-staff-btn"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#editStaffModal"
-                                      data-id="{{ $member->id }}">
-                                         Edit
-                                     </button>
-                                
-                                {{-- Delete Form --}}
-                                <form action="{{ route('staff_management.staff.destroy', $member->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete {{ $member->full_name }}?');" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
-                                </form>
-                            </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="8" class="text-center">No staff members found.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div> <!-- end card-body -->
-    </div> <!-- end card -->
-</div> <!-- end tab-pane for staff -->
-
-
-        <!-- Work Assignment History Tab Content -->
-        <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
-            @include('staff_management.Workassignment', [
-                'workAssignments' => $workAssignments, 
-                'staffMembersForDropdown' => $staffMembersForDropdown
-            ])
-        </div>
-        <!-- Leave History Tab Content -->
-        <div class="tab-pane fade" id="leave" role="tabpanel" aria-labelledby="leave-tab">
-            @include('staff_management.Leavehistory', [
-                'leaveHistory' => $leaveHistory,
-                'staffMembersForDropdown' => $staffMembersForDropdown
-            ])
-        </div>
-    </div>
-
     <!-- Staff Details Modal -->
 <div class="modal fade" id="staffDetailsModal" tabindex="-1" aria-labelledby="staffDetailsModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -367,7 +368,7 @@
 </div>
 @endsection
 
-@push('scripts')
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     // Staff Tab related JavaScript
@@ -483,11 +484,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     const actionsCell = row.insertCell();
                     actionsCell.innerHTML = `
                         <button class="btn btn-sm btn-info edit-work-assignment-btn" data-id="${assignment.assignment_id}">Edit</button>
-                        <form action="/staff-management/workassignment/${assignment.assignment_id}" method="POST" class="d-inline">
+                        <form action="/staff-management/workassignment/${assignment.assignment_id}" method="POST" style="display: none;" id="delete-work-form-${assignment.assignment_id}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                         </form>
+                        <button class="btn btn-sm btn-danger" onclick="confirmDeleteWorkAssignment('${assignment.assignment_id}')"><i class="fa-solid fa-trash"></i></button>
                     `;
                 });
             })
@@ -625,6 +626,58 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         }
     });
-});
+ });
+
+
+{{-- SweetAlert2 Delete Modal --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmDeleteStaff(staffId, staffName) {
+    Swal.fire({
+        title: 'Confirm Deletion',
+        text: `Are you sure you want to delete ${staffName}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-form-' + staffId).submit();
+        }
+    });
+}
+function confirmDeleteWorkAssignment(assignmentId) {
+    Swal.fire({
+        title: 'Confirm Deletion',
+        text: 'Are you sure you want to delete this work assignment?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-work-form-' + assignmentId).submit();
+        }
+    });
+}
+function confirmDeleteLeaveHistory(leaveId) {
+    Swal.fire({
+        title: 'Confirm Deletion',
+        text: 'Are you sure you want to delete this leave record?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-leave-form-' + leaveId).submit();
+        }
+    });
+}
 </script>
-@endpush
