@@ -1,9 +1,9 @@
-<x-tabs :tabs="[ 'incoming' => 'Incoming Orders',
-            'outgoing' => 'Outgoing Orders',]" />
+ <x-tabs :tabs="[ 'incoming' => 'Incoming Orders',
+            'outgoing' => 'Outgoing Orders',]" /> 
 
 
 
-{{-- <div x-data="{activeTab: localStorage.getItem('tab') || 'incoming'}"
+ {{-- <div x-data="{activeTab: localStorage.getItem('tab') || 'incoming'}"
      x-init= "$watch('activeTab', val=> localStorage.setItem('tab', val))" class="container">
     <div class="modern-tabs mb-5">
         <ul class="nav nav-tabs" id="filledTabs" role="tablist">
