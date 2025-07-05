@@ -4,57 +4,72 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Conversation;
 use App\Models\User;
+use App\Models\Message;
 
 class ChatTestSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * This seeder ensures the admin user exists and creates a seeded conversation with every other user.
-     * It also ensures no duplicate messages are created if run multiple times.
+     * This seeder creates demo users (admin, vendor, supplier, transporter)
+     * and ensures each user can chat with the others.
      */
     public function run(): void
     {
-        // Get or create admin user
-        $admin = User::firstOrCreate([
-            'email' => 'admin@lightbp.com'
-        ],
-         [
-            'name' => 'Admin',
-            'password' => bcrypt('secret'),
-        ]);
+        // Create demo users
+        $users = [
+            [
+                'name' => 'Alice Admin',
+                'email' => 'admin@example.com',
+                'password' => bcrypt('password'),
+                'role' => 'admin',
+            ],
+            [
+                'name' => 'Victor Vendor',
+                'email' => 'vendor@example.com',
+                'password' => bcrypt('password'),
+                'role' => 'vendor',
+            ],
+            [
+                'name' => 'Sam Supplier',
+                'email' => 'supplier@example.com',
+                'password' => bcrypt('password'),
+                'role' => 'supplier',
+            ],
+            [
+                'name' => 'Tina Transporter',
+                'email' => 'transporter@example.com',
+                'password' => bcrypt('password'),
+                'role' => 'transporter',
+            ],
+        ];
 
-        // Create some test users if none exist (besides admin)
-        if (User::where('id', '!=', $admin->id)->count() === 0) {
-            $testUsers = [
-                ['name' => 'Vendor One', 'email' => 'vendor1@example.com'],
-                ['name' => 'Vendor Two', 'email' => 'vendor2@example.com'],
-                ['name' => 'Partner Three', 'email' => 'partner3@example.com'],
-            ];
-            foreach ($testUsers as $userData) {
-                User::firstOrCreate(
-                    ['email' => $userData['email']],
-                    [
-                        'name' => $userData['name'],
-                        'password' => bcrypt('secret'),
-                    ]
-                );
-            }
+        $userModels = [];
+        foreach ($users as $userData) {
+            $userModels[] = User::firstOrCreate(
+                ['email' => $userData['email']],
+                $userData
+            );
         }
 
-        // Refresh the list of users (excluding admin)
-        foreach (User::where('id', '!=', $admin->id)->get() as $participant) {
-            $conversation = \App\Models\Conversation::firstOrCreate([
-                'admin_id' => $admin->id,
-                'participant_id' => $participant->id,
-                'participant_type' => 'App\\Models\\User'
-            ]);
-            // Only seed the message if not already present
-            if (!$conversation->messages()->where('sender_id', $admin->id)->exists()) {
-                $conversation->messages()->create([
-                    'sender_id' => $admin->id,
-                    'sender_type' => 'App\\Models\\User',
-                    'message' => 'Hello, this is a seeded test message!'
+        // Create a conversation between every pair of users (no duplicates)
+        for ($i = 0; $i < count($userModels); $i++) {
+            for ($j = $i + 1; $j < count($userModels); $j++) {
+                $userA = $userModels[$i];
+                $userB = $userModels[$j];
+
+                $conversation = Conversation::firstOrCreate([
+                    'user_one_id' => $userA->id,
+                    'user_two_id' => $userB->id,
                 ]);
+
+                // Seed a welcome message from userA to userB if not present
+                if (!$conversation->messages()->where('sender_id', $userA->id)->exists()) {
+                    Message::create([
+                        'conversation_id' => $conversation->id,
+                        'sender_id' => $userA->id,
+                        'message' => 'Hello ' . $userB->name . ', this is a test message from ' . $userA->name . '!',
+                    ]);
+                }
             }
         }
     }

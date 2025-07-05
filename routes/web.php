@@ -295,6 +295,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
     Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
     Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+    Route::get('/chat/start/{participant}', [ChatController::class, 'start'])->name('chat.start');
 });
 
 // Session keep-alive route for AJAX ping (prevents session expiry during chat)
