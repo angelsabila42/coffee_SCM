@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+@section('sidebar-items')
+@include('layouts.sidebar-items.admin')
+@endsection
 <div class="container">
     <h2>Staff Management</h2>
 
@@ -62,7 +65,7 @@
         <div class="tab-content" id="staffTabsContent">
             {{-- Staff Tab Content --}}
             <div class="tab-pane fade show active" id="staff" role="tabpanel" aria-labelledby="staff-tab">
-                <div class="card mt-4">
+                
                     <div class="card-header d-flex justify-content-between align-items-center bg-white">
                         <h4 class="mb-0">Staff</h4>
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addStaffModal">
@@ -76,7 +79,6 @@
                             <tr>
                             <th>Staff ID</th>
                             <th>Full Name</th>
-                            <th>Work Center</th>
                             <th>Role</th>
                             <th>Status</th>
                             <th>Phone Number</th>
@@ -89,7 +91,6 @@
                             <tr class="staff-row" data-id="{{ $member->id }}" style="cursor:pointer;">
                                 <td>{{ $member->id }}</td>
                                 <td>{{ $member->full_name }}</td>
-                                <td>{{ $member->work_center }}</td>
                                 <td>{{ $member->role }}</td>
                                 <td>{{ $member->status }}</td>
                                 <td>{{ $member->phone_number }}</td>
@@ -120,9 +121,9 @@
                         @endforelse
                     </tbody>
                 </table>
-            </div> 
-        </div> 
-    </div> 
+            </div>
+        </div>
+
 
 
             <!-- Work Assignment History Tab Content -->
@@ -212,19 +213,7 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="work_center" class="form-label">Work Center</label>
-                                        <select class="form-select @error('work_center') is-invalid @enderror" id="work_center" name="work_center" required>
-                                            <option value="">Work Center</option>
-                                            <option value="Kampala" {{ old('work_center') == 'Kampala' ? 'selected' : '' }}>Kampala</option>
-                                            <option value="Mbale" {{ old('work_center') == 'Mbale' ? 'selected' : '' }}>Mbale</option>
-                                            <option value="Jinja" {{ old('work_center') == 'Jinja' ? 'selected' : '' }}>Jinja</option>
-                                        </select>
-                                        @error('work_center')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="col-md-6">
+                                   
                                         <label for="status" class="form-label">Status</label>
                                         <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
                                             <option value=""> Status</option>
@@ -235,7 +224,7 @@
                                         @error('status')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                    </div>
+                                    
                                 </div>
 
                                 <div class="mb-3">
@@ -301,19 +290,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="edit_work_center" class="form-label">Work Center</label>
-                                        <select class="form-select @error('work_center') is-invalid @enderror" id="edit_work_center" name="work_center" required>
-                                            <option value="">Work Center</option>
-                                            <option value="Kampala" {{ old('work_center') == 'Kampala' ? 'selected' : '' }}>Kampala</option>
-                                            <option value="Mbale" {{ old('work_center') == 'Mbale' ? 'selected' : '' }}>Mbale</option>
-                                            <option value="Jinja" {{ old('work_center') == 'Jinja' ? 'selected' : '' }}>Jinja</option>
-                                        </select>
-                                        @error('work_center')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="col-md-6">
+                                    
                                         <label for="edit_status" class="form-label">Status</label>
                                         <select class="form-select @error('status') is-invalid @enderror" id="edit_status" name="status" required>
                                             <option value=""> Status</option>
@@ -324,7 +301,7 @@
                                         @error('status')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                    </div>
+                                    
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_phone_number" class="form-label">Phone Number</label>

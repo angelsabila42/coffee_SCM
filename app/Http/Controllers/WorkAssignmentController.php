@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\WorkAssignment;
 use App\Models\Staff;
+use App\Models\WorkCenter;
 use Illuminate\Validation\ValidationException;
 
 class WorkAssignmentController extends Controller
 {
     public function workAssign()
     {
-        // Get all assignments, eager load staff relationship
-        $workAssignments = WorkAssignment::with('staff')->get();
+        // Get all assignments, eager load staff and workCenter relationship
+        $workAssignments = WorkAssignment::with(['staff', 'workCenter'])->get();
         $staffMembersForDropdown = Staff::all(['id', 'full_name']);
         return view('staff_management.Workassignment', compact('workAssignments','staffMembersForDropdown'));
     }
@@ -23,11 +24,14 @@ class WorkAssignmentController extends Controller
         try {
             $validatedData = $request->validate([
                 'staff_id' => 'required|exists:staff,id', // Ensures staff_id exists in staff table
-                'work_center' => 'required|string|max:255', 
                 'role' => 'required|string|max:255',
                 'start_date' => 'required|date',
                 'end_date' => 'nullable|date|after_or_equal:start_date', // Changed to nullable based on typical assignment
             ]); 
+
+            // Assign a random work center
+            $randomWorkCenter = WorkCenter::inRandomOrder()->first();
+            $validatedData['work_center_id'] = $randomWorkCenter ? $randomWorkCenter->id : null;
 
             // --- Robust Assignment ID Generation with Retry ---
             $maxRetries = 5;

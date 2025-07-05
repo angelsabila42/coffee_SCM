@@ -101,9 +101,8 @@ Route::get('/form_modal', function () {
     return view('form_modal');
 });
 
-Route::get('/dashboard', function () {
-    return view('Dashboards.home');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Use HomeController@index for dashboard routes so variables are always passed
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -121,10 +120,7 @@ Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vend
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
-Route::get('/home/dashboard', function(){
-    return view('Dashboards.home');
-});
+Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
 
 
 Route::prefix('staff-management')->name('staff_management.')->group(function () {
@@ -285,6 +281,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
     Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
     Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+    Route::get('/chat/start/{participant}', [ChatController::class, 'start'])->name('chat.start');
 });
 
 // Session keep-alive route for AJAX ping (prevents session expiry during chat)
