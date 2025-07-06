@@ -15,4 +15,11 @@ class transporter extends Model
         'address',
         'confirm password',
      ];
+
+    /**
+     * Get the invoices for the transporter.
+     */
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
+    }
 }
