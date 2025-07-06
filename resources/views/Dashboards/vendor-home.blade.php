@@ -10,13 +10,13 @@
          <div class="card kpi-card">
             <div class="card-header ">
             <div class="d-flex justify-content-between align-items-center">
-            <h4 class="card-title text-muted">Active Orders</h4>
-               <span class="kpi-icon delivery"><i class="fa-solid fa-bag-shopping"></i></span>
+            <h6 class="card-title text-muted">Active Orders</h6>
+               <span class="stat-icon bg-info-soft delivery"><i class="fa-solid fa-bag-shopping"></i></span>
             </div>
                
             </div>
                <div class="card-body">
-               <h3 class="ml-2 kpi-figure"> {{$orders}} </h3> 
+               <h4 class="ml-2 kpi-figure"> {{$orders}} </h4> 
                {{-- <div id="chart-j" class="kpi-chart-container"></div> --}}
                </div>  
                
@@ -26,13 +26,13 @@
          <div class="card kpi-card">
             <div class="card-header ">
             <div class="d-flex justify-content-between align-items-center">
-            <h4 class="card-title text-muted">Delivered Batches</h4>
-               <span class="kpi-icon money"><i class="fa-solid fa-circle-check"></i></i></span>
+            <h6 class="card-title text-muted">Delivered Batches</h6>
+               <span class="stat-icon bg-success-soft money"><i class="fa-solid fa-circle-check"></i></span>
             </div>
             </div>
                <div class="card-body ">
                {{-- <div class="kpi-chart-container"></div>  --}}
-               <h3 class="ml-2">{{$delivered}}</h3>
+               <h4 class="ml-2">{{$delivered}}</h4>
                </div>
             </div>
         </div>
@@ -40,13 +40,13 @@
          <div class="card kpi-card">
             <div class="card-header ">
             <div class="d-flex justify-content-between align-items-center">
-            <h4 class="card-title text-muted">Unpaid Invoices</h4>
-               <span class="kpi-icon cancelled"><i class="fa-solid fa-file-invoice-dollar"></i></span>
+            <h6 class="card-title text-muted">Unpaid Invoices</h6>
+               <span class="stat-icon bg-danger-soft cancelled"><i class="fa-solid fa-file-invoice-dollar"></i></span>
             </div>   
             </div>
                <div class="card-body ">
                {{-- <div class="kpi-chart-container"></div> --}}
-               {{-- <h3 class="ml-2"> {{$invoices}} </h3>     --}}
+               {{-- <h4 class="ml-2"> {{$invoices}} </h4>     --}}
                </div>
          </div>
       </div>
@@ -54,13 +54,13 @@
          <div class="card kpi-card">
             <div class="card-header ">
              <div class="d-flex justify-content-between align-items-center">
-            <h4 class="card-title text-muted">Pending Deliveries</h4>
-               <span class="kpi-icon pending"><i class="fa-solid fa-clock"></i></span>
+            <h6 class="card-title text-muted">Pending Deliveries</h6>
+               <span class="stat-icon bg-warning-soft pending"><i class="fa-solid fa-clock"></i></span>
             </div> 
             </div>
                <div class="card-body ">
                     {{-- <div class="kpi-chart-container"></div>  --}}
-                    <h3 class="ml-2"> {{$pending}} </h3>    
+                    <h4 class="ml-2"> {{$pending}} </h4>    
                </div>
          </div>
       </div>

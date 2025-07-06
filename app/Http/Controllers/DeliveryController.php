@@ -102,7 +102,7 @@ class DeliveryController extends Controller
 
  public function merc()
     {
-     $deliveries = Delivery::all();
+     $deliveries = Delivery::paginate(5);
      $pending = Delivery::where('status', 'pending')->count();
      $completed = Delivery::where('status', 'completed')->count();
      $delayed = Delivery::where('status', 'delayed')->count();

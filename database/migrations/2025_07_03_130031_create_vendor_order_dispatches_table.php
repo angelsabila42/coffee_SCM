@@ -11,18 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('incoming_orders', function (Blueprint $table) {
+        Schema::create('vendor_order_dispatches', function (Blueprint $table) {
             $table->id();
-            $table->string('orderID')->unique();
             $table->timestamps();
             $table->integer('quantity');
+            $table->date('dateDispatched');
             $table->string('coffeeType');
-            $table->string('status');
-            $table->date('deadline');
-            $table->string('grade');
-            $table->string('destination');
-            $table->text('declineReason')->nullable();
-            $table->foreignId('importer_model_id')->constrained()->onDelete('cascade');    
+            $table->foreignId(column: 'work_center_id')->constrained()->onDelete('cascade');  
+            $table->foreignId('outgoing_order_id')->constrained()->onDelete('cascade'); 
 
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('incoming_orders');
+        Schema::dropIfExists('vendor_order_dispatches');
     }
 };

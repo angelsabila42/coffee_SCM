@@ -98,6 +98,36 @@ document.addEventListener('alpine:init', ()=>{
 
     }))
 
+    Alpine.data('vendorDispatch',() => ({
+        showModal: false,
+        showForm: false,
+        selectedCenter: '',
+        selectedType: '',
+        centers: [],
+        typeNames: ['Arabica', 'Robusta'],
+
+           async init(){
+            try{
+            const centerRes = await fetch('/api/v1/work-center/dropdown');
+
+            const centersData = await centerRes.json();
+
+            this.centers = centersData.data;;
+
+            console.log(this.centers);
+
+            }catch(error){
+                console.error('Fetch request failed', error);
+            }
+
+            window.addEventListener('reset-alpine-dropdown', () => {
+            this.selectedVendor= '';
+        });
+
+        }
+
+    }))
+
 
     Alpine.data('adminOrderModal',() => ({
         showModal: false,

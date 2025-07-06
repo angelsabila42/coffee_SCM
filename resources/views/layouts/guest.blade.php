@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         {{-- <title> {{ config('app.name', 'Laravel') }} </title> --}}
-        <title>Globabean connect</title>
+        <title>Globalbean connect</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

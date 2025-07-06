@@ -34,6 +34,7 @@ use App\Http\Controllers\PaymentController;
 
 
 use App\Http\Controllers\API\V1\ImporterModelController;
+use App\Http\Controllers\API\V1\IncomingOrderController;
 use App\Http\Controllers\ImporterOrderController;
 use Illuminate\Validation\Rules\Email;
 
@@ -45,6 +46,7 @@ use App\Http\Controllers\Vendor\VendorOrderController;
 //use App\Models\inventory;
 
 use App\Http\Controllers\InvoiceExportController;
+use App\Models\IncomingOrder;
 
 Route::get('/home', function () {
     return view('index');
@@ -71,7 +73,13 @@ Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name
 Route::get('/home/orders', [OrderController::class, 'index'])->name('orders');
 Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
 Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
+Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewOrder'])->name('vendor.order.show');
+Route::post('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'store'])->name('vendor.order.store');
+Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'download'])->name('vendor.order.download');
 Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
+Route::get('/home/orders/{order}', [IncomingOrderController::class, 'viewOrder'])->name('in-order.show');
+Route::post('/home/orders/{order}', [IncomingOrderController::class, 'store'])->name('in-order.store');
+Route::get('/home/orders/{order}/download', [IncomingOrderController::class, 'download'])->name('in-order.download');
 
 
 // Transporter Delivery Dashboard
@@ -212,10 +220,12 @@ Route::post('/editprofile',[ProfileController::class,'changePassword'])->name('e
 
 Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
 
-
+Route::middleware('auth')->group(function(){
 // importer  routes
 Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
 Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
+
+});
 
 Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
 });
