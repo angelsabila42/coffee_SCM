@@ -136,7 +136,6 @@ body, html {
 /* Chat area */
 .chat-main {
     background: var(--chat-bg);
-    height: 100vh;
     display: flex;
     flex-direction: column;
     padding: 0;
@@ -511,7 +510,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-     // Laravel Echo real-time chat listener
+
+    // Laravel Echo real-time chat listener
     @if(isset($conversation))
     if (window.Echo) {
         window.Echo.private('chat.{{ $conversation->id }}')
