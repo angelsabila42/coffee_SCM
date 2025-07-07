@@ -38,28 +38,30 @@
                                         </thead>
                                         <tbody>
                                         @foreach($orders as $order)
-                                            <tr wire:key= "{{$order->id}}"  onclick="window.location= '{{route('in-order.show', $order->id)}}' " class="cur" >
+                                            <tr wire:key= "{{$order->id}}"  onclick="window.location= '{{route('order.show-in', $order->id)}}' " class="cur" >
                                                  <td class=""> {{$order->orderID}} </td>
                                                 <td class=""> {{$order->importerModel->name}} </td>
                                                 <td class=""> {{$order->coffeeType}} </td>
                                                 <td class=""> {{$order->quantity}} </td>
                                                 <td x-data= "{selectedStatus: '{{$order->status}}',
-                                                    statuses: ['Requested','Pending', 'Cancelled', 'Delivered', 'Confirmed' ]}"
+                                                    statuses: ['Requested','Pending', 'Declined', 'Delivered', 'Confirmed' ]}"
                                                     x-init="console.log('Selected:', selectedStatus)">
                                                     <select 
+                                                    @@click.stop
+                                                    @@change.stop
                                                     class="form-control form-control-sm badge badge-sm {{$order->status_badge}}"
                                                     x-model= "selectedStatus"
                                                     @@change= "$dispatch('statusChanged', {id: {{$order->id}}, status: $event.target.value})">
-                                                           <option :value="selectedStatus">{{$order->status}}</option>
+                                                           
                                                             <template x-for= "status in statuses" :key = "status + '-{{$order->id}}'">
-                                                                <option :value= "status" x-text= "status"></option>
+                                                                <option :value= "status" x-text= "status" :selected= "status === selectedStatus"></option>
                                                             </template>
                                                     </select> 
                                                 </td>
                                                 <td class=""> {{$order->destination}} </td>
                                                 <td class=""> {{$order->created_at}} </td>
                                                 <td class=" d-flex justify-content-center align-items-center">
-                                                <button wire:click="delete({{$order->id}})" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
+                                                <button x-data="confirmDeleteModal" @@click="confirmDeleteOrder({{$order->id}}, '{{$order->orderID}}')" @@click.stop class="btn btn-danger cur btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                          @endforeach    

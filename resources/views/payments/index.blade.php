@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('page-title', 'Payment Records')
+@section('sidebar-items')
+@include('layouts.sidebar-items.admin')
+@endsection
 
 @section('sidebar-item')
 @include('layouts.sidebar-items.admin')

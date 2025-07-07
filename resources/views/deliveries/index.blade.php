@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('page-title', 'Delivery Requests')
+@section('sidebar-items')
+@include('layouts.sidebar-items.admin')
+@endsection
 
 @section('sidebar-item')
 @include('layouts.sidebar-items.admin')

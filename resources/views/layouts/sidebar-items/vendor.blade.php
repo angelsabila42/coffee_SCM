@@ -26,7 +26,7 @@
         </li>
              <li class="sidebar-item">
              <a href="{{route('vendor.reports')}}" class="sidebar-link">
-             <i class='bx bx-file'></i>
+             <i class='nc-icon nc-single-copy-04'></i>
              <span>Report</span>
              </a>    
         </li>
