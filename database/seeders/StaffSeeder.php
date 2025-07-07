@@ -17,7 +17,6 @@ class StaffSeeder extends Seeder
          $staff = [
             [
             'full_name' => 'John Ayebale',
-            'work_center' => 'Mbale',
             'role' => 'Supervisor',
             'status' => 'Active',
             'phone_number' => '0700123456',
@@ -25,7 +24,6 @@ class StaffSeeder extends Seeder
         ],
         [
             'full_name' => 'David Okello',
-            'work_center' => 'Kampala',
             'role' => 'Supervisor',
             'status' => 'On Leave',
             'phone_number' => '0787654321',
@@ -33,7 +31,6 @@ class StaffSeeder extends Seeder
         ],
         [
             'full_name' => 'Sarah Nakitto',
-            'work_center' => 'Jinja',
             'role' => 'Warehouse Clerk',
             'status' => 'Active',
             'phone_number' => '0759988776',

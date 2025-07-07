@@ -29,7 +29,6 @@ public function store(Request $request)
 {
     $request->validate([
         'full_name' => 'required|string|max:255',
-        'work_center' => 'required|string|max:255',
         'role' => 'required|string|max:255',
         'status' => 'required|string',
         'phone_number' => 'required|string',

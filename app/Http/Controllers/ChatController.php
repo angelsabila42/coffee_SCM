@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Conversation;
+use App\Models\conversation;
 use App\Models\Message;
 use App\Models\User;
 use App\Services\ActivityLogger;
@@ -13,90 +13,66 @@ class ChatController extends Controller
 {
     public function index()
     {
-        $conversations = Conversation::with(['participant', 'messages.sender'])
-            ->where('admin_id', Auth::id())
-            ->orWhere(function($query) {
-                $query->where('participant_id', Auth::id())
-                      ->where('participant_type', User::class);
-            })
+        $userId = Auth::id();
+        $conversations = Conversation::with(['userOne', 'userTwo', 'messages.sender'])
+            ->where('user_one_id', $userId)
+            ->orWhere('user_two_id', $userId)
             ->get();
-        $users = User::where('id', '!=', Auth::id())->get();
+
+        $users = User::where('id', '!=', $userId)->get();
+
         return view('chat', compact('conversations', 'users'));
     }
 
     public function show($conversationId)
     {
-        $conversation = Conversation::with(['participant', 'messages.sender'])
+        $userId = Auth::id();
+        $conversation = Conversation::with(['userOne', 'userTwo', 'messages.sender'])
             ->where('id', $conversationId)
-            ->where(function($query) {
-                $query->where('admin_id', Auth::id())
-                      ->orWhere(function($q) {
-                          $q->where('participant_id', Auth::id())
-                            ->where('participant_type', User::class);
-                      });
+            ->where(function($query) use ($userId) {
+                $query->where('user_one_id', $userId)
+                      ->orWhere('user_two_id', $userId);
             })
             ->firstOrFail();
 
         // Mark messages as read
         $conversation->messages()
-            ->where('sender_id', '!=', Auth::id())
+            ->where('sender_id', '!=', $userId)
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
-        $conversations = Conversation::with(['participant', 'messages.sender'])
-            ->where('admin_id', Auth::id())
-            ->orWhere(function($query) {
-                $query->where('participant_id', Auth::id())
-                      ->where('participant_type', User::class);
-            })
+        $conversations = Conversation::with(['userOne', 'userTwo', 'messages.sender'])
+            ->where('user_one_id', $userId)
+            ->orWhere('user_two_id', $userId)
             ->get();
-        $users = User::where('id', '!=', Auth::id())->get();
+
+        $users = User::where('id', '!=', $userId)->get();
+
         return view('chat', compact('conversations', 'conversation', 'users'));
     }
 
     public function store(Request $request, $conversationId)
     {
-        $validator = \Validator::make($request->all(), [
+        $request->validate([
             'message' => 'required|string|max:1000'
         ]);
 
-        if ($validator->fails()) {
-            if ($request->ajax() || $request->wantsJson()) {
-                return response()->json([
-                    'status' => 'error',
-                    'errors' => $validator->errors()->all()
-                ], 422);
-            }
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        $userId = Auth::id();
 
         $conversation = Conversation::where('id', $conversationId)
-            ->where(function($query) {
-                $query->where(function($q) {
-                    $q->where('admin_id', Auth::id());
-                })->orWhere(function($q) {
-                    $q->where('participant_id', Auth::id())
-                      ->where('participant_type', User::class);
-                });
+            ->where(function($query) use ($userId) {
+                $query->where('user_one_id', $userId)
+                      ->orWhere('user_two_id', $userId);
             })
-            ->first();
-
-        if (!$conversation) {
-            if ($request->ajax() || $request->wantsJson()) {
-                return response()->json(['error' => 'Conversation not found or you do not have access.'], 404);
-            }
-            return abort(404, 'Conversation not found or you do not have access.');
-        }
+            ->firstOrFail();
 
         $message = Message::create([
             'conversation_id' => $conversation->id,
-            'sender_id' => Auth::id(),
-            'sender_type' => User::class,
+            'sender_id' => $userId,
             'message' => $request->message
         ]);
 
-        // Broadcast the message event
-        event(new \App\Events\MessageSent($message));
+        // Optionally broadcast event here
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -111,28 +87,26 @@ class ChatController extends Controller
 
     public function getMessages($conversationId)
     {
+        $userId = Auth::id();
         $conversation = Conversation::with(['messages.sender'])
             ->where('id', $conversationId)
-            ->where(function($query) {
-                $query->where('admin_id', Auth::id())
-                      ->orWhere(function($q) {
-                          $q->where('participant_id', Auth::id())
-                            ->where('participant_type', User::class);
-                      });
+            ->where(function($query) use ($userId) {
+                $query->where('user_one_id', $userId)
+                      ->orWhere('user_two_id', $userId);
             })
             ->firstOrFail();
 
         return response()->json([
-            'messages' => $conversation->messages->map(function($message) {
+            'messages' => $conversation->messages->map(function($message) use ($userId) {
                 return [
                     'id' => $message->id,
                     'message' => $message->message,
                     'sender_id' => $message->sender_id,
                     'sender_name' => $message->sender->name,
-                    'sender_avatar' => $message->sender->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($message->sender->name) . '&background=8B4513&color=fff',
+                    'sender_avatar' => $message->sender->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($message->sender->name) . '&background=007bff&color=fff',
                     'created_at' => $message->created_at->format('H:i'),
                     'read_at' => $message->read_at,
-                    'is_own' => $message->sender_id == Auth::id()
+                    'is_own' => $message->sender_id == $userId
                 ];
             })
         ]);
@@ -144,15 +118,16 @@ class ChatController extends Controller
             'participant_id' => 'required|exists:users,id',
         ]);
 
-        // Check if conversation already exists
-        $existing = Conversation::where(function($q) use ($request) {
-            $q->where('admin_id', Auth::id())
-              ->where('participant_id', $request->participant_id)
-              ->where('participant_type', User::class);
-        })->orWhere(function($q) use ($request) {
-            $q->where('admin_id', $request->participant_id)
-              ->where('participant_id', Auth::id())
-              ->where('participant_type', User::class);
+        $userId = Auth::id();
+        $participantId = $request->participant_id;
+
+        // Check if conversation already exists (regardless of order)
+        $existing = Conversation::where(function($q) use ($userId, $participantId) {
+            $q->where('user_one_id', $userId)
+              ->where('user_two_id', $participantId);
+        })->orWhere(function($q) use ($userId, $participantId) {
+            $q->where('user_one_id', $participantId)
+              ->where('user_two_id', $userId);
         })->first();
 
         if ($existing) {
@@ -160,16 +135,14 @@ class ChatController extends Controller
         }
 
         $conversation = Conversation::create([
-            'admin_id' => Auth::id(),
-            'participant_id' => $request->participant_id,
-            'participant_type' => User::class,
+            'user_one_id' => $userId,
+            'user_two_id' => $participantId,
         ]);
 
-        // Send a welcome message to avoid empty chat errors
+        // Optionally, send a welcome message
         Message::create([
             'conversation_id' => $conversation->id,
-            'sender_id' => Auth::id(),
-            'sender_type' => User::class,
+            'sender_id' => $userId,
             'message' => 'Welcome to GlobalBean Connect. How may I help you today?'
         ]);
 
@@ -180,6 +153,38 @@ class ChatController extends Controller
             type:'new-message '
         );
         
+        return redirect()->route('chat.show', $conversation->id);
+    }
+
+    public function start($participantId)
+    {
+        $userId = Auth::id();
+
+        // Check if conversation already exists (regardless of order)
+        $existing = Conversation::where(function($q) use ($userId, $participantId) {
+            $q->where('user_one_id', $userId)
+              ->where('user_two_id', $participantId);
+        })->orWhere(function($q) use ($userId, $participantId) {
+            $q->where('user_one_id', $participantId)
+              ->where('user_two_id', $userId);
+        })->first();
+
+        if ($existing) {
+            return redirect()->route('chat.show', $existing->id);
+        }
+
+        $conversation = Conversation::create([
+            'user_one_id' => $userId,
+            'user_two_id' => $participantId,
+        ]);
+
+        // Optionally, send a welcome message
+        Message::create([
+            'conversation_id' => $conversation->id,
+            'sender_id' => $userId,
+            'message' => 'Welcome to GlobalBean Connect. How may I help you today?'
+        ]);
+
         return redirect()->route('chat.show', $conversation->id);
     }
 }

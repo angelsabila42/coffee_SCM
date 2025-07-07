@@ -4,6 +4,10 @@
 @include('layouts.sidebar-items.admin')
 @endsection
 
+@section('sidebar-item')
+@include('layouts.sidebar-items.admin')
+@endsection
+
 @section('content')
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">

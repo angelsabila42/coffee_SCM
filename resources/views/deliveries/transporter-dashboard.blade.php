@@ -4,6 +4,10 @@
 @section('sidebar-items')
 @include('layouts.sidebar-items.admin')
 
+@section('sidebar-item')
+@include('layouts.sidebar-items.transporter')
+@endsection
+
 @section('content')
     @livewire('transporter-delivery-dashboard')
 @endsection

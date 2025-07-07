@@ -22,12 +22,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@lightbp.com',
-            'password' => Hash::make('secret'),
-            
-        ]);
+        
 
 
 
@@ -41,6 +36,7 @@ class DatabaseSeeder extends Seeder
             DeliveryReportSeeder::class,
             WorkCenterSeeder::class,
             ChatTestSeeder::class, // Add chat test data
+            InventorySeeder::class,
         ]);
 
     }

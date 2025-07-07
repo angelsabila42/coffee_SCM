@@ -34,6 +34,10 @@
 
 <script src= "{{asset('/assets/js/custom.js')}}"></script>     
 
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
  
 <script>
@@ -43,5 +47,6 @@ setInterval(function() {
 }, 5 * 60 * 1000); // every 5 minutes
 </script>
 @livewireScripts  
+
 
 

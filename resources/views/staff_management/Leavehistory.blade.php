@@ -11,7 +11,7 @@
 @endif
 
 {{-- Leave History Table in a white card --}}
-<div class="card mt-4">
+
     <div class="card-header d-flex justify-content-between align-items-center bg-white">
         <h4 class="mb-0">Leave History</h4>
         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addLeaveRecordModal">
@@ -64,7 +64,7 @@
             </tbody>
         </table>
     </div>
-</div>
+
 
 {{-- Add Leave Record Modal --}}
 <div class="modal fade" id="addLeaveRecordModal" tabindex="-1" aria-labelledby="addLeaveRecordModalLabel" aria-hidden="true">
@@ -103,18 +103,6 @@
                             <option value="Compassionate Leave" {{ old('leave_type') == 'Compassionate Leave' ? 'selected' : '' }}>Compassionate Leave</option>
                         </select>
                         @error('leave_type')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div>
-                       <label for="wa_work_center" class="form-label">Work Center</label>
-                            <select class="form-select @error('work_center') is-invalid @enderror" id="wa_work_center" name="work_center" required>
-                                <option value="">Select Work Center</option>
-                                <option value="Kampala" {{ old('work_center') == 'Kampala' ? 'selected' : '' }}>Kampala</option>
-                                <option value="Mbale" {{ old('work_center') == 'Mbale' ? 'selected' : '' }}>Mbale</option>
-                                <option value="Jinja" {{ old('work_center') == 'Jinja' ? 'selected' : '' }}>Jinja</option>
-                            </select>
-                             @error('work_center')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
