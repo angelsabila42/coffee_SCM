@@ -56,6 +56,9 @@
     </div>
         <p>Robusta in stock: {{ $robustaStock }} kg</p>
         <p>Arabica in stock: {{ $arabicaStock }} kg</p>
+
+       <livewire:inventory/>
+       
     <div class="card card-plain table-plain-bg">
         <div class="card-header ">
         </div>
