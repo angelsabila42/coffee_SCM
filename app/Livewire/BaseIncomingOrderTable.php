@@ -65,7 +65,8 @@ abstract class BaseIncomingOrderTable extends Component
     $order= IncomingOrder::findOrFail($id);
     $order->status = $status;
     $order->save();
-   }
+ 
+}
 
       #[On('deleteConfirmed')]
     public function confirmDelete($id){
@@ -124,4 +125,5 @@ abstract class BaseIncomingOrderTable extends Component
 
          $this->resetPage($this->getPageName());
    }
+ 
 }
