@@ -676,3 +676,26 @@ body {
     border-radius: 12px;
 }
 
+/* Compact table and card styles for deliveries and transactions */
+.table th, .table td {
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+    font-size: 0.95rem !important;
+    vertical-align: middle !important;
+}
+.card-header, .card-footer {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+.card-title, .card-header h4, .card-header h5 {
+    margin-bottom: 0 !important;
+    font-size: 1.1rem !important;
+}
+.btn-sm {
+    padding: 0.15rem 0.5rem !important;
+    font-size: 0.85rem !important;
+}
+.table {
+    margin-bottom: 0 !important;
+}
+
