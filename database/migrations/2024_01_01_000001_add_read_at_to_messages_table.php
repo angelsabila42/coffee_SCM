@@ -9,20 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::table('messages', function (Blueprint $table) {
-            $table->timestamp('read_at')->nullable()->after('message');
-        });
-    }
+    // public function up(): void
+    // {
+    //     Schema::table('messages', function (Blueprint $table) {
+    //         $table->timestamp('read_at')->nullable()->after('message');
+    //     });
+    // }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::table('messages', function (Blueprint $table) {
-            $table->dropColumn('read_at');
-        });
-    }
+    // /**
+    //  * Reverse the migrations.
+    //  */
+    // public function down(): void
+    // {
+    //     Schema::table('messages', function (Blueprint $table) {
+    //         $table->dropColumn('read_at');
+    //     });
+    // }
 };

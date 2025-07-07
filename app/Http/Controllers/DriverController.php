@@ -17,6 +17,26 @@ class DriverController extends Controller
     {
         return view('drivers.create');
     }
+       
+
+    function store2(Request $request) {
+    $validated = $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'phone' => 'nullable',
+        'address' => 'nullable',
+    ]);
+    $user = new User();
+    $user->name = $validated['name'];
+    $user->email = $validated['email'];
+    $user->phone = $validated['phone'] ?? null;
+    $user->address = $validated['address'] ?? null;
+    $user->role = 'driver';
+    $user->password = bcrypt('password');
+    $user->save();
+    return redirect()->route('drivers.create')->with('success', 'Driver added successfully!');
+}
+
 
     public function store(Request $request)
     {

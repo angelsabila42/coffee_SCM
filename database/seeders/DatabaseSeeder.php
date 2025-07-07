@@ -21,23 +21,24 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@lightbp.com',
-            'password' => Hash::make('secret'),
+        // User::factory()->create([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@lightbp.com',
+        //     'password' => Hash::make('secret'),
             
-        ]);
+        // ]);
 
         $this->call([
-            VendorSeeder::class,
-            importerModelSeeder::class,
-            WorkCenterSeeder::class,
-            IncomingOrderSeeder::class,
-            OutgoingOrderSeeder::class,
-            SalesReportSeeder::class,
-            DeliveryReportSeeder::class,
-            WorkCenterSeeder::class,
-            ChatTestSeeder::class, // Add chat test data
+            // VendorSeeder::class,
+            // importerModelSeeder::class,
+            // WorkCenterSeeder::class,
+            // IncomingOrderSeeder::class,
+            // OutgoingOrderSeeder::class,
+            // SalesReportSeeder::class,
+            // DeliveryReportSeeder::class,
+            // WorkCenterSeeder::class,
+            // ChatTestSeeder::class,
+            paymentSeeder::class, // Add chat test data
         ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Kernel;
+use Illuminate\Contracts\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,4 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    // @intelephense-ignore-next-line
+
+    ->withBindings([
+    Illuminate\Contracts\Http\Kernel::class => App\Http\Kernel::class,
+])
+->create();

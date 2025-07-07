@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class transporter extends Model
+class Transporter extends Model
 {
      protected $fillable = [
         'name',

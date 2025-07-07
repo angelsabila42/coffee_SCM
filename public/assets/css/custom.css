@@ -635,6 +635,9 @@ body {
 .bg-primary-soft{
   background-color: rgba(0, 123, 255, 0.1)
 }
+.bg-partner-soft{
+  background-color: rgba(139, 92, 246, 0.1);
+}
 
 .scrollbar{
   max-height: 373px;

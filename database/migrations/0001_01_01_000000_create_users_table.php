@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('profile_picture')->nullable();
             $table->rememberToken();
             $table->timestamps();
+          //  $role = $table->enum('role', ['admin', 'importer', 'vendor','transporter'])->default('importer');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

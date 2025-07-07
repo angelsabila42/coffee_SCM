@@ -44,6 +44,10 @@ class VendorController extends Controller
 
     }*/
 
+    public function Transactions() {
+    return view('transactions.vendor-dashboard');
+}
+
     public function update(UpdateVendorRequest $request, Vendor $vendor){
       $vendor->update($request->all());
     }
