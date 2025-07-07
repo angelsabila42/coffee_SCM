@@ -51,12 +51,12 @@
                         <td>{{ $payment->payment_description }}</td>
                         <td>{{ $payment->status }}</td>
                         <td>
-                            <a href="{{ route('payments.show', $payment->id) }}" class="btn btn-info btn-sm">View</a>
-                            <a href="{{ route('payments.edit', $payment->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ route('payments.show', $payment->id) }}" class="btn btn-info btn-sm action-btn">View</a>
+                            <a href="{{ route('payments.edit', $payment->id) }}" class="btn btn-warning btn-sm action-btn">Edit</a>
                             <form action="{{ route('payments.destroy', $payment->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm action-btn">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -69,4 +69,4 @@
         {{ $payments->links() }} {{-- Pagination links --}}
     </div>
 </div>
-@endsection 
+@endsection

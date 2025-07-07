@@ -1,46 +1,46 @@
-<div class="card col-md-12">
-<!--div class="d-flex justify-content-between align-items-center"-->
-<div>
-  <ul class= "pt-4 nav nav-tabs">
-    <li><a href = "#" class="nav-link custom-tab-link {{$activeTab === "Sales" ? 'active' : ''}}" wire:click= "setActiveTab('Sales')">Sales</a></li>
-    <li><a href = "#" class="nav-link custom-tab-link {{$activeTab === "Delivery" ? 'active' : ''}}" wire:click= "setActiveTab('Delivery')">Delivery</a></li>
-    <li><a href = "#" class="nav-link custom-tab-link {{$activeTab === "QA" ? 'active' : ''}}" wire:click= "setActiveTab('QA')">QA</a></li>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <ul class="nav nav-tabs" id="reportTabs" role="tablist">
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{$activeTab === 'Sales' ? 'active' : ''}}" wire:click="setActiveTab('Sales')">Sales</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{$activeTab === 'Delivery' ? 'active' : ''}}" wire:click="setActiveTab('Delivery')">Delivery</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{$activeTab === 'QA' ? 'active' : ''}}" wire:click="setActiveTab('QA')">QA</a>
+                </li>
   </ul>
+            <div class="input-group input-group-sm ml-3" style="width: 150px;">
+                <input type="text" name="table_search" class="form-control" placeholder="Search">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-default">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
 </div>
-
- <!--div class="d-flex justify-content-end align-items-center pt-4">
-    <button class="btn btn-outline-secondary btn-sm" role="Filter" wire:click= "openFilter"><i class="fa-solid fa-filter"></i></button>
-    <button  class="btn btn-sm btn-outline-primary" wire:click = "generateReport">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-      </svg>Generate Report
+        <div>
+            <button class="btn btn-sm btn-outline-primary" wire:click="generateReport">
+                <i class="bi bi-plus-circle me-2"></i> Generate Report
     </button>
-  <button class="btn btn-outline-secondary btn-sm" role="settings"><i class="fa-solid fa-gear me-2"></i></button>
-</div-->
-<!--/div-->
-
+            <button class="btn btn-outline-secondary btn-sm ml-2" wire:click="openFilter"><i class="fa-solid fa-filter"></i></button>
+            <button class="btn btn-outline-secondary btn-sm ml-2"><i class="fa-solid fa-gear me-2"></i></button>
+        </div>
+    </div>
+    <div class="card-body">
     @if($activeTab === 'Sales')
-    <div class = "tab-content">
-    <div>
-      <!--h4 class = "card-header">Sales</h4-->
-        <p class = "card-body pt-0">
+            <div class="tab-pane fade show active" id="sales" role="tabpanel">
           @livewire('sales-report-table')
-        </p>
     </div>
     @elseif($activeTab === 'Delivery')
-       <div>
-      <!--h4 class= "card-header">Delivery</h4-->
-        <p class= "card-body pt-0">
+            <div class="tab-pane fade show active" id="delivery" role="tabpanel">
           @livewire('delivery-report-table')
-        </p>
       </div>
      @elseif($activeTab === 'QA')
-       <div>
-        <!--h4 class= "card-header">QA</h4-->
-        <p class = "card-body pt-0">
+            <div class="tab-pane fade show active" id="qa" role="tabpanel">
           @livewire('q-a-report-table')
-        </p>
       </div>
     @endif
 </div>

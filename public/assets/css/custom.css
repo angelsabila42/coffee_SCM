@@ -23,7 +23,7 @@ h1, h2, h3, p, label, input, textarea, button, select {
   margin: 40px auto;
   background: white;
   padding: 40px;
- // box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  /* box-shadow: 1px 1px 2px rgba(0,0,0,0.2); */
   border-radius: 4px;
 } 
 input, textarea, select {
@@ -248,7 +248,7 @@ li{
     height: 30px;
     color: #4b2e2e;
     font-size: 18px;
-    border-radius: 50%; //0.425rem;
+    border-radius: 50%; 
     /* position:absolute;
     right: -15px;
     top: 20px; */
@@ -256,7 +256,7 @@ li{
     display:flex;
     justify-content: center;
     align-items: center; 
-    background-color: #e0d8c3; // 	#d4af37;
+    background-color: #e0d8c3;  	
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     z-index: 1100;
     cursor: pointer;
@@ -288,7 +288,7 @@ li{
     font-size: 1.15rem;
     font-weight:600;
     
-   // font-family: open sans
+   /* font-family: open sans */
 
 }
 
@@ -307,7 +307,7 @@ a.sidebar-link{
     display:block;
     white-space:nowrap;
     font-weight:500;
-    //font-family: open sans;
+    /* font-family: open sans; */
     border-left: 3px solid transparent;
     transition: all 0.2s ease;
     border-radius: 8px;
@@ -413,7 +413,7 @@ a.sidebar-link:hover{
 
 /*Bootstrap 4 example tabs*/
 body {
-    //background: #f8f9fa;
+    /* background: #f8f9fa; */
     padding: 2rem 0;
 }
 
@@ -550,7 +550,7 @@ body {
 
 .kpi-card{
   border-radius: 1rem;
-  //background-color: #EADDCA;
+  /* background-color: #EADDCA; */
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
   transition: transform 250ms ease-in;
   overflow: hidden;
@@ -570,7 +570,7 @@ body {
   width: 100%;
   height: 100%;
   padding-bottom: 0.5rem;
-  //background-color: pink;
+  /* background-color: pink; */
 }
 
 
@@ -591,7 +591,7 @@ body {
 
  .order{
   color: #f59e0b;
-  //border-top:5px solid #f59e0b;
+  /* border-top:5px solid #f59e0b; */
 }
 .money{
   color: #10b981;
@@ -781,4 +781,15 @@ body {
 
 .activity-timeline .text-muted{
   font-size: 0.95rem;
+}
+
+/* Custom button height and padding for action buttons */
+.action-btn {
+  height: 32px; /* or your preferred height */
+  padding: 4px 12px;
+  font-size: 0.95em;
+  line-height: 1.2;
+  border-radius: 4px;
+  display: inline-block;
+  vertical-align: middle;
 }

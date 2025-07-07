@@ -68,15 +68,10 @@ abstract class BaseIncomingOrderTable extends Component
     $order->status = $status;
     $order->save();
 
- 
-}
-
-
     ActivityLogger::log(
         title: "Changed status from $oldStatus to $status for order $order->orderID",
         type: 'update'
-       );
-
+    );
    }
 
 
