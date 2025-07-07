@@ -13,7 +13,7 @@
         @foreach($tabs as $key => $title)
             <li class="nav-item" role="presentation">
                 <a class="nav-link" 
-                   :class="{'active': activeTab === '{{$key}}'}"
+                   :class="{'active': activeTab ==='{{$key}}'}"
                    @@click.prevent= "activeTab = '{{$key}}'"
                     href="#"
                     role="tab">

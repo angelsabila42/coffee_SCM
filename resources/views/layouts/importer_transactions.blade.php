@@ -40,12 +40,18 @@
 
          <ul class="nav nav-pills nav-justified mb-3 rounded-pill bg-light p-1 text-white" id="pills-tab" role="tablist" style="max-width: 400px; ">
             <li class="nav-item" role="presentation">
-                <button class=" bg-primary p-1 text-white nav-link active rounded-start-5" id="invoices-tab" data-bs-toggle="pill" data-bs-target="#invoices" type="button" role="tab" aria-controls="invoices" aria-selected="true">
+                <button class=" bg-primary p-1 text-white nav-link {{ request('tab', 'invoices') === 'invoices' ? 'active' : '' }} rounded-start-5" id="invoices-tab" data-bs-toggle="pill" data-bs-target="#invoices" type="button" role="tab" aria-controls="invoices" 
+                   aria-selected="{{ request('tab', 'invoices') === 'invoices' ? 'true' : 'false' }}"
+                   onclick="window.location='?tab=invoices'">
+    
                     Invoices
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link rounded-end-5 bg-white p-1 text-primary" id="payments-tab" data-bs-toggle="pill" data-bs-target="#payments" type="button" role="tab" aria-controls="payments" aria-selected="false">
+                <button class="nav-link rounded-end-5 bg-white p-1 text-primary {{ request('tab','invoices') === 'payments' ? 'active' : '' }}" id="payments-tab" data-bs-toggle="pill" data-bs-target="#payments" type="button" role="tab" aria-controls="payments" 
+                    aria-selected="{{ request('tab','invoices') === 'payments' ? 'true' : 'false' }}"
+    onclick="window.location='?tab=payments'">
+  
                     Payments
                 </button>
             </li>
@@ -53,10 +59,10 @@
         
         </div>
        <div class="tab-content">
-            <div class="tab-pane fade show active" id="invoices" role="tabpanel" aria-labelledby="invoices-tab">
+            <div class="tab-pane fade {{ request('tab', 'invoices') === 'invoices' ? 'show active' : '' }}" id="invoices" role="tabpanel" aria-labelledby="invoices-tab">
                 {{-- Invoices Table --}}
                 <div class="table-responsive">
-                    <table class="table table-sm mb-0">
+                    <table class="table mb-0 table-hover">
                         <thead>
                             <tr>
                                 <th>InvoiceID</th>
@@ -75,17 +81,18 @@
                                     <td>{{ $invoice->id }}</td>
                                     <td>{{ $invoice->sub_total }}</td>
                                     <td>{{ $invoice->updated_at }}</td>
-                                    <td>{{ $invoice->status }}</td>
+                                    <td class="bg-success">{{ $invoice->status }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                   {{ $invoices->appends(['tab' => 'invoices'])->links('pagination::bootstrap-5') }}
                 </div>
             </div>
-            <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
+            <div class="tab-pane fade {{ request('tab', 'invoices') === 'payments' ? 'show active' : '' }}" id="payments" role="tabpanel" aria-labelledby="payments-tab">
                 {{-- Payments Table --}}
                 <div class="table-responsive">
-                    <table class="table table-sm mb-0">
+                    <table class="table mb-0 table-hover">
                         <thead>
                             <tr>
                                 <th>InvoiceID</th>
@@ -121,6 +128,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $payments->appends(['tab' => 'payments'])->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </div>
@@ -128,25 +136,25 @@
 </div>
 
 
-
+{{-- 
             <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const tabButtons = document.querySelectorAll('#pills-tab .nav-link');
                 tabButtons.forEach(butn => {
                     butn.addEventListener('click', function () {
-                        tabButtons.forEach(b => b.classList.remove('bg-primary', 'text-white', 'bg-white', 'text-primary', 'active'));
-                        this.classList.add('bg-primary', 'text-white', 'active');
+                        tabButtons.forEach(b => b.classList.remove('bg-primary', 'text-white', 'bg-white', 'text-primary','active'));
+                        this.classList.add('bg-primary', 'text-white','active');
                         this.classList.remove('bg-white', 'text-primary');
                         tabButtons.forEach(b => {
                             if (b !== this) {
                                 b.classList.add('bg-white', 'text-primary');
-                                b.classList.remove('bg-primary', 'text-white', 'active');
+                                b.classList.remove('bg-primary', 'text-white','active');
                             }
                         });
                     });
                 });
             });
-            </script>
+            </script> --}}
 
             <div  id="edit_modal" class="modal fade" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">

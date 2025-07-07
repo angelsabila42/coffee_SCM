@@ -112,7 +112,7 @@ button[type="submit"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 2000;
 }
 .custom-modal {
   background: white;
@@ -198,9 +198,11 @@ li{
     top:0;
     left:0;
     overflow-y: hidden;
+    overflow-x: hidden;
     position: fixed;
     height: 100vh;
 }
+
 
 #sidebar.expand ~.main-panel{
     margin-left: 260px;
@@ -217,22 +219,54 @@ li{
     min-width: 260px;
 }
 
+#sidebar:not(.expand) .hide-on-collapse {
+    opacity: 0;
+    visibility: hidden;
+    /* display: none !important; */
+}
+
+#sidebar.expand .hide-on-collapse {
+    display:inline-block;
+}
+
+.sidebar-link.active {
+    /* background-color: #ffffff;
+    color: #4b2ebe;
+    font-weight: bold;
+    border-left: 4px solid #ffc107; */
+    color:  #ffffff;
+     background: rgba(255, 255, 255, 0.1); 
+     /* border-left: 3px solid #f39c12;  */
+}
+
+.sidebar-link:not(.active) {
+    color: 	#e0d8c3;
+}
+
 .toggle-btn{
     width:30px;
     height: 30px;
     color: #4b2e2e;
     font-size: 18px;
-    border-radius: 0.425rem;
+    border-radius: 50%; //0.425rem;
+    /* position:absolute;
+    right: -15px;
+    top: 20px; */
+
     display:flex;
     justify-content: center;
-    align-items: center;
-    background-color: 	#d4af37;
+    align-items: center; 
+    background-color: #e0d8c3; // 	#d4af37;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    z-index: 1100;
+    cursor: pointer;
     border: none;
+
 }
 
-.toggle-btn i{
+/* .toggle-btn i{
     color: #FFF;
-}
+} */
 
 #sidebar.expand.sidebar-logo,
 #sidebar.expand a.sidebar-link span{
@@ -249,29 +283,44 @@ li{
     }
 }
 
-.sidebar-logo a{
-    color: #fff;
+.sidebar-logo {
+    color: #ffffff;
     font-size: 1.15rem;
     font-weight:600;
+    
    // font-family: open sans
 
 }
 
+.logo-text {
+    background: linear-gradient(45deg, #6b8cff, #8b9fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: opacity 0.3s ease;
+}
+
+
 
 a.sidebar-link{
     padding: 0.625rem 1.630rem;
-    color:#FFF;
+    color:#ffffff;
     display:block;
     white-space:nowrap;
     font-weight:500;
     //font-family: open sans;
     border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    /* margin: 4px 16px;
+    white-space: nowrap*/
+    overflow: hidden; 
 }
 
 .sidebar-nav{
     padding: 0.7rem 0;
     flex: 11 auto;
     z-index: 10;
+    
 }
 
 .sidebar-link i{
@@ -280,8 +329,12 @@ a.sidebar-link{
 }
 
 a.sidebar-link:hover{
-    background-color:rgba(255,255,255,0.1);
-    border-left: 3px solid #f39c12;
+    /* background-color:rgba(255,255,255,0.1);*/
+    border-left: 3px solid #f39c12; 
+     color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+
 }
 
 .exit{
@@ -330,6 +383,10 @@ a.sidebar-link:hover{
 .icon-wrapper {
   font-size: 3rem;
   opacity: 0.7;
+}
+
+.bx{
+  font-weight: 50 !important;
 }
 
 /* Text Styling */
@@ -564,21 +621,22 @@ body {
 
 .activity-item {
     padding: 1.5rem;
-    border-radius: 12px;
+    /* border-radius: 12px;
     transition: all 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05); */
     margin-bottom: 1rem;
 }
 
-.activity-item:hover {
+/* .activity-item:hover {
     background-color: #f8f9fa;
     transform: translateX(5px);
-}
+} */
 
 .activity-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 30px;
+    height: 30px;
+    padding: 0.5rem;
+    border-radius: 2rem;;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -586,7 +644,7 @@ body {
 }
 
 .activity-date {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #6c757d;
 }
 
@@ -639,11 +697,30 @@ body {
 .bg-primary-soft{
   background-color: rgba(0, 123, 255, 0.1)
 }
+.bg-partner-soft{
+  background-color: rgba(139, 92, 246, 0.1);
+}
+
+.bg-secondary-soft {
+  background-color: rgba(108, 117, 125, 0.1) !important;
+}
 
 .scrollbar{
-  max-height: 373px;
-  overflow-y: auto;
+  max-height: 373px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden!important;
+  padding-right: 5px;
 }
+
+.scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 
 /*KPI from BE cards*/
 .stat-card {
@@ -698,4 +775,10 @@ body {
 .table {
     margin-bottom: 0 !important;
 }
+.modern-card-header{
+  color: #495057;
+}
 
+.activity-timeline .text-muted{
+  font-size: 0.95rem;
+}

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
-use App\Models\transporter;
+use App\Models\Transporter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,6 +18,11 @@ class transporterController extends Controller
  public function transporter(){
     return view('auth.transporter');
  }
+
+
+ public function deliveries() {
+    return view('deliveries.transporter-dashboard');
+}
 
  public function transactions(){
 

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\importerModel;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class importerModelSeeder extends Seeder
 {
@@ -13,6 +14,16 @@ class importerModelSeeder extends Seeder
      */
     public function run(): void
     {
-        importerModel::factory()->count(20)->create();
+         for ($i = 0; $i < 11; $i++) {
+        importerModel::factory()->create([
+            'created_at' => Carbon::now()->subMonth()->addDays(rand(0, 20)),
+        ]);
+    }
+        for ($i = 0; $i < 9; $i++) {
+        importerModel::factory()->create([
+            'created_at' => Carbon::now()->subDays(rand(0, now()->day - 1)),
+        ]);
+        }
+        // importerModel::factory()->count(20)->create();
     }
 }

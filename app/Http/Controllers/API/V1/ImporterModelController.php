@@ -11,34 +11,45 @@ use App\Models\importerModel;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class ImporterModelController extends Controller
 {
-
+    
 
     public function payments(){
         return view('importer_payments');
     }
-
-
-
-     
+  
 
     public function index(){
-          $orders = IncomingOrder::paginate(6);
+   $user = Auth::user();     
+ // Logged-in user
+$importer = ImporterModel::where('email', $user->email)->first();
 
+if ($importer) {
+    $importerId = $importer->id;
 
-          $ordersSent = IncomingOrder::count();
-          $pending = IncomingOrder::where('status', 'Pending')->count();
-          $inTransit = IncomingOrder::where('status', 'in transit')->count();
-          $delivered = IncomingOrder::where('status', 'Delievered')->count();
-        return view ('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
-    }
+    
+    $orders = IncomingOrder::where('importer_model_id', $importerId)->paginate(10);
+    $ordersSent = IncomingOrder::where('importer_model_id', $importerId)->count();
+    $pending = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Pending')->count();
+    $inTransit = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'in transit')->count();
+    $delivered = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Delivered')->count();
+
+    return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
+} else {
+    
+    return redirect()->route('login')->with('error', 'No importer record found.');
+}
+       }
    
     public function transactions(){
+    $user = Auth::user();
+    $importerId = ImporterModel::where('email', $user->email)->id;
 
-        $invoices = Invoice::paginate(5);
-          $payments = Payment::paginate(5);
+        $invoices = Invoice::/*where('importer_model_id', $importerId)->*/paginate(10);
+          $payments = Payment::where('importerID', $importerId)->paginate(10);
     return view('importer_transactions', compact('invoices', 'payments'));
  }
       

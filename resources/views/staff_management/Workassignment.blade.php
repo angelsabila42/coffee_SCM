@@ -88,6 +88,10 @@
             + New
         </button>
     </div>
+
+    {{--<livewire:work-assignment/>--}}
+
+
     <div class="card-body table-full-width table-responsive">
         <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
             <thead>

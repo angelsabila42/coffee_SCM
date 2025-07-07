@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 
-class importerModel extends Model
+class ImporterModel extends Model
 {
+  use Notifiable;
   use HasFactory;
       protected $fillable = [
         'name',
@@ -21,11 +23,15 @@ class importerModel extends Model
      public function incoming_order(){
         return $this->hasMany(IncomingOrder::class);
     }
-
+    
+     public function payments(){
+        return $this->hasMany(Payment::class);
+     }
     /**
      * Get the invoices for the importer.
      */
     public function invoices(){
         return $this->hasMany(Invoice::class);
     }
+
 }

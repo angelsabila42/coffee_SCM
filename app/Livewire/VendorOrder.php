@@ -4,12 +4,33 @@ namespace App\Livewire;
 
 use App\Models\OutgoingOrder;
 use App\Models\Vendor;
+use App\Services\ActivityLogger;
+use Livewire\Attributes\On;
 
 class VendorOrder extends BaseOutgoingOrderTable
 {
     public function getPageName(){
     return 'vendor-orders';
    }
+
+   #[On('deleteConfirmed')]
+    public function confirmDelete($id){
+
+        $order= OutgoingOrder::findOrFail($id);
+
+        ActivityLogger::log(
+        title: "Deleted $order->orderID",
+        type: 'delete'
+       );
+
+        $order->delete();
+
+        session()->flash('success','Record Deleted');
+
+        return redirect()->route('vendor.orders');
+       // $this->dispatch('show-toast', message: 'Record Deleted');   
+
+}
 
      protected function filter(){
     $model = $this->getModelName();
