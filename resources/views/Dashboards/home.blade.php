@@ -73,12 +73,15 @@
             <div class="card stat-card border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="stat-icon bg-primary-soft text-primary">
-                            <i class="fas fa-shopping-cart"></i>
+                    <div class="stat-icon bg-warning-soft bg-opacity-10 text-warning">
+                            <i class="fas fa-box"></i>
                         </div>
-                        <span class="badge bg-success trend-badge">
-                                <i class="fas fa-arrow-up me-1"></i>12.5%
+                        @if($percentageChange !==0)
+                            <span class="badge trend-badge {{$percentageChange > 0 ? 'bg-success' : 'bg-danger'}}">
+                                <i class="fas fa-arrow-{{$percentageChange > 0 ? 'up' : 'down'}} me-1"></i>
+                                {{ abs($percentageChange) }}%
                             </span>
+                        @endif
                     </div>
                     <h6 class="text-muted mb-2">Total Orders</h6>
                     <h4 class="mb-3">{{$order}}</h4>
@@ -91,8 +94,8 @@
             <div class="card stat-card border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="stat-icon bg-success-soft text-success">
-                            <i class="fas fa-users"></i>
+                    <div class="stat-icon bg-info-soft text-info">
+                            <i class="fas fa-dollar-sign"></i>
                         </div>
                         <span class="badge bg-danger trend-badge">
                                 <i class="fas fa-arrow-down me-1"></i>5.2%
@@ -109,12 +112,15 @@
             <div class="card stat-card border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="stat-icon bg-warning-soft bg-opacity-10 text-warning">
-                            <i class="fas fa-box"></i>
+                    <div class="stat-icon bg-success-soft text-success">
+                            <i class="fas fa-users"></i>
                         </div>
-                        <span class="badge bg-success trend-badge">
-                                <i class="fas fa-arrow-up me-1"></i>8.4%
+                       @if($percentagePChange !==0)
+                            <span class="badge trend-badge {{$percentagePChange > 0 ? 'bg-success' : 'bg-danger'}}">
+                                <i class="fas fa-arrow-{{$percentagePChange > 0 ? 'up' : 'down'}} me-1"></i>
+                                {{ abs($percentagePChange) }}%
                             </span>
+                        @endif
                     </div>
                     <h6 class="text-muted mb-2">Partners</h6>
                     <h4 class="mb-3">{{$partners}}</h4>
@@ -127,8 +133,8 @@
             <div class="card stat-card border-0 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="stat-icon bg-info-soft text-info">
-                            <i class="fas fa-dollar-sign"></i>
+                     <div class="stat-icon bg-primary-soft text-primary">
+                            <i class="fa-solid fa-truck-fast"></i>
                         </div>
                         <span class="badge bg-success trend-badge">
                                 <i class="fas fa-arrow-up me-1"></i>15.7%
@@ -139,7 +145,7 @@
                 </div>
             </div>
         </div>
-    </div>
+</div>
                     <div class="row">
                         <div class="col-md-7">
                             <div class="card">

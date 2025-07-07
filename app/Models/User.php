@@ -21,7 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'profile_picture'
+        'role',
     ];
 
     /**
@@ -45,5 +45,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+    public function recentActivityLog(){
+        return $this->hasMany(RecentActivityLog::class);
+    }
+
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class, 'user_one_id')
+            ->orWhere('user_two_id', $this->id);
     }
 }

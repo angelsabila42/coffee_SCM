@@ -8,8 +8,12 @@ use Livewire\Component;
 use Livewire\Attributes\Validate;
 use App\Helpers\Helper;
 use App\Models\OutgoingOrder;
+
 use App\Notifications\NewOutgoingOrderNotification;
 use App\Models\User;
+
+use App\Services\ActivityLogger;
+
 
 class CreateOrderModal extends Component
 {
@@ -63,6 +67,11 @@ class CreateOrderModal extends Component
         session()->flash('success','Order Sent!');
 
         $this->redirect('/home/orders');
+
+        ActivityLogger::log(
+            title: 'Created new Order',
+            type: 'new-order'
+        );
 
     }
     public function render()

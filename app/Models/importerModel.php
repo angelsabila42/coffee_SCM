@@ -23,4 +23,11 @@ class importerModel extends Model
      public function incoming_order(){
         return $this->hasMany(IncomingOrder::class);
     }
+
+    /**
+     * Get the invoices for the importer.
+     */
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
+    }
 }

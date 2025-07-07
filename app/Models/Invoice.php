@@ -33,6 +33,9 @@ class Invoice extends Model
         'status',
         'purpose',
         'recipient_phone',
+        'vendor_id',
+        'importer_id',
+        'transporter_id',
     ];
 
     /**
@@ -42,16 +45,40 @@ class Invoice extends Model
         return $this->belongsTo(Notification::class);
     }
 
+    /**
+     * Get the importer that owns the invoice.
+     */
     public function importer(){
-        return $this->hasMany(importerModel::class);
+        return $this->belongsTo(importerModel::class, 'importer_id');
     }
 
+    /**
+     * Get the vendor that owns the invoice.
+     */
     public function vendor(){
-        return $this->hasMany(Vendor::class);
+        return $this->belongsTo(Vendor::class, 'vendor_id');
     }
 
+    /**
+     * Get the transporter that owns the invoice.
+     */
+    public function transporter(){
+        return $this->belongsTo(transporter::class, 'transporter_id');
+    }
+
+    /**
+     * Get the invoice items for the invoice.
+     */
     public function items()
     {
         return $this->hasMany(InvoiceItem::class);
+    }
+
+    /**
+     * Get the payments for the invoice.
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }

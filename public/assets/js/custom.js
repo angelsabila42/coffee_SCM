@@ -209,32 +209,58 @@ document.addEventListener('alpine:init', ()=>{
     }));
 
     Alpine.data('confirmDeleteModal', () => ({
-        orderID: null,
+        //orderID: null,
 
-        init() {
-            window.addEventListener('open-delete-modal', (e) => { 
-                this.orderID = e.detail.id;
+        //  init() {
+        //      window.addEventListener('open-delete-modal', (e) => { 
+        //          this.orderID = e.detail.id;
 
-                $('#confirmModal').modal('show');
-            });
-        },
+        //          $('#confirmModal').modal('show');
+        //      });
+        //  },
 
-        confirmDelete(){
-            try{Livewire.dispatch('deleteConfirmed', {id:this.orderID});
+        //  confirmDelete(){
+        //      try{Livewire.dispatch('deleteConfirmed', {id:this.orderID});
 
-            $('#confirmModal').modal('hide');}
-            catch(error){
-                console.warn('Livewire Component Missing', error);
-            }
+        //      $('#confirmModal').modal('hide');}
+        //      catch(error){
+        //          console.warn('Livewire Component Missing', error);
+        //      }
+        //  }
+
+        confirmDeleteOrder(id, orderID) {
+    Swal.fire({
+        title: 'Confirm Deletion',
+        text: `Are you sure you want to delete ${orderID}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Livewire.dispatch('deleteConfirmed', {id:id});
+            // Swal.fire('Deleted!', `${orderID} has been deleted.`, 'success');
         }
-    }));
+    });
+}
 
-    Alpine.data('tab',() => ({
-        showTab1: true,
-        showTab2: false,
-    }));
 
-})
+     }));
+
+    // Alpine.data('tab',() => ({
+    //     showTab1: true,
+    //     showTab2: false,
+    // }));
+
+   
+
+});
+
+
+
+
 
 /*document.addEventListener('livewire:load', () => {
     Livewire.on('show-toast', (message) => {

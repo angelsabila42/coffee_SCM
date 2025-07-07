@@ -1,190 +1,377 @@
 @extends('layouts.app')
-
+@section('sidebar-items')
+    @includeIf('layouts.sidebar-items.' . auth()->user()->role)
+@endsection
+@php use Illuminate\Support\Str; @endphp
 @section('content')
-<div class="container-fluid min-vh-100 h-100">
-    <div class="row h-100 overflow-hidden">
-        <!-- Conversations Sidebar -->
-        <div class="col-md-4 col-lg-3 p-0 border-end bg-brown-100">
-            <div class="d-flex flex-column h-100">
-                <!-- Header -->
-                <div class="bg-brown text-white p-3">
-                    <h4 class="mb-1">Chats</h4>
-                    <small class="text-light">{{ $conversations->count() }} active conversations</small>
-                </div>
+<style>
+:root {
+    --coffee-brown: #8B5E3C;
+    --sidebar-bg: #f4f3f1;
+    --sidebar-active: #e9e5e1;
+    --chat-bg: #fff;
+    --bubble-in: #f4f3f1;
+    --bubble-out: #e9e5e1;
+}
+body, html {
+    height: 100%;
+}
+.main-chat-wrapper {
+    min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: var(--sidebar-bg);
+}
+.chat-sidebar {
+    background: var(--sidebar-bg);
+    height: 100vh;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+.sidebar-header {
+    padding: 2rem 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--sidebar-bg);
+}
+.sidebar-header .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 2px solid var(--coffee-brown);
+}
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.sidebar-nav .icon-btn {
+    background: none;
+    border: none;
+    color: var(--coffee-brown);
+    font-size: 1.5rem;
+    transition: color 0.2s;
+}
+.sidebar-nav .icon-btn.active, .sidebar-nav .icon-btn:hover {
+    color: #fff;
+    background: var(--coffee-brown);
+    border-radius: 50%;
+    padding: 0.5rem;
+}
+.sidebar-search {
+    padding: 0 1rem 1rem 1rem;
+}
+.sidebar-search input {
+    border-radius: 2rem;
+    border: 1px solid #ddd;
+    padding-left: 2.5rem;
+}
+.sidebar-search .fa-search {
+    position: absolute;
+    left: 2rem;
+    top: 1.2rem;
+    color: #bbb;
+}
+.contact-list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 0 0.5rem 1rem 0.5rem;
+}
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    margin-bottom: 0.5rem;
+    background: #fff;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+}
+.contact-item.active, .contact-item:hover {
+    background: var(--sidebar-active);
+    border-color: var(--coffee-brown);
+    box-shadow: 0 2px 8px rgba(139,94,60,0.08);
+}
+.contact-item .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #e0e0e0;
+}
+.contact-item .contact-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.contact-item .contact-info .name {
+    font-weight: 600;
+    color: #222;
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
+}
+.contact-item .contact-info .last-message {
+    color: #888;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.contact-item .badge {
+    background: var(--coffee-brown);
+    color: #fff;
+    font-size: 0.8rem;
+    border-radius: 0.5rem;
+    padding: 0.2rem 0.6rem;
+}
 
-                <!-- Search -->
-                <div class="p-3 border-bottom">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search contacts..." id="searchInput">
-                    </div>
-                </div>
+/* Chat area */
+.chat-main {
+    background: var(--chat-bg);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+.chat-header {
+    padding: 1.2rem 2rem 1.2rem 2rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #fff;
+}
+.chat-header .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--coffee-brown);
+}
+.chat-header .name {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #222;
+}
+.chat-header .status {
+    font-size: 0.95rem;
+    color: #4caf50;
+    margin-left: 0.5rem;
+}
+.chat-header .role-badge {
+    background: var(--coffee-brown);
+    color: #fff;
+    font-size: 0.85rem;
+    border-radius: 0.5rem;
+    padding: 0.2rem 0.7rem;
+    margin-left: 0.7rem;
+}
+.chat-header .header-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 1rem;
+}
+.chat-header .header-actions .icon-btn {
+    background: none;
+    border: none;
+    color: #bbb;
+    font-size: 1.3rem;
+    transition: color 0.2s;
+}
+.chat-header .header-actions .icon-btn:hover {
+    color: var(--coffee-brown);
+}
 
-                <!-- Contacts List (all users except self) -->
-                <div class="flex-grow-1 overflow-auto">
-                    @foreach($users as $user)
-                        @php
-                            $conv = $conversations->first(function($c) use ($user) {
-                                return $c->participant_id == $user->id;
-                            });
-                        @endphp
-                        <a href="{{ $conv ? route('chat.show', $conv->id) : route('chat.create') }}"
-                           class="d-block text-decoration-none conversation-item {{ isset($conversation) && isset($conv) && $conversation->id === $conv->id ? 'active' : '' }}"
-                           data-conversation-name="{{ $user->name }}">
-                            <div class="d-flex align-items-center p-3 border-bottom hover-bg-light">
-                                <!-- Avatar -->
-                                <div class="position-relative me-3">
-                                    <img src="{{ $user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=007bff&color=fff' }}"
-                                         class="rounded-circle"
-                                         width="50"
-                                         height="50"
-                                         alt="{{ $user->name }}">
-                                    @if(isset($user->is_online) && $user->is_online)
-                                        <span class="position-absolute bottom-0 end-0 bg-success rounded-circle border border-white" style="width: 15px; height: 15px;"></span>
-                                    @endif
-                                </div>
+.chat-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 2rem 2rem 1rem 2rem;
+    background: #f7f6f4;
+}
+.message-row {
+    display: flex;
+    margin-bottom: 1.2rem;
+}
+.message-row.own {
+    justify-content: flex-end;
+}
+.message-bubble {
+    max-width: 60%;
+    padding: 0.9rem 1.2rem;
+    border-radius: 1.2rem;
+    font-size: 1rem;
+    background: var(--bubble-in);
+    color: #222;
+    box-shadow: 0 1px 4px rgba(139,94,60,0.04);
+    position: relative;
+}
+.message-row.own .message-bubble {
+    background: var(--coffee-brown);
+    color: #fff;
+    border-bottom-right-radius: 0.3rem;
+}
+.message-row:not(.own) .message-bubble {
+    background: #fff;
+    color: #222;
+    border-bottom-left-radius: 0.3rem;
+}
+.message-meta {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-top: 0.3rem;
+    text-align: right;
+}
 
-                                <!-- Contact Info -->
-                                <div class="flex-grow-1 min-width-0">
-                                    <div class="d-flex justify-content-between align-items-start mb-1">
-                                        <h6 class="mb-0 text-truncate text-dark">{{ $user->name }}</h6>
-                                        <div class="d-flex flex-column align-items-end">
-                                            @if($conv && $conv->unread_count > 0)
-                                                <span class="badge bg-primary rounded-pill mb-1">{{ $conv->unread_count > 99 ? '99+' : $conv->unread_count }}</span>
-                                            @endif
-                                            <small class="text-muted">
-                                                {{ $conv && $conv->last_message ? $conv->last_message->created_at->format('H:i') : '' }}
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <!-- Last Message -->
-                                    <p class="mb-1 text-muted small text-truncate">
-                                        @if($conv && $conv->last_message)
-                                            @if($conv->last_message->sender_id == auth()->id())
-                                                <span class="text-primary">You: </span>
-                                            @endif
-                                            {{ $conv->last_message->message }}
-                                        @else
-                                            <em>No conversation yet</em>
-                                        @endif
-                                    </p>
-                                    <!-- Role Badge -->
-                                    @if(isset($user->role))
-                                        <span class="badge 
-                                            @if($user->role === 'supplier') bg-success
-                                            @elseif($user->role === 'manufacturer') bg-info
-                                            @elseif($user->role === 'distributor') bg-warning
-                                            @elseif($user->role === 'retailer') bg-danger
-                                            @else bg-secondary
-                                            @endif">
-                                            {{ ucfirst($user->role ?? 'Partner') }}
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
+.chat-footer {
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #eee;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.chat-footer textarea {
+    flex: 1 auto;
+    border-radius: 2rem;
+    border: 1px solid #ddd;
+    padding: 0.7rem 1.2rem;
+    resize: none;
+    font-size: 1rem;
+    min-height: 44px;
+    max-height: 120px;
+    background: #f7f6f4;
+}
+.chat-footer .send-btn {
+    background: var(--coffee-brown);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    transition: background 0.2s;
+}
+.chat-footer .send-btn:hover {
+    background: #6d4327;
+}
 
-                <!-- Quick Actions -->
-                <div class="p-3 border-top bg-light">
-                    <div class="row g-2">
-                        <div class="col-6">
-                            <!-- Button trigger modal -->
-                            <button class="btn btn-brown rounded-pill px-4 py-2" data-bs-toggle="modal" data-bs-target="#newConversationModal">
-                                <i class="fas fa-plus me-2"></i>Start New Conversation
-                            </button>
+@media (max-width: 900px) {
+    .chat-header, .chat-footer, .chat-body {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+</style>
+<div class="main-chat-wrapper d-flex">
+    <!-- Sidebar -->
+    <div class="chat-sidebar col-12 col-md-4 col-lg-3 p-0">
+        <div class="d-flex align-items-center justify-content-between px-3 py-3" style="background: var(--sidebar-bg);">
+            <span class="fw-bold" style="font-size: 1.6rem; color: #222;">Chats</span>
+            
+        </div>
+       
+         <div class="sidebar-search position-relative">
+            <i class="fas fa-search"></i>
+            <input type="text" class="form-control" placeholder="Search..." id="searchInput">
+        </div>
+       
+        <div class="contact-list flex-grow-1">
+            @foreach($users as $user)
+                @php
+                    $conv = $conversations->first(function($c) use ($user) {
+                        return ($c->user_one_id == $user->id || $c->user_two_id == $user->id);
+                    });
+                    $isActive = isset($conversation) && $conv && $conversation->id === $conv->id;
+                @endphp
+                <a href="{{ $conv ? route('chat.show', $conv->id) : route('chat.start', $user->id) }}"
+                   class="contact-item {{ $isActive ? 'active' : '' }} conversation-item"
+                   data-conversation-name="{{ $user->name }}">
+                    <img src="{{ $user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=8B5E3C&color=fff' }}" class="avatar" alt="{{ $user->name }}">
+                    <div class="contact-info">
+                        <div class="name">{{ $user->name }}</div>
+                        <div class="last-message">
+                            @if($conv && $conv->messages->last())
+                                {{ $conv->messages->last()->sender_id == auth()->id() ? 'You: ' : '' }}
+                                  {{ Str::limit($conv->messages->last()->message, 30) }}
+                            @else
+                                <em>No conversation yet</em>
+                            @endif
                         </div>
                     </div>
+                    @if(isset($user->role))
+                        <span class="badge">{{ $user->role }}</span>
+                    @endif
+                </a>
+            @endforeach
+        </div>
+        <div class="p-3">
+            <button class="btn w-100" style="background: var(--coffee-brown); color: #fff; border-radius: 2rem;" data-bs-toggle="modal" data-bs-target="#newConversationModal">
+                <i class="fas fa-plus me-2"></i>Start New Conversation
+            </button>
+        </div>
+    </div>
+    <!-- Chat Area -->
+    <div class="chat-main col-12 col-md-8 col-lg-9 p-0 d-flex flex-column">
+        @if(isset($conversation))
+            @php
+                $otherUser = $conversation->user_one_id == auth()->id() ? $conversation->userTwo : $conversation->userOne;
+            @endphp
+            <div class="chat-header">
+                <img src="{{ $otherUser->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($otherUser->name) . '&background=8B5E3C&color=fff' }}" class="avatar" alt="User">
+                <span class="name">{{ $otherUser->name }}</span>
+                <span class="role-badge text-capitalize">{{ $otherUser->role ?? 'Partner' }}</span>
+                <span class="status"><i class="fas fa-circle"></i> Online</span>
+               
+            </div>
+            <div class="chat-body flex-grow-1" id="messagesContainer">
+                @forelse($conversation->messages as $message)
+                    <div class="message-row {{ $message->sender_id == auth()->id() ? 'own' : '' }}">
+                        <div class="message-bubble">
+                            {{ $message->message }}
+                            <div class="message-meta">
+                                {{ $message->created_at->format('H:i') }}
+                                @if($message->sender_id == auth()->id())
+                                    {!! $message->read_at ? '<i class="fas fa-check-double text-success"></i>' : '<i class="fas fa-check text-secondary"></i>' !!}
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-comments fa-3x mb-3"></i>
+                        <h5>No messages yet</h5>
+                        <p>Start the conversation by sending a message below</p>
+                    </div>
+                @endforelse
+            </div>
+            <div class="chat-footer">
+                <form action="{{ route('chat.store', $conversation->id) }}" method="POST" id="messageForm" class="d-flex w-100 align-items-center gap-2">
+                    @csrf
+                    <textarea name="message" class="form-control" placeholder="Type your message here" rows="1" id="messageInput" required></textarea>
+                    <button type="submit" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        @else
+            <div class="flex-grow-1 d-flex align-items-center justify-content-center" style="background: #f7f6f4;">
+                <div class="text-center">
+                    <i class="fas fa-comments fa-5x mb-4" style="color: var(--coffee-brown);"></i>
+                    <h3 style="color: #222;">Welcome to GlobalBean Connect Chat</h3>
+                    <p class="mb-4 text-muted">Select a conversation from the sidebar to start chatting with your supply chain partners.</p>
+                    <button class="btn" style="background: var(--coffee-brown); color: #fff; border-radius: 2rem;" data-bs-toggle="modal" data-bs-target="#newConversationModal">
+                        <i class="fas fa-plus me-2"></i>Start New Conversation
+                    </button>
                 </div>
             </div>
-        </div>
-
-        <!-- Chat Panel -->
-        <div class="col-md-8 col-lg-9 p-0 d-flex flex-column">
-            @if(isset($conversation))
-                <!-- Chat Header -->
-                <div class="bg-brown text-white p-3 border-bottom">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <img src="{{ $conversation->participant->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($conversation->participant->name ?? 'User') . '&background=8B4513&color=fff' }}" 
-                                 class="rounded-circle me-3" 
-                                 width="40" 
-                                 height="40" 
-                                 alt="User">
-                            <div>
-                                <h6 class="mb-0">{{ $conversation->participant->name ?? 'Unknown User' }}</h6>
-                                <small class="text-light">
-                                    @if(isset($conversation->participant->is_online) && $conversation->participant->is_online)
-                                        <i class="fas fa-circle text-success me-1" style="font-size: 8px;"></i>Online
-                                    @else
-                                        <i class="fas fa-circle text-secondary me-1" style="font-size: 8px;"></i>Last seen recently
-                                    @endif
-                                </small>
-                            </div>
-                        </div>
-
-                        <!-- Chat Actions -->
-                        <div class="d-flex">
-                            <button class="btn btn-link text-white me-2" title="Voice Call">
-                                <i class="fas fa-phone"></i>
-                            </button>
-                            <button class="btn btn-link text-white me-2" title="Video Call">
-                                <i class="fas fa-video"></i>
-                            </button>
-                            <button class="btn btn-link text-white" title="More Options">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Messages Container -->
-                <div class="flex-grow-1 overflow-auto p-3 bg-brown-100" id="messagesContainer" style="height: 400px;">
-                    @forelse($conversation->messages as $message)
-                        @include('partials.message', ['message' => $message])
-                    @empty
-                        <div class="text-center text-brown py-5">
-                            <i class="fas fa-comments fa-3x mb-3 text-brown opacity-50"></i>
-                            <h5>No messages yet</h5>
-                            <p>Start the conversation by sending a message below</p>
-                        </div>
-                    @endforelse
-                </div>
-                <div class="p-1 border-top bg-white">
-                     <form action="{{ route('chat.store', $conversation->id) }}" method="POST" id="messageForm">
-                     @csrf
-                    <div class="input-group">
-
-                         <textarea name="message"
-                        class="form-control"
-                        placeholder="Type a message..."
-                        rows="1"
-                        id="messageInput"
-                        required
-                        style="flex-grow: 1;"></textarea> 
-
-                        <button type="submit" class="btn btn-brown">
-                        <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                    </form>
-            </div>
-
-            @else
-                <!-- Empty State -->
-                <div class="d-flex flex-column align-items-center justify-content-center h-100 text-brown">
-                    <div class="text-center">
-                        <i class="fas fa-comments fa-5x mb-4 text-brown opacity-50"></i>
-                        <h3 class="text-dark">Welcome to GlobalBean Connect Chat</h3>
-                        <p class="mb-4">Select a conversation from the sidebar to start chatting with your supply chain partners.</p>
-                        <!-- Button trigger modal -->
-                        <button class="btn btn-brown rounded-pill px-4 py-2" data-bs-toggle="modal" data-bs-target="#newConversationModal">
-                            <i class="fas fa-plus me-2"></i>Start New Conversation
-                        </button>
-                    </div>
-                </div>
-            @endif
-        </div>
+        @endif
     </div>
 </div>
 
@@ -198,29 +385,20 @@
       </div>
       <form action="{{ route('chat.create') }}" method="POST">
         @csrf
-        @if($errors->any())
-          <div class="alert alert-danger">
-            <ul class="mb-0">
-              @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          </div>
-        @endif
         <div class="modal-body">
           <div class="mb-3">
             <label for="participant" class="form-label">Select User</label>
             <select class="form-select" id="participant" name="participant_id" required>
               <option value="">Choose a user...</option>
               @foreach($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->role }})</option>
               @endforeach
             </select>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-brown">Start Chat</button>
+          <button type="submit" class="btn" style="background: var(--coffee-brown); color: #fff; border-radius: 2rem;">Start Chat</button>
         </div>
       </form>
     </div>
@@ -233,75 +411,6 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 @endif
-
-<style>
-:root {
-    --bs-brown: #8B4513;
-    --bs-brown-100: #f7f3ef;
-    --bs-brown-200: #e5d3c6;
-    --bs-brown-300: #d4b896;
-    --bs-brown-400: #a67c52;
-    --bs-brown-500: #8B4513;
-}
-.bg-brown {
-    background-color: var(--bs-brown) !important;
-}
-.bg-brown-100 {
-    background-color: var(--bs-brown-100) !important;
-}
-.text-brown {
-    color: var(--bs-brown) !important;
-}
-.text-brown-100 {
-    color: var(--bs-brown-100) !important;
-}
-.border-brown {
-    border-color: var(--bs-brown) !important;
-}
-.btn-brown {
-    background-color: brown;
-    color: #fff;
-    border: none;
-}
-.btn-brown:hover, .btn-brown:focus {
-    background-color: #5a3721;
-    color: #fff;
-}
-.btn-outline-brown {
-    color: var(--bs-brown);
-    border: 1px solid var(--bs-brown);
-    background: transparent;
-}
-.btn-outline-brown:hover, .btn-outline-brown:focus {
-    background: var(--bs-brown);
-    color: #fff;
-}
-.conversation-item:hover {
-    background-color: #f8f9fa !important;
-}
-
-.conversation-item.active {
-    background-color: var(--bs-brown-100) !important;
-    border-left: 4px solid var(--bs-brown);
-}
-
-.hover-bg-light:hover {
-    background-color: #f8f9fa;
-}
-
-#messagesContainer {
-    scroll-behavior: smooth;
-}
-
-#messageInput {
-    resize: none;
-    max-height: 120px;
-}
-
-.p-3.rounded {
-    border-radius: 1.5rem !important;
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -339,7 +448,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: formData
             })
             .then(response => {
-                // Detect if response is HTML (not JSON)
                 const contentType = response.headers.get('content-type') || '';
                 if (!response.ok) {
                     return response.text().then(text => { throw new Error(text); });
@@ -347,7 +455,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (contentType.includes('application/json')) {
                     return response.json();
                 } else {
-                    // Likely a session timeout or error page
                     throw new Error('Session expired or server error. Please refresh the page and log in again.');
                 }
             })
@@ -365,9 +472,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error sending message:', error);
-                // Try to detect common auth/session errors
                 let msg = error.message || '';
-                // Show the full error in an alert for debugging
                 alert('Debug info (show this to your developer):\n' + msg);
                 if (msg.includes('419') || msg.toLowerCase().includes('csrf')) {
                     alert('Your session has expired (CSRF error). Please refresh the page and try again.');
@@ -379,7 +484,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     alert('Send failed: ' + msg);
                 }
             });
-
         });
 
         messageInput.addEventListener('keydown', function(e) {
@@ -399,7 +503,7 @@ document.addEventListener('DOMContentLoaded', function() {
             conversations.forEach(function(conv) {
                 const name = conv.getAttribute('data-conversation-name').toLowerCase();
                 if (name.includes(searchTerm)) {
-                    conv.style.display = 'block';
+                    conv.style.display = 'flex';
                 } else {
                     conv.style.display = 'none';
                 }
@@ -407,42 +511,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Auto-refresh messages every 3 seconds
+    // Laravel Echo real-time chat listener
     @if(isset($conversation))
-    let lastMessageId = {{ $conversation->messages->last()->id ?? 0 }};
-    setInterval(function() {
-        fetch('{{ route("chat.messages", $conversation->id) }}')
-            .then(response => response.json())
-            .then(data => {
-                if (data.messages && data.messages.length > 0) {
-                    let newMessagesHtml = '';
-                    let updatedLastMessageId = lastMessageId;
-                    data.messages.forEach(message => {
-                        if (message.id > lastMessageId) {
-                            newMessagesHtml += `<div class="mb-3 d-flex ${message.is_own ? 'justify-content-end' : 'justify-content-start'}">
-                                <div class="d-flex align-items-end ${message.is_own ? 'flex-row-reverse' : ''}" style="max-width: 70%;">
-                                    ${!message.is_own ? `<img src=\"${message.sender_avatar}\" class=\"rounded-circle me-2\" width=\"32\" height=\"32\" alt=\"Sender\">` : ''}
-                                    <div class="p-3 rounded ${message.is_own ? 'bg-brown text-white' : 'bg-white border border-brown'}">
-                                        <p class="mb-1">${message.message}</p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <small class="${message.is_own ? 'text-brown-100' : 'text-brown'}">${message.created_at}</small>
-                                            ${message.is_own ? `<div class="ms-2">${message.read_at ? '<i class=\"fas fa-check-double text-success\"></i>' : '<i class=\"fas fa-check text-brown-100\"></i>'}</div>` : ''}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`;
-                            updatedLastMessageId = Math.max(updatedLastMessageId, message.id);
-                        }
-                    });
-                    if (newMessagesHtml) {
-                        messagesContainer.insertAdjacentHTML('beforeend', newMessagesHtml);
-                        scrollToBottom();
-                        lastMessageId = updatedLastMessageId;
-                    }
-                }
-            })
-            .catch(error => console.error('Error refreshing messages:', error));
-    }, 3000);
+    if (window.Echo) {
+        window.Echo.private('chat.{{ $conversation->id }}')
+            .listen('MessageSent', (e) => {
+                const isOwn = e.sender_id == {{ auth()->id() }};
+                const bubble = `
+                    <div class="message-row ${isOwn ? 'own' : ''}">
+                        <div class="message-bubble">
+                            ${e.message}
+                            <div class="message-meta">
+                                ${e.created_at}
+                                ${isOwn ? (e.read_at ? '<i class=\"fas fa-check-double text-success\"></i>' : '<i class=\"fas fa-check text-secondary\"></i>') : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                const messagesContainer = document.getElementById('messagesContainer');
+                messagesContainer.insertAdjacentHTML('beforeend', bubble);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            });
+    }
     @endif
 });
 </script>

@@ -70,16 +70,16 @@ Route::get('/home/report',[ReportController::class,'index'])->name('reports');
 Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name('vendor.reports');
 
 /*Order Routes*/
-Route::get('/home/orders', [OrderController::class, 'index'])->name('orders');
+Route::get('/home/orders', [OrderController::class, 'index'])->name('order.index');
 Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
 Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
 Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewOrder'])->name('vendor.order.show');
 Route::post('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'store'])->name('vendor.order.store');
 Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'download'])->name('vendor.order.download');
 Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
-Route::get('/home/orders/{order}', [IncomingOrderController::class, 'viewOrder'])->name('in-order.show');
-Route::post('/home/orders/{order}', [IncomingOrderController::class, 'store'])->name('in-order.store');
-Route::get('/home/orders/{order}/download', [IncomingOrderController::class, 'download'])->name('in-order.download');
+Route::get('/home/orders/{order}', [IncomingOrderController::class, 'viewOrder'])->name('order.show-in');
+Route::post('/home/orders/{order}', [IncomingOrderController::class, 'store'])->name('order.store-in');
+Route::get('/home/orders/{order}/download', [IncomingOrderController::class, 'download'])->name('order.download-in');
 
 
 // Transporter Delivery Dashboard
@@ -109,9 +109,8 @@ Route::get('/form_modal', function () {
     return view('form_modal');
 });
 
-Route::get('/dashboard', function () {
-    return view('Dashboards.home');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Use HomeController@index for dashboard routes so variables are always passed
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -129,10 +128,7 @@ Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vend
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
-Route::get('/home/dashboard', function(){
-    return view('Dashboards.home');
-});
+Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
 
 
 Route::prefix('staff-management')->name('staff_management.')->group(function () {
@@ -295,6 +291,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
     Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
     Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+    Route::get('/chat/start/{participant}', [ChatController::class, 'start'])->name('chat.start');
 });
 
 // Session keep-alive route for AJAX ping (prevents session expiry during chat)

@@ -19,14 +19,14 @@
              </a>
         </li>   
              <li class="sidebar-item">
-             <a href="#" class="sidebar-link">
+             <a href="{{ route('chat') }}" class="sidebar-link">
              <i class="nc-icon nc-chat-round"></i>
              <span>Chat</span>
              </a>
         </li>
              <li class="sidebar-item">
              <a href="{{route('vendor.reports')}}" class="sidebar-link">
-             <i class='bx bx-file'></i>
+             <i class='nc-icon nc-single-copy-04'></i>
              <span>Report</span>
              </a>    
         </li>

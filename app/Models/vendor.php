@@ -24,8 +24,11 @@ class Vendor extends Model
          return $this->hasMany(OutgoingOrder::class);
     }
 
-    public function invoice(){
-        return $this->belongsTo(Invoice::class);
+    /**
+     * Get the invoices for the vendor.
+     */
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
     }
 
     

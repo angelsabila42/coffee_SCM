@@ -9,6 +9,7 @@ use App\Models\IncomingOrder;
 use App\Models\OutgoingOrder;
 use App\Models\User;
 use App\Models\WorkCenter;
+use Database\Factories\IncomingOrderFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -21,12 +22,9 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@lightbp.com',
-            'password' => Hash::make('secret'),
-            
-        ]);
+        
+
+
 
         $this->call([
             VendorSeeder::class,
@@ -40,5 +38,6 @@ class DatabaseSeeder extends Seeder
             ChatTestSeeder::class, // Add chat test data
             InventorySeeder::class,
         ]);
+
     }
 }
