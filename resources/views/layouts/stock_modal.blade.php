@@ -31,9 +31,9 @@
             <label for="grade" class="form-label">Grade</label>
             <select name="grade" class="form-select" required>
               <option value="">Select</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value="1">A</option>
+              <option value="2">B</option>
+              <option value="3">C</option>
             </select>
           </div>
 

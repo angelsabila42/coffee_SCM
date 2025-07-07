@@ -8,7 +8,12 @@ use Livewire\Component;
 use Livewire\Attributes\Validate;
 use App\Helpers\Helper;
 use App\Models\OutgoingOrder;
+
+use App\Notifications\NewOutgoingOrderNotification;
+use App\Models\User;
+
 use App\Services\ActivityLogger;
+
 
 class CreateOrderModal extends Component
 {
@@ -38,7 +43,7 @@ class CreateOrderModal extends Component
 
         $this->validate();
 
-        OutgoingOrder::create([
+       $order = OutgoingOrder::create([
             'work_center_id'=>$this->work_center_id,
             'vendor_id'=>$this->vendor_id,
             'orderID'=> $this->orderID,
@@ -47,6 +52,12 @@ class CreateOrderModal extends Component
             'status'=> 'Requested',
             'deadline'=> $this->deadline
         ]);
+        // $vendor = User::find($order->vendor_id);
+        // $vendor->notify(new NewOutgoingOrderNotification($order));
+        $admin = \App\Models\User::where('name', 'Admin')->first();
+    if ($admin) {
+        $admin->notify(new NewOutgoingOrderNotification($order));
+    }
 
         $this->reset(['quantity','coffeeType', 'status', 'deadline', 'vendor_id', 'work_center_id']);
         $this->dispatch('reset-alpine-dropdown');
