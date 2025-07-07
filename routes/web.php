@@ -70,16 +70,16 @@ Route::get('/home/report',[ReportController::class,'index'])->name('reports');
 Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name('vendor.reports');
 
 /*Order Routes*/
-Route::get('/home/orders', [OrderController::class, 'index'])->name('orders');
+Route::get('/home/orders', [OrderController::class, 'index'])->name('order.index');
 Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
 Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
 Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewOrder'])->name('vendor.order.show');
 Route::post('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'store'])->name('vendor.order.store');
 Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'download'])->name('vendor.order.download');
 Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
-Route::get('/home/orders/{order}', [IncomingOrderController::class, 'viewOrder'])->name('in-order.show');
-Route::post('/home/orders/{order}', [IncomingOrderController::class, 'store'])->name('in-order.store');
-Route::get('/home/orders/{order}/download', [IncomingOrderController::class, 'download'])->name('in-order.download');
+Route::get('/home/orders/{order}', [IncomingOrderController::class, 'viewOrder'])->name('order.show-in');
+Route::post('/home/orders/{order}', [IncomingOrderController::class, 'store'])->name('order.store-in');
+Route::get('/home/orders/{order}/download', [IncomingOrderController::class, 'download'])->name('order.download-in');
 
 
 // Transporter Delivery Dashboard

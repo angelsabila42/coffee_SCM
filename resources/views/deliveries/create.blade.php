@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('page-title', 'Create Delivery Request')
+@section('sidebar-items')
+@include('layouts.sidebar-items.admin')
 
 @section('content')
 <div class="card">

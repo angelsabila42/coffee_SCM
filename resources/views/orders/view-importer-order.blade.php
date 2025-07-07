@@ -28,7 +28,7 @@
                 <button type= "button" class="btn exit" @@click="showForm= !showForm" >Decline</button>
         </div>
             <div class="d-flex">   
-                <button type= "button" class="btn btn-light btn-fill mr-2" onclick="window.location= '{{route('in-order.download', $order->id)}}' " >Download</button>
+                <button type= "button" class="btn btn-light btn-fill mr-2" onclick="window.location= '{{route('order.download-in', $order->id)}}' " >Download</button>
             </div>
         </div>
             <div class="d-flex justify-content-end">

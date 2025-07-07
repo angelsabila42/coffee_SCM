@@ -22,11 +22,15 @@
                         </button> --}}
                     </li>
                 <li class="nav-item">
+                {{-- @auth --}}
                     <span>{{Auth::user()->name}}</span>
                     <a href="#" class=" nav-link" data-bs-toggle="modal" data-bs-target="#userProfileModal">
                         <img src="{{Auth::user()->profile_picture}}" alt="" class="rounded_circle" width="30" height="30">
                          {{-- <i class="fas fa-user-circle"> </i> --}}
                     </a>
+                    {{-- @else
+                    <a href="{{route('login')}}" class = "nav-link">Login</a>
+                    @endauth --}}
                 </li>
             </ul>
         </div>

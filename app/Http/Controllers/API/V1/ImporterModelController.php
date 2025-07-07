@@ -19,10 +19,7 @@ class ImporterModelController extends Controller
     public function payments(){
         return view('importer_payments');
     }
-
-
-
-     
+  
 
     public function index(){
           $orders = IncomingOrder::paginate(6);

@@ -9,6 +9,7 @@ use App\Models\IncomingOrder;
 use App\Models\OutgoingOrder;
 use App\Models\User;
 use App\Models\WorkCenter;
+use Database\Factories\IncomingOrderFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -28,6 +29,8 @@ class DatabaseSeeder extends Seeder
             
         ]);
 
+
+
         $this->call([
             VendorSeeder::class,
             importerModelSeeder::class,
@@ -39,5 +42,6 @@ class DatabaseSeeder extends Seeder
             WorkCenterSeeder::class,
             ChatTestSeeder::class, // Add chat test data
         ]);
+
     }
 }

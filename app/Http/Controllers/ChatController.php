@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
+use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -173,6 +174,12 @@ class ChatController extends Controller
         ]);
 
         session()->flash('chat_created', 'Conversation started!');
+
+        ActivityLogger::log(
+            title: 'Message sent',
+            type:'new-message '
+        );
+        
         return redirect()->route('chat.show', $conversation->id);
     }
 }
