@@ -5,6 +5,7 @@
 @endsection
 @section('content')
 <!--top cards-->
+<div class="container">
 <div class="row">
       <div class="col-md-3" >
          <div class="card kpi-card">
@@ -16,7 +17,7 @@
                
             </div>
                <div class="card-body">
-               <h4 class="ml-2 kpi-figure"> {{$orders}} </h4> 
+               <h3 class="ml-2 kpi-figure"> {{$orders}} </h3> 
                {{-- <div id="chart-j" class="kpi-chart-container"></div> --}}
                </div>  
                
@@ -32,7 +33,7 @@
             </div>
                <div class="card-body ">
                {{-- <div class="kpi-chart-container"></div>  --}}
-               <h4 class="ml-2">{{$delivered}}</h4>
+               <h3 class="ml-2">{{$delivered}}</h3>
                </div>
             </div>
         </div>
@@ -46,7 +47,7 @@
             </div>
                <div class="card-body ">
                {{-- <div class="kpi-chart-container"></div> --}}
-               {{-- <h4 class="ml-2"> {{$invoices}} </h4>     --}}
+               {{-- <h3 class="ml-2"> {{$invoices}} </h3>     --}}
                </div>
          </div>
       </div>
@@ -60,7 +61,7 @@
             </div>
                <div class="card-body ">
                     {{-- <div class="kpi-chart-container"></div>  --}}
-                    <h4 class="ml-2"> {{$pending}} </h4>    
+                    <h3 class="ml-2"> {{$pending}} </h3>    
                </div>
          </div>
       </div>
@@ -70,21 +71,22 @@
                         <div class="col-md-7">
                             <div class="modern-card">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Sales Performance</h4>
+                                    <h4 class="card-title">Order Volume</h4>
                                 </div>
                                 <div class="card-body ">
-                                    <div id="chart-e"></div>
+                                    <div id="chart-v"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5">    
-                            @include('livewire.recent-activity')            
+                           <livewire:recent-activity/>           
                </div>
             </div>
 
             <div class="row mt-4">
             <div class="col-md-12">
             <livewire:admin-recent-orders-table/>
+            </div>
             </div>
             </div>
 

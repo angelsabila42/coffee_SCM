@@ -4,56 +4,67 @@
         {{ session('success') }}
     </div>
 @endif
-     <div class="row mb-4">
+     <div class="row mb-4"> 
         <div class="col">
-            <div class="card text-white rounded-2 bg-dark">
-                <div class="card-body bg-dark rounded-3">
+            <div class="card  rounded-2  kpi-card">
+                <div class="d-flex  card-body justify-content-between ">
+                    <div class="  mx-2">
+                    
                    {{-- Dynamically get total staff count --}}
-                    <p class="card-title text-white">Orders sent</p>
-                    <h3>{{ $ordersSent }}</h3> 
+                    <p class=" fw-bold">Orders sent</p>
+                    <h4>{{ $ordersSent }}</h4> 
                 </div>
-            </div>
+                <i class="fa-solid fa-bag-shopping stat-icon bg-partner-soft"> </i>
+           
+                </div>
+                 </div>
         </div>
         <div class="col ">
-            <div class="card ">
-                <div class="card-body rounded d-flex bg-primary text-white">
+            <div class="card kpi-card"> 
+                <div class="card-body rounded d-flex  d-flex justify-content-between">
+                   
                     {{-- Dynamically get absent staff count --}}
                     
-                    <div class="mx-3">
-                        <span class="fw-bold" >Pending</span>
+                    <div class="mx-2">
+                        <p class="fw-bold" >Pending</p>
                     <h3>{{ $pending }}</h3>
                     </div>
-                    <i class="fa-solid fa-spinner"></i>
+                    <i class="fa-solid fa-clock stat-icon bg-warning-soft"></i>
                 </div>
             </div>
         </div>
         <div class="col" >
-            <div class="card ">
-                <div class="card-body d-flex justify-content-column bg-info ">
-                    
+            <div class="card kpi-card ">
+                <div class="card-body d-flex justify-content-between">
+                    {{-- Dynamically get present staff count --}}
+                   
                    <div class="mx-2">
                       <p class="fw-bold ">In transit</p>
                         <h3>{{ $inTransit }}</h3>
                           
                    </div>
-                   <i class="fa-solid fa-truck"></i>
+                   <i class="fa-solid fa-truck stat-icon bg-info-soft text-primary"></i>
                
-                    </div>
+                </div>
             </div>
         </div>
         <div class="col">
-            <div class="card ">
-                <div class="card-body d-flex text-white bg-success">
+            <div class="card  kpi-card">
+                <div class="card-body d-flex justify-content-between  ">
                     <div class="mx-2">
                     {{-- Dynamically get present staff count --}}
                     <p class="fw-bold ">Delivered</p>
                     <h3>{{ $delivered }}</h3>
                     </div>
-                <i class="fa-solid fa-thumbs-up"></i>
+                   <span class="">
+                    <i class="fa-solid fa-circle-check stat-icon bg-success-soft "></i>
+                   </span>
                 </div>
             </div>
         </div>
     </div>
+<div class="modern-card">
+
 {{-- delivery table     --}}
 <div>
    <div class="col-md-12">
@@ -73,16 +84,16 @@
                 <p class="card-category">Here is a subtitle for this table</p-->
             </div>
             <div class="card-body table-full-width table-responsive">
-                <table class="table table-hover table-bordered">
-                    <thead class="bg-ligh bg-dark ">
+                <table class="table table-hover ">
+                    <thead class="bg-ligh  ">
                         <tr>
-                        <th class="font-weight-bold text-white bg-dark fs-5 rounded-pill">OrderID</th>
-                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Coffee Type</th>
-                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Quantity</th>
-                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Status</th>
-                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Order date</th>
-                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Last update</th>
-                        <th class="text-amber text-white bg-dark  fs-5  rounded-pill">Actions</th>
+                        <th class="font-weight-bold text-dark  fs-5 ">OrderID</th>
+                        <th class="text-amber text-dark bg-gray fs-5 ">Coffee Type</th>
+                        <th class="text-amber text-dark     fs-5">Quantity</th>
+                        <th class="text-amber text-dark    fs-5">Status</th>
+                        <th class="text-amber text-dark fs-5     ">Order date</th>
+                        <th class=" text-dark   fs-5 ">Last update</th>
+                        <th class=" text-dark    fs-5 ">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -113,8 +124,11 @@
         </div>
    </div>
 </div>
+{{ $orders->links('pagination::bootstrap-5') }}
+</div>
 
-                {{ $orders->links('pagination::bootstrap-5') }}
+
+                
   
                                 <script>
                                 function confirmDelete(orderId) {

@@ -41,60 +41,14 @@ use Illuminate\Validation\Rules\Email;
 
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\API\V1\OutgoingOrderController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\Vendor\VendorOrderController;
 
 //use App\Models\inventory;
 
 use App\Http\Controllers\InvoiceExportController;
-use App\Models\IncomingOrder;
-
-Route::get('/home', function () {
-    return view('index');
-})->name('index');
-Route::get('/', [HomeController::class, 'index'])->name('index');
-
-Route::get('/', function () {
-    return view('auth.login');
-});
-
-
-/*Dashboard routes*/
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
-
-/*Analytics route*/
-Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
-
-/*Report routes*/
-Route::get('/home/report',[ReportController::class,'index'])->name('reports');
-Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name('vendor.reports');
-
-/*Order Routes*/
-Route::get('/home/orders', [OrderController::class, 'index'])->name('orders');
-Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
-Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
-Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewOrder'])->name('vendor.order.show');
-Route::post('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'store'])->name('vendor.order.store');
-Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'download'])->name('vendor.order.download');
-Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
-Route::get('/home/orders/{order}', [IncomingOrderController::class, 'viewOrder'])->name('in-order.show');
-Route::post('/home/orders/{order}', [IncomingOrderController::class, 'store'])->name('in-order.store');
-Route::get('/home/orders/{order}/download', [IncomingOrderController::class, 'download'])->name('in-order.download');
-
-
-// Transporter Delivery Dashboard
-Route::get('/deliveries/transporter', function () {
-    return view('deliveries.transporter-dashboard');
-})->name('deliveries.transporter');
-
-Route::resource('deliveries', DeliveryController::class);
-
-/*transactions Routes*/
-Route::resource('invoices', InvoiceController::class);
-Route::resource('payments', PaymentController::class);
-
-/*Delivery Routes*/
-Route::resource('deliveries', DeliveryController::class);
+use App\Http\Middleware\AutMiddleware;
+use GuzzleHttp\Middleware;
 
 
 Route::get('/alpine',function(){
@@ -102,53 +56,106 @@ Route::get('/alpine',function(){
 });
 
 
-Route::get('/inventory', function () {
-    return view('inventory');
-});
-Route::get('/form_modal', function () {
-    return view('form_modal');
-});
+// Route::get('/dashboard', function () {
+//     return view('Dashboards.home');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Use HomeController@index for dashboard routes so variables are always passed
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';
 
 
 // custom auth routes
 
-Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vendor');
 
-Route::post('/login', [LoginController::class, 'login']);
+//Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
 
 
-Route::prefix('staff-management')->name('staff_management.')->group(function () {
-
-    Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
-    Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
-    Route::get('/staff/{staff}', [StaffController::class, 'show'])->name('staff.show');
-    Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
-    Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
-    Route::patch('/staff/{staff}/status', [StaffController::class, 'updateStatus'])->name('staff.status');
 
 
-    // --- Work Assignment Routes ---
-    Route::get('/workassignment', [WorkAssignmentController::class, 'workassign'])->name('workassignment.workassign'); // List all assignments
-    Route::post('/workassignment', [WorkAssignmentController::class, 'store'])->name('workassignment.store'); // Store new assignment
-    Route::get('/workassignment/{assignment_id}', [WorkAssignmentController::class, 'edit'])->name('workassignment.edit'); // Edit specific assignment
-    //  routes for update and delete 
-    Route::put('/workassignment/{workAssignment}', [WorkAssignmentController::class, 'update'])->name('workassignment.update');
-    Route::delete('/workassignment/{workAssignment}', [WorkAssignmentController::class, 'destroy'])->name('workassignment.destroy');
-   
+
+
+Route::middleware('auth')->group(function()
+{   
+
+                                
+                            Route::prefix('staff-management')->name('staff_management.')->group(function ()
+                             {
+
+                                Route::get('/staff', [StaffController::class, 'staff'])->name('staff');
+                                Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
+                                Route::get('/staff/{staff}', [StaffController::class, 'show'])->name('staff.show');
+                                Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
+                                Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
+
+
+                                // --- Work Assignment Routes ---
+                                Route::get('/workassignment', [WorkAssignmentController::class, 'workassign'])->name('workassignment.workassign'); // List all assignments
+                                Route::post('/workassignment', [WorkAssignmentController::class, 'store'])->name('workassignment.store'); // Store new assignment
+                                Route::get('/workassignment/{assignment_id}', [WorkAssignmentController::class, 'edit'])->name('workassignment.edit'); // Edit specific assignment
+                                //  routes for update and delete 
+                                Route::put('/workassignment/{workAssignment}', [WorkAssignmentController::class, 'update'])->name('workassignment.update');
+                                Route::delete('/workassignment/{workAssignment}', [WorkAssignmentController::class, 'destroy'])->name('workassignment.destroy');
+                            });
+
+
+                                                
+                    Route::get('/inventory', function () {
+                        return view('inventory');
+                    });
+                    Route::get('/form_modal', function () {
+                        return view('form_modal');
+                    });
+
+
+                                                
+                    Route::get('/home', function () {
+                        return view('index');
+                    })->name('index');
+                    Route::get('/', [HomeController::class, 'index'])->name('index');
+
+                    Route::get('/', function () {
+                        return view('auth.login');
+                    });
+
+                    // Transporter Delivery Dashboard
+                    Route::get('/deliveries/transporter', function () {
+                        return view('deliveries.transporter-dashboard');
+                    })->name('deliveries.transporter');
+
+                    Route::resource('deliveries', DeliveryController::class);
+
+                    /*transactions Routes*/
+                    Route::resource('invoices', InvoiceController::class);
+                    Route::resource('payments', PaymentController::class);
+
+                    /*Delivery Routes*/
+                    Route::resource('deliveries', DeliveryController::class);
+
+
+                                    
+        Route::get('/home/dashboard', function(){
+            return view('Dashboards.home');
+        });
+
+
+       Route::get('/reg/vendor', [VendorController::class, 'vendor'])->name('vendor');
+        //Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
+
+        Route::get('/reg/importer', [ImporterModelController::class, 'importer'])->name('importer');
+        //Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vendor');
+
+      
+        Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vendor');
+
+
+        Route::post('/reg/transporter', [transporterController::class, 'store'])->name('store.transporter');
+        Route::post('/reg/importer', [ImporterModelController::class, 'store'])->name('store.importer');
+
+           
 
     // --- Leave History Routes ---
     Route::get('/leavehistory', [LeaveHistoryController::class, 'leavehistory'])->name('leavehistory.leavehistory'); // List all leave history
@@ -157,146 +164,176 @@ Route::prefix('staff-management')->name('staff_management.')->group(function () 
     Route::put('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'update'])->name('leavehistory.update'); // Update leave record
     Route::delete('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'destroy'])->name('leavehistory.destroy'); // Delete leave record
     Route::patch('/leavehistory/{leaveHistory}/status', [LeaveHistoryController::class, 'updateStatus'])->name('leavehistory.status');
+
+
+        /*Dashboard routes*/
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+        /*Analytics route*/
+        Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+
+   
+
+
+        /*Report routes*/
+        Route::get('/home/report',[ReportController::class,'index'])->name('reports');
+        Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name('vendor.reports');
+
+        /*Order Routes*/
+        Route::get('/home/orders', [OrderController::class, 'index'])->name('order.index');
+        Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
+        Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
+        Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewOrder'])->name('vendor.order.show');
+        Route::post('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'store'])->name('vendor.order.store');
+        Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'download'])->name('vendor.order.download');
+        Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
+        Route::get('/home/orders/{order}', [IncomingOrderController::class, 'viewOrder'])->name('order.show-in');
+        Route::post('/home/orders/{order}', [IncomingOrderController::class, 'store'])->name('order.store-in');
+        Route::get('/home/orders/{order}/download', [IncomingOrderController::class, 'download'])->name('order.download-in');
+
+
+
+        // edit profile routes
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+            Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+            Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+  //inventory routes
+        // Route::post('form_modal',[InventoryController::class,'add']);//for adding data in the inventory table
+        Route::get('/inventory',[InventoryController::class,'ern']);//for fetching data from the table to the view table
+        Route::get('/inventory',[InventoryController::class,'mut']);//for the search input
+        Route::delete('/inventory/{id}',[InventoryController::class,'destroy'])->name('inventory.destroy');//for deleting a record
+        Route::get('/inventory',[InventoryController::class,'alber']);
+        Route::post('/inventory', [InventoryController::class, 'add'])->name('inventory.add');//for adding data in the inventory table
+
+        // Chat Routes
+        Route::get('/chat', [ChatController::class, 'index'])->name('chat');
+            Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
+            Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
+            Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+            Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+            Route::get('/chat/start/{participant}', [ChatController::class, 'start'])->name('chat.start');
+
+        Route::get('/stock', function () {
+            return view('stock');
+        });
+        Route::get('/stock/{id}',[InventoryController::class,'geor'])->name('stock');
+
+         Route::get('/editprofile', function () {
+            return view('editprofile');
+        });
+       
+        //editing profile
+        Route::get('/editprofile',[ProfileController::class,'edit'])->name('editprofile');
+        Route::post('/editprofile',[ProfileController::class,'update'])->name('editprofile.update');
+        Route::post('/editprofile',[ProfileController::class,'changePassword'])->name('editprofile.password');
+        // end of Arnest added
+
+
+        Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
+
+
+        Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
+
+        Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
+        Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
+        Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
+
+        Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
+        Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
+        Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
+
+        Route::get('/drivers/create', function () {
+            return view('drivers.create');
+        })->name('drivers.create');
+
+        Route::get('/deliveries/{id}', function ($id) {
+            $delivery = \App\Models\Delivery::findOrFail($id);
+            return view('deliveries.show', compact('delivery'));
+        })->name('deliveries.show1');
+
+        Route::post('/drivers/store', [DriverController::class,'store2'])->name('drivers.store2');
+
+        Route::resource('drivers', DriverController::class);
+
+
+        // Session keep-alive route for AJAX ping (prevents session expiry during chat)
+        Route::get('/keep-alive', function () {
+            return response()->json(['alive' => true]);
+        });
+
+
+
+
+
+
 });
 
 
-// auth routes...
-
-Route::get('/reg', [authController::class, 'category'])->name('category');
-Route::get('/reg/vendor', [authController::class, 'vendor'])->name('vendor');
-Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
-Route::get('/reg/others', [authController::class, 'others'])->name('others');
-Route::get('/reg/importer', [ImporterModelController::class, 'importer'])->name('importer');
-Route::post('/reg', [authController::class, 'handleSelection'])->name('select.category');
-
-
-//registration routes
-Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vendor');
 
 
 
 
-Route::middleware('auth')->group(function(){
-Route::get('/reg/vendor', [VendorController::class, 'vendor'])->name('vendor');
-Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
-
-Route::get('/reg/importer', [ImporterModelController::class, 'importer'])->name('importer');
-//Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vendor');
-
-
-Route::post('/reg/transporter', [transporterController::class, 'store'])->name('store.transporter');
-Route::post('/reg/importer', [ImporterModelController::class, 'store'])->name('store.importer');
 
 
 
-Route::get("/java",[VendorController::class, 'store'])-> name('java');
-Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
-//inventory routes
-// Route::post('form_modal',[InventoryController::class,'add']);//for adding data in the inventory table
-Route::get('/inventory',[InventoryController::class,'ern']);//for fetching data from the table to the view table
-Route::get('/inventory',[InventoryController::class,'mut']);//for the search input
-Route::delete('/inventory/{id}',[InventoryController::class,'destroy'])->name('inventory.destroy');//for deleting a record
-Route::get('/inventory',[InventoryController::class,'alber']);
-Route::post('/inventory', [InventoryController::class, 'add'])->name('inventory.add');//for adding data in the inventory table
 
-Route::get('/stock', function () {
-    return view('stock');
+
+//all vendor routes
+Route::middleware(['vendor'])->group(function(){
+
+// Vendor Transactions Dashboard
+Route::get('/transactions/vendor',[VendorController::class, 'Transactions'] )->name('transactions.vendor');
+Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
+
+        Route::get("/java",[VendorController::class, 'store'])-> name('java');
+        Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+      
+
 });
-Route::get('/stock/{id}',[InventoryController::class,'geor'])->name('stock');
-
-Route::get('/transporter', function () {
-    return view('transporter');
-});
-Route::get('/editprofile', function () {
-    return view('editprofile');
-});
-Route::get('/transporter',[DeliveryController::class,'merc']);
-Route::delete('/transporter/{id}',[DeliveryController::class,'dismiss'])->name('transporter.dismiss');
-
-//editing profile
-Route::get('/editprofile',[ProfileController::class,'edit'])->name('editprofile');
-Route::post('/editprofile',[ProfileController::class,'update'])->name('editprofile');
-Route::post('/editprofile',[ProfileController::class,'changePassword'])->name('editprofile');
-// end of Arnest added
 
 
-Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
 
-Route::middleware('auth')->group(function(){
+
+
+
+//all importer routes
+    Route::middleware('importer')->group(function(){
+    
 // importer  routes
 Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
 Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
-
-});
-
 Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
+
 });
+
+
+
+
+
+
+
+
+
+
+//all transporter routes
+
+Route::middleware('transporter')->group(function(){
+
+// Transporter Delivery Dashboard
+Route::get('/deliveries/transporter', [transporterController::class, 'deliveries'])->name('deliveries.transporter');
+Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
 
 
 //transporter transactions
 Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');
 
+ Route::get('/transporter',[DeliveryController::class,'merc']);
+        Route::delete('/transporter/{id}',[DeliveryController::class,'dismiss'])->name('transporter.dismiss');
+  Route::get('/transporter', function () {
+            return view('transporter');
+        });
+     
 
-
-// Transporter Delivery Dashboard
-Route::get('/deliveries/transporter', function () {
-    return view('deliveries.transporter-dashboard');
-})->name('deliveries.transporter');
-
-// Vendor Transactions Dashboard
-Route::get('/transactions/vendor', function () {
-    return view('transactions.vendor-dashboard');
-})->name('transactions.vendor');
-
-Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
-Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
-Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
-
-Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
-Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
-Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
-
-Route::get('/drivers/create', function () {
-    return view('drivers.create');
-})->name('drivers.create');
-
-Route::get('/deliveries/{id}', function ($id) {
-    $delivery = \App\Models\Delivery::findOrFail($id);
-    return view('deliveries.show', compact('delivery'));
-})->name('deliveries.show');
-
-Route::post('/drivers/store', function (\Illuminate\Http\Request $request) {
-    $validated = $request->validate([
-        'name' => 'required',
-        'email' => 'required|email|unique:users,email',
-        'phone' => 'nullable',
-        'address' => 'nullable',
-    ]);
-    $user = new \App\Models\User();
-    $user->name = $validated['name'];
-    $user->email = $validated['email'];
-    $user->phone = $validated['phone'] ?? null;
-    $user->address = $validated['address'] ?? null;
-    $user->role = 'driver';
-    $user->password = bcrypt('password');
-    $user->save();
-    return redirect()->route('drivers.create')->with('success', 'Driver added successfully!');
-})->name('drivers.store');
-
-Route::resource('drivers', \App\Http\Controllers\DriverController::class);
-
-
-// --- Chat Routes (must be authenticated) ---
-Route::middleware('auth')->group(function () {
-    Route::get('/chat', [ChatController::class, 'index'])->name('chat');
-    Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
-    Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
-    Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
-    Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
-    Route::get('/chat/start/{participant}', [ChatController::class, 'start'])->name('chat.start');
 });
 
-// Session keep-alive route for AJAX ping (prevents session expiry during chat)
-Route::get('/keep-alive', function () {
-    return response()->json(['alive' => true]);
-})->middleware('auth');

@@ -39,4 +39,10 @@ class Payment extends Model
     {
         return $this->belongsTo(Invoice::class);
     }
+
+
+     public function importers(){
+        return $this->belongsTo(importerModel::class);
+    }
+
 }

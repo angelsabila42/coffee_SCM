@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class transporter extends Model
+class Transporter extends Model
 {
      protected $fillable = [
         'name',
@@ -15,4 +15,11 @@ class transporter extends Model
         'address',
         'confirm password',
      ];
+
+    /**
+     * Get the invoices for the transporter.
+     */
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
+    }
 }

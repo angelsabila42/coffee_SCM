@@ -8,6 +8,7 @@ use Livewire\Attributes\On;
 use App\Models\IncomingOrder;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
+use App\Services\ActivityLogger;
 
 
 abstract class BaseIncomingOrderTable extends Component
@@ -61,19 +62,34 @@ abstract class BaseIncomingOrderTable extends Component
     }
 
       #[On('statusChanged')]
-   public function updateStatus($id, $status, ){
+   public function updateStatus($id, $status){
     $order= IncomingOrder::findOrFail($id);
+    $oldStatus = $order->status;
     $order->status = $status;
     $order->save();
+
+    ActivityLogger::log(
+        title: "Changed status from $oldStatus to $status for order $order->orderID",
+        type: 'update'
+    );
    }
+
 
       #[On('deleteConfirmed')]
     public function confirmDelete($id){
-        IncomingOrder::findOrFail($id)->delete();
+
+        $order= IncomingOrder::findOrFail($id);
+
+        ActivityLogger::log(
+        title: "Deleted $order->orderID",
+        type: 'delete'
+       );
+
+        $order->delete();
 
         session()->flash('success','Record Deleted');
 
-        return redirect()->route('orders');
+        return redirect()->route('order.index');
        // $this->dispatch('show-toast', message: 'Record Deleted');   
 }
    
@@ -124,4 +140,5 @@ abstract class BaseIncomingOrderTable extends Component
 
          $this->resetPage($this->getPageName());
    }
+ 
 }

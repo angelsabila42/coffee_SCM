@@ -23,7 +23,7 @@ h1, h2, h3, p, label, input, textarea, button, select {
   margin: 40px auto;
   background: white;
   padding: 40px;
- // box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  /* box-shadow: 1px 1px 2px rgba(0,0,0,0.2); */
   border-radius: 4px;
 } 
 input, textarea, select {
@@ -112,7 +112,7 @@ button[type="submit"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 2000;
 }
 .custom-modal {
   background: white;
@@ -198,9 +198,11 @@ li{
     top:0;
     left:0;
     overflow-y: hidden;
+    overflow-x: hidden;
     position: fixed;
     height: 100vh;
 }
+
 
 #sidebar.expand ~.main-panel{
     margin-left: 260px;
@@ -217,22 +219,54 @@ li{
     min-width: 260px;
 }
 
+#sidebar:not(.expand) .hide-on-collapse {
+    opacity: 0;
+    visibility: hidden;
+    /* display: none !important; */
+}
+
+#sidebar.expand .hide-on-collapse {
+    display:inline-block;
+}
+
+.sidebar-link.active {
+    /* background-color: #ffffff;
+    color: #4b2ebe;
+    font-weight: bold;
+    border-left: 4px solid #ffc107; */
+    color:  #ffffff;
+     background: rgba(255, 255, 255, 0.1); 
+     /* border-left: 3px solid #f39c12;  */
+}
+
+.sidebar-link:not(.active) {
+    color: 	#e0d8c3;
+}
+
 .toggle-btn{
     width:30px;
     height: 30px;
     color: #4b2e2e;
     font-size: 18px;
-    border-radius: 0.425rem;
+    border-radius: 50%; 
+    /* position:absolute;
+    right: -15px;
+    top: 20px; */
+
     display:flex;
     justify-content: center;
-    align-items: center;
-    background-color: 	#d4af37;
+    align-items: center; 
+    background-color: #e0d8c3;  	
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    z-index: 1100;
+    cursor: pointer;
     border: none;
+
 }
 
-.toggle-btn i{
+/* .toggle-btn i{
     color: #FFF;
-}
+} */
 
 #sidebar.expand.sidebar-logo,
 #sidebar.expand a.sidebar-link span{
@@ -249,29 +283,44 @@ li{
     }
 }
 
-.sidebar-logo a{
-    color: #fff;
+.sidebar-logo {
+    color: #ffffff;
     font-size: 1.15rem;
     font-weight:600;
-   // font-family: open sans
+    
+   /* font-family: open sans */
 
 }
+
+.logo-text {
+    background: linear-gradient(45deg, #6b8cff, #8b9fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: opacity 0.3s ease;
+}
+
 
 
 a.sidebar-link{
     padding: 0.625rem 1.630rem;
-    color:#FFF;
+    color:#ffffff;
     display:block;
     white-space:nowrap;
     font-weight:500;
-    //font-family: open sans;
+    /* font-family: open sans; */
     border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    /* margin: 4px 16px;
+    white-space: nowrap*/
+    overflow: hidden; 
 }
 
 .sidebar-nav{
     padding: 0.7rem 0;
     flex: 11 auto;
     z-index: 10;
+    
 }
 
 .sidebar-link i{
@@ -280,8 +329,12 @@ a.sidebar-link{
 }
 
 a.sidebar-link:hover{
-    background-color:rgba(255,255,255,0.1);
-    border-left: 3px solid #f39c12;
+    /* background-color:rgba(255,255,255,0.1);*/
+    border-left: 3px solid #f39c12; 
+     color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+
 }
 
 .exit{
@@ -332,6 +385,10 @@ a.sidebar-link:hover{
   opacity: 0.7;
 }
 
+.bx{
+  font-weight: 50 !important;
+}
+
 /* Text Styling */
 .main-number {
   font-size: 2.5rem;
@@ -356,7 +413,7 @@ a.sidebar-link:hover{
 
 /*Bootstrap 4 example tabs*/
 body {
-    //background: #f8f9fa;
+    /* background: #f8f9fa; */
     padding: 2rem 0;
 }
 
@@ -493,7 +550,7 @@ body {
 
 .kpi-card{
   border-radius: 1rem;
-  //background-color: #EADDCA;
+  /* background-color: #EADDCA; */
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
   transition: transform 250ms ease-in;
   overflow: hidden;
@@ -513,7 +570,7 @@ body {
   width: 100%;
   height: 100%;
   padding-bottom: 0.5rem;
-  //background-color: pink;
+  /* background-color: pink; */
 }
 
 
@@ -534,7 +591,7 @@ body {
 
  .order{
   color: #f59e0b;
-  //border-top:5px solid #f59e0b;
+  /* border-top:5px solid #f59e0b; */
 }
 .money{
   color: #10b981;
@@ -564,21 +621,22 @@ body {
 
 .activity-item {
     padding: 1.5rem;
-    border-radius: 12px;
+    /* border-radius: 12px;
     transition: all 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05); */
     margin-bottom: 1rem;
 }
 
-.activity-item:hover {
+/* .activity-item:hover {
     background-color: #f8f9fa;
     transform: translateX(5px);
-}
+} */
 
 .activity-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 30px;
+    height: 30px;
+    padding: 0.5rem;
+    border-radius: 2rem;;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -586,7 +644,7 @@ body {
 }
 
 .activity-date {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #6c757d;
 }
 
@@ -639,11 +697,30 @@ body {
 .bg-primary-soft{
   background-color: rgba(0, 123, 255, 0.1)
 }
+.bg-partner-soft{
+  background-color: rgba(139, 92, 246, 0.1);
+}
+
+.bg-secondary-soft {
+  background-color: rgba(108, 117, 125, 0.1) !important;
+}
 
 .scrollbar{
-  max-height: 373px;
-  overflow-y: auto;
+  max-height: 373px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden!important;
+  padding-right: 5px;
 }
+
+.scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 
 /*KPI from BE cards*/
 .stat-card {
@@ -676,3 +753,43 @@ body {
     border-radius: 12px;
 }
 
+/* Compact table and card styles for deliveries and transactions */
+.table th, .table td {
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+    font-size: 0.95rem !important;
+    vertical-align: middle !important;
+}
+.card-header, .card-footer {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+.card-title, .card-header h4, .card-header h5 {
+    margin-bottom: 0 !important;
+    font-size: 1.1rem !important;
+}
+.btn-sm {
+    padding: 0.15rem 0.5rem !important;
+    font-size: 0.85rem !important;
+}
+.table {
+    margin-bottom: 0 !important;
+}
+.modern-card-header{
+  color: #495057;
+}
+
+.activity-timeline .text-muted{
+  font-size: 0.95rem;
+}
+
+/* Custom button height and padding for action buttons */
+.action-btn {
+  height: 32px; /* or your preferred height */
+  padding: 4px 12px;
+  font-size: 0.95em;
+  line-height: 1.2;
+  border-radius: 4px;
+  display: inline-block;
+  vertical-align: middle;
+}

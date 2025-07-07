@@ -10,11 +10,11 @@
         @method('PUT')
         <div class="form-group">
             <label for="name">Name <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="name" name="name" required value="{{ old('name', $driver->name) }}">
+            <input type="text" class="form-control" id="name" name="name" required value="{{ Auth::user()->name }}">
         </div>
         <div class="form-group mt-2">
             <label for="email">Email <span class="text-danger">*</span></label>
-            <input type="email" class="form-control" id="email" name="email" required value="{{ old('email', $driver->email) }}">
+            <input type="email" class="form-control" id="email" name="email" required value="{{ Auth::user()->email }}">
         </div>
         <div class="form-group mt-2">
             <label for="phone">Phone</label>

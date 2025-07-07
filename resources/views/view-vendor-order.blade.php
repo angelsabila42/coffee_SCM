@@ -23,19 +23,7 @@
         <div x-data="vendorDispatch"
          data-show-form= "{{old('declineReason')? 'true' : 'false' }}" 
          x-init= "showForm = $el.dataset.showForm ==='true'; init();">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex">
-                <button type= "button" class="btn save mr-2">Accept</button>
-                <button type= "button" class="btn exit" @@click="showForm= !showForm" >Decline</button>
-        </div>
-            <div class="d-flex">
-                <div>
-                    <button type= "button" class="btn save mr-2" @@click ="showModal = true" >Confirm Dispatch</button>
-                    @include('partials.vendor-order-dispatch')
-                </div>   
-                <button type= "button" class="btn btn-light btn-fill mr-2" onclick="window.location= '{{route('vendor.order.download', $order->id)}}' " >Download</button>
-            </div>
-        </div>
+        @livewire('vendor-order-details', ['orderId' => $order->id])
             <div class="d-flex justify-content-end">
                 @include('partials.vendor-order-decline-form')
             </div>

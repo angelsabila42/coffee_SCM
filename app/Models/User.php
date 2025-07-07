@@ -47,6 +47,11 @@ class User extends Authenticatable
         ];
     }
 
+
+    public function recentActivityLog(){
+        return $this->hasMany(RecentActivityLog::class);
+    }
+
     public function conversations()
     {
         return $this->hasMany(Conversation::class, 'user_one_id')

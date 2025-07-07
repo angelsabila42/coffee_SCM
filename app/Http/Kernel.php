@@ -1,8 +1,11 @@
 <?php
+
 // filepath: app/Http/Kernel.php
 
 
 namespace App\Http;
+
+//die('THIS IS THE KERNEL BEING USED');
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -21,6 +24,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+
     ];
 
     /**
@@ -53,15 +57,17 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+       // 'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'i' => \App\Http\Middleware\ImporterMiddleware::class,
+       'importer' => \App\Http\Middleware\ImporterMiddleware::class,
+       'transporter' => \App\Http\Middleware\TransporterMiddleware::class,
+         'vendor' => \App\Http\Middleware\VendorMiddleware::class,
     ];
 }

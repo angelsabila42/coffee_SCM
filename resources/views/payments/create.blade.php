@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('page-title', 'Create Payment Record')
+@section('page-title', 'Create Payment')
+
+@section('sidebar-item')
+@include('layouts.sidebar-items.admin')
+@endsection
 
 @section('content')
 <div class="card">

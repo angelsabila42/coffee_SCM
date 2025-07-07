@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\Helper;
-
+use App\Models\importerModel;
 
 class IncomingOrder extends Model
 {
@@ -34,12 +34,13 @@ class IncomingOrder extends Model
     }
 
     public function importerModel(){
-        return $this->belongsTo(importerModel::class);
+        return $this->belongsTo(importerModel::class, 'importer_model_id');
     }
 
       public function notification(){
         return $this->belongsTo(Notification::class);
     }
+ 
     /** @use HasFactory<\Database\Factories\IncomingOrderFactory> */
     use HasFactory;
 }

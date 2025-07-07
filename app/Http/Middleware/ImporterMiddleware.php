@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\importerModel;
-use Illuminate\Support\Facades\Auth;
 use Closure;
+use Illuminate\Support\Facades\Auth;
+use App\Models\ImporterModel;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,12 +19,16 @@ class ImporterMiddleware
     {
 
         $user = Auth::user();
+        $importer = ImporterModel::where('email', $user->email)->exists();
 
-        if($user && importerModel::where($user->email)-> exists()){
-              return $next($request);
+         if (!$user) {
+        return redirect()->route('login')->with('error', 'Please log in first.');
+    }
+        if ($importer) {
+            // User is authenticated and is an importer
+            return $next($request);
         }
-
-      else  return redirect()->route('login')->with('error','you are not allowed to visit this page');
-      
+        
+        return redirect()->back()->with('error', 'You must be logged in as an importer to access this page.');
     }
 }

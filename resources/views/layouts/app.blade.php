@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @include('layouts.head')
 <body>
-
+   
     <div>
         <main>       
             <div id="wrapper" x-data= "sideBar">
@@ -16,6 +16,11 @@
                     <!-- End Navbar -->
 
                     <x-session-message/>
+                     @if(session('error'))
+                     <div class="alert alert-danger">
+                     {{ session('error') }}
+                     </div>
+@endif
 
                     <div class="content">
                         <x-page-header >

@@ -1,11 +1,18 @@
 @extends('layouts.app')
 
 @section('page-title', 'Payment Records')
+@section('sidebar-items')
+@include('layouts.sidebar-items.admin')
+@endsection
+
+@section('sidebar-item')
+@include('layouts.sidebar-items.admin')
+@endsection
 
 @section('content')
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h4 class="card-title mb-0">Payments</h4>
+        <h4 class="card-title mb-0">Transactions</h4>
         <div class="d-flex align-items-center">
             <div class="input-group input-group-sm" style="width: 150px;">
                 <input type="text" name="table_search" class="form-control" placeholder="Search">
@@ -44,12 +51,12 @@
                         <td>{{ $payment->payment_description }}</td>
                         <td>{{ $payment->status }}</td>
                         <td>
-                            <a href="{{ route('payments.show', $payment->id) }}" class="btn btn-info btn-sm">View</a>
-                            <a href="{{ route('payments.edit', $payment->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ route('payments.show', $payment->id) }}" class="btn btn-info btn-sm action-btn">View</a>
+                            <a href="{{ route('payments.edit', $payment->id) }}" class="btn btn-warning btn-sm action-btn">Edit</a>
                             <form action="{{ route('payments.destroy', $payment->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm action-btn">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -62,4 +69,4 @@
         {{ $payments->links() }} {{-- Pagination links --}}
     </div>
 </div>
-@endsection 
+@endsection

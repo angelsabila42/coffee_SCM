@@ -1,5 +1,5 @@
 
-<form x-show= "showForm" x-cloak x-transition method="POST" action="{{route('in-order.store', ['order'=>$order->id])}}">
+<form x-show= "showForm" x-cloak x-transition method="POST" action="{{route('order.store-in', ['order'=>$order->id])}}">
 @csrf
 <div class="form-group">
   <label for="declineReason">Reason for Decline:</label>

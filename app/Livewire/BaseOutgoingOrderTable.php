@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\OutgoingOrder;
+use App\Services\ActivityLogger;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +15,7 @@ abstract class BaseOutgoingOrderTable extends Component
 
 {
 
-     use WithPagination;
+    use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -49,20 +50,35 @@ abstract class BaseOutgoingOrderTable extends Component
     }
 
    #[On('statusChanged')]
-   public function updateStatus($id, $status, ){
+   public function updateStatus($id, $status){
     $order= OutgoingOrder::findOrFail($id);
+    $oldStatus = $order->status;
     $order->status = $status;
     $order->save();
+
+    ActivityLogger::log(
+        title: "Changed status from $oldStatus to $status for order $order->orderID",
+        type: 'update'
+       );
    }
 
    #[On('deleteConfirmed')]
     public function confirmDelete($id){
-        OutgoingOrder::findOrFail($id)->delete();
+
+        $order= OutgoingOrder::findOrFail($id);
+
+        ActivityLogger::log(
+        title: "Deleted $order->orderID",
+        type: 'delete'
+       );
+
+        $order->delete();
 
         session()->flash('success','Record Deleted');
 
-        return redirect()->route('orders');
+        return redirect()->route('order.index');
        // $this->dispatch('show-toast', message: 'Record Deleted');   
+
 }
    
 

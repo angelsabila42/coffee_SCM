@@ -52,16 +52,16 @@
                                                     class="form-control form-control-sm badge badge-sm {{$order->status_badge}}"
                                                     x-model= "selectedStatus"
                                                     @@change= "$dispatch('statusChanged', {id: {{$order->id}}, status: $event.target.value})">
-                                                           <option :value="selectedStatus">{{$order->status}}</option>
+                                                           
                                                             <template x-for= "status in statuses" :key = "status + '-{{$order->id}}'">
-                                                                <option :value= "status" x-text= "status"></option>
+                                                                <option :value= "status" x-text= "status" :selected= "status === selectedStatus"></option>
                                                             </template>
                                                     </select> 
                                                 </td>
                                                 <td class=""> {{$order->deadline}} </td>
                                                 <td class=""> {{$order->created_at}} </td>
                                                 <td class= "d-flex justify-content-center align-items-center">
-                                                <button class="btn btn-danger btn-sm btn-fill py-1 px-3 cur" @@click= "$dispatch('open-delete-modal', {id:{{$order->id}}})">
+                                                <button class="btn btn-danger btn-sm btn-fill py-1 px-3 cur" x-data="confirmDeleteModal" @@click="confirmDeleteOrder({{$order->id}}, '{{$order->orderID}}')">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
                                                 </td>
