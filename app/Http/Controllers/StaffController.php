@@ -56,4 +56,13 @@ public function edit(Staff $staff)
  {
          return redirect()->route('staff_management.staff')->with('success', 'Staff updated successfully!');
     }
+    public function updateStatus(Request $request, Staff $staff)
+    {
+        $request->validate([
+            'status' => 'required|string|in:Active,Suspended,On Leave'
+        ]);
+        $staff->status = $request->status;
+        $staff->save();
+        return response()->json(['success' => true, 'status' => $staff->status]);
+    }
 }

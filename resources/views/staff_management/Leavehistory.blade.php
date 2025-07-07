@@ -10,7 +10,7 @@
     </div>
 @endif
 
-{{-- Leave History Table in a white card --}}
+{{-- Leave History Table --}}
 
     <div class="card-header d-flex justify-content-between align-items-center bg-white">
         <h4 class="mb-0">Leave History</h4>
@@ -39,7 +39,67 @@
                         <td>{{ $leave->leave_type }}</td>
                         <td>{{ $leave->start_date }}</td>
                         <td>{{ $leave->end_date }}</td>
-                        <td>{{ $leave->status }}</td>
+                        <td x-data="{
+                            selectedStatus: '{{$leave->status}}',
+                            statuses: ['Pending', 'Approved', 'Rejected', 'Cancelled'],
+                            badgeClass(status) {
+                                return status === 'Approved' ? 'bg-success' : (status === 'Pending' ? 'bg-warning' : (status === 'Rejected' ? 'bg-danger' : 'bg-secondary'));
+                            },
+                            updateStatus() {
+                                const leaveId = {{$leave->id}};
+                                const newStatus = this.selectedStatus;
+                                fetch('/staff-management/leavehistory/' + leaveId + '/status', {
+                                    method: 'PATCH',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').getAttribute('content'),
+                                        'Accept': 'application/json'
+                                    },
+                                    body: JSON.stringify({ status: newStatus })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        const select = $el.querySelector('select');
+                                        if (select) {
+                                            select.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'bg-secondary');
+                                            if (newStatus === 'Approved') select.classList.add('bg-success');
+                                            else if (newStatus === 'Pending') select.classList.add('bg-warning');
+                                            else if (newStatus === 'Rejected') select.classList.add('bg-danger');
+                                            else select.classList.add('bg-secondary');
+                                        }
+                                        if (window.Swal) {
+                                            Swal.fire({
+                                                toast: true,
+                                                position: 'top-end',
+                                                icon: 'success',
+                                                title: 'Status updated',
+                                                showConfirmButton: false,
+                                                timer: 1500
+                                            });
+                                        } else {
+                                            alert('Status updated successfully!');
+                                        }
+                                    } else {
+                                        alert('Failed to update status.');
+                                    }
+                                })
+                                .catch(() => alert('Failed to update status.'));
+                            }
+                        }"
+                        :class="badgeClass(selectedStatus)"
+                        >
+                            <select
+                                class="form-control form-control-sm badge badge-sm"
+                                :class="badgeClass(selectedStatus)"
+                                x-model="selectedStatus"
+                                @change="updateStatus()"
+                            >
+                                <template x-for="status in statuses" :key="status + '-{{$leave->id}}'">
+                                    <option :value="status" x-text="status" :selected="selectedStatus === status"></option>
+                                </template>
+                            </select>
+                        </td>
                         <td>
                             <div>
                                 <button type="button" class="btn btn-sm btn-info edit-leave-record-btn" 

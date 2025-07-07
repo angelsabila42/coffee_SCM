@@ -92,7 +92,48 @@
                                 <td>{{ $member->id }}</td>
                                 <td>{{ $member->full_name }}</td>
                                 <td>{{ $member->role }}</td>
-                                <td>{{ $member->status }}</td>
+                                <td x-data="{
+                                        selectedStatus: '{{$member->status}}',
+                                        statuses: ['Active', 'Suspended', 'On Leave'],
+                                        badgeClass: function(status) {
+                                            return status === 'Active' ? 'bg-success' : (status === 'On Leave' ? 'bg-warning' : (status === 'Suspended' ? 'bg-danger' : 'bg-secondary'));
+                                        },
+                                        updateStatus() {
+                                            const staffId = {{ $member->id }};
+                                            const newStatus = this.selectedStatus;
+                                            fetch('/staff-management/staff/' + staffId + '/status', {
+                                                method: 'PATCH', 
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                    'Accept': 'application/json'
+                                                },
+                                                body: JSON.stringify({ status: newStatus })
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    alert('Status updated successfully!');
+                                                } else {
+                                                    alert('Failed to update status.');
+                                                }
+                                            })
+                                            .catch(() => alert('Failed to update status.'));
+                                        }
+                                    }"
+                                    x-init="selectedStatus = '{{$member->status}}'"
+                                >
+                                    <select
+                                        class="form-control form-control-sm badge badge-sm"
+                                        :class="badgeClass(selectedStatus)"
+                                        x-model="selectedStatus"
+                                        @change="updateStatus()"
+                                    >
+                                        <template x-for="status in statuses" :key="status + '-{{$member->id}}'">
+                                            <option :value="status" x-text="status"></option>
+                                        </template>
+                                    </select>
+                                </td>
                                 <td>{{ $member->phone_number }}</td>
                                 <td>{{ $member->email }}</td>
                                 <td>
@@ -657,4 +698,73 @@ function confirmDeleteLeaveHistory(leaveId) {
         }
     });
 }
+</script>
+
+<!-- Alpine.js -->
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<script>
+// Alpine.js global event listener for staff status change
+if (window.Alpine) {
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('statusDropdown', () => ({
+            init() {
+                this.$watch('selectedStatus', value => {
+                    // No-op: handled by event below
+                });
+            }
+        }));
+    });
+}
+
+// Listen for statusChanged event (from Alpine or vanilla JS)
+document.addEventListener('statusChanged', function(e) {
+    const staffId = e.detail.id;
+    const newStatus = e.detail.status;
+    const url = `/staff-management/staff/${staffId}/status`;
+    fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update badge color
+            const row = document.querySelector(`tr[data-id='${staffId}']`);
+            if (row) {
+                const select = row.querySelector('select');
+                select.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'bg-secondary');
+                if (newStatus === 'Active') select.classList.add('bg-success');
+                else if (newStatus === 'Suspended') select.classList.add('bg-danger');
+                else if (newStatus === 'On Leave') select.classList.add('bg-warning');
+                else select.classList.add('bg-secondary');
+            }
+            // Optional: show toast/alert
+            if (window.Swal) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Status updated',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                alert('Status updated successfully!');
+            }
+        } else {
+            throw new Error(data.message || 'Update failed');
+        }
+    })
+    .catch(err => {
+        if (window.Swal) {
+            Swal.fire('Error', err.message, 'error');
+        } else {
+            alert('Failed to update status: ' + err.message);
+        }
+    });
+});
 </script>

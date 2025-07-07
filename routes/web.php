@@ -138,6 +138,7 @@ Route::prefix('staff-management')->name('staff_management.')->group(function () 
     Route::get('/staff/{staff}', [StaffController::class, 'show'])->name('staff.show');
     Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
     Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
+    Route::patch('/staff/{staff}/status', [StaffController::class, 'updateStatus'])->name('staff.status');
 
 
     // --- Work Assignment Routes ---
@@ -155,6 +156,7 @@ Route::prefix('staff-management')->name('staff_management.')->group(function () 
     Route::get('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'show'])->name('leavehistory.show'); // Show specific leave record
     Route::put('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'update'])->name('leavehistory.update'); // Update leave record
     Route::delete('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'destroy'])->name('leavehistory.destroy'); // Delete leave record
+    Route::patch('/leavehistory/{leaveHistory}/status', [LeaveHistoryController::class, 'updateStatus'])->name('leavehistory.status');
 });
 
 
