@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Helpers\Helper;
 use App\Models\IncomingOrder;
 use Livewire\Attributes\Rule;
+use App\Models\User;
+use App\Notifications\NewIncomingOrderNotification;
 
 class ImporterCreateOrderModal extends Component
 {
@@ -37,7 +39,7 @@ class ImporterCreateOrderModal extends Component
 
         $this->validate();
 
-        IncomingOrder::create([
+        $order = IncomingOrder::create([
             'orderID'=> $this->orderID,
             'coffeeType'=>$this->coffeeType,
             'grade' => $this->grade,
@@ -47,6 +49,12 @@ class ImporterCreateOrderModal extends Component
             'deadline'=> $this->deadline,
             'importer_model_id' => $this->importer_model_id
         ]);
+            // Notify admin(s)
+    $admin = \App\Models\User::where('name', 'Admin')->first();
+    if ($admin) {
+        $admin->notify(new NewIncomingOrderNotification($order));
+    }
+
 
         $this->reset(['quantity','coffeeType', 'status', 'deadline', 'destination', 'grade']);
         $this->dispatch('reset-alpine-dropdown');

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('deadline');
             $table->string('grade');
             $table->string('destination');
+            $table->text('declineReason')->nullable();
             $table->foreignId('importer_model_id')->constrained()->onDelete('cascade');    
 
         });

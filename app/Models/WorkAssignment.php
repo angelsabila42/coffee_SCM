@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Staff;
+use App\Models\WorkCenter;
 
 class WorkAssignment extends Model
 {
@@ -18,7 +19,7 @@ class WorkAssignment extends Model
     protected $fillable = [
         'assignment_id',
         'staff_id',
-        'work_center',
+        'work_center_id',
         'role',
         'start_date',
         'end_date',
@@ -39,9 +40,14 @@ class WorkAssignment extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-     public function staff()
+    public function staff()
     {
         // A WorkAssignment belongs to one Staff member
         return $this->belongsTo(Staff::class);
+    }
+
+    public function workCenter()
+    {
+        return $this->belongsTo(WorkCenter::class, 'work_center_id');
     }
 }

@@ -13,7 +13,7 @@ class StaffController extends Controller
 
 public function staff()
 {
-        $staff = Staff::all(); // All staff for the main table
+        $staff = Staff::orderBy('id', 'asc')->get(); // All staff for the main table, oldest first
         $totalStaffCount = Staff::count();
         $absentStaffCount = Staff::where('status', 'On Leave')->count(); 
         $warehouseCount = 4; 
@@ -29,7 +29,6 @@ public function store(Request $request)
 {
     $request->validate([
         'full_name' => 'required|string|max:255',
-        'work_center' => 'required|string|max:255',
         'role' => 'required|string|max:255',
         'status' => 'required|string',
         'phone_number' => 'required|string',

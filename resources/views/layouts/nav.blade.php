@@ -1,4 +1,7 @@
 <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+{{-- @php
+    $notifications = Auth::user()->unreadNotifications;
+@endphp --}}
     <div class="container-fluid">
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
             <ul class="nav navbar-nav mr-auto">
@@ -13,6 +16,7 @@
                     <li class="nav-item">
                         <a href="#" class=" nav-link" data-bs-toggle="modal" data-bs-target="#notificationsModal">
                            <i class="fas fa-bell"></i>
+                          
                            @if($notifications->count()>0)
                            <span class="notification">{{$notifications->count()}}</span>
                            @endif
@@ -22,11 +26,18 @@
                         </button> --}}
                     </li>
                 <li class="nav-item">
-                    <span>{{Auth::user()->name}}</span>
-                    <a href="#" class=" nav-link" data-bs-toggle="modal" data-bs-target="#userProfileModal">
-                        <img src="{{Auth::user()->profile_picture}}" alt="" class="rounded_circle" width="30" height="30">
-                         {{-- <i class="fas fa-user-circle"> </i> --}}
-                    </a>
+                    @if(Auth::check())
+                        <span>{{ Auth::user()->name }}</span>
+                        <a href="#" class=" nav-link" data-bs-toggle="modal" data-bs-target="#userProfileModal">
+                            <img src="{{ Auth::user()->profile_picture }}" alt="" class="rounded_circle" width="30" height="30">
+                        </a>
+                    @else
+                        <span>Guest</span>
+                        <a href="{{ route('login') }}" class="nav-link">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                    @endif
+
                 </li>
             </ul>
         </div>
@@ -43,6 +54,7 @@
             </div>
             <div class="modal-body">
                 <ul class="list-group">
+                  <li>
                   @forelse($notifications as $note)
                     <li class="list-group-item">
                       @if($note->type === 'delivery')
@@ -53,10 +65,8 @@
                         <i class="fas fa-money-bill-wave"></i>
                       @elseif($note->type === 'message')
                         <i class="fas fa-envelope"></i>
-                      @else
-                        <i class="fas fa-bell"></i>
                       @endif
-                        {{ $note->message }} <br>
+                        {{ $note->data }} <br>
                          <small class="text-muted">{{ $note->created_at->diffForHumans() }}</small>
                     </li>
                     @empty
@@ -100,22 +110,31 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-center">
       <div class="modal-body">
-         <img src="{{Auth::user()->profile_picture}}" alt="" class="rounded_circle" width="30" height="30">
-        <h5 class="mb-3">{{Auth::user()->name}}</h5>
-        <!-- Edit Profile -->
-        <a href="{{url('/editprofile')}}" class="btn btn-outline-primary w-75 mb-2">
-          <i class="fas fa-user-edit me-1"></i> Edit Profile
-        </a>
-        <!-- Logout -->
-        <form action="/logout" method="POST">
-          @csrf
-          <button type="submit" class="btn btn-outline-danger w-75">
-            <i class="fas fa-sign-out-alt me-1"></i> Log out
-          </button>
-        </form>
+        @if(Auth::check())
+          <img src="{{ Auth::user()->profile_picture }}" alt="" class="rounded_circle" width="30" height="30">
+          <h5 class="mb-3">{{ Auth::user()->name }}</h5>
+          <!-- Edit Profile -->
+          <a href="{{ url('/editprofile') }}" class="btn btn-outline-primary w-75 mb-2">
+            <i class="fas fa-user-edit me-1"></i> Edit Profile
+          </a>
+          <!-- Logout -->
+          <form action="/logout" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-outline-danger w-75">
+              <i class="fas fa-sign-out-alt me-1"></i> Log out
+            </button>
+          </form>
+        @else
+          <h5 class="mb-3">Guest</h5>
+          <a href="{{ route('login') }}" class="btn btn-outline-primary w-75 mb-2">
+            <i class="fas fa-sign-in-alt me-1"></i> Login
+          </a>
+        @endif
       </div>
     </div>
   </div>
 </div>
 </nav>
+
+
 

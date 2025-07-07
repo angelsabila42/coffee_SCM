@@ -34,6 +34,7 @@ use App\Http\Controllers\PaymentController;
 
 
 use App\Http\Controllers\API\V1\ImporterModelController;
+use App\Http\Controllers\API\V1\IncomingOrderController;
 use App\Http\Controllers\ImporterOrderController;
 use Illuminate\Validation\Rules\Email;
 
@@ -70,7 +71,7 @@ require __DIR__.'/auth.php';
 //Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
+Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
 
 
 
@@ -170,16 +171,26 @@ Route::middleware('auth')->group(function()
         /*Analytics route*/
         Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
 
+   
+
+
         /*Report routes*/
         Route::get('/home/report',[ReportController::class,'index'])->name('reports');
         Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name('vendor.reports');
 
-
         /*Order Routes*/
-        Route::get('/home/orders', [OrderController::class, 'index'])->name('orders');
+        Route::get('/home/orders', [OrderController::class, 'index'])->name('order.index');
         Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
         Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
+        Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewOrder'])->name('vendor.order.show');
+        Route::post('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'store'])->name('vendor.order.store');
+        Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'download'])->name('vendor.order.download');
         Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
+        Route::get('/home/orders/{order}', [IncomingOrderController::class, 'viewOrder'])->name('order.show-in');
+        Route::post('/home/orders/{order}', [IncomingOrderController::class, 'store'])->name('order.store-in');
+        Route::get('/home/orders/{order}/download', [IncomingOrderController::class, 'download'])->name('order.download-in');
+
+
 
         // edit profile routes
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -200,7 +211,7 @@ Route::middleware('auth')->group(function()
             Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
             Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
             Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
-
+            Route::get('/chat/start/{participant}', [ChatController::class, 'start'])->name('chat.start');
 
         Route::get('/stock', function () {
             return view('stock');
@@ -286,14 +297,16 @@ Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor
 
 
 //all importer routes
-Route::middleware('importer')->group(function(){
+    Route::middleware('importer')->group(function(){
     
 // importer  routes
 Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
 Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
-
+Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
 
 });
+
+
 
 
 

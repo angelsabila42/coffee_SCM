@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('conversations', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('admin_id')->constrained('users');
-        $table->unsignedBigInteger('participant_id');
-        $table->string('participant_type');
-        $table->timestamps();
-    });
+            $table->id();
+            $table->foreignId('user_one_id')->constrained('users');
+            $table->foreignId('user_two_id')->constrained('users');
+            $table->timestamps();
+        });
     }
 
     /**

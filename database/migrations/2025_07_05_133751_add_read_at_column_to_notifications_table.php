@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
+        Schema::table('notifications', function (Blueprint $table) {
+            $table->timestamp('read_at')->nullable()->after('data');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
+        Schema::table('notifications', function (Blueprint $table) {
+            $table->dropColumn('read_at');
         });
     }
 };

@@ -26,7 +26,7 @@
                                                 <td class=""> {{$order->destination}} </td>
                                                 <td class=""> {{$order->created_at}} </td>
                                                 <td class=" d-flex justify-content-center align-items-center">
-                                                <button wire:click="delete({{$order->id}})" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
+                                                <button x-data="confirmDeleteModal" @@click="confirmDeleteOrder({{$order->id}}, '{{$order->orderID}}')" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                          @endforeach    

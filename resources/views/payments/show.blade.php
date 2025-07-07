@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('page-title', 'Payment Receipt #' . $payment->receipt_number)
+@section('page-title', 'Payment Details')
+
+@section('sidebar-item')
+@include('layouts.sidebar-items.admin')
+@endsection
 
 @section('content')
 <div class="card">

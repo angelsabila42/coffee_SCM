@@ -1,11 +1,18 @@
 @extends('layouts.app')
 
 @section('page-title', 'Payment Records')
+@section('sidebar-items')
+@include('layouts.sidebar-items.admin')
+@endsection
+
+@section('sidebar-item')
+@include('layouts.sidebar-items.admin')
+@endsection
 
 @section('content')
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h4 class="card-title mb-0">Payments</h4>
+        <h4 class="card-title mb-0">Transactions</h4>
         <div class="d-flex align-items-center">
             <div class="input-group input-group-sm" style="width: 150px;">
                 <input type="text" name="table_search" class="form-control" placeholder="Search">

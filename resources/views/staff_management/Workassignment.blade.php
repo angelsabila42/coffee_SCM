@@ -38,19 +38,7 @@
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="wa_work_center" class="form-label">Work Center</label>
-                            <select class="form-select @error('work_center') is-invalid @enderror" id="wa_work_center" name="work_center" required>
-                                <option value="">Select Work Center</option>
-                                <option value="Kampala" {{ old('work_center') == 'Kampala' ? 'selected' : '' }}>Kampala</option>
-                                <option value="Mbale" {{ old('work_center') == 'Mbale' ? 'selected' : '' }}>Mbale</option>
-                                <option value="Jinja" {{ old('work_center') == 'Jinja' ? 'selected' : '' }}>Jinja</option>
-                            </select>
-                            @error('work_center')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
+                       
                             <label for="role" class="form-label">Role</label>
                                 <select class="form-select @error('role') is-invalid @enderror" id="role" name="role" required>
                                     <option value="">Select Role</option>
@@ -58,11 +46,11 @@
                                     <option value="Supervisor" {{ old('role') == 'Supervisor' ? 'selected' : '' }}>Supervisor</option>
                                     <option value="Warehouse Clerk" {{ old('role') == 'Warehouse Clerk' ? 'selected' : '' }}>Warehouse Clerk</option>
                                     <option value="QA" {{ old('role') == 'QA' ? 'selected' : '' }}>QA</option>
-                                 </select>
-                                 @error('role')
-                                     <div class="invalid-feedback">{{ $message }}</div>
-                                 @enderror
-                        </div>
+                                </select>
+                                @error('role')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                        
                     </div>
 
                     <div class="row mb-3">
@@ -93,13 +81,17 @@
 </div>
 
 {{-- Work Assignment Table in a white card --}}
-<div class="card mt-4">
+
     <div class="card-header d-flex justify-content-between align-items-center bg-white">
         <h4 class="mb-0">Work Assignment History</h4>
         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addWorkAssignmentModal">
             + New
         </button>
     </div>
+
+    {{--<livewire:work-assignment/>--}}
+
+
     <div class="card-body table-full-width table-responsive">
         <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
             <thead>
@@ -118,18 +110,18 @@
                     <tr>
                         <td>{{ $assignment->assignment_id }}</td>
                         <td>{{ $assignment->staff->full_name ?? $assignment->staff_id }}</td>
-                        <td>{{ $assignment->work_center }}</td>
+                        <td>{{ $assignment->workCenter->centerName ?? 'N/A' }}</td>
                         <td>{{ $assignment->role }}</td>
                         <td>{{ $assignment->start_date }}</td>
                         <td>{{ $assignment->end_date ?? 'N/A' }}</td>
                         <td>
                             <div>
-                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editWorkAssignmentModal" data-id="{{ $assignment->assignment_id }}">Edit</button>
-                            <form action="{{ route('staff_management.workassignment.destroy', $assignment->assignment_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this assignment?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
-                            </form>
+                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editWorkAssignmentModal" data-id="{{ $assignment->assignment_id }}">Edit</button>
+                                <form action="{{ route('staff_management.workassignment.destroy', $assignment->assignment_id) }}" method="POST" style="display: none;" id="delete-work-form-{{ $assignment->assignment_id }}">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <button class="btn btn-sm btn-danger" onclick="confirmDeleteWorkAssignment('{{ $assignment->assignment_id }}')"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -141,7 +133,7 @@
             </tbody>
         </table>
     </div>
-</div>
+
 
 <!-- Edit Work Assignment Modal  -->
 <div class="modal fade" id="editWorkAssignmentModal" tabindex="-1" aria-labelledby="editWorkAssignmentModalLabel" aria-hidden="true">
@@ -168,16 +160,7 @@
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="edit_wa_work_center" class="form-label">Work Center</label>
-                            <select class="form-select" id="edit_wa_work_center" name="work_center" required>
-                                <option value="">Select Work Center</option>
-                                <option value="Kampala">Kampala</option>
-                                <option value="Mbale">Mbale</option>
-                                <option value="Jinja">Jinja</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
+                       
                             <label for="edit_wa_role" class="form-label">Role</label>
                             <select class="form-select" id="edit_wa_role" name="role" required>
                                 <option value="">Select Role</option>
@@ -186,7 +169,6 @@
                                 <option value="Warehouse Clerk">Warehouse Clerk</option>
                                 <option value="QA">QA</option>
                             </select>
-                        </div>
                     </div>
 
                     <div class="row mb-3">
@@ -222,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(function(data) {
                 document.getElementById('edit_wa_id').value = data.assignment_id;
                 document.getElementById('edit_wa_staff_id').value = data.staff_id;
-                document.getElementById('edit_wa_work_center').value = data.work_center;
+                // document.getElementById('edit_wa_work_center').value = data.work_center; // Remove or comment out this line
                 document.getElementById('edit_wa_role').value = data.role;
                 document.getElementById('edit_wa_start_date').value = data.start_date;
                 document.getElementById('edit_wa_end_date').value = data.end_date || '';
@@ -234,4 +216,20 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 });
+
+function confirmDeleteWorkAssignment(assignmentId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-work-form-' + assignmentId).submit();
+        }
+    })
+}
 </script>

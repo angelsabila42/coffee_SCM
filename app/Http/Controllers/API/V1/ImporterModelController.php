@@ -20,15 +20,8 @@ class ImporterModelController extends Controller
     public function payments(){
         return view('importer_payments');
     }
+  
 
-
-
-     
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    //     $this->middleware('importer');
-    // }
     public function index(){
    $user = Auth::user();     
  // Logged-in user

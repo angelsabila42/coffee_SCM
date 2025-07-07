@@ -4,9 +4,11 @@ namespace App\Models;
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 
 class ImporterModel extends Model
 {
+  use Notifiable;
   use HasFactory;
       protected $fillable = [
         'name',
@@ -24,5 +26,12 @@ class ImporterModel extends Model
     
      public function payments(){
         return $this->hasMany(Payment::class);
+     }
+    /**
+     * Get the invoices for the importer.
+     */
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
     }
+
 }

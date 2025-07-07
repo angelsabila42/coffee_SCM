@@ -4,7 +4,7 @@
     $first_key = is_array($tabs) ? array_key_first($tabs) : null;
 @endphp
 
-<div x-data="{activeTab: localStorage.getItem('tab') || {{ $first_key }}}"
+<div x-data="{activeTab: localStorage.getItem('tab') || '{{ $first_key }}'}"
      x-init= "$watch('activeTab', val=> localStorage.setItem('tab', val))" class="container">
     <div class="modern-tabs mb-5">
 

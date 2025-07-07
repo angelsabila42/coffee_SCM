@@ -14,16 +14,14 @@ class Staff extends Model
      */
     protected $fillable = [
         'full_name',
-        'work_center',
         'role',
         'status',
         'phone_number',
         'email',
-       
-        ];
-         //  relationships for WorkAssignment and Leave
+    ];
+    // relationships for WorkAssignment and Leave
     public function workAssignments()
-    {       // // A Staff member has many WorkAssignments
+    {
         return $this->hasMany(WorkAssignment::class);
     }
 
@@ -31,4 +29,10 @@ class Staff extends Model
     {
         return $this->hasMany(LeaveHistory::class);
     }
+
+    // Optional: relationship to work center if needed
+    // public function workCenter()
+    // {
+    //     return $this->belongsTo(WorkCenter::class, 'work_center_id');
+    // }
 }

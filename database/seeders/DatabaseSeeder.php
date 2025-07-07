@@ -9,6 +9,7 @@ use App\Models\IncomingOrder;
 use App\Models\OutgoingOrder;
 use App\Models\User;
 use App\Models\WorkCenter;
+use Database\Factories\IncomingOrderFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
+
 
         // User::factory()->create([
         //     'name' => 'Admin',
@@ -38,7 +40,13 @@ class DatabaseSeeder extends Seeder
             // DeliveryReportSeeder::class,
             // WorkCenterSeeder::class,
             // ChatTestSeeder::class,
+             InventorySeeder::class,
             paymentSeeder::class, // Add chat test data
+
+        
+
+
         ]);
+
     }
 }

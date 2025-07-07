@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Storage;
+use App\Services\ActivityLogger;
 
 class PaymentController extends Controller
 {
@@ -28,6 +29,11 @@ class PaymentController extends Controller
         $newReceiptNumber = 'PL_' . str_pad(($lastPayment ? $lastPayment->id : 0) + 1, 4, '0', STR_PAD_LEFT);
         
         $invoices = Invoice::all(); // Fetch all invoices to populate the dropdown
+
+        ActivityLogger::log(
+            title: 'Made new Payment',
+            type: 'new-payment'
+        );
 
         return view('payments.create', compact('newReceiptNumber', 'invoices'));
     }

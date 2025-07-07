@@ -36,11 +36,12 @@ class InventoryController extends Controller
             ->orwhere('grade', 'like', "%{$search}%");
 
         })
-        ->get();
+        ->paginate(5)
+        ->appends(['search' => $search]);
         return view('inventory', compact('inventories', 'search'));
     }
     public function ern(){
-        $inventories = inventory::all();//fetch all rows
+        $inventories = inventory::paginate(5);//fetch all rows
         return view('inventory',compact('inventories'));
     }
     public function destroy($id){
@@ -50,7 +51,7 @@ class InventoryController extends Controller
         redirect()->back()->with('success', 'Record deleted successfully.');
     }
      public function alber(){
-        $inventories = inventory::all();
+        $inventories = inventory::paginate(5);
         $belowMinimumCount = inventory::where('status', 'low')->count();
         $totalStock = inventory::sum('quantity');
         $totalWarehouses = inventory::distinct('warehouse_name')->count('warehouse_name');
