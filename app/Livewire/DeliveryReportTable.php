@@ -29,9 +29,12 @@ class DeliveryReportTable extends Component
     $deliveryReport->delete();
    }
 
-    public function render()
-    { 
-     return view('livewire.delivery-report-table',
-     ['deliveries'=>DeliveryReport::paginate(10)]);
+   public function render()
+    {
+        // Fetch all deliveries from the deliveries table, paginated
+        $deliveries = \App\Models\Delivery::orderByDesc('created_at')->paginate(10);
+        return view('livewire.delivery-report-table', [
+            'deliveries' => $deliveries
+        ]);
     }
 }

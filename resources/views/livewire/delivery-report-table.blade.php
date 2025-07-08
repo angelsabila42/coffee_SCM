@@ -27,21 +27,43 @@
                                     <!--h4 class="card-title">Table on Plain Background</h4>
                                     <p class="card-category">Here is a subtitle for this table</p-->
                                 </div>
-                                <div class="card-body table-full-width table-responsive">
-                                    <table class="table table-hover">
+                                <div class="card-body table-full-width table-responsive" style="overflow-x:auto;">
+                                    <table class="table table-hover" style="font-size: 0.92rem; min-width: 1200px;">
                                         <thead class="bg-light">
-                                            <th>ReportID</th>
-                                            <th>Date Created</th>
-                                            <th class=" d-flex justify-content-center align-items-center">Actions</th>
+                                            <tr>
+                                                <th style="white-space:nowrap;">ID</th>
+                                                <th style="white-space:nowrap;">Delivery ID</th>
+                                                <th style="white-space:nowrap;">Pickup Location</th>
+                                                <th style="white-space:nowrap;">Dispatch Date/Time</th>
+                                                <th style="white-space:nowrap;">Destination</th>
+                                                <th style="white-space:nowrap;">Quantity</th>
+                                                <th style="white-space:nowrap;">Coffee Type</th>
+                                                <th style="white-space:nowrap;">Coffee Grade</th>
+                                                <th style="white-space:nowrap;">Status</th>
+                                                <th style="white-space:nowrap;">Assigned Driver</th>
+                                                <th style="white-space:nowrap;">ETA</th>
+                                                <th style="white-space:nowrap;">Date Ordered</th>
+                                                <th style="white-space:nowrap;">Created At</th>
+                                                <th style="white-space:nowrap;">Updated At</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         @foreach($deliveries as $delivery)
                                             <tr wire:key= "{{$delivery->id}}" >
-                                                <td class=""> {{$delivery->reportID}} </td>
-                                                <td class=""> {{$delivery->created_at}} </td>
-                                                <td class=" d-flex justify-content-center align-items-center">
-                                                <button wire:click="delete({{$delivery->id}})" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
-                                                </td>
+                                                <td style="white-space:nowrap;">{{ $delivery->id }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->delivery_id }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->pickup_location }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->dispatch_date_time }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->delivery_destination }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->quantity }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->coffee_type }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->coffee_grade }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->status }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->assigned_driver }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->eta }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->date_ordered }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->created_at }}</td>
+                                                <td style="white-space:nowrap;">{{ $delivery->updated_at }}</td>
                                             </tr>
                                          @endforeach    
                                         </tbody>
