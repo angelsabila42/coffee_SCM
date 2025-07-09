@@ -15,15 +15,14 @@ public function staff()
 {
         $staff = Staff::orderBy('id', 'asc')->get(); // All staff for the main table, oldest first
         $totalStaffCount = Staff::count();
-        $absentStaffCount = Staff::where('status', 'On Leave')->count(); 
-        $warehouseCount = 4; 
+        $absentStaffCount = Staff::whereIn('status', ['On Leave', 'Suspended'])->count();
+        $warehouseCount = 4;
 
          $workAssignments = WorkAssignment::with('staff')->get(); 
          $leaveHistory = LeaveHistory::with('staff')->get(); // Fetching leave history for the Leave History tab
         $staffMembersForDropdown =  Staff::select('id', 'full_name')->get(); // For staff dropdowns in modals
-
-       
-       return view('staff_management.staff', compact('staff','totalStaffCount', 'absentStaffCount', 'warehouseCount','workAssignments', 'staffMembersForDropdown','leaveHistory'));
+       $workCenters = \App\Models\WorkCenter::all();
+       return view('staff_management.staff', compact('staff','totalStaffCount', 'absentStaffCount', 'warehouseCount','workAssignments', 'staffMembersForDropdown','leaveHistory', 'workCenters'));
 }
 public function store(Request $request)
 {

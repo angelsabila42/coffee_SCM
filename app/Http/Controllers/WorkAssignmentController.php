@@ -5,17 +5,48 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\WorkAssignment;
 use App\Models\Staff;
-use App\Models\WorkCenter;
 use Illuminate\Validation\ValidationException;
+use App\Models\WorkCenter; 
 
 class WorkAssignmentController extends Controller
 {
-    public function workAssign()
+    public function workassign(Request $request)
     {
-        // Get all assignments, eager load staff and workCenter relationship
+        // Get all assignments, eager load staff and workCenter relationships
         $workAssignments = WorkAssignment::with(['staff', 'workCenter'])->get();
         $staffMembersForDropdown = Staff::all(['id', 'full_name']);
-        return view('staff_management.Workassignment', compact('workAssignments','staffMembersForDropdown'));
+        $workCenters = WorkCenter::all();
+        
+        // If it's an AJAX request, return JSON
+        if ($request->ajax()) {
+            // Transform the data to include the workCenter name
+            $formattedAssignments = $workAssignments->map(function($assignment) {
+                return [
+                    'assignment_id' => $assignment->assignment_id,
+                    'staff_id' => $assignment->staff_id,
+                    'staff_name' => $assignment->staff->full_name ?? 'Unknown',
+                    'work_center_id' => $assignment->work_center_id,
+                    'work_center' => $assignment->workCenter->centerName ?? 'Not Assigned',
+                    'role' => $assignment->role,
+                    'start_date' => $assignment->start_date,
+                    'end_date' => $assignment->end_date,
+                ];
+            });
+            return response()->json($formattedAssignments);
+        }
+        
+        // For normal requests, get all required variables for the staff view
+        $staff = Staff::orderBy('id', 'asc')->get(); // All staff for the main table
+        $totalStaffCount = Staff::count();
+        $absentStaffCount = Staff::whereIn('status', ['On Leave', 'Suspended'])->count();
+        $warehouseCount = 4; // Hardcoded value from StaffController
+        $leaveHistory = \App\Models\LeaveHistory::with('staff')->get(); // For Leave History tab
+        
+        // Return the view with all required variables
+        return view('staff_management.staff', compact(
+            'staff', 'totalStaffCount', 'absentStaffCount', 'warehouseCount',
+            'workAssignments', 'staffMembersForDropdown', 'workCenters', 'leaveHistory'
+        ));
     }
 
     /* Store a newly created work assignment in storage. */
@@ -23,15 +54,38 @@ class WorkAssignmentController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'staff_id' => 'required|exists:staff,id', // Ensures staff_id exists in staff table
+                'staff_id' => 'required|exists:staff,id',
                 'role' => 'required|string|max:255',
                 'start_date' => 'required|date',
-                'end_date' => 'nullable|date|after_or_equal:start_date', // Changed to nullable based on typical assignment
-            ]); 
+                'end_date' => 'nullable|date|after_or_equal:start_date',
+            ]);
 
-            // Assign a random work center
-            $randomWorkCenter = WorkCenter::inRandomOrder()->first();
-            $validatedData['work_center_id'] = $randomWorkCenter ? $randomWorkCenter->id : null;
+            // Select a random work center that hasn't been used recently if possible
+            $allWorkCenters = WorkCenter::all();
+            
+            if ($allWorkCenters->isEmpty()) {
+                throw new \Exception('No work centers available.');
+            }
+            
+            // Get the most recently assigned work centers (last 3)
+            $recentWorkCenterIds = WorkAssignment::orderBy('created_at', 'desc')
+                ->take(3)
+                ->pluck('work_center_id')
+                ->toArray();
+            
+            // Filter out work centers that have been recently used, if possible
+            $availableWorkCenters = $allWorkCenters->filter(function ($workCenter) use ($recentWorkCenterIds) {
+                return !in_array($workCenter->id, $recentWorkCenterIds);
+            });
+            
+            // If no work centers are available after filtering, use all work centers
+            if ($availableWorkCenters->isEmpty()) {
+                $availableWorkCenters = $allWorkCenters;
+            }
+            
+            // Select a random work center from the available ones
+            $randomWorkCenter = $availableWorkCenters->random();
+            $validatedData['work_center_id'] = $randomWorkCenter->id;
 
             // --- Robust Assignment ID Generation with Retry ---
             $maxRetries = 5;
@@ -56,11 +110,6 @@ class WorkAssignmentController extends Controller
                 throw new \Exception('Could not generate a unique assignment ID after several attempts.');
             }
 
-
-
-            // Create the Work Assignment record
-            $assignment = WorkAssignment::create($validatedData);
-
             // If AJAX, return JSON
             if ($request->ajax()) {
                 return response()->json([
@@ -71,7 +120,7 @@ class WorkAssignmentController extends Controller
             }
 
             // Fallback for non-AJAX
-            return redirect()->route('staff_management.staff')
+            return redirect()->route('staff_management.workassignment.workassign')
                              ->with('success_work_assignment', 'Work assignment added successfully!')
                              ->with('active_tab', 'work');
 
@@ -121,12 +170,37 @@ class WorkAssignmentController extends Controller
     {
         $validatedData = $request->validate([
             'staff_id' => 'required|exists:staff,id',
-            'work_center' => 'required|string|max:255',
             'role' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            // status removed
         ]);
+        
+        // Select a random work center that hasn't been used recently if possible
+        $allWorkCenters = WorkCenter::all();
+        
+        if ($allWorkCenters->isEmpty()) {
+            return redirect()->back()->with('error', 'No work centers available.');
+        }
+        
+        // Get the most recently assigned work centers (last 3)
+        $recentWorkCenterIds = WorkAssignment::orderBy('created_at', 'desc')
+            ->take(3)
+            ->pluck('work_center_id')
+            ->toArray();
+        
+        // Filter out work centers that have been recently used, if possible
+        $availableWorkCenters = $allWorkCenters->filter(function ($workCenter) use ($recentWorkCenterIds) {
+            return !in_array($workCenter->id, $recentWorkCenterIds);
+        });
+        
+        // If no work centers are available after filtering, use all work centers
+        if ($availableWorkCenters->isEmpty()) {
+            $availableWorkCenters = $allWorkCenters;
+        }
+        
+        // Select a random work center from the available ones
+        $randomWorkCenter = $availableWorkCenters->random();
+        $validatedData['work_center_id'] = $randomWorkCenter->id;
 
         $workAssignment->update($validatedData);
 

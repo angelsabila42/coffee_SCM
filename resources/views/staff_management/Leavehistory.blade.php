@@ -39,66 +39,32 @@
                         <td>{{ $leave->leave_type }}</td>
                         <td>{{ $leave->start_date }}</td>
                         <td>{{ $leave->end_date }}</td>
-                        <td x-data="{
-                            selectedStatus: '{{$leave->status}}',
-                            statuses: ['Pending', 'Approved', 'Rejected', 'Cancelled'],
-                            badgeClass(status) {
-                                return status === 'Approved' ? 'bg-success' : (status === 'Pending' ? 'bg-warning' : (status === 'Rejected' ? 'bg-danger' : 'bg-secondary'));
-                            },
-                            updateStatus() {
-                                const leaveId = {{$leave->id}};
-                                const newStatus = this.selectedStatus;
-                                fetch('/staff-management/leavehistory/' + leaveId + '/status', {
-                                    method: 'PATCH',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').getAttribute('content'),
-                                        'Accept': 'application/json'
-                                    },
-                                    body: JSON.stringify({ status: newStatus })
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        const select = $el.querySelector('select');
-                                        if (select) {
-                                            select.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'bg-secondary');
-                                            if (newStatus === 'Approved') select.classList.add('bg-success');
-                                            else if (newStatus === 'Pending') select.classList.add('bg-warning');
-                                            else if (newStatus === 'Rejected') select.classList.add('bg-danger');
-                                            else select.classList.add('bg-secondary');
-                                        }
-                                        if (window.Swal) {
-                                            Swal.fire({
-                                                toast: true,
-                                                position: 'top-end',
-                                                icon: 'success',
-                                                title: 'Status updated',
-                                                showConfirmButton: false,
-                                                timer: 1500
-                                            });
-                                        } else {
-                                            alert('Status updated successfully!');
-                                        }
-                                    } else {
-                                        alert('Failed to update status.');
-                                    }
-                                })
-                                .catch(() => alert('Failed to update status.'));
-                            }
-                        }"
-                        :class="badgeClass(selectedStatus)"
-                        >
-                            <select
-                                class="form-control form-control-sm badge badge-sm"
-                                :class="badgeClass(selectedStatus)"
-                                x-model="selectedStatus"
-                                @change="updateStatus()"
-                            >
-                                <template x-for="status in statuses" :key="status + '-{{$leave->id}}'">
-                                    <option :value="status" x-text="status" :selected="selectedStatus === status"></option>
-                                </template>
-                            </select>
+                        <td>
+                            <div class="dropdown">
+                                @php
+                                $statusClasses = [
+                                    'Pending' => 'label-warning',
+                                    'Approved' => 'label-success',
+                                    'Rejected' => 'label-danger',
+                                    'Cancelled' => 'label-default'
+                                ];
+                                $statusClass = $statusClasses[$leave->status] ?? 'label-default';
+                                @endphp
+                                
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="label {{ $statusClass }}">{{ $leave->status }}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    @foreach(['Pending', 'Approved', 'Rejected', 'Cancelled'] as $status)
+                                        <li>
+                                            <a href="#" 
+                                               class="status-update-link" 
+                                               data-leave-id="{{ $leave->id }}" 
+                                               data-status="{{ $status }}">{{ $status }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </td>
                         <td>
                             <div>
@@ -207,7 +173,7 @@
     </div>
 </div>
 
-<!-- Edit Leave Record Modal -->n
+<!-- Edit Leave Record Modal -->
 <div class="modal fade" id="editLeaveRecordModal" tabindex="-1" aria-labelledby="editLeaveRecordModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -321,4 +287,61 @@ function confirmDeleteLeaveHistory(leaveId) {
         }
     })
 }
+
+// Handle status updates with jQuery
+$(document).ready(function() {
+    $('.status-update-link').click(function(e) {
+        e.preventDefault();
+        
+        const leaveId = $(this).data('leave-id');
+        const newStatus = $(this).data('status');
+        const statusElement = $(this).closest('td').find('.label');
+        
+        // Send AJAX request to update status
+        $.ajax({
+            url: '/staff-management/leavehistory/' + leaveId + '/status',
+            method: 'PATCH',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({ status: newStatus }),
+            success: function(response) {
+                if (response.success) {
+                    // Update the status label
+                    statusElement.text(newStatus);
+                    
+                    // Update the class
+                    statusElement.removeClass('label-success label-warning label-danger label-default');
+                    
+                    if (newStatus === 'Approved') {
+                        statusElement.addClass('label-success');
+                    } else if (newStatus === 'Pending') {
+                        statusElement.addClass('label-warning');
+                    } else if (newStatus === 'Rejected') {
+                        statusElement.addClass('label-danger');
+                    } else {
+                        statusElement.addClass('label-default');
+                    }
+                    
+                    // Show success notification
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Status updated',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                } else {
+                    alert('Failed to update status.');
+                }
+            },
+            error: function() {
+                alert('Failed to update status.');
+            }
+        });
+    });
+});
 </script>

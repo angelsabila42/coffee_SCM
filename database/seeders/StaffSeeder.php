@@ -13,8 +13,8 @@ class StaffSeeder extends Seeder
      */
     public function run(): void
     {
-         
-         $staff = [
+        \App\Models\Staff::truncate();
+        $staff = [
             [
             'full_name' => 'John Ayebale',
             'role' => 'Supervisor',
@@ -41,5 +41,8 @@ class StaffSeeder extends Seeder
         foreach ($staff as $member) {
             Staff::create($member);
         }
+        // Add 20 more fake staff using the factory
+        Staff::factory()->count(20)->create();
     }
 }
+

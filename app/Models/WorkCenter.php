@@ -20,6 +20,11 @@ class WorkCenter extends Model
     public function vendorDispatch(){
         return $this->belongsTo(WorkCenter::class);
     }
+
+    public function workAssignments()
+    {
+        return $this->hasMany(WorkAssignment::class, 'work_center_id');
+    }
     /** @use HasFactory<\Database\Factories\WorkCenterFactory> */
     use HasFactory;
 }
