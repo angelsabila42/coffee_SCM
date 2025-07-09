@@ -31,7 +31,9 @@ return new class extends Migration
             $table->string('status')->default('Sent'); // e.g., Sent, Awaiting Pay, Paid
             $table->string('purpose')->nullable(); // e.g., Batch 10
             $table->string('recipient_phone')->nullable();
+
             $table->foreignId('vendor_id')->constrained('vendor')->onDelete('cascade');
+
             // $table->foreignId('importer_id')->nullable()->constrained('importer_models')->onDelete('set null');
             // $table->foreignId('transporter_id')->nullable()->constrained('transporters')->onDelete('set null');
             // $table->foreignId('importer_model_id')->constrained()->onDelete('cascade'); 
