@@ -74,7 +74,7 @@
                                     data-bs-target="#editLeaveRecordModal">
                                     Edit
                                 </button>
-                                <form action="{{ route('staff_management.leavehistory.destroy', $leave) }}" method="POST" style="display: none;" id="delete-leave-form-{{ $leave->id }}">
+                                <form action="{{ route('leavehistory.destroy', $leave) }}" method="POST" style="display: none;" id="delete-leave-form-{{ $leave->id }}">
                                     @csrf
                                     @method('DELETE')
                                 </form>
@@ -101,7 +101,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addLeaveRecordForm" action="{{ route('staff_management.leavehistory.store') }}" method="POST">
+                <form id="addLeaveRecordForm" action="{{ route('leavehistory.store') }}" method="POST">
                     @csrf
 
                     <div class="mb-3">
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!button) return;
             var leaveId = button.getAttribute('data-id');
             if (!leaveId) return;
-            fetch('/staff-management/leavehistory/' + leaveId)
+            fetch('/leavehistory/' + leaveId)
                 .then(response => response.json())
                 .then(function(data) {
                     document.getElementById('edit_lh_id').value = data.id;
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('edit_lh_start_date').value = data.start_date;
                     document.getElementById('edit_lh_end_date').value = data.end_date;
                     document.getElementById('edit_lh_status').value = data.status;
-                    document.getElementById('editLeaveRecordForm').setAttribute('action', '/staff-management/leavehistory/' + data.id);
+                    document.getElementById('editLeaveRecordForm').setAttribute('action', '/leavehistory/' + data.id);
                 })
                 .catch(error => {
                     alert('Failed to load leave record data.');
