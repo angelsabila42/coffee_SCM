@@ -238,6 +238,9 @@ Route::middleware('auth')->group(function()
         Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
         Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
         Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
+        Route::get('/reports/delivery/csv', [\App\Http\Controllers\ReportExportController::class, 'deliveryCsv'])->name('reports.delivery.csv');
+        Route::get('/reports/sales/csv', [\App\Http\Controllers\ReportExportController::class, 'salesCsv'])->name('reports.sales.csv');
+        Route::get('/reports/qa/csv', [\App\Http\Controllers\ReportExportController::class, 'qaCsv'])->name('reports.qa.csv');
 
         Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
         Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
