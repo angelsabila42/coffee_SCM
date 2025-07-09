@@ -50,7 +50,7 @@ class ImporterCreateOrderModal extends Component
             'importer_model_id' => $this->importer_model_id
         ]);
             // Notify admin(s)
-    $admin = \App\Models\User::where('name', 'Admin')->first();
+    $admin = \App\Models\User::where('role', 'admin')->first();
     if ($admin) {
         $admin->notify(new NewIncomingOrderNotification($order));
     }
