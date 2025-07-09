@@ -30,9 +30,5 @@ class Staff extends Model
         return $this->hasMany(LeaveHistory::class);
     }
 
-    // Optional: relationship to work center if needed
-    // public function workCenter()
-    // {
-    //     return $this->belongsTo(WorkCenter::class, 'work_center_id');
-    // }
+   
 }

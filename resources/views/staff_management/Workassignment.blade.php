@@ -21,13 +21,11 @@
             <div class="modal-body">
                 <form id="addWorkAssignForm" action="{{ route('staff_management.workassignment.store') }}" method="POST">
                     @csrf
-
-                    <!-- Using a select dropdown for staff_id for better UX and data integrity -->
+                    <!-- Staff Dropdown -->
                     <div class="mb-3">
                         <label for="wa_staff_id" class="form-label">Staff Member</label>
                         <select class="form-select @error('staff_id') is-invalid @enderror" id="wa_staff_id" name="staff_id" required>
                             <option value="">Select Staff</option>
-                            <!-- $staffMembersForDropdown is passed from the controller -->
                             @foreach($staffMembersForDropdown as $staffMember)
                                 <option value="{{ $staffMember->id }}" {{ old('staff_id') == $staffMember->id ? 'selected' : '' }}>{{ $staffMember->full_name }}</option>
                             @endforeach
@@ -36,23 +34,20 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-
+                    <!-- Role Dropdown -->
                     <div class="row mb-3">
-                       
-                            <label for="role" class="form-label">Role</label>
-                                <select class="form-select @error('role') is-invalid @enderror" id="role" name="role" required>
-                                    <option value="">Select Role</option>
-                                    <option value="Logistics Supervisor" {{ old('role') == 'Logistics Supervisor' ? 'selected' : '' }}>Logistics Supervisor</option>
-                                    <option value="Supervisor" {{ old('role') == 'Supervisor' ? 'selected' : '' }}>Supervisor</option>
-                                    <option value="Warehouse Clerk" {{ old('role') == 'Warehouse Clerk' ? 'selected' : '' }}>Warehouse Clerk</option>
-                                    <option value="QA" {{ old('role') == 'QA' ? 'selected' : '' }}>QA</option>
-                                </select>
-                                @error('role')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                        
+                        <label for="role" class="form-label">Role</label>
+                        <select class="form-select @error('role') is-invalid @enderror" id="role" name="role" required>
+                            <option value="">Select Role</option>
+                            <option value="Logistics Supervisor" {{ old('role') == 'Logistics Supervisor' ? 'selected' : '' }}>Logistics Supervisor</option>
+                            <option value="Supervisor" {{ old('role') == 'Supervisor' ? 'selected' : '' }}>Supervisor</option>
+                            <option value="Warehouse Clerk" {{ old('role') == 'Warehouse Clerk' ? 'selected' : '' }}>Warehouse Clerk</option>
+                            <option value="QA" {{ old('role') == 'QA' ? 'selected' : '' }}>QA</option>
+                        </select>
+                        @error('role')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="wa_start_date" class="form-label">Start Date</label>
@@ -69,7 +64,6 @@
                             @enderror
                         </div>
                     </div>
-
                     <div class="d-flex justify-content-end mt-4">
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Assign Work</button>
@@ -110,7 +104,7 @@
                     <tr>
                         <td>{{ $assignment->assignment_id }}</td>
                         <td>{{ $assignment->staff->full_name ?? $assignment->staff_id }}</td>
-                        <td>{{ $assignment->workCenter->centerName ?? 'N/A' }}</td>
+                        <td>{{ $assignment->workCenter->centerName ?? 'Not Assigned' }}</td>
                         <td>{{ $assignment->role }}</td>
                         <td>{{ $assignment->start_date }}</td>
                         <td>{{ $assignment->end_date ?? 'N/A' }}</td>
@@ -134,7 +128,6 @@
         </table>
     </div>
 
-
 <!-- Edit Work Assignment Modal  -->
 <div class="modal fade" id="editWorkAssignmentModal" tabindex="-1" aria-labelledby="editWorkAssignmentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -148,7 +141,7 @@
                     @csrf
                     @method('PUT')
                     <input type="hidden" id="edit_wa_id" name="id">
-
+                    <!-- Staff Dropdown -->
                     <div class="mb-3">
                         <label for="edit_wa_staff_id" class="form-label">Staff Member</label>
                         <select class="form-select" id="edit_wa_staff_id" name="staff_id" required>
@@ -158,19 +151,17 @@
                             @endforeach
                         </select>
                     </div>
-
+                    <!-- Role Dropdown -->
                     <div class="row mb-3">
-                       
-                            <label for="edit_wa_role" class="form-label">Role</label>
-                            <select class="form-select" id="edit_wa_role" name="role" required>
-                                <option value="">Select Role</option>
-                                <option value="Logistics Supervisor">Logistics Supervisor</option>
-                                <option value="Supervisor">Supervisor</option>
-                                <option value="Warehouse Clerk">Warehouse Clerk</option>
-                                <option value="QA">QA</option>
-                            </select>
+                        <label for="edit_wa_role" class="form-label">Role</label>
+                        <select class="form-select" id="edit_wa_role" name="role" required>
+                            <option value="">Select Role</option>
+                            <option value="Logistics Supervisor">Logistics Supervisor</option>
+                            <option value="Supervisor">Supervisor</option>
+                            <option value="Warehouse Clerk">Warehouse Clerk</option>
+                            <option value="QA">QA</option>
+                        </select>
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="edit_wa_start_date" class="form-label">Start Date</label>
@@ -181,7 +172,6 @@
                             <input type="date" class="form-control" id="edit_wa_end_date" name="end_date">
                         </div>
                     </div>
-
                     <div class="d-flex justify-content-end mt-4">
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Update Assignment</button>
@@ -204,7 +194,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(function(data) {
                 document.getElementById('edit_wa_id').value = data.assignment_id;
                 document.getElementById('edit_wa_staff_id').value = data.staff_id;
-                // document.getElementById('edit_wa_work_center').value = data.work_center; // Remove or comment out this line
                 document.getElementById('edit_wa_role').value = data.role;
                 document.getElementById('edit_wa_start_date').value = data.start_date;
                 document.getElementById('edit_wa_end_date').value = data.end_date || '';
