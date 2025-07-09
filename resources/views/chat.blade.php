@@ -275,12 +275,12 @@ body, html {
     <!-- Sidebar -->
     <div class="chat-sidebar col-12 col-md-4 col-lg-3 p-0">
         <div class="d-flex align-items-center justify-content-between px-3 py-3" style="background: var(--sidebar-bg);">
-            <span class="fw-bold" style="font-size: 1.6rem; color: #222;">Chats</span>
+            <span class="fw-bold" style="font-size: 2rem; color: #222;">Chats</span>
             
         </div>
        
          <div class="sidebar-search position-relative">
-            <i class="fas fa-search"></i>
+            
             <input type="text" class="form-control" placeholder="Search..." id="searchInput">
         </div>
        

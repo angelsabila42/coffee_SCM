@@ -163,6 +163,7 @@ Route::middleware('auth')->group(function()
     Route::get('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'show'])->name('leavehistory.show'); // Show specific leave record
     Route::put('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'update'])->name('leavehistory.update'); // Update leave record
     Route::delete('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'destroy'])->name('leavehistory.destroy'); // Delete leave record
+    Route::patch('/leavehistory/{leaveHistory}/status', [LeaveHistoryController::class, 'updateStatus'])->name('leavehistory.status');
 
 
         /*Dashboard routes*/
@@ -237,6 +238,9 @@ Route::middleware('auth')->group(function()
         Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
         Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
         Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
+        Route::get('/reports/delivery/csv', [\App\Http\Controllers\ReportExportController::class, 'deliveryCsv'])->name('reports.delivery.csv');
+        Route::get('/reports/sales/csv', [\App\Http\Controllers\ReportExportController::class, 'salesCsv'])->name('reports.sales.csv');
+        Route::get('/reports/qa/csv', [\App\Http\Controllers\ReportExportController::class, 'qaCsv'])->name('reports.qa.csv');
 
         Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
         Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');

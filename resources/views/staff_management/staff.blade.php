@@ -92,7 +92,68 @@
                                 <td>{{ $member->id }}</td>
                                 <td>{{ $member->full_name }}</td>
                                 <td>{{ $member->role }}</td>
-                                <td>{{ $member->status }}</td>
+                                <td x-data="{
+                                        selectedStatus: '{{$member->status}}',
+                                        statuses: ['Active', 'Suspended', 'On Leave'],
+                                        badgeClass: function(status) {
+                                            if (status === 'Active') return 'bg-success text-white';
+                                            if (status === 'On Leave') return 'bg-warning text-dark';
+                                            if (status === 'Suspended') return 'bg-danger text-white';
+                                            return 'bg-secondary text-white';
+                                        },
+                                        updateStatus() {
+                                            const staffId = {{ $member->id }};
+                                            const newStatus = this.selectedStatus;
+                                            fetch('/staff-management/staff/' + staffId + '/status', {
+                                                method: 'PATCH',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']')?.content || '{{ csrf_token() }}',
+                                                    'Accept': 'application/json'
+                                                },
+                                                body: JSON.stringify({ status: newStatus })
+                                            })
+                                            .then(response => {
+                                                if (!response.ok) throw new Error('Network response was not ok');
+                                                return response.json();
+                                            })
+                                            .then(data => {
+                                                if (data.success) {
+                                                    const select = $el.querySelector('select');
+                                                    select.className = 'form-control form-control-sm badge badge-sm ' + this.badgeClass(newStatus);
+                                                    updateAbsentStaffCard();
+                                                    if (window.Swal) {
+                                                        Swal.fire({
+                                                            toast: true,
+                                                            position: 'top-end',
+                                                            icon: 'success',
+                                                            title: 'Status updated',
+                                                            showConfirmButton: false,
+                                                            timer: 1500
+                                                        });
+                                                    } else {
+                                                        alert('Status updated successfully!');
+                                                    }
+                                                } else {
+                                                    alert(data.message || 'Failed to update status.');
+                                                }
+                                            })
+                                            .catch((err) => alert('Failed to update status: ' + err.message));
+                                        }
+                                    }"
+                                    x-init="selectedStatus = '{{$member->status}}'; $nextTick(() => { const select = $el.querySelector('select'); select.className = 'form-control form-control-sm badge badge-sm ' + badgeClass(selectedStatus); })"
+                                >
+                                    <select
+                                        class="form-control form-control-sm badge badge-sm"
+                                        :class="badgeClass(selectedStatus)"
+                                        x-model="selectedStatus"
+                                        @change="updateStatus()"
+                                    >
+                                        <option value="Active" :selected="selectedStatus === 'Active'">Active</option>
+                                        <option value="On Leave" :selected="selectedStatus === 'On Leave'">On Leave</option>
+                                        <option value="Suspended" :selected="selectedStatus === 'Suspended'">Suspended</option>
+                                    </select>
+                                </td>
                                 <td>{{ $member->phone_number }}</td>
                                 <td>{{ $member->email }}</td>
                                 <td>
@@ -130,7 +191,8 @@
             <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
                 @include('staff_management.Workassignment', [
                     'workAssignments' => $workAssignments, 
-                    'staffMembersForDropdown' => $staffMembersForDropdown
+                    'staffMembersForDropdown' => $staffMembersForDropdown,
+                    'workCenters' => $workCenters
                 ])
             </div>
             <!-- Leave History Tab Content -->
@@ -451,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 data.forEach(assignment => {
                     const row = tableBody.insertRow();
                     row.insertCell().textContent = assignment.assignment_id;
-                    row.insertCell().textContent = assignment.staff_id;
+                    row.insertCell().textContent = assignment.staff_name || assignment.staff_id;
                     row.insertCell().textContent = assignment.work_center;
                     row.insertCell().textContent = assignment.role;
                     row.insertCell().textContent = assignment.start_date;
@@ -530,7 +592,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(function(data) {
                     document.getElementById('edit_wa_id').value = data.assignment_id;
                     document.getElementById('edit_wa_staff_id').value = data.staff_id;
-                    document.getElementById('edit_wa_work_center').value = data.work_center;
                     document.getElementById('edit_wa_role').value = data.role;
                     document.getElementById('edit_wa_start_date').value = data.start_date;
                     document.getElementById('edit_wa_end_date').value = data.end_date;
@@ -656,5 +717,87 @@ function confirmDeleteLeaveHistory(leaveId) {
             document.getElementById('delete-leave-form-' + leaveId).submit();
         }
     });
+}
+</script>
+
+<!-- Alpine.js -->
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<script>
+// Alpine.js global event listener for staff status change
+if (window.Alpine) {
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('statusDropdown', () => ({
+            init() {
+                this.$watch('selectedStatus', value => {
+                    // No-op: handled by event below
+                });
+            }
+        }));
+    });
+}
+
+// Listen for statusChanged event (from Alpine or vanilla JS)
+document.addEventListener('statusChanged', function(e) {
+    const staffId = e.detail.id;
+    const newStatus = e.detail.status;
+    const url = `/staff-management/staff/${staffId}/status`;
+    fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update badge color
+            const row = document.querySelector(`tr[data-id='${staffId}']`);
+            if (row) {
+                const select = row.querySelector('select');
+                select.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'bg-secondary');
+                if (newStatus === 'Active') select.classList.add('bg-success');
+                else if (newStatus === 'Suspended') select.classList.add('bg-danger');
+                else if (newStatus === 'On Leave') select.classList.add('bg-warning');
+                else select.classList.add('bg-secondary');
+            }
+            // Optional: show toast/alert
+            if (window.Swal) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Status updated',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                alert('Status updated successfully!');
+            }
+        } else {
+            throw new Error(data.message || 'Update failed');
+        }
+    })
+    .catch(err => {
+        if (window.Swal) {
+            Swal.fire('Error', err.message, 'error');
+        } else {
+            alert('Failed to update status: ' + err.message);
+        }
+    });
+});
+
+// Add this function to the script section so it is defined for Alpine
+function updateAbsentStaffCard() {
+    const selects = document.querySelectorAll('tr.staff-row select');
+    let absentCount = 0;
+    selects.forEach(sel => {
+        if (sel.value === 'On Leave') absentCount++;
+    });
+    const absentCard = document.querySelector('.absent-staff-card .main-number');
+    if (absentCard) {
+        absentCard.textContent = absentCount;
+    }
 }
 </script>

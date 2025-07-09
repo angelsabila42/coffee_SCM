@@ -1,6 +1,28 @@
-<div class="container py-4">
-    <h2 class="mb-4">Vendor Transactions Dashboard</h2>
-    <div class="card mb-4">
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="card-title mb-0">Vendor Transactions</h4>
+        <div class="d-flex align-items-center">
+            <ul class="nav nav-tabs" id="transactionTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link {{ $activeTab === 'invoices' ? 'active' : '' }}" href="#" wire:click.prevent="setActiveTab('invoices')">Invoices</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $activeTab === 'payments' ? 'active' : '' }}" href="#" wire:click.prevent="setActiveTab('payments')">Payments</a>
+                </li>
+            </ul>
+            <div class="input-group input-group-sm ml-3" style="width: 150px;">
+                <input type="text" name="table_search" class="form-control" placeholder="Search">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-default">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <div class="card mb-3">
         <div class="card-header">Account Details</div>
         <div class="card-body">
             @if($invoices->count())
@@ -12,19 +34,12 @@
             @endif
         </div>
     </div>
-    <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-            <a class="nav-link {{ $activeTab === 'invoices' ? 'active' : '' }}" href="#" wire:click.prevent="setActiveTab('invoices')">Invoices</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link {{ $activeTab === 'payments' ? 'active' : '' }}" href="#" wire:click.prevent="setActiveTab('payments')">Payments</a>
-        </li>
-    </ul>
+        </div>
+        <div class="tab-content">
     @if($activeTab === 'invoices')
-        <div class="card">
-            <div class="card-header">Invoices</div>
-            <div class="card-body p-0">
-                <table class="table mb-0">
+                <div class="tab-pane fade show active" id="invoices" role="tabpanel">
+                    <div class="table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
                             <th>Invoice #</th>
@@ -58,13 +73,12 @@
             </div>
         </div>
     @elseif($activeTab === 'payments')
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span>Payments</span>
+                <div class="tab-pane fade show active" id="payments" role="tabpanel">
+                    <div class="d-flex justify-content-end mb-2">
                 <a href="{{ route('reports.payment.csv') }}" class="btn btn-success btn-sm">Download CSV</a>
             </div>
-            <div class="card-body p-0">
-                <table class="table mb-0">
+                    <div class="table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
                             <th>Receipt #</th>
@@ -95,7 +109,6 @@
                                 <td>{{ $payment->recipient_name }}</td>
                                 <td>
                                     @if($payment->receipt_file_path)
-                                        <!-- <a href="{{ asset('storage/' . $payment->receipt_file_path) }}" class="btn btn-sm btn-success" target="_blank">Download</a> -->
                                         <a href="{{ route('reports.receipt.csv', $payment->id) }}" class="btn btn-sm btn-primary ml-1">Download</a>
                                     @else
                                         N/A
@@ -108,6 +121,7 @@
             </div>
         </div>
     @endif
+        </div>
 </div>
 @if($showInvoiceItemsModal)
 <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.5);">
@@ -144,3 +158,4 @@
     </div>
 </div>
 @endif 
+</div> 

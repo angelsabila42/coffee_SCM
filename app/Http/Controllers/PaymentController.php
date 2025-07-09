@@ -16,7 +16,16 @@ class PaymentController extends Controller
     public function index()
     {
         $payments = Payment::paginate(10); // Fetch payments with pagination
-        return view('payments.index', compact('payments'));
+
+        // Get the latest invoice for account details
+        $latestInvoice = Invoice::orderByDesc('id')->first();
+
+        // Calculate total earnings
+        $totalEarnings = Payment::sum('amount_paid');
+
+        $invoices = \App\Models\Invoice::paginate(10); // Fetch invoices for the invoices tab
+
+        return view('payments.index', compact('payments', 'latestInvoice', 'totalEarnings', 'invoices'));
     }
 
     /**

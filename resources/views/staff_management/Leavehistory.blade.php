@@ -10,7 +10,7 @@
     </div>
 @endif
 
-{{-- Leave History Table in a white card --}}
+{{-- Leave History Table --}}
 
     <div class="card-header d-flex justify-content-between align-items-center bg-white">
         <h4 class="mb-0">Leave History</h4>
@@ -39,7 +39,33 @@
                         <td>{{ $leave->leave_type }}</td>
                         <td>{{ $leave->start_date }}</td>
                         <td>{{ $leave->end_date }}</td>
-                        <td>{{ $leave->status }}</td>
+                        <td>
+                            <div class="dropdown">
+                                @php
+                                $statusClasses = [
+                                    'Pending' => 'label-warning',
+                                    'Approved' => 'label-success',
+                                    'Rejected' => 'label-danger',
+                                    'Cancelled' => 'label-default'
+                                ];
+                                $statusClass = $statusClasses[$leave->status] ?? 'label-default';
+                                @endphp
+                                
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="label {{ $statusClass }}">{{ $leave->status }}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    @foreach(['Pending', 'Approved', 'Rejected', 'Cancelled'] as $status)
+                                        <li>
+                                            <a href="#" 
+                                               class="status-update-link" 
+                                               data-leave-id="{{ $leave->id }}" 
+                                               data-status="{{ $status }}">{{ $status }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </td>
                         <td>
                             <div>
                                 <button type="button" class="btn btn-sm btn-info edit-leave-record-btn" 
@@ -48,7 +74,7 @@
                                     data-bs-target="#editLeaveRecordModal">
                                     Edit
                                 </button>
-                                <form action="{{ route('staff_management.leavehistory.destroy', $leave) }}" method="POST" style="display: none;" id="delete-leave-form-{{ $leave->id }}">
+                                <form action="{{ route('leavehistory.destroy', $leave) }}" method="POST" style="display: none;" id="delete-leave-form-{{ $leave->id }}">
                                     @csrf
                                     @method('DELETE')
                                 </form>
@@ -75,7 +101,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addLeaveRecordForm" action="{{ route('staff_management.leavehistory.store') }}" method="POST">
+                <form id="addLeaveRecordForm" action="{{ route('leavehistory.store') }}" method="POST">
                     @csrf
 
                     <div class="mb-3">
@@ -147,7 +173,7 @@
     </div>
 </div>
 
-<!-- Edit Leave Record Modal -->n
+<!-- Edit Leave Record Modal -->
 <div class="modal fade" id="editLeaveRecordModal" tabindex="-1" aria-labelledby="editLeaveRecordModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -227,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!button) return;
             var leaveId = button.getAttribute('data-id');
             if (!leaveId) return;
-            fetch('/staff-management/leavehistory/' + leaveId)
+            fetch('/leavehistory/' + leaveId)
                 .then(response => response.json())
                 .then(function(data) {
                     document.getElementById('edit_lh_id').value = data.id;
@@ -236,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('edit_lh_start_date').value = data.start_date;
                     document.getElementById('edit_lh_end_date').value = data.end_date;
                     document.getElementById('edit_lh_status').value = data.status;
-                    document.getElementById('editLeaveRecordForm').setAttribute('action', '/staff-management/leavehistory/' + data.id);
+                    document.getElementById('editLeaveRecordForm').setAttribute('action', '/leavehistory/' + data.id);
                 })
                 .catch(error => {
                     alert('Failed to load leave record data.');
@@ -261,4 +287,61 @@ function confirmDeleteLeaveHistory(leaveId) {
         }
     })
 }
+
+// Handle status updates with jQuery
+$(document).ready(function() {
+    $('.status-update-link').click(function(e) {
+        e.preventDefault();
+        
+        const leaveId = $(this).data('leave-id');
+        const newStatus = $(this).data('status');
+        const statusElement = $(this).closest('td').find('.label');
+        
+        // Send AJAX request to update status
+        $.ajax({
+            url: '/staff-management/leavehistory/' + leaveId + '/status',
+            method: 'PATCH',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({ status: newStatus }),
+            success: function(response) {
+                if (response.success) {
+                    // Update the status label
+                    statusElement.text(newStatus);
+                    
+                    // Update the class
+                    statusElement.removeClass('label-success label-warning label-danger label-default');
+                    
+                    if (newStatus === 'Approved') {
+                        statusElement.addClass('label-success');
+                    } else if (newStatus === 'Pending') {
+                        statusElement.addClass('label-warning');
+                    } else if (newStatus === 'Rejected') {
+                        statusElement.addClass('label-danger');
+                    } else {
+                        statusElement.addClass('label-default');
+                    }
+                    
+                    // Show success notification
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Status updated',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                } else {
+                    alert('Failed to update status.');
+                }
+            },
+            error: function() {
+                alert('Failed to update status.');
+            }
+        });
+    });
+});
 </script>

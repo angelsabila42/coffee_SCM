@@ -127,7 +127,24 @@ a.sidebar-link:hover{
     border-left: 3px solid #f39c12;
 }
 
-
+.table th, .table td {
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+    font-size: 0.95rem !important;
+    vertical-align: middle !important;
+}
+.card-header, .card-footer {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+.card-title {
+    margin-bottom: 0 !important;
+    font-size: 1.1rem !important;
+}
+.btn-sm {
+    padding: 0.15rem 0.5rem !important;
+    font-size: 0.85rem !important;
+}
 
 
 

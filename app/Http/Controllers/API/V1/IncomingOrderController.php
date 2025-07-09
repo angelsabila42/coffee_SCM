@@ -19,7 +19,7 @@ class IncomingOrderController extends Controller
         $order->declineReason = $validated['declineReason'];
         $order->save();
 
-        return redirect()->route('orders')->with('success','Form Submitted!');
+        return redirect()->route('order.index')->with('success','Form Submitted!');
     }
     public function download(IncomingOrder $order){
         $pdf = Pdf::loadView('partials.importer-order-pdf', [

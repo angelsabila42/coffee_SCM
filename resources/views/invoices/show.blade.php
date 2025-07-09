@@ -3,81 +3,74 @@
 @section('page-title', 'Invoice #' . $invoice->invoice_number)
 
 @section('content')
-<div class="card">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-md-6">
-                <h4 class="card-title">Invoice</h4>
+<div class="container py-4">
+    <div class="card shadow-sm rounded-lg" style="max-width: 700px; margin: 0 auto;">
+        <div class="card-body p-5">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h5 class="font-weight-bold mb-1" style="font-size: 1.1rem; color: #222;">Invoice</h5>
+                </div>
+                <div class="text-right">
+                    <div class="mb-0" style="font-size: 1rem; color: #222;">Invoice# {{ $invoice->invoice_number }}</div>
+                    <div style="font-size: 0.95rem; color: #444;">{{ \Carbon\Carbon::parse($invoice->invoice_date)->format('Y-m-d') }}</div>
+                </div>
             </div>
-            <div class="col-md-6 text-right">
-                <h5>Invoice# {{ $invoice->invoice_number }}</h5>
-                <p>{{ \Carbon\Carbon::parse($invoice->invoice_date)->format('Y-m-d') }}</p>
+            <hr class="my-3">
+            <div class="mb-4" style="line-height: 1.5;">
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="font-weight: 500;">Elgon Cooperative</div>
+                    <div>P.O Box 3263</div>
+                    <div>Mbale, Uganda</div>
+                </div>
+                <div class="mb-2" style="font-weight: 600;">BILL TO</div>
+                <div style="margin-bottom: 1.5rem;">
+                    <div>GlobalBean Connect Exporters</div>
+                    <div>P.O Box 3233</div>
+                    <div>Kampala, Uganda</div>
+                </div>
+                <div class="mb-2" style="font-weight: 600;">INVOICE FOR</div>
+                <div class="mb-1">Amount: {{ $invoice->currency ?? 'Ugx' }} {{ number_format($invoice->total, 0) }}</div>
+                <div class="mb-1">Status: {{ $invoice->status }}</div>
             </div>
-        </div>
-    </div>
-    <div class="card-body">
-        <div class="row mb-4">
-            <div class="col-md-6">
-                @if ($invoice->vendor_name)
-                    <p><strong>{{ $invoice->vendor_name }}</strong></p>
-                    <p>{{ $invoice->vendor_po_box }}</p>
-                    <p>{{ $invoice->vendor_city }}, {{ $invoice->vendor_country }}</p>
-                @endif
-            </div>
-            <div class="col-md-6">
-                <p><strong>BILL TO</strong></p>
-                <p>{{ $invoice->bill_to_name }}</p>
-                <p>{{ $invoice->bill_to_po_box }}</p>
-                <p>{{ $invoice->bill_to_city }}, {{ $invoice->bill_to_country }}</p>
-            </div>
-        </div>
-
-        <table class="table table-bordered mb-4">
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($invoice->items as $item)
+            <table class="table table-bordered mb-4" style="margin-top: 2rem;">
+                <thead class="bg-dark text-white">
                     <tr>
-                        <td>{{ $item->description }}</td>
-                        <td>{{ $item->quantity }} kg</td>
-                        <td>{{ $invoice->currency }} {{ number_format($item->unit_price, 2) }}</td>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <div class="row justify-content-end">
-            <div class="col-md-5">
-                <table class="table table-borderless text-right">
-                    <tbody>
+                </thead>
+                <tbody>
+                    @foreach ($invoice->items as $item)
                         <tr>
-                            <td>Sub total</td>
-                            <td>{{ $invoice->currency }} {{ number_format($invoice->sub_total, 2) }}</td>
+                            <td>{{ $item->description }}</td>
+                            <td>{{ $item->quantity }} kg</td>
+                            <td>{{ $invoice->currency ?? 'Ugx' }} {{ number_format($item->unit_price, 0) }}</td>
                         </tr>
-                        <tr>
-                            <td><strong>Total</strong></td>
-                            <td><strong>{{ $invoice->currency }} {{ number_format($invoice->total, 2) }}</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="row justify-content-end mt-4">
+                <div class="col-md-6">
+                    <table class="table table-borderless text-right mb-0">
+                        <tbody>
+                            <tr>
+                                <td style="font-weight:600; font-size:1.1rem;">Sub total</td>
+                                <td style="font-weight:600; font-size:1.1rem;">{{ $invoice->currency ?? 'Ugx' }} {{ number_format($invoice->sub_total ?? $invoice->total, 0) }}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:700; font-size:1.2rem;">Total</td>
+                                <td style="font-weight:700; font-size:1.2rem;">{{ $invoice->currency ?? 'Ugx' }} {{ number_format($invoice->total, 0) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-4">
+                <a href="{{ route('payments.index') }}" class="btn btn-dark mr-2">Back</a>
+                <a href="{{ route('invoices.exportCsv', $invoice->id) }}" class="btn btn-secondary">Download</a>
             </div>
         </div>
-
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <p>Acc No: {{ $invoice->bank_account_no }}</p>
-                <p>Bank Name: {{ $invoice->bank_name }}</p>
-            </div>
-        </div>
-    </div>
-    <div class="card-footer">
-        <a href="{{ route('invoices.index') }}" class="btn btn-secondary">Back</a>
-        <a href="#" class="btn btn-primary">Download</a> {{-- Implement download functionality later --}}
     </div>
 </div>
-@endsection 
+@endsection
