@@ -54,7 +54,7 @@ class CreateOrderModal extends Component
         ]);
         // $vendor = User::find($order->vendor_id);
         // $vendor->notify(new NewOutgoingOrderNotification($order));
-        $admin = \App\Models\User::where('name', 'Admin')->first();
+        $admin = \App\Models\User::where('role', 'admin')->first();
     if ($admin) {
         $admin->notify(new NewOutgoingOrderNotification($order));
     }

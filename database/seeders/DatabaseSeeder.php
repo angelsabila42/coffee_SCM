@@ -37,15 +37,14 @@ class DatabaseSeeder extends Seeder
             VendorSeeder::class,
             importerModelSeeder::class,
             WorkCenterSeeder::class,
-            StaffSeeder::class,
-            LeaveHistorySeeder::class,
             IncomingOrderSeeder::class,
             OutgoingOrderSeeder::class,
-             SalesReportSeeder::class,
-             DeliveryReportSeeder::class,
+            SalesReportSeeder::class,
+            DeliveryReportSeeder::class,
+            WorkCenterSeeder::class,
             ChatTestSeeder::class,
             InventorySeeder::class,
-            PaymentSeeder::class, // Add chat test data
+            paymentSeeder::class, // Add chat test data
 
         ]);
 
