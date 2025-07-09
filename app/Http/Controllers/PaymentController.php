@@ -23,7 +23,9 @@ class PaymentController extends Controller
         // Calculate total earnings
         $totalEarnings = Payment::sum('amount_paid');
 
-        return view('payments.index', compact('payments', 'latestInvoice', 'totalEarnings'));
+        $invoices = \App\Models\Invoice::paginate(10); // Fetch invoices for the invoices tab
+
+        return view('payments.index', compact('payments', 'latestInvoice', 'totalEarnings', 'invoices'));
     }
 
     /**

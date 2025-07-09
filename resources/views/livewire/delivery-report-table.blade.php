@@ -20,7 +20,7 @@
                             </svg>
                         </button>
                     </div>
-                    <button class="btn btn-success btn-fill btn-sm"><i class="fa-solid fa-plus pt-1 mr-3"></i>Generate Report</button>
+                    <button class="btn btn-success btn-fill btn-sm" wire:click="generateReport"><i class="fa-solid fa-plus pt-1 mr-3"></i>Generate Report</button>
                 </div>
                             <div class="card card-plain table-plain-bg">
                                 <div class="card-header ">

@@ -68,23 +68,37 @@
                         <table class="table table-hover text-nowrap">
                             <thead class="bg-light">
                                 <tr style="color:#6c757d;">
-                                    <th>Payment #</th>
+                                    <th>Invoice #</th>
                                     <th>Date</th>
                                     <th>Coffee Type</th>
                                     <th>Amount</th>
                                     <th>Description</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>P-002</td>
-                                    <td>23 May, 2025 10:00 AM</td>
-                                    <td>Robusta</td>
-                                    <td>Ugx 500.00</td>
-                                    <td>Batch 12</td>
-                                    <td><span class="badge badge-secondary">Sent</span></td>
-                                </tr>
+                                @foreach ($invoices as $invoice)
+                                    <tr>
+                                        <td>{{ $invoice->invoice_number }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($invoice->invoice_date)->format('d M, Y') }}</td>
+                                        <td>{{ $invoice->coffee_type ?? '-' }}</td>
+                                        <td>{{ $invoice->currency ?? 'Ugx' }} {{ number_format($invoice->total, 2) }}</td>
+                                        <td>{{ $invoice->description ?? '-' }}</td>
+                                        <td>
+                                            @if ($invoice->status == 'Paid')
+                                                <span class="badge badge-success">{{ $invoice->status }}</span>
+                                            @elseif ($invoice->status == 'Awaiting')
+                                                <span class="badge badge-warning">{{ $invoice->status }}</span>
+                                            @else
+                                                <span class="badge badge-secondary">{{ $invoice->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('invoices.show', $invoice->id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -110,6 +124,7 @@
                                     <th>Amount</th>
                                     <th>Description</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -128,6 +143,9 @@
                                             @else
                                                 <span class="badge badge-secondary">{{ $payment->status }}</span>
                                             @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('payments.show', $payment->id) }}" class="btn btn-sm btn-outline-primary">View</a>
                                         </td>
                                     </tr>
                                 @endforeach
