@@ -32,6 +32,24 @@
                 <div class="mb-1">Amount: {{ $invoice->currency ?? 'Ugx' }} {{ number_format($invoice->total, 0) }}</div>
                 <div class="mb-1">Status: {{ $invoice->status }}</div>
             </div>
+            <table class="table table-bordered mb-4" style="margin-top: 2rem;">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($invoice->items as $item)
+                        <tr>
+                            <td>{{ $item->description }}</td>
+                            <td>{{ $item->quantity }} kg</td>
+                            <td>{{ $invoice->currency ?? 'Ugx' }} {{ number_format($item->unit_price, 0) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
             <div class="row justify-content-end mt-4">
                 <div class="col-md-6">
                     <table class="table table-borderless text-right mb-0">
