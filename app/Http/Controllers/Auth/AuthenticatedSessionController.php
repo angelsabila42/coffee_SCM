@@ -35,17 +35,20 @@ class AuthenticatedSessionController extends Controller
 
         $request->authenticate();
 
+
         $request->session()->regenerate();
         $user = Auth::user();
+        Log::info('User role at login:', ['role' => $user->role, 'user_id' => $user->id, 'email' => $user->email]);
+
+        // Vendor role check in users table
+        if ($user->role === 'vendor') {
+            Log::info('Redirecting vendor (role check)');
+            return redirect()->route('vendor.home');
+        }
 
         if(Importer::where('email', $user->email)->exists()){
             Log::info('Redirecting importer');
             return redirect()->route('importer.dashboard');
-        }
-
-        elseif(Vendor::where('email', $user->email)->exists()){
-            Log::info('Redirecting vendor');
-            return redirect()->route('vendor.home');
         }
 
         elseif(Transporter::where('email', $user->email)->exists()){
