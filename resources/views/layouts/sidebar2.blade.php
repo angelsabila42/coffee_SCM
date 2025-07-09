@@ -1,7 +1,7 @@
 <aside id="sidebar" :class= "{'expand':isExpanded}">
     <div class="d-flex justify-content-between px-4 pt-4">
         <div class="sidebar-logo mr-1" >
-            <p class=" fw-bold mb-0 sidebar-logo">GlobalBean </p>
+            <p class=" fw-bold mb-0 sidebar-logo">GlobalBean Connect</p>
             <p class="text-muted small hide-on-collapse">Dashboard</p>
         </div>
     

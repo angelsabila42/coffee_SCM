@@ -59,11 +59,11 @@
             
              </a>
         </li>
-        <li class="sidebar-item">
+        {{-- <li class="sidebar-item">
              <a href="#" class="sidebar-link">
              <i class='bx  bx-cog'  ></i> 
              <span>Settings</span>
              </a>
-        </li>
+        </li> --}}
     </ul>
     @endsection
