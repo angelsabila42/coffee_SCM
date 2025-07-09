@@ -26,7 +26,6 @@
             </div>
 
                             <div class="card card-plain table-plain-bg">
-                                <div class="card-header"></div>
                                 <div class="card-body table-full-width table-responsive">
                                 <div x-data= "confirmDeleteModal">
                                     <table class="table table-hover" >

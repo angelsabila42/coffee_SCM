@@ -1,4 +1,5 @@
  <!--cards--> 
+<div class="content"> 
 <div class="row mb-4">
     <div class="col">
         <div class="card rounded-2 kpi-card ">
@@ -31,35 +32,37 @@
                 <p>Warehouses</p>
                 <h3>{{$totalWarehouses}}</h3>
                 </div>
+                <span class=" text-danger bg-danger-soft stat-icon">
                 <i class="fas fa-warehouse"></i>
+                </span>
             </div>
         </div>
     </div>
 </div>
-<div class="content"> 
+
+<div class="modern-tabs mb-5">
     <div class="top-controls">
         <div class="tabs">
            <h3>Inventory</h3>
-        </div>
-        <div class="right">
-          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addInventoryModal">+New</button>
         </div> 
     </div>
         @extends('layouts.stock_modal')
 <div>
 <div class="col-md-12">
-    <div class="d-flex justify justify-content-between align-items-center">
+    {{-- <div class="d-flex justify justify-content-between align-items-center">
         <form method="GET" action="{{url('/inventory')}}"class="mb-3">
             <input type="text" name="search" class="form-control" placeholder="search..."
                 value="{{$search ?? ''}}">
         </form> 
+    </div> --}}
+    <div class="row mt-4">
+        <p class="mr-2">Robusta in stock: {{ $robustaStock }} kg</p>
+        <p class="ml-2">Arabica in stock: {{ $arabicaStock }} kg</p>    
     </div>
-        <p>Robusta in stock: {{ $robustaStock }} kg</p>
-        <p>Arabica in stock: {{ $arabicaStock }} kg</p>    
-
        <livewire:inventory/>
        
     
+</div>
 </div>
 </div>
 </div>

@@ -34,8 +34,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
 
-            // VendorSeeder::class,
-            // importerModelSeeder::class,
+            VendorSeeder::class,
+            importerModelSeeder::class,
             WorkCenterSeeder::class,
             StaffSeeder::class,
             LeaveHistorySeeder::class,
