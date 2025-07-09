@@ -2,10 +2,13 @@
 
 namespace App\Livewire;
 
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class WorkAssignment extends Component
 {
+    #[Url] public $search = '';
+    #[Url] public $minQuantity = '';
     protected function filter(){
 
     return WorkAssignment::where(function($query){

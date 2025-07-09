@@ -84,12 +84,12 @@
 
     <div class="card-header d-flex justify-content-between align-items-center bg-white">
         <h4 class="mb-0">Work Assignment History</h4>
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addWorkAssignmentModal">
+        {{-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addWorkAssignmentModal">
             + New
-        </button>
+        </button> --}}
     </div>
 
-    {{--<livewire:work-assignment/>--}}
+    <livewire:work-assignment/>
 
 
     <div class="card-body table-full-width table-responsive">
