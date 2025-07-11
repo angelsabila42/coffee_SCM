@@ -36,6 +36,9 @@ class IncomingOrder extends Model
     public function importerModel(){
         return $this->belongsTo(importerModel::class, 'importer_model_id');
     }
+     public function importer(){
+        return $this->belongsTo(User::class, 'importer_model_id');
+    }
 
       public function notification(){
         return $this->belongsTo(Notification::class);
