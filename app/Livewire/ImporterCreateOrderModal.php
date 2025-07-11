@@ -7,11 +7,13 @@ use App\Helpers\Helper;
 use App\Models\IncomingOrder;
 use Livewire\Attributes\Rule;
 use App\Models\User;
+use App\Notifications;
+use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewIncomingOrderNotification;
 
 class ImporterCreateOrderModal extends Component
 {
-
+    public $order;
      public $status, $orderID;
      public $importer_model_id = 1;
 
@@ -50,9 +52,9 @@ class ImporterCreateOrderModal extends Component
             'importer_model_id' => $this->importer_model_id
         ]);
             // Notify admin(s)
-    $admin = \App\Models\User::where('name', 'Admin')->first();
-    if ($admin) {
-        $admin->notify(new NewIncomingOrderNotification($order));
+    $admins = \App\Models\User::where('role', 'admin')->get();
+    if ($admins) {
+        Notification::send( $admins, new NewIncomingOrderNotification($order));
     }
 
 

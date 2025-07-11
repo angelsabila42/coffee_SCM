@@ -17,7 +17,7 @@ class WorkCenterFactory extends Factory
     public function definition(): array
     {
         return [
-              'workCenterID' => fake()->unique()->uuid(),
+            'workCenterID'=> fake()->unique()->numberBetween(1,100),
            'location'=> fake()->city(),
            'centerName'=>fake()->company(),
         ];

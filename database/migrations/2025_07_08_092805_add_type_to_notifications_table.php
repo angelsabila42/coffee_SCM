@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('work_centers', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('location');
-            $table->string('centerName');
-            
+        Schema::table('notifications', function (Blueprint $table) {
+            $table->string('type')->after('id');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('work_centers');
+        Schema::table('notifications', function (Blueprint $table) {
+            $table->dropColumn('type');
+        });
     }
 };

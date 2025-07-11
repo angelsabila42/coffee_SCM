@@ -107,4 +107,28 @@ class ReportExportController extends Controller
             fclose($handle);
         }, 200, $headers);
     }
-} 
+
+    public function qaCsv()
+    {
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="qa_report.csv"',
+        ];
+        $columns = ['QA ID', 'Date', 'Inspector', 'Result', 'Comments'];
+        $qas = \App\Models\QA::orderBy('created_at', 'desc')->get();
+        return new StreamedResponse(function () use ($qas, $columns) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, $columns);
+            foreach ($qas as $qa) {
+                fputcsv($handle, [
+                    $qa->id,
+                    $qa->date ?? $qa->created_at,
+                    $qa->inspector ?? '',
+                    $qa->result ?? '',
+                    $qa->comments ?? '',
+                ]);
+            }
+            fclose($handle);
+        }, 200, $headers);
+    }
+}

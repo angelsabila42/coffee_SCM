@@ -228,8 +228,8 @@ Route::middleware('auth')->group(function()
        
         //editing profile
         Route::get('/editprofile',[ProfileController::class,'edit'])->name('editprofile');
-        Route::post('/editprofile',[ProfileController::class,'update'])->name('editprofile.update');
-        Route::post('/editprofile',[ProfileController::class,'changePassword'])->name('editprofile.password');
+        Route::post('/editprofile/update',[ProfileController::class,'update'])->name('editprofile.update');
+        Route::post('/editprofile/password',[ProfileController::class,'changePassword'])->name('editprofile.password');
         // end of Arnest added
 
 
@@ -241,6 +241,9 @@ Route::middleware('auth')->group(function()
         Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
         Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');
         Route::get('/reports/receipt/{id}/csv', [\App\Http\Controllers\ReportExportController::class, 'receiptCsv'])->name('reports.receipt.csv');
+        Route::get('/reports/delivery/csv', [\App\Http\Controllers\ReportExportController::class, 'deliveryCsv'])->name('reports.delivery.csv');
+        Route::get('/reports/sales/csv', [\App\Http\Controllers\ReportExportController::class, 'salesCsv'])->name('reports.sales.csv');
+        Route::get('/reports/qa/csv', [\App\Http\Controllers\ReportExportController::class, 'qaCsv'])->name('reports.qa.csv');
 
         Route::get('/invoices/{id}/export-csv', [InvoiceExportController::class, 'exportCsv'])->name('invoices.exportCsv');
         Route::get('/reports/payment/csv', [\App\Http\Controllers\ReportExportController::class, 'paymentCsv'])->name('reports.payment.csv');

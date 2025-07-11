@@ -9,6 +9,8 @@ use App\Models\IncomingOrder;
 use App\Models\OutgoingOrder;
 use App\Models\User;
 use App\Models\WorkCenter;
+use App\Models\Staff;
+use App\Models\LeaveHistory;
 use Database\Factories\IncomingOrderFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -31,6 +33,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+
             VendorSeeder::class,
             importerModelSeeder::class,
             WorkCenterSeeder::class,
@@ -40,10 +43,11 @@ class DatabaseSeeder extends Seeder
             DeliveryReportSeeder::class,
             WorkCenterSeeder::class,
             ChatTestSeeder::class,
-             InventorySeeder::class,
+            InventorySeeder::class,
             paymentSeeder::class, // Add chat test data
 
         
+
 
 
         ]);

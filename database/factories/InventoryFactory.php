@@ -20,7 +20,7 @@ class InventoryFactory extends Factory
     {
         return [
             'coffee_type'=> fake()->randomElement(['Arabica','Robusta']),
-            'grade'=> fake()->numberBetween(1,3),
+            'grade'=> fake()->randomElement(['A', 'B', 'C']),
             'warehouse_name'=> fake()->company(),
             'quantity'=> fake()->numberBetween(100,1000),
             'threshold'=> fake()->numberBetween(50,100),
