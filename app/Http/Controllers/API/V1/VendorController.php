@@ -68,25 +68,30 @@ class VendorController extends Controller
 
    public function pdfValidation(Request $request){
 
+    //  if ($request->hasFile('financial_statement') && $request->hasFile('national_id') && $request->hasFile('UCDA')) {
+    // $financialStatement = $request->file('financial_statement');
+    // $nationalId = $request->file('national_id');
+    // $ucda = $request->file('UCDA');
 
-     $financialStatement = $request->file('financial_statement');
-    $nationalId = $request->file('national_id');
-    $ucda = $request->file('UCDA');
+    // $financialStatementBase64 = base64_encode(file_get_contents($financialStatement->getRealPath()));
+    // $nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()));
+    // $ucdaBase64 = base64_encode(file_get_contents($ucda->getRealPath()));
+    //  } else {
+    //     return response()->json(['message' => 'Please upload all required documents'], 400);
+    // }
 
-    // file encoding
-    $financialStatementBase64 = base64_encode(file_get_contents($financialStatement->getRealPath()));
-    $nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()));
-    $ucdaBase64 = base64_encode(file_get_contents($ucda->getRealPath()));
-
+$nationalId = $request->file('national_id');
+$nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()));
+    
     // java_data_validation
     $java_data_validation = [
         'userName' => $request->input('name'),
         'id' => $nationalIdBase64,
-        'idname' => $nationalId->getClientOriginalName(),
-        'financialStatus' => $financialStatementBase64,
-        'financialStatusName' => $financialStatement->getClientOriginalName(),
-       'ucdaCertificate' => $ucdaBase64,
-       'ucdaCertificateName' => $ucda->getClientOriginalName(),
+        'idName' => $nationalId->getClientOriginalName(),
+      //   'financialStatus' => $financialStatementBase64,
+      //   'financialStatusName' => $financialStatement->getClientOriginalName(),
+      //  'ucdaCertificate' => $ucdaBase64,
+      //  'ucdaCertificateName' => $ucda->getClientOriginalName(),
     ];
      $res = Http::post('http://localhost:8081/api/verify', $java_data_validation);
 
@@ -98,15 +103,15 @@ class VendorController extends Controller
 
       
       
-          $this->store($request);
-          
+          //$this->store($request);
+           return $res->body();
 
-             return response()->json(['message' => 'Vendor registered successfully']);
+             //return response()->json(['message' => 'Vendor registered successfully']);
 
            // return response()->json(['message' => 'PDF is valid'], 200);
       } else {
-        // return $res->body();
-          return response()->json(['validation failed' => 'please upload valid documents '], 400);
+        return $res->body();
+          // return response()->json(['validation failed' => 'please upload valid documents '], 400);
       }
       
       # code...
@@ -127,7 +132,7 @@ class VendorController extends Controller
           $validated = $req->validate([
               'name' => 'required',
             'email' => 'required|email|unique:vendor,email',
-            'password' => ['required','confirmed','min:8'],
+           // 'password' => ['required','confirmed','min:8'],
             'street' => '',
               'city' => '',
             'phone_number' => 'required|regex:/^07[0-9]{8}$/',
@@ -135,7 +140,7 @@ class VendorController extends Controller
             
 
         ]);   
-        $validated['password'] = Hash::make($validated['password']);
+       // $validated['password'] = Hash::make($validated['password']);
          // $filepath = $req->file('financial_statement')->store('vendor_files','public');
         
 
