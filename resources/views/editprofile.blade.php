@@ -2,12 +2,13 @@
 @section('page-title', 'Edit Profile')
 @section('content')
 <div class="container mt-2">
-    <form action="{{route('editprofile')}}" method="post">
+    <form action="{{route('editprofile.update')}}" method="post" enctype="multipart/form-data">
     @csrf
      <!--UploadImage-->
     <div class="text-center mb-4">
         <div class="mb-3">
-            <img src="{{$user->profile_picture}}" class="rounded-circle" alt="Profile Image" width="150" height="150">
+            <img src="{{ asset('storage/' . auth()->user()->profile_picture)}}" class="rounded-circle"
+             alt="Profile Image" width="150" height="150">
         </div>
         <input type="file" name="profile_picture" class="form-control">
     </div>
@@ -16,7 +17,7 @@
         <div class="row mb-3">
             <div class="col">
                 <label for="fullName"class="form-label">Full Name</label> 
-                <input type="text" class="form-control" id="fullName" value="{{$user->name}}">
+                <input type="text" class="form-control" id="fullName" name="name" value="{{$user->name}}">
             </div>
             {{-- <div class="col-md-6">
                 <label for="phoneNumber" class="form-label">Phone Number</label> 
@@ -25,11 +26,11 @@
         </div>
         <div class="mb-4">
             <label for="email" class="form-label">Email Address</label>
-            <input type="email" class="form-control" id="email"  value="{{$user->email}}">
+            <input type="email" class="form-control" id="email" name="email"  value="{{$user->email}}">
         </div> 
-        <button class="btn btn-primary">Update Profile</button>
+        <button class="btn btn-primary" type="submit">Update Profile</button>
     </form>
-    <form action="{{route('editprofile')}}" method="post">
+    <form action="{{route('editprofile.password')}}" method="post">
     @csrf
     <!--ChangePassword-->
         <h6>Change Password</h6>
