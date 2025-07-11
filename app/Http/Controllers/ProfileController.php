@@ -67,16 +67,16 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' =>'required|email|unique:users,email,' . Auth::id(),
-            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
         /** @var \App\Models\User $user */
-
+        
         $user = Auth::user();
         $user->name = $request->name;
         $user->email = $request->email;
         if($request->hasFile('profile_picture')){
             if($user->profile_picture){
-                Storage::delete('public/'.$user->profile_picture);
+                Storage::delete('public/'. $user->profile_picture);
             }
             $file = $request->file('profile_picture');
             $path = $file->store('profile_pictures', 'public');

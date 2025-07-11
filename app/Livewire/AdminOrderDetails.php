@@ -39,17 +39,19 @@ class AdminOrderDetails extends Component
         // $this->order->save();
 
         //notify importer
-        $this->order->importerModel->notify(new OrderAcceptedNotification($this->order));
-        
+        if($this->order->importer){
+           $this->order->importer->notify(new OrderAcceptedNotification($this->order));
+        }
     }
     public function declineOrder()
     {
      $this->order->status = 'declined';
      $this->order->save();
      
-     //send a notification
-     $this->order->importerModel->notify(new OrderDeclinedNotification($this->order));
-     session()->flash('message', 'order declined');
+     // Notify the importer about the declined order
+     if($this->order->importer){
+           $this->order->importer->notify(new OrderDeclinedNotification($this->order));
+        }
     }
     public function render()
     {

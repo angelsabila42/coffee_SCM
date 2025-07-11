@@ -44,7 +44,7 @@
                                         @foreach($orders as $order)
                                             <tr wire:key= "{{$order->id}}">
                                                 <td class=""> {{$order->orderID}} </td>
-                                                <td class=""> {{$order->vendor->name}} </td>
+                                                <td class=""> {{$order->vendor ? $order->vendor->name : 'No vendor'}} </td>
                                                 <td class=""> {{$order->coffeeType}} </td>
                                                 <td class=""> {{$order->quantity}} </td>
                                                 <td x-data= "{selectedStatus: '{{$order->status}}',

@@ -4,14 +4,12 @@
 @endphp --}}
     <div class="container-fluid">
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <ul class="nav navbar-nav mr-auto">
-                <li class="nav-item">
-                    <!--the company log will go here or at top of the side bar-->
-                </li>
-                <li class="dropdown nav-item">
-                    <input type="text" placeholder="Search" style="border-radius: 30px">
-                </li> 
-            </ul>
+
+                <ul class=" navbar-nav me-auto mb-2 mb-lg-0" >
+                
+                {{-- search bar --}}
+                @livewire('search-bar')
+            </ul> 
             <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a href="#" class=" nav-link" data-bs-toggle="modal" data-bs-target="#notificationsModal">
@@ -29,7 +27,7 @@
                     @if(Auth::check())
                         <span>{{ Auth::user()->name }}</span>
                         <a href="#" class=" nav-link" data-bs-toggle="modal" data-bs-target="#userProfileModal">
-                            <img src="{{ Auth::user()->profile_picture }}" alt="" class="rounded_circle" width="30" height="30">
+                            <img src="{{asset('storage/' .auth()->user()->profile_picture)}}" alt="" class="rounded-circle" width="30" height="30">
                         </a>
                     @else
                         <span>Guest</span>
@@ -111,7 +109,7 @@
     <div class="modal-content text-center">
       <div class="modal-body">
         @if(Auth::check())
-          <img src="{{ Auth::user()->profile_picture }}" alt="" class="rounded_circle" width="30" height="30">
+          <img src="{{asset('storage/' .auth()->user()->profile_picture)}}" alt="" class="rounded_circle" width="30" height="30">
           <h5 class="mb-3">{{ Auth::user()->name }}</h5>
           <!-- Edit Profile -->
           <a href="{{ url('/editprofile') }}" class="btn btn-outline-primary w-75 mb-2">

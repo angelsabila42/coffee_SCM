@@ -225,8 +225,8 @@ Route::middleware('auth')->group(function()
        
         //editing profile
         Route::get('/editprofile',[ProfileController::class,'edit'])->name('editprofile');
-        Route::post('/editprofile',[ProfileController::class,'update'])->name('editprofile.update');
-        Route::post('/editprofile',[ProfileController::class,'changePassword'])->name('editprofile.password');
+        Route::post('/editprofile/update',[ProfileController::class,'update'])->name('editprofile.update');
+        Route::post('/editprofile/password',[ProfileController::class,'changePassword'])->name('editprofile.password');
         // end of Arnest added
 
 
