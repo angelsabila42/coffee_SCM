@@ -1,4 +1,4 @@
-@section('sidebar-item')
+@section('sidebar-items')
 <ul class="sidebar-nav">
         <li class="sidebar-item">
              <a href="{{route('home')}}" class="sidebar-link {{request()->routeIs('home') ? 'active' : ''}}">
