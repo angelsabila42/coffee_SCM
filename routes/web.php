@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Vendor\VendorReportsController;
+use App\Http\Controllers\Vendor\VendorTransactionController;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\ProfileController;
 
@@ -289,7 +290,7 @@ Route::middleware('auth')->group(function()
 Route::middleware(['vendor'])->group(function(){
 
 // Vendor Transactions Dashboard
-      Route::get('/transactions/vendor',[VendorController::class, 'Transactions'] )->name('transactions.vendor');
+      Route::get('/transactions/vendor',[VendorTransactionController::class, 'index'] )->name('vendor.transactions');
       Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
       Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
      
