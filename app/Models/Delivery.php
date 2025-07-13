@@ -26,6 +26,9 @@ class Delivery extends Model
         'assigned_driver',
         'eta',
         'date_ordered',
+        'order_reference',
+        'confirmed_by_admin',
+        'admin_confirmed_at',
     ];
 
       public function notification(){
