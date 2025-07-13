@@ -43,5 +43,6 @@
     </div>
     @include('layouts.scripts.scripts')
     @include('layouts.scripts.chart_scripts')
+    @yield('scripts')
 </body>
 </html>

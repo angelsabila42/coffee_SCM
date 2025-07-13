@@ -26,6 +26,6 @@
     </div>  --}}
     
 
-    @yield('sidebar-item')
+    @yield('sidebar-items')
 
 </aside>

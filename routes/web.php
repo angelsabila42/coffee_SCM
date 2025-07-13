@@ -327,6 +327,26 @@ Route::middleware(['vendor'])->group(function(){
 
 Route::middleware('transporter')->group(function(){
 
+// Transporter Dashboard
+Route::get('/transporter/dashboard', [transporterController::class, 'dashboard'])->name('transporter.dashboard');
+// Transporter Deliveries
+Route::get('/transporter/deliveries', [transporterController::class, 'deliveries'])->name('transporter.deliveries');
+// Transporter Drivers Management
+Route::get('/transporter/drivers', [transporterController::class, 'drivers'])->name('transporter.drivers');
+Route::get('/transporter/drivers/create', [transporterController::class, 'createDriver'])->name('transporter.drivers.create');
+Route::post('/transporter/drivers', [transporterController::class, 'storeDriver'])->name('transporter.drivers.store');
+Route::get('/transporter/drivers/{id}/edit', [transporterController::class, 'editDriver'])->name('transporter.drivers.edit');
+Route::put('/transporter/drivers/{id}', [transporterController::class, 'updateDriver'])->name('transporter.drivers.update');
+Route::delete('/transporter/drivers/{id}', [transporterController::class, 'destroyDriver'])->name('transporter.drivers.destroy');
+// Delivery Assignment Routes
+Route::put('/transporter/deliveries/{delivery}/assign-driver', [transporterController::class, 'assignDriver'])->name('transporter.deliveries.assign-driver');
+Route::post('/transporter/deliveries/{delivery}/mark-delivered', [transporterController::class, 'markDelivered'])->name('transporter.deliveries.mark-delivered');
+Route::get('/transporter/deliveries/{delivery}/details', [transporterController::class, 'deliveryDetails'])->name('transporter.deliveries.details');
+// Transporter Profile
+Route::get('/transporter/profile', [transporterController::class, 'profile'])->name('transporter.profile');
+Route::put('/transporter/profile', [transporterController::class, 'updateProfile'])->name('transporter.profile.update');
+Route::put('/transporter/banking', [transporterController::class, 'updateBanking'])->name('transporter.banking.update');
+// Legacy routes
 // Transporter Delivery Dashboard
 Route::get('/deliveries/transporter', [transporterController::class, 'deliveries'])->name('deliveries.transporter');
 Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
