@@ -339,4 +339,10 @@ Route::get('/transporter/transactions', [transporterController::class,'transacti
      
 
 });
+//notification routes
+Route::post('/notifications/mark-as-read', function () {
+    Auth::user()->unreadNotifications->markAsRead();
+    return response()->json(['success' => true]);
+})->middleware('auth');
+
 

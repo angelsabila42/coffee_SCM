@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
   <meta charset="UTF-8">
@@ -24,4 +24,12 @@
   @extends('layouts.stockbody')
 </body>
 @extends('layouts.scripts')
-</html>
+</html> --}}
+@extends('layouts.app')
+@section('page-title', 'Stock Details')
+@section('sidebar-items')
+@include('layouts.sidebar-items.admin')
+@endsection 
+@section('content')
+@include('layouts.stockbody')
+@endsection
