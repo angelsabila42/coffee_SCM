@@ -40,6 +40,10 @@ class IncomingOrder extends Model
       public function notification(){
         return $this->belongsTo(Notification::class);
     }
+
+    public function statusLog(){
+        return $this->morphMany(\App\Models\OrderStatusLogger::class, 'loggable');
+    }
  
     /** @use HasFactory<\Database\Factories\IncomingOrderFactory> */
     use HasFactory;

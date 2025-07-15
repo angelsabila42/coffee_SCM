@@ -11,7 +11,7 @@
          <div class="card kpi-card">
             <div class="card-header ">
             <div class="d-flex justify-content-between align-items-center">
-            <h6 class="card-title text-muted">Active Orders</h6>
+            <h6 class="text-muted">Active Orders</h6>
                <span class="stat-icon bg-info-soft delivery"><i class="fa-solid fa-bag-shopping"></i></span>
             </div>
                
@@ -27,7 +27,7 @@
          <div class="card kpi-card">
             <div class="card-header ">
             <div class="d-flex justify-content-between align-items-center">
-            <h6 class="card-title text-muted">Delivered Batches</h6>
+            <h6 class="text-muted">Delivered Batches</h6>
                <span class="stat-icon bg-success-soft money"><i class="fa-solid fa-circle-check"></i></span>
             </div>
             </div>
@@ -41,7 +41,7 @@
          <div class="card kpi-card">
             <div class="card-header ">
             <div class="d-flex justify-content-between align-items-center">
-            <h6 class="card-title text-muted">Unpaid Invoices</h6>
+            <h6 class="text-muted">Unpaid Invoices</h6>
                <span class="stat-icon bg-danger-soft cancelled"><i class="fa-solid fa-file-invoice-dollar"></i></span>
             </div>   
             </div>
@@ -55,7 +55,7 @@
          <div class="card kpi-card">
             <div class="card-header ">
              <div class="d-flex justify-content-between align-items-center">
-            <h6 class="card-title text-muted">Pending Deliveries</h6>
+            <h6 class="text-muted">Pending Deliveries</h6>
                <span class="stat-icon bg-warning-soft pending"><i class="fa-solid fa-clock"></i></span>
             </div> 
             </div>

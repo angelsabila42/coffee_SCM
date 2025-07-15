@@ -25,11 +25,12 @@
                 @include('partials.advanced-filter') 
             </div>
 
-                            <div class="card card-plain table-plain-bg">
-                                <div class="card-body table-full-width table-responsive">
+                        <div class="card card-plain table-plain-bg">
+                            <div class="card-body table-full-width table-responsive">
                                 <div x-data= "confirmDeleteModal">
                                     <table class="table table-hover" >
                                         <thead class="bg-light">
+                                            <th>#</th>
                                             <th>OrderID</th>
                                             <th>Vendor Name</th>
                                             <th>Coffee Type</th>
@@ -41,7 +42,8 @@
                                         </thead>
                                         <tbody>
                                         @foreach($orders as $order)
-                                            <tr wire:key= "{{$order->id}}">
+                                            <tr wire:key= "{{$order->id}}" onclick="window.location= '{{route('orders.view-vendor-order', $order->id)}}' " class="cur">
+                                                <td class=""> {{$order->id}} </td>
                                                 <td class=""> {{$order->orderID}} </td>
                                                 <td class=""> {{$order->vendor->name}} </td>
                                                 <td class=""> {{$order->coffeeType}} </td>
@@ -49,7 +51,9 @@
                                                 <td x-data= "{selectedStatus: '{{$order->status}}',
                                                     statuses: ['Requested','Pending', 'Declined', 'Delivered', 'Confirmed' ]}"
                                                     x-init="console.log('Selected:', selectedStatus)">
-                                                    <select 
+                                                    <select
+                                                    @@click.stop
+                                                    @@change.stop 
                                                     class="form-control form-control-sm badge badge-sm {{$order->status_badge}}"
                                                     x-model= "selectedStatus"
                                                     @@change= "$dispatch('statusChanged', {id: {{$order->id}}, status: $event.target.value})">
@@ -62,7 +66,7 @@
                                                 <td class=""> {{$order->deadline}} </td>
                                                 <td class=""> {{$order->created_at}} </td>
                                                 <td class= "d-flex justify-content-center align-items-center">
-                                                <button class="btn btn-danger btn-sm btn-fill py-1 px-3 cur" x-data="confirmDeleteModal" @@click="confirmDeleteOrder({{$order->id}}, '{{$order->orderID}}')" {{--@@click= "$dispatch('open-delete-modal', {id:{{$order->id}}})"--}}>
+                                                <button class="btn btn-danger btn-sm btn-fill py-1 px-3 cur" x-data="confirmDeleteModal" @@click.stop  @@click="confirmDeleteOrder({{$order->id}}, '{{$order->orderID}}')" {{--@@click= "$dispatch('open-delete-modal', {id:{{$order->id}}})"--}}>
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
                                                 </td>
@@ -71,9 +75,10 @@
                                         </tbody>
                                     </table>
 
-                                    </div>
                                 </div>
-                                 @once
+                                
+                            </div>
+                                @once
                                  <livewire:confirm-delete-modal/>
                                 @endonce
                         </div>

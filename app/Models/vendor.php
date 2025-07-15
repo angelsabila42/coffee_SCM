@@ -17,6 +17,7 @@ class Vendor extends Model
         'email',
         'password',
         'phone_number',
+        'region',
         'street',
         'city',
         'confirm password',
@@ -31,6 +32,10 @@ class Vendor extends Model
      */
     public function invoices(){
         return $this->hasMany(Invoice::class);
+    }
+
+    public function vendorClusters(){
+         return $this->hasMany(VendorCluster::class);
     }
 
     

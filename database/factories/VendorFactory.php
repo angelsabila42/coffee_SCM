@@ -21,6 +21,7 @@ class VendorFactory extends Factory
             'password'=> fake()->password(),
             'email'=> fake()->email(),
             'phone_number'=> fake()->phoneNumber(),
+            'region' => fake()->randomElement(['Western','Central', 'Eastern', 'Ankole']),
             'street'=> fake()->streetName(),
             'city'=> fake()->city(),        
         ];

@@ -25,6 +25,7 @@
                                 <div x-data= "confirmDeleteModal">
                                     <table class="table table-hover" >
                                         <thead class="bg-light">
+                                            <th>#</th>
                                             <th>OrderID</th>
                                             <th>Coffee Type</th>
                                             <th>Quantity</th>
@@ -35,11 +36,12 @@
                                         <tbody>
                                         @foreach($orders as $order)
                                             <tr wire:key= "{{$order->id}}" onclick="window.location= '{{route('vendor.order.show', $order->id)}}' " class="cur">
+                                                <td class=""> {{$order->id}} </td>
                                                 <td class=""> {{$order->orderID}} </td>
                                                 <td class=""> {{$order->coffeeType}} </td>
                                                 <td class=""> {{$order->quantity}} </td>
                                                 <td x-data= "{selectedStatus: '{{$order->status}}',
-                                                    statuses: ['Requested','Pending', 'Cancelled', 'Delivered', 'Confirmed' ]}"
+                                                    statuses: ['Requested','Pending', 'Declined', 'Delivered', 'Confirmed' ]}"
                                                     x-init="console.log('Selected:', selectedStatus)">
                                                     <select 
                                                     @@click.stop

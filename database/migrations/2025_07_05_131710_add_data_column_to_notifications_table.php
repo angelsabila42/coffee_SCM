@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-            $table->json('data')->nullable()->after('type');
+            //$table->json('data')->nullable()->after('type');
         });
     }
 //php artisan make:migration add_read_at_column_to_notifications_table --table=notifications
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-            $table->dropColumn('data');
+            //$table->dropColumn('data');
         });
     }
 };

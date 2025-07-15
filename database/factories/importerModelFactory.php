@@ -21,6 +21,7 @@ class importerModelFactory extends Factory
             'email'=> fake()->email(),
             'password'=> fake()->password(),
             'country'=> fake()->country(),
+            'continent'=> fake()->country(),
             'phone_number'=> fake()->phoneNumber(),
             'address'=> fake()->address()
         ];
