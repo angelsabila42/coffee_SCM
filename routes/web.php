@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Vendor\VendorReportsController;
 use App\Http\Controllers\QAReportController;
+use App\Http\Controllers\Vendor\VendorTransactionController;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\ProfileController;
 
@@ -51,11 +52,14 @@ use App\Http\Controllers\InvoiceExportController;
 use App\Http\Middleware\AutMiddleware;
 use GuzzleHttp\Middleware;
 
-
+//transporter transactions
+   
 Route::get('/alpine',function(){
     return view('alpine');
 });
-
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
 
 // Route::get('/dashboard', function () {
 //     return view('Dashboards.home');
@@ -72,7 +76,6 @@ require __DIR__.'/auth.php';
 //Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
 
 
 
@@ -110,7 +113,8 @@ Route::middleware('auth')->group(function()
                             });
 
 
-                                                
+                     Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
+                         
                     Route::get('/inventory', function () {
                         return view('inventory');
                     });
@@ -149,7 +153,7 @@ Route::middleware('auth')->group(function()
             return view('Dashboards.home');
         });
 
-
+        
        Route::get('/reg/vendor', [VendorController::class, 'vendor'])->name('vendor');
         //Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
 
@@ -165,14 +169,7 @@ Route::middleware('auth')->group(function()
 
            
 
-    // --- Leave History Routes ---
-    Route::get('/leavehistory', [LeaveHistoryController::class, 'leavehistory'])->name('leavehistory.leavehistory'); // List all leave history
-    Route::post('/leavehistory', [LeaveHistoryController::class, 'store'])->name('leavehistory.store'); // Store new leave record
-    Route::get('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'show'])->name('leavehistory.show'); // Show specific leave record
-    Route::put('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'update'])->name('leavehistory.update'); // Update leave record
-    Route::delete('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'destroy'])->name('leavehistory.destroy'); // Delete leave record
-    Route::patch('/leavehistory/{leaveHistory}/status', [LeaveHistoryController::class, 'updateStatus'])->name('leavehistory.status');
-
+   
 
         /*Dashboard routes*/
         Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -243,8 +240,8 @@ Route::middleware('auth')->group(function()
        
         //editing profile
         Route::get('/editprofile',[ProfileController::class,'edit'])->name('editprofile');
-        Route::post('/editprofile',[ProfileController::class,'update'])->name('editprofile.update');
-        Route::post('/editprofile',[ProfileController::class,'changePassword'])->name('editprofile.password');
+        Route::post('/editprofile/update',[ProfileController::class,'update'])->name('editprofile.update');
+        Route::post('/editprofile/password',[ProfileController::class,'changePassword'])->name('editprofile.password');
         // end of Arnest added
 
 
@@ -315,11 +312,12 @@ Route::middleware('auth')->group(function()
 Route::middleware(['vendor'])->group(function(){
 
 // Vendor Transactions Dashboard
-Route::get('/transactions/vendor',[VendorController::class, 'Transactions'] )->name('transactions.vendor');
-Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
-
+      Route::get('/transactions/vendor',[VendorTransactionController::class, 'index'] )->name('vendor.transactions');
+      Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
+      Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+     
         Route::get("/java",[VendorController::class, 'store'])-> name('java');
-        Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+        // Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
       
 
 });
@@ -329,15 +327,15 @@ Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor
 
 
 
-//all importer routes
-    Route::middleware('importer')->group(function(){
+// //all importer routes
+     Route::middleware('importer')->group(function(){
     
-// importer  routes
-Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
-Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
-Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
+//importer  routes
+    Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
+    Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
+    Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
 
-});
+    });
 
 
 
@@ -352,14 +350,34 @@ Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->n
 
 Route::middleware('transporter')->group(function(){
 
+// Transporter Dashboard
+Route::get('/transporter/dashboard', [transporterController::class, 'dashboard'])->name('transporter.dashboard');
+// Transporter Deliveries
+Route::get('/transporter/deliveries', [transporterController::class, 'deliveries'])->name('transporter.deliveries');
+// Transporter Drivers Management
+Route::get('/transporter/drivers', [transporterController::class, 'drivers'])->name('transporter.drivers');
+Route::get('/transporter/drivers/create', [transporterController::class, 'createDriver'])->name('transporter.drivers.create');
+Route::post('/transporter/drivers', [transporterController::class, 'storeDriver'])->name('transporter.drivers.store');
+Route::get('/transporter/drivers/{id}/edit', [transporterController::class, 'editDriver'])->name('transporter.drivers.edit');
+Route::put('/transporter/drivers/{id}', [transporterController::class, 'updateDriver'])->name('transporter.drivers.update');
+Route::delete('/transporter/drivers/{id}', [transporterController::class, 'destroyDriver'])->name('transporter.drivers.destroy');
+// Delivery Assignment Routes
+Route::put('/transporter/deliveries/{delivery}/assign-driver', [transporterController::class, 'assignDriver'])->name('transporter.deliveries.assign-driver');
+Route::post('/transporter/deliveries/{delivery}/mark-delivered', [transporterController::class, 'markDelivered'])->name('transporter.deliveries.mark-delivered');
+Route::get('/transporter/deliveries/{delivery}/details', [transporterController::class, 'deliveryDetails'])->name('transporter.deliveries.details');
+// Transporter Profile
+Route::get('/transporter/profile', [transporterController::class, 'profile'])->name('transporter.profile');
+Route::put('/transporter/profile', [transporterController::class, 'updateProfile'])->name('transporter.profile.update');
+Route::put('/transporter/banking', [transporterController::class, 'updateBanking'])->name('transporter.banking.update');
+// Legacy routes
 // Transporter Delivery Dashboard
 Route::get('/deliveries/transporter', [transporterController::class, 'deliveries'])->name('deliveries.transporter');
 Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
 
 
-//transporter transactions
-Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');
-
+// //transporter transactions
+  Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');
+  
  Route::get('/transporter',[DeliveryController::class,'merc']);
         Route::delete('/transporter/{id}',[DeliveryController::class,'dismiss'])->name('transporter.dismiss');
   Route::get('/transporter', function () {
@@ -368,5 +386,11 @@ Route::get('/transporter/transactions', [transporterController::class,'transacti
      
 
 });
+//notification routes
+Route::post('/notifications/mark-as-read', function () {
+    Auth::user()->unreadNotifications->markAsRead();
+    return response()->json(['success' => true]);
+})->middleware('auth');
+
 
 

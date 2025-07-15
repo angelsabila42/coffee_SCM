@@ -29,7 +29,7 @@ class OutgoingOrder extends Model
     }
 
     public function vendor(){
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(User::class,'vendor_id');
     }
 
     public function workCenter(){

@@ -1,9 +1,5 @@
 {{-- summary cards --}}
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+
      <div class="row mb-4"> 
         <div class="col">
             <div class="card  rounded-2  kpi-card">
@@ -100,11 +96,32 @@
                    
 
                     @foreach($orders as $order)
+                    
+                        @php
+                            $class = '';
+                            if ($order->status == 'Pending'){
+                                $class = 'bg-warning';
+                            }
+                             elseif ($order->status == 'Delivered'){
+                                $class = 'bg-info';
+                            }
+                             elseif ($order->status == 'Requested'){
+                                $class = 'bg-primary';
+                            }
+                             elseif ($order->status == 'Declined'){
+                                $class = 'bg-danger';
+                            }
+                             else $class = 'bg-success';
+                        @endphp
+
                     <tr>
                         <td>{{ $order->orderID }}</td>
                         <td>{{ $order->coffeeType }}</td>
                         <td>{{ $order->quantity }}kg</td>
-                        <td>{{ $order->status }}</td>
+                        <td class="{{ $class }} rounded-pill text-white badge w-100">{{ $order->status }}</td>
+
+
+
                         <td>{{ $order->created_at }}</td>
                         <td>{{ $order->updated_at }}</td>
                         <td>

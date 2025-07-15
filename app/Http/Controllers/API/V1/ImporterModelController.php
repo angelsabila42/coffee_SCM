@@ -23,33 +23,45 @@ class ImporterModelController extends Controller
   
 
     public function index(){
-   $user = Auth::user();     
- // Logged-in user
-$importer = ImporterModel::where('email', $user->email)->first();
-
-if ($importer) {
-    $importerId = $importer->id;
+        $orders = IncomingOrder::paginate(10);
 
     
-    $orders = IncomingOrder::where('importer_model_id', $importerId)->paginate(10);
-    $ordersSent = IncomingOrder::where('importer_model_id', $importerId)->count();
-    $pending = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Pending')->count();
-    $inTransit = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'in transit')->count();
-    $delivered = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Delivered')->count();
 
-    return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
-} else {
+     $ordersSent = IncomingOrder::all()->count();
+     $pending = IncomingOrder::where('status', 'Pending')->count();
+    $inTransit = IncomingOrder::where('status', 'in transit')->count();
+    $delivered = IncomingOrder::where('status', 'Delivered')->count();
+ return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
+//    $user = Auth::user();     
+//  // Logged-in user
+// $importer = ImporterModel::where('email', $user->email)->first();
+
+// if ($importer) {
+//     $importerId = $importer->id;
+
     
-    return redirect()->route('login')->with('error', 'No importer record found.');
-}
+//     $orders = IncomingOrder::where('importer_model_id', $importerId)->paginate(10);
+//     $ordersSent = IncomingOrder::where('importer_model_id', $importerId)->count();
+//     $pending = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Pending')->count();
+//     $inTransit = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'in transit')->count();
+//     $delivered = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Delivered')->count();
+
+//     return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
+// } else {
+    
+//     return redirect()->route('login')->with('error', 'No importer record found.');
+// }
        }
    
     public function transactions(){
     $user = Auth::user();
-    $importerId = ImporterModel::where('email', $user->email)->id;
-
-        $invoices = Invoice::/*where('importer_model_id', $importerId)->*/paginate(10);
-          $payments = Payment::where('importerID', $importerId)->paginate(10);
+    // $importerId = ImporterModel::where('email', $user->email)->first()->id;
+       
+        // $invoices = Invoice::/*where('importer_model_id', $importerId)->*/paginate(10);
+        //   $payments = Payment::where('importerID', $importerId)->paginate(10);
+        $payments = Payment::paginate(10);
+    // Get the logged-in user's importer model
+         $invoices = Invoice::paginate(10);
     return view('importer_transactions', compact('invoices', 'payments'));
  }
       
@@ -71,7 +83,7 @@ public function destroy(IncomingOrder $order)
     $validated = $req->validate([
         'name' => 'required',
         'email' => 'required|email|unique:importer_models,email',
-        'password' => ['required','confirmed','min:8'],
+        //'password' => ['required','confirmed','min:8'],
         'country' => '',
         'address' => '',
         'phone_number' => 'required|regex:/^07[0-9]{8}$/',
@@ -79,7 +91,7 @@ public function destroy(IncomingOrder $order)
         
 
     ]);   
-     $validated['password'] = Hash::make($validated['password']);
+    // $validated['password'] = Hash::make($validated['password']);
     
     importerModel::create($validated);
 

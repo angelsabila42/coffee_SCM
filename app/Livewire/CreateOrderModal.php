@@ -18,6 +18,7 @@ use App\Services\ActivityLogger;
 class CreateOrderModal extends Component
 {
     public $status, $orderID;
+    public $order;
 
     #[Rule('required|numeric|min:20')]    
     public $quantity;
@@ -36,7 +37,7 @@ class CreateOrderModal extends Component
     
        public function mount(){
         $this->orderID= Helper::generateID(OutgoingOrder::class,'orderID','OX',5);
-
+        
     }
     
        public function save(){
@@ -52,12 +53,17 @@ class CreateOrderModal extends Component
             'status'=> 'Requested',
             'deadline'=> $this->deadline
         ]);
+        //notify vendor
         // $vendor = User::find($order->vendor_id);
         // $vendor->notify(new NewOutgoingOrderNotification($order));
-        $admin = \App\Models\User::where('name', 'Admin')->first();
-    if ($admin) {
-        $admin->notify(new NewOutgoingOrderNotification($order));
-    }
+        if ($order->vendor) {
+    $order->vendor->notify(new NewOutgoingOrderNotification($order));
+}
+
+    //     $admin = \App\Models\User::where('role', 'admin')->first();
+    // if ($admin) {
+    //     $admin->notify(new NewOutgoingOrderNotification($order));
+    // }
 
         $this->reset(['quantity','coffeeType', 'status', 'deadline', 'vendor_id', 'work_center_id']);
         $this->dispatch('reset-alpine-dropdown');

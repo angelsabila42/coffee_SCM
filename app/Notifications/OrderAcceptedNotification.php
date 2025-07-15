@@ -43,6 +43,7 @@ class OrderAcceptedNotification extends Notification
        public function toDatabase($notifiable)
 {
     return [
+        'title' => 'Order Accepted',
         'message' => 'Your order # ' . $this->order->orderID . 'has been accepted',
         'order_id' => $this->order->id,
         

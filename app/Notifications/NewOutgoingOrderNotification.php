@@ -24,6 +24,7 @@ class NewOutgoingOrderNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
+            'title' => 'Order Accepted',
             'message' => 'New Outgoing Order: ' . $this->order->orderID,
             'order_id' => $this->order->id,
             // 'type' => 'outgoing_order',

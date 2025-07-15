@@ -10,7 +10,9 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
+    {    if(Schema::hasTable('invoices')) {
+            return; // If the table already exists, skip the creation
+        }
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_number')->unique();
@@ -23,15 +25,19 @@ return new class extends Migration
             $table->string('bill_to_po_box')->nullable();
             $table->string('bill_to_city')->nullable();
             $table->string('bill_to_country')->nullable();
+            $table-> unsignedBigInteger('transporter_id')->nullable(); // Nullable for invoices not linked to a transporter
             $table->decimal('sub_total', 10, 2);
             $table->decimal('total', 10, 2);
+            $table->unsignedBigInteger('importer_id')->nullable(); // Nullable for invoices not linked to an importer
             $table->string('currency')->default('Ugx'); // Default to Uganda Shillings
             $table->string('bank_account_no')->nullable();
             $table->string('bank_name')->nullable();
             $table->string('status')->default('Sent'); // e.g., Sent, Awaiting Pay, Paid
             $table->string('purpose')->nullable(); // e.g., Batch 10
             $table->string('recipient_phone')->nullable();
+
             $table->foreignId('vendor_id')->constrained('vendor')->onDelete('cascade');
+
             // $table->foreignId('importer_id')->nullable()->constrained('importer_models')->onDelete('set null');
             // $table->foreignId('transporter_id')->nullable()->constrained('transporters')->onDelete('set null');
             // $table->foreignId('importer_model_id')->constrained()->onDelete('cascade'); 

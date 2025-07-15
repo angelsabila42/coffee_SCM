@@ -5,7 +5,10 @@
 @endphp
 
 @section('sidebar-items')
-    @includeIf('layouts.sidebar-items.' . auth()->user()->role)
+    @php
+        $userRole = auth()->user()->role ?? 'admin'; // Default to 'admin' if role is null
+    @endphp
+    @includeIf('layouts.sidebar-items.' . $userRole)
 @endsection
 
 @section('content')

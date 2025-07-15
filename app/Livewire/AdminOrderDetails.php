@@ -24,7 +24,7 @@ class AdminOrderDetails extends Component
 
         //update inventory
         $inventory = inventory::where('coffee_type', $this->order->coffeeType)
-        ->where('grade', $this->order->Grade) 
+        ->where('grade', $this->order->grade) 
         ->where('quantity','>',0)->orderBy('id', 'asc')
         ->first();
 
@@ -34,22 +34,24 @@ class AdminOrderDetails extends Component
             $inventory->last_updated = now();
             $inventory->save();
         }
-        // change admin view status to pending
-        $this->order->status = 'pending';
-        $this->order->save();
+        // // change admin view status to pending
+        // $this->order->status = 'pending';
+        // $this->order->save();
 
         //notify importer
-        $this->order->importerModel->notify(new OrderAcceptedNotification($this->order));
-        
+        if($this->order->importer){
+           $this->order->importer->notify(new OrderAcceptedNotification($this->order));
+        }
     }
     public function declineOrder()
     {
      $this->order->status = 'declined';
      $this->order->save();
      
-     //send a notification
-     $this->order->importerModel->notify(new OrderDeclinedNotification($this->order));
-     session()->flash('message', 'order declined');
+     // Notify the importer about the declined order
+     if($this->order->importer){
+           $this->order->importer->notify(new OrderDeclinedNotification($this->order));
+        }
     }
     public function render()
     {

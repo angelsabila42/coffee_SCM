@@ -25,23 +25,24 @@ class DatabaseSeeder extends Seeder
         
 
         $this->call([
-             VendorSeeder::class,
-             importerModelSeeder::class,
-             WorkCenterSeeder::class,
-             IncomingOrderSeeder::class,
-             OutgoingOrderSeeder::class,
-             SalesReportSeeder::class,
-             DeliveryReportSeeder::class,
+
+            VendorSeeder::class,
+            importerModelSeeder::class,
             WorkCenterSeeder::class,
-            ChatTestSeeder::class,
-             InventorySeeder::class,
+            IncomingOrderSeeder::class,
+            OutgoingOrderSeeder::class,
+            SalesReportSeeder::class,
+            DeliveryReportSeeder::class,
             StaffSeeder::class,
+            ChatTestSeeder::class,
+            InventorySeeder::class,
             paymentSeeder::class, // Add chat test data
 
-        
-
-
         ]);
-
     }
 }
+
+
+
+
+      
