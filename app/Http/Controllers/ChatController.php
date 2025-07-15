@@ -19,7 +19,11 @@ class ChatController extends Controller
             ->orWhere('user_two_id', $userId)
             ->get();
 
-        $users = User::where('id', '!=', $userId)->get();
+        $users = User::where('id', '!=', $userId)
+            ->orderBy('role')
+            ->orderBy('name')
+            ->get()
+            ->groupBy('role');
 
         return view('chat', compact('conversations', 'users'));
     }
@@ -42,11 +46,17 @@ class ChatController extends Controller
             ->update(['read_at' => now()]);
 
         $conversations = Conversation::with(['userOne', 'userTwo', 'messages.sender'])
-            ->where('user_one_id', $userId)
-            ->orWhere('user_two_id', $userId)
+            ->where(function($query) use ($userId) {
+                $query->where('user_one_id', $userId)
+                      ->orWhere('user_two_id', $userId);
+            })
             ->get();
 
-        $users = User::where('id', '!=', $userId)->get();
+        $users = User::where('id', '!=', $userId)
+            ->orderBy('role')
+            ->orderBy('name')
+            ->get()
+            ->groupBy('role');
 
         return view('chat', compact('conversations', 'conversation', 'users'));
     }
@@ -72,17 +82,20 @@ class ChatController extends Controller
             'message' => $request->message
         ]);
 
-        // Optionally broadcast event here
+        // Broadcast the message event
+        broadcast(new \App\Events\MessageSent($message))->toOthers();
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'status' => 'success',
-                'message_html' => view('partials.message', ['message' => $message])->render(),
-                'message_id' => $message->id
+                'message' => $message->message,
+                'message_id' => $message->id,
+                'created_at' => $message->created_at->format('H:i'),
+                'sender_id' => $userId
             ]);
         }
 
-        return redirect()->route('chat.show', $conversationId);
+        return redirect()->back();
     }
 
     public function getMessages($conversationId)
@@ -186,5 +199,27 @@ class ChatController extends Controller
         ]);
 
         return redirect()->route('chat.show', $conversation->id);
+    }
+
+    public function markAsRead(Request $request, $conversationId)
+    {
+        $userId = Auth::id();
+        $conversation = Conversation::findOrFail($conversationId);
+        
+        // Only mark messages as read if user is part of the conversation
+        if ($conversation->user_one_id == $userId || $conversation->user_two_id == $userId) {
+            $updated = Message::where('conversation_id', $conversationId)
+                ->where('sender_id', '!=', $userId)
+                ->whereNull('read_at')
+                ->update(['read_at' => now()]);
+            
+            if ($updated > 0) {
+                broadcast(new \App\Events\MessageRead($conversationId, $userId))->toOthers();
+            }
+            
+            return response()->json(['success' => true, 'updated' => $updated]);
+        }
+        
+        return response()->json(['success' => false], 403);
     }
 }

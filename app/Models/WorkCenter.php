@@ -11,13 +11,9 @@ class WorkCenter extends Model
     use HasFactory;
 
     // Only use default 'id' for relationships
-    protected $fillable = ['centerName', 'location', 'workCenterID'];
+    protected $fillable = ['centerName', 'location', ];
 
-    public static function booted(){
-        static::creating(function($workCenterID){
-            $workCenterID-> workCenterID = Helper::generateID(WorkCenter::class,'workCenterID','WK',5);
-        });
-    }
+   
 
     public function outgoingOrder()
     {
@@ -32,6 +28,5 @@ class WorkCenter extends Model
     {
         return $this->hasMany(WorkAssignment::class, 'work_center_id');
     }
-    /** @use HasFactory<\Database\Factories\WorkCenterFactory> */
-    use HasFactory;
+
 }

@@ -12,11 +12,11 @@ class Helper{
         }else{
             $code = substr($data->$trow, strlen($prefix)+1);    /*In the data look for a row called $trow, 
             the string length is the prefix like 'CUS' plus the '-' sign subtract that string from the code so we eg. 00124*/
-            $actual_last_number = ($code/1)*1;  //Convert the string to a number so 00124 becomes 125
-            $increment_last_number = $actual_last_number+1;  //Next cell ~125
-            $last_number_length = strlen($increment_last_number);  //Find the number of digits ~3
-            $log_length = $length - $last_number_length;  //Number of zeros to be added i.e 5-3 = 2 zeros
-            $last_number = $increment_last_number;  //last number is 125,
+            $actual_last_number = intval(preg_replace('/[^0-9]/', '', $code));  // Convert to integer, removing any non-numeric characters
+            $increment_last_number = $actual_last_number + 1;  //Next number
+            $last_number_length = strlen((string)$increment_last_number);  //Find the number of digits
+            $log_length = $length - $last_number_length;  //Number of zeros to be added
+            $last_number = $increment_last_number;
         }
         $zeros = "";
         for($i=0; $i<$log_length; $i++){
