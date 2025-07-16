@@ -54,11 +54,14 @@ use App\Http\Controllers\InvoiceExportController;
 use App\Http\Middleware\AutMiddleware;
 use GuzzleHttp\Middleware;
 
-
+//transporter transactions
+   
 Route::get('/alpine',function(){
     return view('alpine');
 });
-
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
 
 // Route::get('/dashboard', function () {
 //     return view('Dashboards.home');
@@ -75,7 +78,6 @@ require __DIR__.'/auth.php';
 //Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
 
 
 
@@ -113,7 +115,8 @@ Route::middleware('auth')->group(function()
                             });
 
 
-                                                
+                     Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
+                         
                     Route::get('/inventory', function () {
                         return view('inventory');
                     });
@@ -152,7 +155,7 @@ Route::middleware('auth')->group(function()
             return view('Dashboards.home');
         });
 
-
+        
        Route::get('/reg/vendor', [VendorController::class, 'vendor'])->name('vendor');
         //Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
 
@@ -323,11 +326,12 @@ Route::middleware('auth')->group(function()
 Route::middleware(['vendor'])->group(function(){
 
 // Vendor Transactions Dashboard
-Route::get('/transactions/vendor',[VendorController::class, 'Transactions'] )->name('transactions.vendor');
-Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
-
+      Route::get('/transactions/vendor',[VendorController::class, 'Transactions'] )->name('transactions.vendor');
+      Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
+      Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+     
         Route::get("/java",[VendorController::class, 'store'])-> name('java');
-        Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+        // Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
       
 
 });
@@ -337,15 +341,15 @@ Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor
 
 
 
-//all importer routes
-    Route::middleware('importer')->group(function(){
+// //all importer routes
+     Route::middleware('importer')->group(function(){
     
-// importer  routes
-Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
-Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
-Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
+//importer  routes
+    Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
+    Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
+    Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
 
-});
+    });
 
 
 
@@ -365,9 +369,9 @@ Route::get('/deliveries/transporter', [transporterController::class, 'deliveries
 Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
 
 
-//transporter transactions
-Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');
-
+// //transporter transactions
+  Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');
+  
  Route::get('/transporter',[DeliveryController::class,'merc']);
         Route::delete('/transporter/{id}',[DeliveryController::class,'dismiss'])->name('transporter.dismiss');
   Route::get('/transporter', function () {

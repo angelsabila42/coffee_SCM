@@ -26,8 +26,8 @@ class transporterController extends Controller
 
  public function transactions(){
 
-        $invoices = Invoice::paginate(5);
-          $payments = Payment::paginate(5);
+        $invoices = Invoice::paginate(10);
+          $payments = Payment::paginate(10);
     return view('transporter_transactions', compact('invoices', 'payments'));
  }
 
@@ -39,14 +39,16 @@ class transporterController extends Controller
           'name' => 'required',
         'co_name' => 'required',
         'email' => 'required|email|unique:transporters,email',
-        'password' => ['required','confirmed','min:8'],
+        //'password' => ['required','confirmed','min:8'],
         'address' => '',
          'phone_number' => 'required|regex:/^07[0-9]{8}$/',
-         
+         'Bank_account' => 'required',
+         'Account_holder'=> 'required',
+         'Bank_name' => 'required',
         
 
     ]);   
-     $validated['password'] = Hash::make($validated['password']);
+    // $validated['password'] = Hash::make($validated['password']);
     
     transporter::create($validated);
 
