@@ -33,7 +33,6 @@ class DatabaseSeeder extends Seeder
             OutgoingOrderSeeder::class,
             SalesReportSeeder::class,
             DeliveryReportSeeder::class,
-            StaffSeeder::class,
             ChatTestSeeder::class,
             InventorySeeder::class,
             StaffSeeder::class,
