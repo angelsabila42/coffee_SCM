@@ -87,7 +87,10 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::middleware('auth')->group(function()
-{   
+{             
+                        Route::get('/welcome', function () {
+                         return view('welcome');
+                    });
 
                                 
                             Route::prefix('staff-management')->name('staff_management.')->group(function ()
@@ -117,7 +120,8 @@ Route::middleware('auth')->group(function()
                             });
 
 
-                     Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
+
+                    // Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
                          
                     Route::get('/inventory', function () {
                         return view('inventory');
@@ -128,10 +132,10 @@ Route::middleware('auth')->group(function()
 
 
                                                 
-                    Route::get('/home', function () {
-                        return view('index');
-                    })->name('index');
-                    Route::get('/', [HomeController::class, 'index'])->name('index');
+                     Route::get('/home', function () {
+                         return view('welcome');
+                     })->name('index');
+                  //  Route::get('/', [HomeController::class, 'index'])->name('index');
 
                     Route::get('/', function () {
                         return view('auth.login');
@@ -157,13 +161,17 @@ Route::middleware('auth')->group(function()
             return view('Dashboards.home');
         });
 
-        
+
+         Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+     
+        Route::get("/java",[VendorController::class, 'store'])-> name('java'); 
+
        Route::get('/reg/vendor', [VendorController::class, 'vendor'])->name('vendor');
         //Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
 
         Route::get('/reg/importer', [ImporterModelController::class, 'importer'])->name('importer');
         //Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vendor');
-
+        Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
       
         Route::post('/reg/vendor', [VendorController::class, 'store'])->name('store.vendor');
 
@@ -172,18 +180,8 @@ Route::middleware('auth')->group(function()
         Route::post('/reg/importer', [ImporterModelController::class, 'store'])->name('store.importer');
 
            
-
-    // --- Leave History Routes ---
-    Route::get('/leavehistory', [LeaveHistoryController::class, 'leavehistory'])->name('leavehistory.leavehistory'); // List all leave history
-    Route::post('/leavehistory', [LeaveHistoryController::class, 'store'])->name('leavehistory.store'); // Store new leave record
-    Route::get('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'show'])->name('leavehistory.show'); // Show specific leave record
-    Route::put('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'update'])->name('leavehistory.update'); // Update leave record
-    Route::delete('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'destroy'])->name('leavehistory.destroy'); // Delete leave record
-    Route::patch('/leavehistory/{leaveHistory}/status', [LeaveHistoryController::class, 'updateStatus'])->name('leavehistory.status');
-
-
     /*Dashboard routes*/
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+   // Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     /*Analytics route*/
     Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
@@ -191,8 +189,6 @@ Route::middleware('auth')->group(function()
     Route::get('/import-importer-demand', [ImporterDemandAdminController::class, 'importCsv']);
     Route::get('/import-vendor-cluster', [VendorClusterController::class, 'importCsv']);
     Route::get('/import-demand-quantity', [QuantityDemandController::class, 'importCsv']);
-
-
 
    
 
@@ -308,19 +304,7 @@ Route::middleware('auth')->group(function()
     Route::delete('/qa-reports/{report}', [QAReportController::class, 'destroy'])->name('qa.destroy');
 
 
-
-
-
-
-
-
 });
-
-
-
-
-
-
 
 
 
@@ -332,16 +316,10 @@ Route::middleware(['vendor'])->group(function(){
 // Vendor Transactions Dashboard
       Route::get('/transactions/vendor',[VendorTransactionController::class, 'index'] )->name('vendor.transactions');
       Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
+
       Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
      
-        Route::get("/java",[VendorController::class, 'store'])-> name('java');
-        // Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
-      
-
 });
-
-
-
 
 
 
@@ -390,8 +368,6 @@ Route::put('/transporter/banking', [transporterController::class, 'updateBanking
 // Legacy routes
 // Transporter Delivery Dashboard
 Route::get('/deliveries/transporter', [transporterController::class, 'deliveries'])->name('deliveries.transporter');
-Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
-
 
 // //transporter transactions
   Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');

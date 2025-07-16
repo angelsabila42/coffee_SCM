@@ -186,7 +186,107 @@ class transporterController extends Controller
    //       ])->toArray();
 
    //  User::create($fields);
-   //  return redirect()->back();
+     return redirect()->route('transporter.transactions')->with('success', 'registration successful');
+    }
+    
+    public function updateProfile(Request $request) {
+        $user = Auth::user();
+        $transporter = Transporter::where('email', $user->email)->first();
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'co_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:transporters,email,' . ($transporter ? $transporter->id : ''),
+            'phone_number' => 'required|regex:/^07[0-9]{8}$/',
+            'address' => 'nullable|string|max:255',
+            'Bank_account' => 'required|string|max:255',
+            'Account_holder' => 'required|string|max:255',
+            'Bank_name' => 'required|string|max:255',
+        ]);
+        
+        if ($transporter) {
+            $transporter->update($validated);
+        } else {
+            Transporter::create($validated);
+        }
+        
+        return redirect()->route('transporter.profile')->with('success', 'Profile updated successfully!');
+    }
+    
+    public function updateBanking(Request $request) {
+        $user = Auth::user();
+        $transporter = Transporter::where('email', $user->email)->first();
+        
+        $validated = $request->validate([
+            'bank_name' => 'required|string|max:255',
+            'bank_account' => 'required|string|max:255',
+            'account_holder' => 'required|string|max:255',
+        ]);
+        
+        if ($transporter) {
+            $transporter->update([
+                'Bank_name' => $validated['bank_name'],
+                'Bank_account' => $validated['bank_account'],
+                'Account_holder' => $validated['account_holder'],
+            ]);
+        } else {
+            // Create new transporter record with banking info
+            Transporter::create([
+                'email' => $user->email,
+                'name' => $user->name,
+                'Bank_name' => $validated['bank_name'],
+                'Bank_account' => $validated['bank_account'],
+                'Account_holder' => $validated['account_holder'],
+            ]);
+        }
+        
+        return redirect()->route('transporter.profile')->with('success', 'Banking information updated successfully!');
+    }
+    
+    public function editDriver($id) {
+        $driver = User::where('role', 'driver')->findOrFail($id);
+        return view('transporter.drivers.edit', compact('driver'));
+    }
+    
+    public function updateDriver(Request $request, $id) {
+        $driver = User::where('role', 'driver')->findOrFail($id);
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $driver->id,
+            'phone' => 'nullable|string|max:20',
+            'license_number' => 'required|string|max:50',
+            'vehicle_number' => 'nullable|string|max:50',
+            'address' => 'nullable|string|max:255',
+            'experience' => 'nullable|string',
+        ]);
+        
+        $driver->update($validated);
+        
+        return redirect()->route('transporter.drivers')->with('success', 'Driver updated successfully!');
+    }
+    
+    public function destroyDriver($id) {
+        $driver = User::where('role', 'driver')->findOrFail($id);
+        $driver->delete();
+        
+        return redirect()->route('transporter.drivers')->with('success', 'Driver deleted successfully!');
+    }
+    
+    public function deliveryDetails($deliveryId) {
+        try {
+            $delivery = Delivery::findOrFail($deliveryId);
+            
+            return response()->json([
+                'success' => true,
+                'delivery' => $delivery
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Delivery not found'
+            ], 404);
+        }
     }
     
     public function updateProfile(Request $request) {

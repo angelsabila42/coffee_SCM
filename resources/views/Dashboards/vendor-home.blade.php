@@ -5,13 +5,13 @@
 @endsection
 @section('content')
 <!--top cards-->
-{{-- <div class="container">
+<div class="container">
 <div class="row">
       <div class="col-md-3" >
          <div class="card kpi-card">
             <div class="card-header ">
             <div class="d-flex justify-content-between align-items-center">
-            <h6 class="text-muted">Active Orders</h6>
+            <h6 class="card-title text-muted">Active Orders</h6>
                <span class="stat-icon bg-info-soft delivery"><i class="fa-solid fa-bag-shopping"></i></span>
             </div>
                
@@ -19,7 +19,7 @@
                <div class="card-body">
                <h3 class="ml-2 kpi-figure"> {{$orders}} </h3> 
                {{-- <div id="chart-j" class="kpi-chart-container"></div> --}}
-               {{-- </div>  
+               </div>  
                
          </div>
       </div>
@@ -27,13 +27,13 @@
          <div class="card kpi-card">
             <div class="card-header ">
             <div class="d-flex justify-content-between align-items-center">
-            <h6 class="text-muted">Delivered Batches</h6>
+            <h6 class="card-title text-muted">Delivered Batches</h6>
                <span class="stat-icon bg-success-soft money"><i class="fa-solid fa-circle-check"></i></span>
             </div>
             </div>
-               <div class="card-body "> --}}
+               <div class="card-body ">
                {{-- <div class="kpi-chart-container"></div>  --}}
-               {{-- <h3 class="ml-2">{{$delivered}}</h3>
+               <h3 class="ml-2">{{$delivered}}</h3>
                </div>
             </div>
         </div>
@@ -41,122 +41,47 @@
          <div class="card kpi-card">
             <div class="card-header ">
             <div class="d-flex justify-content-between align-items-center">
-            <h6 class="text-muted">Unpaid Invoices</h6>
+            <h6 class="card-title text-muted">Unpaid Invoices</h6>
                <span class="stat-icon bg-danger-soft cancelled"><i class="fa-solid fa-file-invoice-dollar"></i></span>
             </div>   
             </div>
-               <div class="card-body "> --}}
+               <div class="card-body ">
                {{-- <div class="kpi-chart-container"></div> --}}
                {{-- <h3 class="ml-2"> {{$invoices}} </h3>     --}}
-               {{-- </div>
+               </div>
          </div>
       </div>
        <div class="col-md-3" >
          <div class="card kpi-card">
             <div class="card-header ">
              <div class="d-flex justify-content-between align-items-center">
-            <h6 class="text-muted">Pending Deliveries</h6>
+            <h6 class="card-title text-muted">Pending Deliveries</h6>
                <span class="stat-icon bg-warning-soft pending"><i class="fa-solid fa-clock"></i></span>
-            </div>   --}}
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0" style="color: #8B4513; font-weight: 700;">Vendor Dashboard</h2>
-        <div>
-            <button class="btn" onclick="window.location.reload()" style="background-color: #8B4513; color: white; border-radius: 20px;">
-                <i class="bx bx-refresh"></i> Refresh
-            </button>
-        </div>
-    </div>
+            </div> 
+            </div>
+               <div class="card-body ">
+                    {{-- <div class="kpi-chart-container"></div>  --}}
+                    <h3 class="ml-2"> {{$pending}} </h3>    
+               </div>
+         </div>
+      </div>
+</div>
 
-    <!-- Stats Cards -->
-    <div class="row mb-4">
-        <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #CD853F, #D2691E); border-radius: 10px;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h4 class="mb-0">{{ $orders ?? 0 }}</h4>
-                            <p class="mb-0">Active Orders</p>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="modern-card">
+                                <div class="card-header ">
+                                    <h4 class="card-title">Order Volume</h4>
+                                </div>
+                                <div class="card-body ">
+                                    <div id="chart-v"></div>
+                                </div>
+                            </div>
                         </div>
-                        <i class="bx bx-package" style="font-size: 2.5rem; opacity: 0.7;"></i>
-                    </div>
-                </div>
+                        <div class="col-md-5">    
+                           <livewire:recent-activity/>           
+               </div>
             </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #8B4513, #A0522D); border-radius: 10px;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h4 class="mb-0">{{ $delivered ?? 0 }}</h4>
-                            <p class="mb-0">Delivered Batches</p>
-                        </div>
-                        <i class="bx bx-check-circle" style="font-size: 2.5rem; opacity: 0.7;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #A0522D, #CD853F); border-radius: 10px;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h4 class="mb-0">{{ $invoices ?? 0 }}</h4>
-                            <p class="mb-0">Unpaid Invoices</p>
-                        </div>
-                        <i class="bx bx-file-text" style="font-size: 2.5rem; opacity: 0.7;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #6B4423, #8B4513); border-radius: 10px;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h4 class="mb-0">{{ $pending ?? 0 }}</h4>
-                            <p class="mb-0">Pending Deliveries</p>
-                        </div>
-                        <i class="bx bx-clock-alt" style="font-size: 2.5rem; opacity: 0.7;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content Row -->
-    <div class="row">
-        <!-- Order Volume Chart -->
-        <div class="col-md-8 mb-4">
-            <div class="card" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                <div class="card-header" style="background-color: #8B4513; color: white; border-radius: 10px 10px 0 0;">
-                    <h5 class="mb-0">
-                        <i class="bx bx-line-chart"></i> Order Volume
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div id="chart-v" style="min-height: 300px;">
-                        <!-- Chart will be rendered here -->
-                        <canvas id="orderVolumeChart" width="400" height="200"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="col-md-4 mb-4">
-            <div class="card" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                <div class="card-header" style="background-color: #8B4513; color: white; border-radius: 10px 10px 0 0;">
-                    <h5 class="mb-0">
-                        <i class="bx bx-activity"></i> Recent Activity
-                    </h5>
-                </div>
-                <div class="card-body" style="max-height: 350px; overflow-y: auto;">
-                    <livewire:recent-activity/>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Recent Orders Table -->
     <div class="card" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">

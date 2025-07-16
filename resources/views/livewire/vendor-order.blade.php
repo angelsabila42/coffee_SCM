@@ -16,6 +16,24 @@
             </h5>
         </div>
         <div class="card-body">
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0" style="color: #8B4513; font-weight: 700;">My Orders</h2>
+        <div>
+            <button class="btn" onclick="window.location.reload()" style="background-color: #8B4513; color: white; border-radius: 20px;">
+                <i class="bx bx-refresh"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="card mb-4" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div class="card-header" style="background-color: #8B4513; color: white; border-radius: 10px 10px 0 0;">
+            <h5 class="mb-0">
+                <i class="bx bx-search"></i> Search & Filter Orders
+            </h5>
+        </div>
+        <div class="card-body">
             <div x-data="advancedFilter">
                 <div class="row align-items-center">
                     <div class="col-md-6">
@@ -30,7 +48,24 @@
                                        wire:model.live.debounce.250ms="search"
                                        style="border: 2px solid #F5F5DC; border-left: none;">
                             </div>
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="form-group mb-0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: #F5F5DC; border-color: #F5F5DC;">
+                                        <i class="bx bx-search" style="color: #8B4513;"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Search orders..." 
+                                       wire:model.live.debounce.250ms="search"
+                                       style="border: 2px solid #F5F5DC; border-left: none;">
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button @click="toggle" class="btn" style="background-color: #CD853F; color: white; border-radius: 20px;">
+                            <i class="bx bx-filter"></i> Advanced Filter
                     </div>
                     <div class="col-md-6 text-right">
                         <button @click="toggle" class="btn" style="background-color: #CD853F; color: white; border-radius: 20px;">

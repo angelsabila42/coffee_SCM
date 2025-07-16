@@ -21,7 +21,7 @@ class GenerateWeeklyReport extends Command
 
         $deliveries = Delivery::whereBetween('dispatch_date_time', [$startOfWeek, $endOfWeek])->get();
 
-        $pdf = app('dompdf.wrapper')->loadView('reports.weekly_orders', ['deliveries' => $deliveries]);
+        $pdf = app('dompdf.wrapper')->loadView('livewire.delivery-report-table', ['deliveries' => $deliveries]);
 
         $filename = 'reports/weekly_report_' . now()->format('Y_m_d_H-i-s') . '.pdf';
         Storage::put($filename, $pdf->output());

@@ -61,9 +61,47 @@
     </div>
 <div class="modern-card">
 
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="modern-card">
+                                <div class="card-header ">
+                                    <h4 class="card-title">Order Volume</h4>
+                                </div>
+                                <div class="card-body ">
+                                    <div id="chart-va"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                                <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            var options = {
+                                                chart: {
+                                                    type: 'line',
+                                                    height: 300
+                                                },
+                                                series: [{
+                                                    name: 'Orders',
+                                                    data: @json($orderData)
+                                                }],
+                                                xaxis: {
+                                                    categories: @json($months)
+                                                }
+                                            };
+
+                                            var chart = new ApexCharts(document.querySelector("#chart-va"), options);
+                                            chart.render();
+                                        });
+                            </script>
+
+                        <div class="col-md-5 mb-5" >    
+                            <livewire:importer-recent-logs/>           
+                        </div>
+                    </div>
+
 {{-- delivery table     --}}
 <div>
-   <div class="col-md-12">
+   <div class="col-md-12 mt-5">
         <div class="d-flex justify justify-content-between align-items-center">
             <!--Search bar-->
             <div class="d-flex justify-content-center align-items-center">

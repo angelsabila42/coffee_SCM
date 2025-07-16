@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('action'); 
             $table->morphs('loggable'); 
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+
         });
     }
 

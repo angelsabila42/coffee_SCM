@@ -21,7 +21,7 @@ class GenerateYearlyReport extends Command
 
         $deliveries = Delivery::whereBetween('dispatch_date_time', [$startOfYear, $endOfYear])->get();
 
-        $pdf = app('dompdf.wrapper')->loadView('reports.yearly_orders', ['deliveries' => $deliveries]);
+        $pdf = app('dompdf.wrapper')->loadView('livewire.delivery-report-table', ['deliveries' => $deliveries]);
 
         $filename = 'reports/yearly_report_' . now()->format('Y_m_d_H-i-s') . '.pdf';
         Storage::put($filename, $pdf->output());
