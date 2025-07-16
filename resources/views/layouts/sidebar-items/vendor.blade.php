@@ -1,4 +1,4 @@
-@section('sidebar-item')
+@section('sidebar-items')
 <ul class="sidebar-nav">
         <li class="sidebar-item">
              <a href="{{route('vendor.home')}}" class="sidebar-link">
@@ -13,7 +13,7 @@
              </a>
         </li> 
         <li class="sidebar-item">
-             <a href="{{route('payments.index')}}" class="sidebar-link">
+             <a href="{{route('vendor.transactions')}}" class="sidebar-link">
              <i class='bx  bx-dollar-circle'  ></i>
              <span>Transactions</span>
              </a>
