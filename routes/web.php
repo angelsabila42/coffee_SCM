@@ -181,7 +181,7 @@ Route::middleware('auth')->group(function()
 
            
     /*Dashboard routes*/
-   // Route::get('/home', [HomeController::class, 'index'])->name('home');
+   Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     /*Analytics route*/
     Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
