@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             StaffSeeder::class,
             ChatTestSeeder::class,
             InventorySeeder::class,
+            StaffSeeder::class,
             paymentSeeder::class, // Add chat test data
 
         ]);

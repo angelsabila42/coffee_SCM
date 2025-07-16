@@ -9,6 +9,7 @@ use App\Models\OutgoingOrder;
 use App\Services\ActivityLogger;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 abstract class BaseOutgoingOrderTable extends Component
@@ -60,6 +61,13 @@ abstract class BaseOutgoingOrderTable extends Component
         title: "Changed status from $oldStatus to $status for order $order->orderID",
         type: 'update'
        );
+
+       \App\Models\OrderStatusLogger::create([
+        'user_id'=>Auth::id(),
+        'loggable_id'=>$order->id,
+        'loggable_type'=> get_class($order),
+        'action'=> "Status changed from $oldStatus to $status"
+    ]);
    }
 
    #[On('deleteConfirmed')]

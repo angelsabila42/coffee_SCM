@@ -64,4 +64,8 @@ class User extends Authenticatable
         return $this->hasMany(Conversation::class, 'user_one_id')
             ->orWhere('user_two_id', $this->id);
     }
+
+    public function statusLog(){
+        return $this->hasMany(\App\Models\OrderStatusLogger::class);
+    }
 }

@@ -34,6 +34,7 @@ class VendorOrder extends BaseOutgoingOrderTable
 
      protected function filter(){
     $model = $this->getModelName();
+    //$currentVendor = auth()->id ?? null;
 
     return $model::where('orderID', 'like', '%' .$this->search. '%')
             

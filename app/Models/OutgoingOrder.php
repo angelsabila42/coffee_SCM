@@ -44,6 +44,10 @@ class OutgoingOrder extends Model
         return $this->hasMany(WorkCenter::class);
     }
 
+    public function statusLog(){
+        return $this->morphMany(\App\Models\OrderStatusLogger::class, 'loggable');
+    }
+
     /** @use HasFactory<\Database\Factories\OutgoingOrderFactory> */
     use HasFactory;
 }

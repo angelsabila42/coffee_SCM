@@ -1,0 +1,20 @@
+[
+    {
+        "cluster": 1,
+        "Arabica_(60kg_Bags)": 13273.5,
+        "Robusta_(60kg_Bags)": 85718.5,
+        "AvgOrderSize": 17939.5
+    },
+    {
+        "cluster": 2,
+        "Arabica_(60kg_Bags)": 3082.0,
+        "Robusta_(60kg_Bags)": 36971.8,
+        "AvgOrderSize": 8693.6
+    },
+    {
+        "cluster": 0,
+        "Arabica_(60kg_Bags)": 0.0,
+        "Robusta_(60kg_Bags)": 31500.0,
+        "AvgOrderSize": 9420.3
+    }
+]
