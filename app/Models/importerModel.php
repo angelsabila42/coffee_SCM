@@ -37,4 +37,12 @@ class ImporterModel extends Model
         return $this->hasMany(Invoice::class);
     }
 
+    public function demands(){
+        return $this->hasMany(ImporterDemand::class, 'importer_model_id');
+    }
+
+    public function demandQuantity(){
+        return $this->hasMany(QuantitiyDemand::class);
+    }
+
 }

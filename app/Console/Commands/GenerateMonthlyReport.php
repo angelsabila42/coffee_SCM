@@ -21,6 +21,8 @@ class GenerateMonthlyReport extends Command
 
         $deliveries = Delivery::whereBetween('dispatch_date_time', [$startOfMonth, $endOfMonth])->get();
 
+        // $pdf = app('dompdf.wrapper')->loadView('reports.monthly_orders', ['deliveries' => $deliveries]);
+
         $pdf = app('dompdf.wrapper')->loadView('livewire.delivery-report-table', ['deliveries' => $deliveries]);
 
         $filename = 'reports/monthly_report_' . now()->format('Y_m_d_H-i-s') . '.pdf';

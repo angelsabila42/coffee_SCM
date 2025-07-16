@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-            $table->dropColumn('read_at');
+            //$table->dropColumn('read_at');
         });
     }
 };

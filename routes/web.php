@@ -28,6 +28,7 @@ use App\Http\Controllers\Auth\LoginController;
 
 
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\AnnualCoffeeSaleAdmin;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\OrderController;
@@ -38,14 +39,17 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\API\V1\ImporterModelController;
 use App\Http\Controllers\API\V1\IncomingOrderController;
 use App\Http\Controllers\ImporterOrderController;
+use App\Http\Controllers\API\V1\AnnualCoffeeSaleAdminController;
+use App\Http\Controllers\API\V1\ImporterDemandAdminController;
 use Illuminate\Validation\Rules\Email;
 
 
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\API\V1\OutgoingOrderController;
+use App\Http\Controllers\API\V1\QuantityDemandController;
+use App\Http\Controllers\API\V1\VendorClusterController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\Vendor\VendorOrderController;
-
 //use App\Models\inventory;
 
 use App\Http\Controllers\InvoiceExportController;
@@ -116,6 +120,7 @@ Route::middleware('auth')->group(function()
                             });
 
 
+
                     // Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
                          
                     Route::get('/inventory', function () {
@@ -156,9 +161,11 @@ Route::middleware('auth')->group(function()
             return view('Dashboards.home');
         });
 
+
          Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
      
         Route::get("/java",[VendorController::class, 'store'])-> name('java'); 
+
        Route::get('/reg/vendor', [VendorController::class, 'vendor'])->name('vendor');
         //Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
 
@@ -173,6 +180,9 @@ Route::middleware('auth')->group(function()
         Route::post('/reg/importer', [ImporterModelController::class, 'store'])->name('store.importer');
 
            
+    /*Dashboard routes*/
+   // Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 
    
 
@@ -181,6 +191,14 @@ Route::middleware('auth')->group(function()
 
         /*Analytics route*/
         Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+
+    /*Analytics route*/
+    Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+    Route::get('/import-annual-coffee-sales', [AnnualCoffeeSaleAdminController::class, 'importCsv']);
+    Route::get('/import-importer-demand', [ImporterDemandAdminController::class, 'importCsv']);
+    Route::get('/import-vendor-cluster', [VendorClusterController::class, 'importCsv']);
+    Route::get('/import-demand-quantity', [QuantityDemandController::class, 'importCsv']);
+
 
    
 
@@ -201,15 +219,16 @@ Route::middleware('auth')->group(function()
         /*Order Routes*/
         Route::get('/home/orders', [OrderController::class, 'index'])->name('order.index');
         Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
-        Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
-        Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewOrder'])->name('vendor.order.show');
+        Route::get('/home/orders/{order}/Outgoing', [OutgoingOrderController::class, 'viewOutOrder'])->name( 'orders.view-vendor-order');
+        Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewVendorOrder'])->name('vendor.order.show');
         Route::post('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'store'])->name('vendor.order.store');
-        Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'download'])->name('vendor.order.download');
-        Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
-        Route::get('/home/orders/{order}', [IncomingOrderController::class, 'viewOrder'])->name('order.show-in');
+        Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'downloadVendor'])->name('vendor.order.download');
+        Route::get('/home/orders/{order}/download/Outgoing', [OutgoingOrderController::class, 'downloadOutgoing'])->name('orders.view-vendor-order.download');
+        Route::get('/home/orders/{order}/Incoming', [IncomingOrderController::class, 'viewOrder'])->name('orders.view-importer-order');
         Route::post('/home/orders/{order}', [IncomingOrderController::class, 'store'])->name('order.store-in');
-        Route::get('/home/orders/{order}/download', [IncomingOrderController::class, 'download'])->name('order.download-in');
-
+        Route::get('/home/orders/{order}/download/Incoming', [IncomingOrderController::class, 'download'])->name('order.download-in');
+        Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
+        Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
 
 
         // edit profile routes
@@ -295,19 +314,7 @@ Route::middleware('auth')->group(function()
     Route::delete('/qa-reports/{report}', [QAReportController::class, 'destroy'])->name('qa.destroy');
 
 
-
-
-
-
-
-
 });
-
-
-
-
-
-
 
 
 
@@ -319,14 +326,10 @@ Route::middleware(['vendor'])->group(function(){
 // Vendor Transactions Dashboard
       Route::get('/transactions/vendor',[VendorTransactionController::class, 'index'] )->name('vendor.transactions');
       Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
-    
-        // Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
-      
 
+      Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+     
 });
-
-
-
 
 
 
@@ -375,8 +378,6 @@ Route::put('/transporter/banking', [transporterController::class, 'updateBanking
 // Legacy routes
 // Transporter Delivery Dashboard
 Route::get('/deliveries/transporter', [transporterController::class, 'deliveries'])->name('deliveries.transporter');
-
-
 
 // //transporter transactions
   Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');

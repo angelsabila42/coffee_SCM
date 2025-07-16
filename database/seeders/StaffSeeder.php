@@ -13,7 +13,7 @@ class StaffSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Staff::truncate();
+        \App\Models\Staff::query()->delete();
         $staff = [
             [
             'full_name' => 'John Ayebale',

@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->text('password');
+           // $table->text('password');
             $table->text('email');
             $table->string('phone_number',20);
+            $table->string('region')->nullable();
             $table->string('street');
             $table->string('city');
+            $table->boolean('organicCertified')->default(false);
 
         });
     }

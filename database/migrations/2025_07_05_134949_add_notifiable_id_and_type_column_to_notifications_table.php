@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-            $table->dropColumn('notifiable_id','notifiable_type');
+          $table->dropColumn('notifiable_id','notifiable_type');
         });
     }
 };

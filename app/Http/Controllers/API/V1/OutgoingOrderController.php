@@ -38,19 +38,34 @@ class OutgoingOrderController extends Controller
         return redirect()->route('vendor.orders')->with('success','Form Submitted!');
     }
 
-    public function download(OutgoingOrder $order){
+    public function downloadVendor(OutgoingOrder $order){
         $pdf = Pdf::loadView('partials.vendor-order-pdf', [
             'order'=> $order
         ]);
         return $pdf->download("order-{{$order->id}}.pdf");
     }
 
-    public function viewOrder(OutgoingOrder $order){
+    public function viewVendorOrder(OutgoingOrder $order){
         $order->load('workCenter');
         
         return view('view-vendor-order', [
             'order' => $order
         ]);
+    }
+
+    public function viewOutOrder(OutgoingOrder $order){
+        $order->load('workCenter', 'vendor');
+        
+        return view('orders.view-outgoing-order', [
+            'order' => $order
+        ]);
+    }
+
+    public function downloadOutgoing(OutgoingOrder $order){
+        $pdf = Pdf::loadView('partials.incoming-order-pdf', [
+            'order'=> $order
+        ]);
+        return $pdf->download("order-{{$order->id}}.pdf");
     }
 
     public function dropdown(){
