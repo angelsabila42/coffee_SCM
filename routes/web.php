@@ -46,6 +46,7 @@ use Illuminate\Validation\Rules\Email;
 
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\API\V1\OutgoingOrderController;
+use App\Http\Controllers\API\V1\QuantityDemandController;
 use App\Http\Controllers\API\V1\VendorClusterController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\Vendor\VendorOrderController;
@@ -188,7 +189,9 @@ Route::middleware('auth')->group(function()
     Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
     Route::get('/import-annual-coffee-sales', [AnnualCoffeeSaleAdminController::class, 'importCsv']);
     Route::get('/import-importer-demand', [ImporterDemandAdminController::class, 'importCsv']);
-     Route::get('/import-vendor-cluster', [VendorClusterController::class, 'importCsv']);
+    Route::get('/import-vendor-cluster', [VendorClusterController::class, 'importCsv']);
+    Route::get('/import-demand-quantity', [QuantityDemandController::class, 'importCsv']);
+
 
 
    

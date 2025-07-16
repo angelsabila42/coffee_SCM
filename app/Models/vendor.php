@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Vendor extends Model
 {
-     use Notifiable;
+    use Notifiable;
     use HasFactory;
     protected $table = 'vendor';
 
@@ -20,7 +20,7 @@ class Vendor extends Model
         'region',
         'street',
         'city',
-        'confirm password',
+        //'confirm password',
     ];
 
     public function outgoingOrder(){

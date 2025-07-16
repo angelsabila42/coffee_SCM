@@ -17,6 +17,11 @@ var options = {
           type: 'bar',
           height: 350
         },
+
+        title: {
+          text: 'Top Importers'
+        },
+
         plotOptions: {
           bar: {
             borderRadius: 4,
@@ -74,7 +79,11 @@ var options = {
 
         fill: {
           colors:['#f59e0b','#8B5CF6']
-        },    
+        }, 
+
+        title: {
+          text: 'Arabica vs Robusta for Vendor categories'
+        },   
 
        plotOptions: {
       pie: {   
@@ -193,7 +202,7 @@ var options = {
               label:{
                 text: 'Forecast Period',
                 style: {
-                  color: '#111',
+                  color: '#fff',
                   background: '#F59E0B'
                 }
               }
@@ -256,7 +265,11 @@ chart: {
 
         fill: {
           colors:['#f59e0b','#10b981']
-        },    
+        },   
+
+        title: {
+          text: 'Deliveries'
+        }, 
 
         labels: ['Completed', 'Pending'],
         responsive: [{
@@ -290,6 +303,10 @@ chart: {
 
         fill: {
           colors:['#f59e0b','#10b981']
+        },
+
+        title: {
+          text: 'Deliveries'
         },    
 
         labels: ['Completed', 'Pending'],
@@ -369,6 +386,9 @@ var barOptions = {
         fill: {
           opacity: 1
         },
+        title: {
+          text: 'Sales Performance'
+        },
         tooltip: {
           y: {
             formatter: function (val, {series, seriesIndex, dataPointIndex, w }) {
@@ -421,7 +441,10 @@ var radialOptions = {
   },
   stroke: {
          lineCap: "round",
-      }
+      },
+  title: {
+        text: 'Coffee Sold'
+        },
 };
 
 var radialChart = new ApexCharts(document.querySelector("#chart-r"), radialOptions);
@@ -467,6 +490,9 @@ var radialOptions = {
   },
   stroke: {
          lineCap: "round",
+      },
+  title: {
+        text: 'Coffee Purchased'
       },
   tooltip: {
           enabled: true,
@@ -542,6 +568,157 @@ document.addEventListener('DOMContentLoaded', async() => {
         stackedBar.render();
 });
 </script>
+<!--Forecasting line graph Row 3-->
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const historicalData = '/data/historical_data.json';
+  const forecastGood = '/data/forecast_good.json';
+  const forecastLog = '/data/forecast_log.json';
+  const forecastSmooth = '/data/forecast_smoothed.json';
+
+  Promise.all([
+    fetch(historicalData).then(res => res.json()),
+    fetch(forecastGood).then(res => res.json()),
+    fetch(forecastLog).then(res => res.json()),
+    fetch(forecastSmooth).then(res => res.json())
+  ])
+  .then(([historical, forecastGood, forecastLog, forecastSmooth]) => {
+    const groupBy = (data, key) => {
+      return data.reduce((acc, item) => {
+        if(!acc[item[key]]) acc[item[key]] =[];
+        acc[item[key]].push(item);
+
+        return acc;
+      },{});
+    };
+    const historicalByImporter = groupBy(historical, 'Importer');
+    const goodByImporter = groupBy(forecastGood, 'Importer');
+    const logByImporter = groupBy(forecastLog, 'Importer');
+    const smoothedByImporter = groupBy(forecastSmooth,'Importer');
+
+    const series = [];
+
+    Object.keys(historicalByImporter).forEach(importer => {
+      const historicalPoints = historicalByImporter[importer].map(d => ({
+        x: new Date(d.date).getFullYear(),
+        y:parseFloat(d.actual.toFixed(2))
+      }));
+
+      series.push({
+        name: `${importer} (Actual)`,
+        data: historicalPoints,
+        type: 'line',
+        stroke: {
+          dashArray: 0
+        }
+      });
+
+      let forecastSource = goodByImporter[importer] || logByImporter[importer] ||smoothedByImporter[importer];
+
+      if(forecastSource){
+        const forecastPoints = forecastSource.map(d => ({
+          x: new Date(d.date).getFullYear(),
+          y: parseFloat(d.forecast.toFixed(2))
+        }));
+
+        const lastHistoricalYear = Math.max(...historicalPoints.map(p => p.x));
+        const firstForecastYear = Math.min(...forecastPoints.map(p => p.x));
+
+        if(firstForecastYear > lastHistoricalYear + 1){
+          series.push({
+            name: `${importer} (Connector)`,
+            data: [{
+              x: lastHistoricalYear + 1,
+              y: null
+            }],
+            type: 'line',
+            stroke: {
+              dashArray: 5
+            }
+          });
+        }
+
+        series.push({
+          name: `${importer} (Forecast)`,
+          data: forecastPoints,
+          type: 'line',
+          stroke: {
+            dashArray: 5
+          }
+        });
+      }
+      });
+    
+        var options = {
+          series: series,
+          chart: {
+          height: 500,
+          type: 'line',
+          zoom: {
+            enabled: true
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 2
+        },
+
+        annotations: {
+          xaxis: [
+            {
+              x: 2023,
+              strokeDashArray: 0,
+              borderColor:  '#F59E0B',
+              label:{
+                style:{
+                  color: '#fff',
+                  background:  '#F59E0B'
+                },
+                text: 'Forecast Start'
+              }
+            }
+            
+          ]
+        },
+        tooltip:{
+          shared: true,
+          intersect: false
+
+        },
+
+        legend:{
+          show: true,
+          position: 'bottom'
+        },
+        title: {
+          text: 'Product Trends by Month',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          type: 'category',
+          title: {text: 'Year'}
+        },
+        yaxis: {
+          title: {
+            text: 'Quantity (60kg Bags)'
+          },
+        }
+        };
+
+        var forecastDemand = new ApexCharts(document.querySelector("#chart-x"), options);
+        forecastDemand.render();
+      });
+    });
+</script>
 
 <!--Home-->
 <script>
@@ -583,7 +760,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         var chartJ = new ApexCharts(document.querySelector("#chart-j"), options);
         chartJ.render();
-})
+});
 </script>
 
 <!--Vendor Home-->

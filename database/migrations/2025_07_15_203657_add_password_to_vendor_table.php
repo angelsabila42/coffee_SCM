@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('importer_models', function (Blueprint $table) {
-           //  $table->dropColumn('password');
+        Schema::table('vendor', function (Blueprint $table) {
+            //$table->text('password')->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('importer_models', function (Blueprint $table) {
-             //$table->string('password');
+        Schema::table('vendor', function (Blueprint $table) {
+            //$table->dropColumn('password');
         });
     }
 };

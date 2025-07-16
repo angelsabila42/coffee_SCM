@@ -1,23 +1,3 @@
-/*const hamburger= document.querySelector(".toggle-btn");
-const toggler = document.querySelector("#icon");
-
-hamburger.addEventListener("click", function(){
-    document.querySelector("#sidebar").classList.toggle("expand");
-    toggler.classList.toggle("bxs-chevrons-right");
-    toggler.classList.toggle("bxs-chevrons-left");
-});*/
-
-/** document.addEventListener('alpine:init', ()=>{
-    Alpine.data('counter',()=>({
-        count:0,
-        name:'Mario',
-
-        logCount(){
-            console.log(this.count);
-        },
-    }))
-})**/
-
 document.addEventListener('alpine:init', ()=>{
     Alpine.data('signupForm',() => ({
         username: '',
@@ -249,31 +229,8 @@ document.addEventListener('alpine:init', ()=>{
 
      }));
 
-    // Alpine.data('tab',() => ({
-    //     showTab1: true,
-    //     showTab2: false,
-    // }));
-
-   
-
 });
 
 
 
-
-
-
-
-
-/*document.addEventListener('livewire:load', () => {
-    Livewire.on('show-toast', (message) => {
-    window.dispatchEvent(new CustomEvent('show-toast', {
-        detail: { message }
-    }));
-});
-});
-
-window.addEventListener('show-toast', e => {
-    alert(e.detail.message);
-});*/
 

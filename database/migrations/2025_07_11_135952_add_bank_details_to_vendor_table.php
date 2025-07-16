@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('Bank_account');
             $table->string('Account_holder');
             $table->string('Bank_name');
-             $table->dropColumn('password');
+             //$table->dropColumn('password');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     {
         Schema::table('vendor', function (Blueprint $table) {
           $table->dropColumn('Bank_account','Account_holder','Bank_name');
-             $table->string('password');
+            // $table->string('password');
         });
     }
 };

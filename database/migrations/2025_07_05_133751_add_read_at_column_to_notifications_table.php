@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-            //$table->timestamp('read_at')->nullable()->after('data');
+            $table->timestamp('read_at')->nullable()->after('data');
         });
     }
 

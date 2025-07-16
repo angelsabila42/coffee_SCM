@@ -12,7 +12,7 @@
       <div class="col-md-5" >
          <div class="card">
             <div class="card-header ">
-               <h4 class="card-title">Deliveries</h4>
+               {{-- <h4 class="card-title">Deliveries</h4> --}}
             </div>
                <div class="card-body ">
                   <!--Apex Pie Chart-->
@@ -23,7 +23,7 @@
          <div class="col-md-7">
             <div class="card">
                <div class="card-header ">
-                  <h4 class="card-title">Top Sellers</h4>
+                  {{-- <h4 class="card-title">Top Sellers</h4> --}}
                </div>
                   <div class="card-body ">
                   <!--Apex Bar Chart-->
@@ -36,7 +36,7 @@
             <div class="col-md-7">
                <div class="card ">
                   <div class="card-header ">
-                     <h4 class="card-title">Sales Performance</h4>
+                     {{-- <h4 class="card-title">Sales Performance</h4> --}}
                   </div>
                      <div class="card-body ">
                         <div id="chart-e"></div>
@@ -46,7 +46,7 @@
                <div class="col-md-5">
                   <div class="card ">
                      <div class="card-header ">
-                     <h4 class="card-title">Coffee Sold</h4>
+                     {{-- <h4 class="card-title">Coffee Sold</h4> --}}
                      </div>
                         <!--Apex donut chart-->
                         <div class="card-body ">
@@ -55,11 +55,24 @@
                   </div>
                </div>
          </div>
+                     <div class="row">
+               <div class="col-md-12">
+                  <div class="card ">
+                     <div class="card-header ">
+                        {{-- <h4 class="card-title">Predicted Sales</h4> --}}
+                     </div>
+                        <div class="card-body ">
+                           <!--Apex Line graph-->
+                              <div id="chart-x"></div>
+                        </div>
+                  </div>
+               </div>
+            </div> 
          <div class="row">
             <div class="col-md-5">
                <div class="card ">
                   <div class="card-header ">
-                     <h4 class="card-title">Coffee Purchased</h4>
+                     {{-- <h4 class="card-title">Coffee Purchased</h4> --}}
                   </div>
                      <div class="card-body ">
                         <div id="chart-k"></div>

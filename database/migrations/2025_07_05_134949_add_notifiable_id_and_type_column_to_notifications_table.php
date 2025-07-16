@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-            //$table->uuid('notifiable_id')->nullable()->after('read_at');
-            //$table->string('notifiable_type')->nullable()->after('notifiable_id');
+            $table->uuid('notifiable_id')->nullable()->after('read_at');
+            $table->string('notifiable_type')->nullable()->after('notifiable_id');
         });
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-          //  $table->dropColumn('notifiable_id','notifiable_type');
+          $table->dropColumn('notifiable_id','notifiable_type');
         });
     }
 };
