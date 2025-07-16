@@ -20,7 +20,7 @@
 
                          <div class="card-header" style="color:rgb(29, 14, 14); background-color:rgb(236, 245, 245);">{{ __('CONTACT DETAILS') }}</div>
 
-                        {{-- <div class="row mb-3">
+                        <div class="row mb-3">
                             <label for="name" class="col-md-4 text-bold card-title text-md-end">FULL NAME</label>
 
                             <div class="col-md-6">
@@ -32,8 +32,8 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div> --}}
-                         {{-- <div class="row mb-3">
+                        </div>
+                         <div class="row mb-3">
                             <label for="email" class="card-title col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
                             <div class="col-md-6">
@@ -45,9 +45,9 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div> --}}
+                        </div>
 
-                        {{-- <div class="row mb-3">
+                        <div class="row mb-3">
                             <label for="phone_number " class="card-title col-md-4 col-form-label text-md-end">{{ __('Phone number') }}</label>
 
                             <div class="col-md-6">
@@ -59,9 +59,9 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div> --}}
+                        </div>
 
-                        {{-- <div class="row mb-3">
+                        <div class="row mb-3">
                             <label for="street" class="card-title col-md-4 col-form-label text-md-end">{{ __('street') }}</label>
 
                             <div class="col-md-6">
@@ -86,11 +86,10 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div> --}}
-                        
+                        </div>                         
 
                         
-                        <div class="row mb-3">
+                         <div class="row mb-3">
                             <label for="Bank_account" class="card-title col-md-4 col-form-label text-md-end">{{ __('Bank Account') }}</label>
 
                             <div class="col-md-6">
@@ -132,35 +131,8 @@
                             </div>
                         </div>
                       
-                      
-                        
-
-                        
-                 
-
-                        
-                            {{-- <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ Auth::user()->password }}" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> --}}
-
-                        {{-- <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" value="{{ Auth::user() }}" required autocomplete="new-password">
-                            </div>
-                        </div> --}}
-                        {{-- <div class="card-header" style="color:rgb(29, 14, 14); background-color:rgb(236, 245, 245);">{{ __('UPLOAD ATTACHMENTS (Pdf format only)') }}</div>
+                    
+                        <div class="card-header" style="color:rgb(29, 14, 14); background-color:rgb(236, 245, 245);">{{ __('UPLOAD ATTACHMENTS (Pdf format only)') }}</div>
                            <div style="display: flex">
                              <label for="UCDA" class="card-title f-sm col-md-4 form-label text-md-end">{{ __('certificate from UCDA') }}</label>
 
@@ -171,7 +143,7 @@
 
                              <input id="financial_statement" type="file" class="form-control @error('financial_statement') is-invalid @enderror" name="financial_statement" >
                        
-                            </div> --}}
+                            </div>
 
                          <div style="display: flex">
                           <label for="national_id" class="card-title col-md-4 col-form-label text-md-end">{{ __('national_id') }}</label>

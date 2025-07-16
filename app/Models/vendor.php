@@ -20,6 +20,9 @@ class Vendor extends Model
         'street',
         'city',
         'confirm password',
+        'Bank_account',
+        'Account_holder',
+        'Bank_name',
     ];
 
     public function outgoingOrder(){

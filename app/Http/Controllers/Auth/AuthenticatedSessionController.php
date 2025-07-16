@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
-use App\Models\ImporterModel as Importer;
+use App\Models\ImporterModel;
 use App\Models\Vendor;
 use App\Models\Transporter;
 
@@ -29,39 +29,43 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request)//: RedirectResponse
-    {
-        Log::info('LOGIN store() hit by user: ' . Auth::user()?->email);
-
+    public function store(LoginRequest $request): RedirectResponse
+    {   // dd('LOGIN store() hit');
+        
         $request->authenticate();
 
         $request->session()->regenerate();
         $user = Auth::user();
 
-        // Vendor role check in users table
-        if ($user->role === 'vendor') {
-            Log::info('Redirecting vendor (role check)');
-            return redirect()->route('vendor.home');
-        }
+       Log::info('LOGIN store() hit by user: ' . $user->email);
 
-        if(Importer::where('email', $user->email)->exists()){
-            Log::info('Redirecting importer');
+
+       // Vendor role check in users table
+        // if ($user->role === 'vendor') {
+        //     Log::info('Redirecting vendor (role check)');
+        //     return redirect()->route('vendor.home');
+        // }
+
+        if(ImporterModel::where('email', $user->email)->exists()){
+            //::info('Redirecting importer');
             return redirect()->route('importer.dashboard');
         }
 
-        elseif(Vendor::where('email', $user->email)->exists()){
-            Log::info('Redirecting vendor');
+        if(Vendor::where('email', $user->email)->exists()){
+           // Log::info('Redirecting vendor');
             return redirect()->route('vendor.home');
-        }
+        } 
 
-        elseif(Transporter::where('email', $user->email)->exists()){
-            Log::info('Redirecting transporter');
-            return redirect()->route('transporter.dashboard');
+        if(Transporter::where('email', $user->email)->exists()){
+           // Log::info('Redirecting transporter');
+            return redirect()->route('transporter.transactions');
         }
         
-        else {
-            return redirect()->route('importer.dashboard');
-        }
+    //Log::warning('⚠️ None of the role-based redirects matched. Falling back to welcome.');
+
+            return redirect('/welcome')
+                ->with('status', 'You are logged in successfully!');
+        
         // return redirect()->route('index')
         //     ->with('status', 'You are logged in successfully!');
     }

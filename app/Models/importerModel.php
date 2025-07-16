@@ -18,6 +18,9 @@ class ImporterModel extends Model
         'phone_number',
         'address',
         'confirm password',
+        'Bank_account',
+        'Account_holder',
+        'Bank_name',
      ];
 
      public function incoming_order(){

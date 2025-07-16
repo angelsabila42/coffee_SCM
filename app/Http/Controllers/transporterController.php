@@ -57,6 +57,6 @@ class transporterController extends Controller
    //       ])->toArray();
 
    //  User::create($fields);
-   //  return redirect()->back();
+     return redirect()->route('transporter.transactions')->with('success', 'registration successful');
     }
 }

@@ -7,7 +7,8 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Models\Invoice;
 use App\Models\Payment;
-
+use App\Models\Transporter;
+use Illuminate\Support\Facades\Auth;
 class TransporterTransactions extends Component
 {
     use WithPagination;
@@ -53,14 +54,20 @@ class TransporterTransactions extends Component
 
     public function getRecordsProperty()
     {
+        $user =Auth::user();
+        $transporter = Transporter::where('email', $user->email)->first();
+        $transporterId = $transporter ? $transporter->id : null;
+
         if ($this->tab === 'invoices') {
             return Invoice::query()
+                ->where('transporter_id', $transporterId)
                 ->when($this->search, fn($q) => $q->where('invoice_number', 'like', "%{$this->search}%"))
                 ->when($this->status, fn($q) => $q->where('status', $this->status))
                 ->paginate(10);
         }
 
         return Payment::query()
+            ->where('transporter_id', $transporterId)
             ->when($this->search, fn($q) => $q->where('payer', 'like', "%{$this->search}%"))
             ->when($this->status, fn($q) => $q->where('status', $this->status))
             ->when($this->coffeeType, fn($q) => $q->where('coffee_type', $this->coffeeType))
