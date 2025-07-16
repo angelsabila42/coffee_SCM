@@ -183,12 +183,22 @@ Route::middleware('auth')->group(function()
     /*Dashboard routes*/
    // Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+
+   
+
+        /*Dashboard routes*/
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+        /*Analytics route*/
+        Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+
     /*Analytics route*/
     Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
     Route::get('/import-annual-coffee-sales', [AnnualCoffeeSaleAdminController::class, 'importCsv']);
     Route::get('/import-importer-demand', [ImporterDemandAdminController::class, 'importCsv']);
     Route::get('/import-vendor-cluster', [VendorClusterController::class, 'importCsv']);
     Route::get('/import-demand-quantity', [QuantityDemandController::class, 'importCsv']);
+
 
    
 
