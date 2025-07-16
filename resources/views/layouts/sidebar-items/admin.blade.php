@@ -1,4 +1,4 @@
-@section('sidebar-item')
+@section('sidebar-items')
 <ul class="sidebar-nav">
         <li class="sidebar-item">
              <a href="{{route('home')}}" class="sidebar-link {{request()->routeIs('home') ? 'active' : ''}}">
@@ -31,7 +31,7 @@
              </a>
         </li>
         <li class="sidebar-item">
-             <a href="{{route('chat')}}"  class="sidebar-link">
+             <a href="{{route('chat')}}"  class="sidebar-link {{request()->routeIs('chat') ? 'active' : ''}}">
              <i class='bx  bx-message-bubble'  ></i> 
              <span>Chat</span>
              </a>

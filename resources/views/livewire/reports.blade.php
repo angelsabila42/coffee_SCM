@@ -23,13 +23,7 @@
                         <span class="mr-2"><i class='bx bx-filter'></i></span>Filter
                     </button>
                 </div>
-                <div>
-                    <button class="btn btn-sm btn-outline-primary" wire:click="generateReport">
-                        <i class="bi bi-plus-circle me-2"></i> Generate Report
-                    </button>
-                    <button class="btn btn-outline-secondary btn-sm ml-2" wire:click="openFilter"><i class="fa-solid fa-filter"></i></button>
-                    <button class="btn btn-outline-secondary btn-sm ml-2"><i class="fa-solid fa-gear me-2"></i></button>
-                </div>
+             
             </div>
             <div class="tab-content" id="reportTabsContent">
                 @if($activeTab === 'Sales')

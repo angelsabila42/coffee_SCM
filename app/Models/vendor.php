@@ -36,6 +36,8 @@ class Vendor extends Model
         return $this->hasMany(Invoice::class);
     }
 
-    
-
+    public function qaReports()
+    {
+        return $this->hasMany(QA::class);
+    }
 }

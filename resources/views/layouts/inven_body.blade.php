@@ -49,10 +49,10 @@
 <div>
 <div class="col-md-12">
     <div class="d-flex justify justify-content-between align-items-center">
-        <form method="GET" action="{{url('/inventory')}}"class="mb-3">
+        {{-- <form method="GET" action="{{url('/inventory')}}"class="mb-3">
             <input type="text" name="search" class="form-control" placeholder="search..."
                 value="{{$search ?? ''}}">
-        </form> 
+        </form>  --}}
     </div>
         <p>Robusta in stock: {{ $robustaStock }} kg</p>
         <p>Arabica in stock: {{ $arabicaStock }} kg</p>    
