@@ -10,12 +10,12 @@ class ChatTestSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * This seeder creates demo users (admin, vendor, supplier, transporter)
+     * This seeder creates demo users (admin, vendor, importer, transporter)
      * and ensures each user can chat with the others.
      */
     public function run(): void
     {
-        // Create demo users
+       
         $users = [
             [
                 'name' => 'Alice Admin',
@@ -30,10 +30,10 @@ class ChatTestSeeder extends Seeder
                 'role' => 'vendor',
             ],
             [
-                'name' => 'Sam Supplier',
-                'email' => 'supplier@example.com',
+                'name' => 'Sam Importer',
+                'email' => 'importer@example.com',
                 'password' => bcrypt('password'),
-                'role' => 'supplier',
+                'role' => 'importer',
             ],
             [
                 'name' => 'Tina Transporter',

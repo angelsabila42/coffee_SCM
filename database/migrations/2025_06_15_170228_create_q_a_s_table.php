@@ -15,8 +15,19 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('reportID')->unique();
-            $table->date('start_period');
-            $table->date('end_period');
+            $table->date('date');
+            $table->string('testers_initials');
+            $table->string('region');
+            $table->foreignId('vendor_id')->constrained('vendor');
+            $table->string('ref');
+            $table->string('crop_year');
+            $table->string('screen_description')->nullable();
+            $table->string('color');
+            $table->json('defects')->nullable();
+            $table->string('fragrance');
+            $table->decimal('moisture_content', 8, 2);
+            $table->text('overall_impression');
+            $table->enum('status', ['draft', 'submitted'])->default('draft');
         });
     }
 

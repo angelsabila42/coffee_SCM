@@ -1,8 +1,13 @@
 @extends('layouts.app')
+@php
+    use Illuminate\Support\Str;
+    use Illuminate\Support\Collection;
+@endphp
+
 @section('sidebar-items')
     @includeIf('layouts.sidebar-items.' . auth()->user()->role)
 @endsection
-@php use Illuminate\Support\Str; @endphp
+
 @section('content')
 <style>
 :root {
@@ -13,24 +18,59 @@
     --bubble-in: #f4f3f1;
     --bubble-out: #e9e5e1;
 }
+/* Base layout styles */
 body, html {
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
+
 .main-chat-wrapper {
-    min-height: 100vh;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
+    height: calc(100vh - 65px);
+    display: flex;
     background: var(--sidebar-bg);
 }
+
 .chat-sidebar {
     background: var(--sidebar-bg);
-    height: 100vh;
     border-right: 1px solid #e0e0e0;
     display: flex;
     flex-direction: column;
-    padding: 0;
+    width: 300px;
+    min-width: 300px;
 }
+
+.contact-list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 0 0.5rem 1rem 0.5rem;
+}
+
+.chat-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+
+.chat-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 2rem 2rem 1rem 2rem;
+    background: #f7f6f4;
+}
+
+.chat-footer {
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #eee;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Sidebar styles */
 .sidebar-header {
     padding: 2rem 1rem 1rem 1rem;
     display: flex;
@@ -83,6 +123,8 @@ body, html {
     flex: 1 1 auto;
     overflow-y: auto;
     padding: 0 0.5rem 1rem 0.5rem;
+    min-height: 0; /* Allow shrinking */
+    margin-bottom: 1rem;
 }
 .contact-item {
     display: flex;
@@ -135,29 +177,36 @@ body, html {
 
 /* Chat area */
 .chat-main {
-    background: var(--chat-bg);
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    padding: 0;
+    height: 100%;
+    background: #fff;
+    position: relative;
 }
 .chat-header {
-    padding: 1.2rem 2rem 1.2rem 2rem;
+    flex-shrink: 0;
+    padding: 1rem;
     border-bottom: 1px solid #eee;
+    background: #fff;
+    z-index: 10;
     display: flex;
     align-items: center;
     gap: 1rem;
-    background: #fff;
 }
 .chat-header .avatar {
     width: 48px;
     height: 48px;
     border-radius: 50%;
     border: 2px solid var(--coffee-brown);
+    flex-shrink: 0;
 }
 .chat-header .name {
     font-weight: 700;
     font-size: 1.15rem;
     color: #222;
+    margin: 0;
 }
 .chat-header .status {
     font-size: 0.95rem;
@@ -194,9 +243,13 @@ body, html {
     padding: 2rem 2rem 1rem 2rem;
     background: #f7f6f4;
 }
+
 .message-row {
     display: flex;
     margin-bottom: 1.2rem;
+    opacity: 1 !important;
+    transition: opacity 0.2s ease-in;
+    will-change: opacity;
 }
 .message-row.own {
     justify-content: flex-end;
@@ -229,6 +282,7 @@ body, html {
 }
 
 .chat-footer {
+    flex-shrink: 0;
     padding: 0.5rem 1rem;
     border-top: 1px solid #eee;
     background: #fff;
@@ -236,32 +290,54 @@ body, html {
     align-items: center;
     gap: 0.5rem;
 }
-.chat-footer textarea {
-    flex: 1 auto;
-    border-radius: 2rem;
-    border: 1px solid #ddd;
-    padding: 0.7rem 1.2rem;
-    resize: none;
-    font-size: 1rem;
-    min-height: 44px;
-    max-height: 120px;
-    background: #f7f6f4;
+
+/* Style adjustments for the message input area */
+.message-input-wrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
-.chat-footer .send-btn {
-    background: var(--coffee-brown);
-    color: #fff;
-    border: none;
+
+.message-input {
+    flex: 1;
+    min-height: 45px;
+    max-height: 120px;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+    resize: none;
+    overflow-y: auto;
+}
+
+.send-button {
+    flex-shrink: 0;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
-    width: 44px;
-    height: 44px;
+    background: var(--coffee-brown) !important;
+    color: white !important;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
-    transition: background 0.2s;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
-.chat-footer .send-btn:hover {
-    background: #6d4327;
+
+.send-button:hover {
+    background-color: #6d4327;
+}
+
+/* Add styles for the sidebar footer */
+.sidebar-footer {
+    flex-shrink: 0;
+    padding: 1rem;
+    background: var(--sidebar-bg);
+    border-top: 1px solid #eee;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    z-index: 10;
 }
 
 @media (max-width: 900px) {
@@ -285,16 +361,21 @@ body, html {
         </div>
        
         <div class="contact-list flex-grow-1">
-            @foreach($users as $user)
-                @php
-                    $conv = $conversations->first(function($c) use ($user) {
-                        return ($c->user_one_id == $user->id || $c->user_two_id == $user->id);
-                    });
-                    $isActive = isset($conversation) && $conv && $conversation->id === $conv->id;
-                @endphp
-                <a href="{{ $conv ? route('chat.show', $conv->id) : route('chat.start', $user->id) }}"
-                   class="contact-item {{ $isActive ? 'active' : '' }} conversation-item"
-                   data-conversation-name="{{ $user->name }}">
+            @foreach($users as $role => $roleUsers)
+                <div class="role-group mb-3">
+                    <div class="role-header px-3 py-2 text-uppercase" style="font-size: 0.8rem; font-weight: 600; color: #666;">
+                        {{ $role == 'supplier' ? 'Importers' : str_replace('_', ' ', $role) . 's' }}
+                    </div>
+                    @foreach($roleUsers as $user)
+                        @php
+                            $conv = collect($conversations)->first(function($c) use ($user) {
+                                return $c->user_one_id == $user->id || $c->user_two_id == $user->id;
+                            });
+                            $isActive = isset($conversation) && $conv && $conversation->id === $conv->id;
+                        @endphp
+                        <a href="{{ $conv ? route('chat.show', $conv->id) : route('chat.start', $user->id) }}"
+                           class="contact-item {{ $isActive ? 'active' : '' }} conversation-item"
+                           data-conversation-name="{{ $user->name }}">
                     <img src="{{ $user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=8B5E3C&color=fff' }}" class="avatar" alt="{{ $user->name }}">
                     <div class="contact-info">
                         <div class="name">{{ $user->name }}</div>
@@ -311,6 +392,8 @@ body, html {
                         <span class="badge">{{ $user->role }}</span>
                     @endif
                 </a>
+                    @endforeach
+                </div>
             @endforeach
         </div>
         <div class="p-3">
@@ -328,7 +411,7 @@ body, html {
             <div class="chat-header">
                 <img src="{{ $otherUser->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($otherUser->name) . '&background=8B5E3C&color=fff' }}" class="avatar" alt="User">
                 <span class="name">{{ $otherUser->name }}</span>
-                <span class="role-badge text-capitalize">{{ $otherUser->role ?? 'Partner' }}</span>
+                <span class="role-badge text-capitalize">{{ $otherUser->role == 'supplier' ? 'Importer' : $otherUser->role ?? 'Partner' }}</span>
                 <span class="status"><i class="fas fa-circle"></i> Online</span>
                
             </div>
@@ -338,7 +421,7 @@ body, html {
                         <div class="message-bubble">
                             {{ $message->message }}
                             <div class="message-meta">
-                                {{ $message->created_at->format('H:i') }}
+                                {{ $message->created_at->setTimezone('Africa/Nairobi')->format('H:i') }}
                                 @if($message->sender_id == auth()->id())
                                     {!! $message->read_at ? '<i class="fas fa-check-double text-success"></i>' : '<i class="fas fa-check text-secondary"></i>' !!}
                                 @endif
@@ -357,16 +440,16 @@ body, html {
                 <form action="{{ route('chat.store', $conversation->id) }}" method="POST" id="messageForm" class="d-flex w-100 align-items-center gap-2">
                     @csrf
                     <textarea name="message" class="form-control" placeholder="Type your message here" rows="1" id="messageInput" required></textarea>
-                    <button type="submit" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+                    <button type="submit" class="send-button"><i class="fas fa-paper-plane"></i></button>
                 </form>
             </div>
         @else
-            <div class="flex-grow-1 d-flex align-items-center justify-content-center" style="background: #f7f6f4;">
+            <div class="welcome-container" style="background: #f7f6f4; height: 100%; display: flex; align-items: center; justify-content: center; padding: 2rem;">
                 <div class="text-center">
-                    <i class="fas fa-comments fa-5x mb-4" style="color: var(--coffee-brown);"></i>
-                    <h3 style="color: #222;">Welcome to GlobalBean Connect Chat</h3>
-                    <p class="mb-4 text-muted">Select a conversation from the sidebar to start chatting with your supply chain partners.</p>
-                    <button class="btn" style="background: var(--coffee-brown); color: #fff; border-radius: 2rem;" data-bs-toggle="modal" data-bs-target="#newConversationModal">
+                    <i class="fas fa-comments fa-5x" style="color: var(--coffee-brown); display: block; margin-bottom: 2rem;"></i>
+                    <h1 style="color: #222; font-size: 2.5rem; margin-bottom: 1.5rem;">Welcome to GlobalBean Connect Chat</h1>
+                    <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Select a conversation from the sidebar to start chatting with your supply chain partners.</p>
+                    <button class="btn btn-lg" style="background: var(--coffee-brown); color: #fff; border-radius: 2rem; padding: 1rem 2rem; font-size: 1.1rem;" data-bs-toggle="modal" data-bs-target="#newConversationModal">
                         <i class="fas fa-plus me-2"></i>Start New Conversation
                     </button>
                 </div>
@@ -390,8 +473,12 @@ body, html {
             <label for="participant" class="form-label">Select User</label>
             <select class="form-select" id="participant" name="participant_id" required>
               <option value="">Choose a user...</option>
-              @foreach($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->role }})</option>
+              @foreach($users as $role => $roleUsers)
+                <optgroup label="{{ $role == 'supplier' ? 'Importers' : ucfirst(str_replace('_', ' ', $role)) . 's' }}">
+                  @foreach($roleUsers as $user)
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                  @endforeach
+                </optgroup>
               @endforeach
             </select>
           </div>
@@ -413,10 +500,150 @@ body, html {
 @endif
 
 <script>
+
+if (window.Echo) {
+    console.log('Echo is initialized');
+    window.Echo.connector.pusher.connection.bind('connected', () => {
+        console.log('Successfully connected to Pusher - Chat is ready for real-time messages');
+        console.log('Current East Africa Time:', new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' }));
+    });
+    window.Echo.connector.pusher.connection.bind('error', (error) => {
+        console.error('Pusher connection error:', error);
+    });
+} else {
+    console.error('Echo is not initialized - Real-time chat will not work');
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const messagesContainer = document.getElementById('messagesContainer');
     const messageInput = document.getElementById('messageInput');
     const messageForm = document.getElementById('messageForm');
+
+    //  Echo listener for real-time messages
+    @if(isset($conversation))
+    if (typeof window.Echo !== 'undefined') {
+        console.log('Setting up Echo listener for chat.{{ $conversation->id }}');
+        
+        // Remove any existing listeners to prevent duplicates
+        window.Echo.leave('chat.{{ $conversation->id }}');
+        
+        window.Echo.private(`chat.{{ $conversation->id }}`)
+            .listen('.MessageSent', (data) => {
+                console.log('Received real-time message:', data);
+                
+                const isOwn = data.sender_id == {{ auth()->id() }};
+                // Create a date object and format it in EAT timezone
+                const messageTime = new Date(data.created_at).toLocaleString('en-GB', { 
+                    timeZone: 'Africa/Nairobi',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+
+                const messageHtml = `
+                    <div class="message-row ${isOwn ? 'own' : ''}">
+                        <div class="message-bubble">
+                            ${data.message}
+                            <div class="message-meta">
+                                ${messageTime}
+                                ${isOwn ? '<i class="fas fa-check text-secondary"></i>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
+                scrollToBottom();
+                // Play a notification sound if the message is not from the current user
+                if (!isOwn) {
+                    try {
+                        new Audio('/assets/notification.mp3').play().catch(e => console.log('No notification sound available'));
+                    } catch (e) {
+                        console.log('Audio playback failed:', e);
+                    }
+                }
+            });
+    } else {
+        console.error('Echo is not defined! Real-time messaging will not work.');
+    }
+    @endif
+
+    // Function to mark messages as read
+    async function markMessagesAsRead() {
+        if (!messagesContainer) return;
+        
+        const conversationId = window.location.pathname.split('/').pop();
+        if (!conversationId) return;
+
+        try {
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const formData = new FormData();
+            formData.append('_token', token);
+
+            await fetch(`/chat/${conversationId}/mark-read`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin',
+                body: formData
+            }).then(response => {
+                if (!response.ok) {
+                    if (response.status === 419) {
+                        // If CSRF token is invalid, refresh the page to get a new one
+                        console.log('CSRF token expired, refreshing...');
+                        window.location.reload();
+                    }
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(data => {
+                console.log('Messages marked as read');
+            });
+        } catch (error) {
+            console.error('Error marking messages as read:', error);
+        }
+    }
+
+    // Mark messages as read when the chat is visible
+    if (document.visibilityState === 'visible') {
+        markMessagesAsRead();
+    }
+
+    // Mark messages as read when the window becomes visible
+    document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'visible') {
+            markMessagesAsRead();
+        }
+    });
+
+    // Mark messages as read when scrolling the chat
+    let markReadTimeout;
+    messagesContainer?.addEventListener('scroll', function() {
+        clearTimeout(markReadTimeout);
+        markReadTimeout = setTimeout(markMessagesAsRead, 1000);
+    });
+
+    // Function to refresh CSRF token
+    async function refreshCsrfToken() {
+        try {
+            const response = await fetch('/sanctum/csrf-cookie', {
+                method: 'GET',
+                credentials: 'same-origin'
+            });
+            if (response.ok) {
+                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                return token;
+            }
+        } catch (error) {
+            console.error('Error refreshing CSRF token:', error);
+        }
+        return null;
+    }
+
+    // Refresh CSRF token every 30 minutes
+    setInterval(refreshCsrfToken, 30 * 60 * 1000);
 
     function scrollToBottom() {
         if (messagesContainer) {
@@ -433,57 +660,76 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (messageForm) {
-        messageForm.addEventListener('submit', function(e) {
+        messageForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             const messageText = messageInput.value.trim();
             if (messageText === '') return;
-            const formData = new FormData(messageForm);
-            formData.append('message', messageText);
 
-            fetch(messageForm.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: formData
-            })
-            .then(response => {
-                const contentType = response.headers.get('content-type') || '';
+            // Try to send the message, with one retry if CSRF fails
+            async function sendMessage(shouldRefreshToken = false) {
+                if (shouldRefreshToken) {
+                    await refreshCsrfToken();
+                }
+
+                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                
+                const response = await fetch(messageForm.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        message: messageText,
+                        _token: token
+                    })
+                });
+
                 if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text); });
+                    if (response.status === 419 && !shouldRefreshToken) {
+                        // CSRF token expired, try once more with a fresh token
+                        return sendMessage(true);
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                if (contentType.includes('application/json')) {
-                    return response.json();
-                } else {
-                    throw new Error('Session expired or server error. Please refresh the page and log in again.');
-                }
-            })
-            .then(data => {
-                if (data.message_html) {
-                    messagesContainer.insertAdjacentHTML('beforeend', data.message_html);
-                    messageInput.value = '';
+
+                return response.json();
+            }
+
+            try {
+                const data = await sendMessage();
+                messageInput.value = '';
+                if (data.message) {  
+                    const messageHtml = `
+                        <div class="message-row own">
+                            <div class="message-bubble">
+                                ${data.message}
+                                <div class="message-meta">
+                                    ${new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', hour: '2-digit', minute: '2-digit', hour12: false })}
+                                    <i class="fas fa-check text-secondary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
                     messageInput.style.height = 'auto';
                     scrollToBottom();
+                    
+                    //  ensure the message is visible
+                    messagesContainer.offsetHeight;
                 } else if (data.redirect) {
                     window.location.href = data.redirect;
                 } else if (data.status === 'error' && data.errors) {
+                    console.error('Message errors:', data.errors);
                     alert('Error: ' + data.errors.join('\n'));
                 }
-            })
-            .catch(error => {
-                console.error('Error sending message:', error);
-                let msg = error.message || '';
-                alert('Debug info (show this to your developer):\n' + msg);
-                if (msg.includes('419') || msg.toLowerCase().includes('csrf')) {
-                    alert('Your session has expired (CSRF error). Please refresh the page and try again.');
-                } else if (msg.includes('401')) {
-                    alert('You are not authenticated. Please log in again.');
-                } else if (msg.includes('403')) {
-                    alert('You are not authorized to send messages in this conversation.');
-                } else {
-                    alert('Send failed: ' + msg);
-                }
-            });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to send message. The page will refresh to restore your session.');
+                window.location.reload();
+            }
         });
 
         messageInput.addEventListener('keydown', function(e) {
@@ -511,29 +757,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Laravel Echo real-time chat listener
-    @if(isset($conversation))
-    if (window.Echo) {
-        window.Echo.private('chat.{{ $conversation->id }}')
-            .listen('MessageSent', (e) => {
-                const isOwn = e.sender_id == {{ auth()->id() }};
-                const bubble = `
-                    <div class="message-row ${isOwn ? 'own' : ''}">
-                        <div class="message-bubble">
-                            ${e.message}
-                            <div class="message-meta">
-                                ${e.created_at}
-                                ${isOwn ? (e.read_at ? '<i class=\"fas fa-check-double text-success\"></i>' : '<i class=\"fas fa-check text-secondary\"></i>') : ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                const messagesContainer = document.getElementById('messagesContainer');
-                messagesContainer.insertAdjacentHTML('beforeend', bubble);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            });
-    }
-    @endif
+    // We don't need this duplicate listener - removed to avoid conflicts
 });
 </script>
 @endsection

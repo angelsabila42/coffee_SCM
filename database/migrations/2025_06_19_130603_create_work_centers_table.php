@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('workCenterID');
             $table->string('location');
             $table->string('centerName');
+          
             
         });
     }

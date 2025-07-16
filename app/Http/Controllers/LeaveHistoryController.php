@@ -14,12 +14,9 @@ class LeaveHistoryController extends Controller
     {
         // Fetch all leave history records
         $leaveHistory = LeaveHistory::with('staff')->get();
-        $staffMembersForDropdown = Staff::select('id', 'full_name')->get();
-        $workAssignments = [];
-        $totalStaffCount = 0;
-        $absentStaffCount = 0;
-        $warehouseCount = 0;
-        return view('staff_management.staff', compact('leaveHistory', 'staffMembersForDropdown', 'workAssignments', 'totalStaffCount', 'absentStaffCount', 'warehouseCount'));
+
+        // Return the view with the leave history data
+        return view('staff_management.staff', compact('leaveHistory'));
     }
 
     /**
@@ -51,6 +48,8 @@ class LeaveHistoryController extends Controller
         try {
             $staffMember = Staff::find($validatedData['staff_id']);
             if ($staffMember) {
+                $validatedData['full_name'] = $staffMember->full_name;
+
                 LeaveHistory::create($validatedData);
 
                 // Redirect back to the staff management page with a success message
@@ -122,15 +121,24 @@ class LeaveHistoryController extends Controller
     }
 
     /**
-     * Update the status of the leave record.
+     * Update the status of a leave request.
      */
-    public function updateStatus(Request $request, LeaveHistory $leaveHistory)
+    public function updateStatus(Request $request, $id)
     {
-        $request->validate([
-            'status' => 'required|string|in:Pending,Approved,Rejected,Cancelled'
-        ]);
-        $leaveHistory->status = $request->status;
-        $leaveHistory->save();
-        return response()->json(['success' => true, 'status' => $leaveHistory->status]);
+        try {
+            $leave = LeaveHistory::findOrFail($id);
+            $leave->status = $request->status;
+            $leave->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status updated successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update status: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Vendor\VendorReportsController;
+use App\Http\Controllers\QAReportController;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\ProfileController;
 
@@ -99,9 +100,16 @@ Route::middleware('auth')->group(function()
                                 Route::get('/workassignment', [WorkAssignmentController::class, 'workassign'])->name('workassignment.workassign'); // List all assignments
                                 Route::post('/workassignment', [WorkAssignmentController::class, 'store'])->name('workassignment.store'); // Store new assignment
                                 Route::get('/workassignment/{assignment_id}', [WorkAssignmentController::class, 'edit'])->name('workassignment.edit'); // Edit specific assignment
-                                //  routes for update and delete 
                                 Route::put('/workassignment/{workAssignment}', [WorkAssignmentController::class, 'update'])->name('workassignment.update');
                                 Route::delete('/workassignment/{workAssignment}', [WorkAssignmentController::class, 'destroy'])->name('workassignment.destroy');
+                                // --- Leave History Routes ---
+                                Route::get('/leavehistory', [LeaveHistoryController::class, 'leavehistory'])->name('leavehistory.leavehistory'); // List all leave history
+                                Route::post('/leavehistory', [LeaveHistoryController::class, 'store'])->name('leavehistory.store'); // Store new leave record
+                                Route::get('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'show'])->name('leavehistory.show'); // Show specific leave record
+                                Route::put('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'update'])->name('leavehistory.update'); // Update leave record
+                                Route::delete('/leavehistory/{leaveHistory}', [LeaveHistoryController::class, 'destroy'])->name('leavehistory.destroy'); // Delete leave record
+                                Route::patch('/leavehistory/{leaveHistory}/status', [LeaveHistoryController::class, 'updateStatus'])->name('leavehistory.status');
+
                             });
 
 
@@ -186,6 +194,15 @@ Route::middleware('auth')->group(function()
         Route::get('/home/report',[ReportController::class,'index'])->name('reports');
         Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name('vendor.reports');
 
+        // QA Report Routes
+        Route::prefix('qa-reports')->name('qa.')->group(function() {
+            Route::get('/', [QAReportController::class, 'index'])->name('index');
+            Route::get('/create', [QAReportController::class, 'create'])->name('create');
+            Route::post('/', [QAReportController::class, 'store'])->name('store');
+            Route::get('/{report}', [QAReportController::class, 'show'])->name('show');
+            Route::delete('/{report}', [QAReportController::class, 'destroy'])->name('destroy');
+        });
+
         /*Order Routes*/
         Route::get('/home/orders', [OrderController::class, 'index'])->name('order.index');
         Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
@@ -216,11 +233,12 @@ Route::middleware('auth')->group(function()
 
         // Chat Routes
         Route::get('/chat', [ChatController::class, 'index'])->name('chat');
+            Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+            Route::get('/chat/start/{participant}', [ChatController::class, 'start'])->name('chat.start');
             Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
             Route::post('/chat/{conversation}', [ChatController::class, 'store'])->name('chat.store');
             Route::get('/chat/{conversation}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
-            Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
-            Route::get('/chat/start/{participant}', [ChatController::class, 'start'])->name('chat.start');
+            Route::post('/chat/{conversation}/mark-read', [ChatController::class, 'markAsRead'])->name('chat.markRead');
 
         Route::get('/stock', function () {
             return view('stock');
@@ -272,6 +290,17 @@ Route::middleware('auth')->group(function()
         Route::get('/keep-alive', function () {
             return response()->json(['alive' => true]);
         });
+ 
+
+        // QA Reports
+
+    Route::get('/qa-reports', [QAReportController::class, 'index'])->name('qa.index');
+    Route::get('/qa-reports/create', [QAReportController::class, 'create'])->name('qa.create');
+    Route::post('/qa-reports', [QAReportController::class, 'store'])->name('qa.store');
+    Route::get('/qa-reports/{report}', [QAReportController::class, 'show'])->name('qa.show');
+    Route::delete('/qa-reports/{report}', [QAReportController::class, 'destroy'])->name('qa.destroy');
+
+
 
 
 
@@ -347,4 +376,5 @@ Route::get('/transporter/transactions', [transporterController::class,'transacti
      
 
 });
+
 

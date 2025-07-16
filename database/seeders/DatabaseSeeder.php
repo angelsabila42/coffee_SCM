@@ -8,9 +8,9 @@ use App\Models\importerModel;
 use App\Models\IncomingOrder;
 use App\Models\OutgoingOrder;
 use App\Models\User;
+use App\Models\Vendor;
 use App\Models\WorkCenter;
 use App\Models\Staff;
-use App\Models\LeaveHistory;
 use Database\Factories\IncomingOrderFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,15 +22,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-
-        // User::factory()->create([
-        //     'name' => 'Admin',
-        //     'email' => 'admin@lightbp.com',
-        //     'password' => Hash::make('secret'),
-            
-        // ]);
+        
 
         $this->call([
 
@@ -41,11 +33,10 @@ class DatabaseSeeder extends Seeder
             OutgoingOrderSeeder::class,
             SalesReportSeeder::class,
             DeliveryReportSeeder::class,
-            WorkCenterSeeder::class,
             ChatTestSeeder::class,
             InventorySeeder::class,
+            StaffSeeder::class,
             paymentSeeder::class, // Add chat test data
-
         ]);
 
     }
