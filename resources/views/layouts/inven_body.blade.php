@@ -49,6 +49,7 @@
         @extends('layouts.stock_modal')
 <div>
 <div class="col-md-12">
+
     {{-- <div class="d-flex justify justify-content-between align-items-center">
         <form method="GET" action="{{url('/inventory')}}"class="mb-3">
             <input type="text" name="search" class="form-control" placeholder="search..."
@@ -58,9 +59,8 @@
     <div class="row mt-4">
         <p class="mr-2">Robusta in stock: {{ $robustaStock }} kg</p>
         <p class="ml-2">Arabica in stock: {{ $arabicaStock }} kg</p>    
-    </div>
-       <livewire:inventory/>
-       
+
+       <livewire:inventory/>    
     
 </div>
 </div>
