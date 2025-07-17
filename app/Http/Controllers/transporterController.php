@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\ImporterModel;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Transporter;
 use App\Models\Delivery;
 use Illuminate\Http\Request;
@@ -154,10 +156,15 @@ class transporterController extends Controller
     }
 
  public function transactions(){
+    $user = Auth::user();
 
         $invoices = Invoice::paginate(10);
           $payments = Payment::paginate(10);
-    return view('transporter_transactions', compact('invoices', 'payments'));
+          $transporter = Transporter::where('email', $user->email)->first();
+          $account_no = $transporter && $transporter->bank_account_no ? $transporter->bank_account_no : 'Not set';
+        $user = $transporter->name;
+        
+    return view('transporter_transactions', compact('invoices', 'payments','account_no','user'));
  }
 
 
@@ -181,11 +188,6 @@ class transporterController extends Controller
     
     transporter::create($validated);
 
-   //   $fields = collect($validated)->only([
-   //      'name','email','password'
-   //       ])->toArray();
-
-   //  User::create($fields);
      return redirect()->route('transporter.transactions')->with('success', 'registration successful');
     }
     
@@ -288,4 +290,19 @@ class transporterController extends Controller
             ], 404);
         }
     }
+
+    
+    public function showPayment($id)
+{
+    $payment = Payment::findOrFail($id); 
+    return view('payments.transporterPay', compact('payment'));
+}
+
+public function download($id)
+{
+    $payment = Payment::findOrFail($id);
+
+    $pdf = Pdf::loadView('payments.TransPayDownload', compact('payment'));
+    return $pdf->download('payment_details_' . $payment->invoice_id . '.pdf');
+}
 }

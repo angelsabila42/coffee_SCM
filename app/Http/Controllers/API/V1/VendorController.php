@@ -68,6 +68,21 @@ class VendorController extends Controller
 
    public function pdfValidation(Request $request){
 
+
+      $validated = $request->validate([
+              'name' => 'required',
+            'email' => 'required|email|unique:vendor,email',
+           // 'password' => ['required','confirmed','min:8'],
+            'street' => '',
+              'city' => '',
+            'phone_number' => 'required|regex:/^07[0-9]{8}$/',
+            // 'document' => 'required|file|mimes:pdf',
+            'Bank_account' => 'required|max:2048',
+         'Account_holder'=> 'required|max:2048',
+         'Bank_name' => 'required|max:2048',
+        
+        ]);
+
      if ($request->hasFile('financial_statement') && $request->hasFile('national_id') && $request->hasFile('UCDA')) {
     $financialStatement = $request->file('financial_statement');
     $nationalId = $request->file('national_id');
@@ -77,7 +92,7 @@ class VendorController extends Controller
     $nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()));
     $ucdaBase64 = base64_encode(file_get_contents($ucda->getRealPath()));
      } else {
-        return response()->json(['message' => 'Please upload all required documents'], 400);
+        return redirect()->back()->with('message' , 'Please upload all required documents');
     }
 
 // $nationalId = $request->file('national_id');
@@ -99,7 +114,7 @@ class VendorController extends Controller
 
         if ($res->successful()) {
 
-          if (str_contains($res->body(),'successful')) {
+          if ($res->body() == 'Validation successful.') {
 
       
       
@@ -109,9 +124,8 @@ class VendorController extends Controller
           return redirect()->back()->with('success','vendor registered successfully');
 
                 } else {
-        return $res->body();
-          // return response()->json(['validation failed' => 'please upload valid documents '], 400);
-      }
+       // return $res->body();
+           return  redirect()->back()->with('error','registration failed, please upload valid documents');}
       
       # code...
       
@@ -153,7 +167,7 @@ class VendorController extends Controller
               ])->toArray();
 
           User::create($fields);*/
-        return redirect()->route('vendor.home')->with('success', 'Vendor registered successfully');
+        return redirect()->route('vendorhome')->with('success', 'Vendor registered successfully');
        // return response()->json(['message' => 'Vendor registered successfully']);
 
         }

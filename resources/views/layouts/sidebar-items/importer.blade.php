@@ -1,4 +1,4 @@
-@section('sidebar-item')
+@section('sidebar-items')
 <ul class="sidebar-nav">
         <li class="sidebar-item">
              <a href="{{route('importer.dashboard')}}" class="sidebar-link">

@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\importerModel;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -130,4 +131,18 @@ public function destroy(IncomingOrder $order)
 
      return redirect()->route('importer.dashboard')->with('success', 'registration successful');
     }
+
+        public function showPayment($id)
+{
+    $payment = Payment::findOrFail($id); 
+    return view('payments.ImporterPay', compact('payment'));
+}
+
+public function download($id)
+{
+    $payment = Payment::findOrFail($id);
+
+    $pdf = Pdf::loadView('payments.ImporterPayDownload', compact('payment'));
+    return $pdf->download('payment_details_' . $payment->invoice_id . '.pdf');
+}
 }

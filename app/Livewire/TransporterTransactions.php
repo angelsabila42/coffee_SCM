@@ -58,13 +58,13 @@ class TransporterTransactions extends Component
         $transporter = Transporter::where('email', $user->email)->first();
         $transporterId = $transporter ? $transporter->id : null;
 
-        if ($this->tab === 'invoices') {
-            return Invoice::query()
-                ->where('transporter_id', $transporterId)
-                ->when($this->search, fn($q) => $q->where('invoice_number', 'like', "%{$this->search}%"))
-                ->when($this->status, fn($q) => $q->where('status', $this->status))
-                ->paginate(10);
-        }
+        // if ($this->tab === 'invoices') {
+        //     return Invoice::query()
+        //         ->where('transporter_id', $transporterId)
+        //         ->when($this->search, fn($q) => $q->where('invoice_number', 'like', "%{$this->search}%"))
+        //         ->when($this->status, fn($q) => $q->where('status', $this->status))
+        //         ->paginate(10);
+        // }
 
         return Payment::query()
             ->where('transporter_id', $transporterId)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Payment;
+
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Storage;
 use App\Services\ActivityLogger;
@@ -135,4 +136,7 @@ class PaymentController extends Controller
 
         return redirect()->route('payments.index')->with('success', 'Payment record deleted successfully!');
     }
+
+
+
 }

@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
        'importer' => \App\Http\Middleware\ImporterMiddleware::class,
        'transporter' => \App\Http\Middleware\TransporterMiddleware::class,
          'vendor' => \App\Http\Middleware\VendorMiddleware::class,
+         'admin' => \App\Http\Middleware\AdminMiddleware::class,
     ];
 }
