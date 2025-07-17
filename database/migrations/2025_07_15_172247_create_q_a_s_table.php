@@ -11,24 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('q_a_s', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('reportID')->unique();
-            $table->date('date');
-            $table->string('testers_initials');
-            $table->string('region');
-            $table->foreignId('vendor_id')->constrained('vendor');
-            $table->string('ref');
-            $table->string('crop_year');
-            $table->string('screen_description')->nullable();
-            $table->string('color');
-            $table->json('defects')->nullable();
-            $table->string('fragrance');
-            $table->decimal('moisture_content', 8, 2);
-            $table->text('overall_impression');
-            $table->enum('status', ['draft', 'submitted'])->default('draft');
-        });
+        // Skip creation if the table already exists
+        if (!Schema::hasTable('q_a_s')) {
+            Schema::create('q_a_s', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+                $table->string('reportID')->unique();
+                $table->date('date');
+                $table->string('testers_initials');
+                $table->string('region');
+                $table->foreignId('vendor_id')->constrained('vendor');
+                $table->string('ref');
+                $table->string('crop_year');
+                $table->string('screen_description')->nullable();
+                $table->string('color');
+                $table->json('defects')->nullable();
+                $table->string('fragrance');
+                $table->decimal('moisture_content', 8, 2);
+                $table->text('overall_impression');
+                $table->enum('status', ['draft', 'submitted'])->default('draft');
+            });
+        }
     }
 
 
