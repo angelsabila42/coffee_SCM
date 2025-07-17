@@ -124,14 +124,24 @@ class LeaveHistoryController extends Controller
     public function updateStatus(Request $request, $id)
     {
         try {
+            $validatedData = $request->validate([
+                'status' => 'required|string|in:Pending,Approved,Rejected,Cancelled'
+            ]);
+
             $leave = LeaveHistory::findOrFail($id);
-            $leave->status = $request->status;
+            $leave->status = $validatedData['status'];
             $leave->save();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Status updated successfully'
             ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid status value',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
