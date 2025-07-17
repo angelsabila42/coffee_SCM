@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class VendorHomeController extends Controller
 {
     public function countOrders(){
-        $vendorID = 3; //testing purposes
+        $vendorID = 1; //testing purposes
         $count = OutgoingOrder::where('vendor_id', $vendorID)
                 ->where('status','Confirmed')
                 ->count();

@@ -330,8 +330,8 @@ a.sidebar-link{
 
 a.sidebar-link:hover{
     /* background-color:rgba(255,255,255,0.1);*/
-    border-left: 3px solid #f39c12; 
-     color: #ffffff;
+    /* border-left: 3px solid   */
+     color: #FFFAA0;
     background: rgba(255, 255, 255, 0.1);
     transform: translateX(5px);
 
@@ -450,10 +450,6 @@ body {
     color:  #4b2e2e !important;
 }
 
-.card-header{
-  background: #fff !important;
-  border-bottom: 0 ! important;
-}
 
 /* Content Animation */
 .tab-pane.fade {
@@ -546,6 +542,8 @@ body {
 .card-header{
   color:#4b2e2e;
   font-weight: 700;
+  background: #fff !important;
+  border-bottom: 0 ! important;
 }
 
 .kpi-card{
@@ -754,12 +752,19 @@ body {
 }
 
 /* Compact table and card styles for deliveries and transactions */
-.table th, .table td {
+ .table td {
     padding-top: 0.35rem !important;
     padding-bottom: 0.35rem !important;
     font-size: 0.95rem !important;
     vertical-align: middle !important;
 }
+
+.table th {
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+    vertical-align: middle !important;
+}
+
 .card-header, .card-footer {
     padding-top: 0.5rem !important;
     padding-bottom: 0.5rem !important;
@@ -792,4 +797,27 @@ body {
   border-radius: 4px;
   display: inline-block;
   vertical-align: middle;
+}
+
+/* Bootstrap 5 to 4 Compatibility Classes */
+/* Add this at the end of your custom.css file */
+
+/* Bootstrap 5 btn-close to Bootstrap 4 close compatibility */
+.btn-close {
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  padding: 0.25em 0.25em;
+  color: #000;
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  border: 0;
+  border-radius: 0.25rem;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+/* Compatibility script for converting data-bs-* to data-* attributes */
+#chart1 {
+  width: 300px;
+  margin: 0 auto;
 }

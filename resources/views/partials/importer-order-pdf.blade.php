@@ -13,6 +13,7 @@
 <body>
     <h4 style="margin: 15px 0;"><strong> OrderID: {{$order->orderID}} </strong></h4>
 
+       <p class="row"><b>From: </b> {{$order->importerModel->name}} </p>
        <p class="row"><b>Date Sent: </b> {{$order->created_at}} </p>
        <p class="row"><b>Coffee Type: </b> {{$order->coffeeType}} </p>
         

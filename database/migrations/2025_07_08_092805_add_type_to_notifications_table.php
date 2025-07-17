@@ -10,10 +10,10 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-     {
-    //     Schema::table('notifications', function (Blueprint $table) {
-    //         $table->string('type')->after('id');
-    //     });
+    {
+        Schema::table('notifications', function (Blueprint $table) {
+            //$table->string('type')->after('id');
+        });
     }
 
     /**
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('notifications', function (Blueprint $table) {
-            $table->dropColumn('type');
+            //$table->dropColumn('type');
         });
     }
 };

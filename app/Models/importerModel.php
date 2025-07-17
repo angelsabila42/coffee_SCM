@@ -13,8 +13,7 @@ class ImporterModel extends Model
       protected $fillable = [
         'name',
         'email',
-        'password',
-         'country',
+        'country',
         'phone_number',
         'address',
         'confirm password',
@@ -35,6 +34,14 @@ class ImporterModel extends Model
      */
     public function invoices(){
         return $this->hasMany(Invoice::class);
+    }
+
+    public function demands(){
+        return $this->hasMany(ImporterDemand::class, 'importer_model_id');
+    }
+
+    public function demandQuantity(){
+        return $this->hasMany(QuantitiyDemand::class);
     }
 
 }

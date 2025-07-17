@@ -50,7 +50,7 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> 
 
                         <div class="row mb-3">
                             <label for="phone_number " class="card-title col-md-4 col-form-label text-md-end">{{ __('Phone number') }}</label>
@@ -64,7 +64,7 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> 
 
                         <div class="row mb-3">
                             <label for="street" class="card-title col-md-4 col-form-label text-md-end">{{ __('street') }}</label>
@@ -120,7 +120,7 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> 
 
                          <div class="row mb-3">
                             <label for="Bank_name" class="card-title col-md-4 col-form-label text-md-end">{{ __('Bank_name') }}</label>
@@ -148,7 +148,7 @@
 
                              <input id="financial_statement" type="file" class="form-control @error('financial_statement') is-invalid @enderror" name="financial_statement" >
                        
-                            </div>
+                            </div> 
 
                          <div style="display: flex">
                           <label for="national_id" class="card-title col-md-4 col-form-label text-md-end">{{ __('national_id') }}</label>

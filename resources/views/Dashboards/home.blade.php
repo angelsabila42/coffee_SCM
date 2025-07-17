@@ -7,65 +7,8 @@
 
 @section('content')
 <!--top cards-->
-{{-- <div class="row">
-      <div class="col-md-3" >
-         <div class="card kpi-card">
-            <div class="card-header ">
-            <div class="d-flex justify-content-between align-items-center">
-            <h4 class="card-title text-muted">Total Orders</h4>
-               <span class="kpi-icon order"><i class="fa-solid fa-bag-shopping"></i></span>
-            </div>
-               
-            </div>
-               <div class="card-body">
-               <h3 class="ml-2 kpi-figure"> {{$order}} </h3> 
-               {{-- <div id="chart-j" class="kpi-chart-container"></div> --}}
-               {{-- </div>  
-         </div>
-      </div>
-        <div class="col-md-3" >
-         <div class="card kpi-card">
-            <div class="card-header ">
-            <div class="d-flex justify-content-between align-items-center">
-            <h4 class="card-title text-muted">Total Income</h4>
-               <span class="kpi-icon money"><i class="fa-solid fa-money-bill"></i></span>
-            </div>
-            </div>
-               <div class="card-body "> --}}
-               {{-- <div class="kpi-chart-container"></div> --}} 
-               {{-- <h3 class="ml-2">$1,453,221,324</h3>
-               </div>
-            </div>
-        </div>
-         <div class="col-md-3" >
-         <div class="card kpi-card">
-            <div class="card-header ">
-            <div class="d-flex justify-content-between align-items-center">
-            <h4 class="card-title text-muted">Partners</h4>
-               <span class="kpi-icon partner"><i class="fa-solid fa-handshake"></i></span>
-            </div>   
-            </div>
-               <div class="card-body "> --}}
-               {{-- <div class="kpi-chart-container"></div> --}}
-               {{-- <h3 class="ml-2"> {{$partners}} </h3>    
-               </div>
-         </div>
-      </div>
-       <div class="col-md-3" >
-         <div class="card kpi-card">
-            <div class="card-header ">
-             <div class="d-flex justify-content-between align-items-center">
-            <h4 class="card-title text-muted">Active Deliveries</h4>
-               <span class="kpi-icon delivery"><i class="fa-solid fa-truck-fast"></i></span>
-            </div> 
-            </div>
-               <div class="card-body "> --}} 
-                    {{-- <div class="kpi-chart-container"></div>  --}}
-                    {{-- <h3 class="ml-2">8</h3>    
-               </div>
-         </div>
-      </div>
-</div> --}}
+
+
 
 <div class="row g-4">
         <!-- Total Orders Card -->

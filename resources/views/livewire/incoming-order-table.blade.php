@@ -27,6 +27,7 @@
                                 <div class="card-body table-full-width table-responsive">
                                     <table class="table table-hover">
                                         <thead class="bg-light">
+                                            <th>#</th>
                                             <th>OrderID</th>
                                             <th>Importer Name</th>
                                             <th>Coffee Type</th>
@@ -38,8 +39,9 @@
                                         </thead>
                                         <tbody>
                                         @foreach($orders as $order)
-                                            <tr wire:key= "{{$order->id}}"  onclick="window.location= '{{route('order.show-in', $order->id)}}' " class="cur" >
-                                                 <td class=""> {{$order->orderID}} </td>
+                                            <tr wire:key= "{{$order->id}}"  onclick="window.location= '{{route('orders.view-importer-order', $order->id)}}' " class="cur" >
+                                                <td class=""> {{$order->id}} </td>
+                                                <td class=""> {{$order->orderID}} </td>
                                                 <td class=""> {{$order->importerModel->name}} </td>
                                                 <td class=""> {{$order->coffeeType}} </td>
                                                 <td class=""> {{$order->quantity}} </td>

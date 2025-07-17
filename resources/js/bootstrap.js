@@ -1,4 +1,5 @@
-import 'bootstrap';
+// Bootstrap 5 import removed to prevent conflicts with Bootstrap 4
+// import 'bootstrap';
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -24,7 +25,12 @@ window.Pusher = Pusher;
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: import.meta.env.VITE_PUSHER_APP_KEY || process.env.MIX_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER || process.env.MIX_PUSHER_APP_CLUSTER,
-    forceTLS: true
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    wsHost: import.meta.env.VITE_PUSHER_HOST || `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
+    wsPort: import.meta.env.VITE_PUSHER_PORT || 443,
+    wssPort: import.meta.env.VITE_PUSHER_PORT || 443,
+    forceTLS: (import.meta.env.VITE_PUSHER_SCHEME || 'https') === 'https',
+    enabledTransports: ['ws', 'wss'],
+    disableStats: true
 });

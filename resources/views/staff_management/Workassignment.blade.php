@@ -83,7 +83,7 @@
         </button> --}}
     </div>
 
-    <livewire:work-assignment/>
+    <livewire:work-assignment-model/>
 
 
     <div class="card-body table-full-width table-responsive">

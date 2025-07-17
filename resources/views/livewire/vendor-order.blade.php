@@ -16,7 +16,38 @@
             </h5>
         </div>
         <div class="card-body">
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0" style="color: #8B4513; font-weight: 700;">My Orders</h2>
+        <div>
+            <button class="btn" onclick="window.location.reload()" style="background-color: #8B4513; color: white; border-radius: 20px;">
+                <i class="bx bx-refresh"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="card mb-4" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div class="card-header" style="background-color: #8B4513; color: white; border-radius: 10px 10px 0 0;">
+            <h5 class="mb-0">
+                <i class="bx bx-search"></i> Search & Filter Orders
+            </h5>
+        </div>
+        <div class="card-body">
             <div x-data="advancedFilter">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="form-group mb-0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: #F5F5DC; border-color: #F5F5DC;">
+                                        <i class="bx bx-search" style="color: #8B4513;"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Search orders..." 
+                                       wire:model.live.debounce.250ms="search"
+                                       style="border: 2px solid #F5F5DC; border-left: none;">
+                            </div>
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="form-group mb-0">
@@ -35,6 +66,10 @@
                     <div class="col-md-6 text-right">
                         <button @click="toggle" class="btn" style="background-color: #CD853F; color: white; border-radius: 20px;">
                             <i class="bx bx-filter"></i> Advanced Filter
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button @click="toggle" class="btn" style="background-color: #CD853F; color: white; border-radius: 20px;">
+                            <i class="bx bx-filter"></i> Advanced Filter
                         </button>
                     </div>
                 </div>
@@ -42,9 +77,53 @@
             </div>
         </div>
     </div>
-
+                            <div class="table-plain-bg">
+                                <div class="card-body table-full-width table-responsive">
+                                <div x-data= "confirmDeleteModal">
+                                    <table class="table table-hover" >
+                                        <thead class="bg-light">
+                                            <th>#</th>
+                                            <th>OrderID</th>
+                                            <th>Coffee Type</th>
+                                            <th>Quantity</th>
+                                            <th>Status</th>
+                                            <th>Date Sent</th>
+                                            <th class=" d-flex justify-content-center align-items-center">Actions</th>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($orders as $order)
+                                            <tr wire:key= "{{$order->id}}" onclick="window.location= '{{route('vendor.order.show', $order->id)}}' " class="cur">
+                                                <td class=""> {{$order->id}} </td>
+                                                <td class=""> {{$order->orderID}} </td>
+                                                <td class=""> {{$order->coffeeType}} </td>
+                                                <td class=""> {{$order->quantity}} </td>
+                                                <td x-data= "{selectedStatus: '{{$order->status}}',
+                                                    statuses: ['Requested','Pending', 'Declined', 'Delivered', 'Confirmed' ]}"
+                                                    x-init="console.log('Selected:', selectedStatus)">
+                                                    <select 
+                                                    @@click.stop
+                                                    @@change.stop
+                                                    class="form-control form-control-sm badge badge-sm {{$order->status_badge}}"
+                                                    x-model= "selectedStatus"
+                                                    @@change= "$dispatch('statusChanged', {id: {{$order->id}}, status: $event.target.value})">
+                                                           
+                                                            <template x-for= "status in statuses" :key = "status + '-{{$order->id}}'">
+                                                                <option :value= "status" x-text= "status" :selected= "status === selectedStatus"></option>
+                                                            </template>
+                                                    </select> 
+                                                </td>
+                                                <td class=""> {{$order->created_at}} </td>
+                                                <td class= "d-flex justify-content-center align-items-center">
+                                                <button class="btn btn-danger btn-sm btn-fill py-1 px-3 cur" x-data="confirmDeleteModal" @@click="confirmDeleteOrder({{$order->id}}, '{{$order->orderID}}')" @@click.stop>
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                                </td>
+                                            </tr>
+                                         @endforeach    
+                                        </tbody>
+                                    </table>
     <!-- Orders Table -->
-    <div class="card" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    {{-- <div class="card" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <div class="card-header" style="background-color: #8B4513; color: white; border-radius: 10px 10px 0 0;">
             <h5 class="mb-0">
                 <i class="bx bx-list-ul"></i> Orders Management
@@ -99,8 +178,8 @@
                                                 style="background-color: #A0522D; color: white; border-radius: 15px;">
                                             <i class="bx bx-edit"></i> Edit
                                         </button>
-                                        @endif
-                                    </div>
+                                        @endif --}}
+                                    {{-- </div>
                                 </td>
                             </tr>
                         @empty
@@ -114,10 +193,13 @@
                             </tr>
                         @endforelse
                         </tbody>
-                    </table>
-                </div>
+                    </table> --}}
+                {{-- </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+</div>
+</div>
+</div>
 </div>
 

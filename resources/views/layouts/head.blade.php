@@ -32,8 +32,8 @@
     <script src="{{asset('assets/js/delete-confirmation.js')}}"></script>
 
     <!-- Scripts -->
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Only loading app.js for Echo functionality, but not Bootstrap 5 -->
+    @vite(['resources/js/app.js'])
     @livewireStyles
  
 </head>
