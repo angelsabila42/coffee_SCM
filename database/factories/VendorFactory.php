@@ -17,12 +17,14 @@ class VendorFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'=> fake()->name(),
-            'password'=> fake()->password(),
-            'email'=> fake()->email(),
-            'phone_number'=> fake()->phoneNumber(),
-            'street'=> fake()->streetName(),
-            'city'=> fake()->city(),        
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'phone_number' => fake()->phoneNumber(),
+            'street' => fake()->streetName(),
+            'city' => fake()->city(),
+            'Bank_account' => fake()->numerify('###########'),
+            'Account_holder' => fake()->name(),
+            'Bank_name' => fake()->company(),
         ];
     }
 }

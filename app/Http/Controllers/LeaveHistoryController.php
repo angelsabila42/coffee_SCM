@@ -48,8 +48,6 @@ class LeaveHistoryController extends Controller
         try {
             $staffMember = Staff::find($validatedData['staff_id']);
             if ($staffMember) {
-                $validatedData['full_name'] = $staffMember->full_name;
-
                 LeaveHistory::create($validatedData);
 
                 // Redirect back to the staff management page with a success message

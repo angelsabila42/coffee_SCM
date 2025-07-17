@@ -19,10 +19,12 @@ class importerModelFactory extends Factory
         return [
             'name'=> fake()->name(),
             'email'=> fake()->email(),
-            'password'=> fake()->password(),
             'country'=> fake()->country(),
             'phone_number'=> fake()->phoneNumber(),
-            'address'=> fake()->address()
+            'address'=> fake()->address(),
+            'Bank_account' => fake()->bankAccountNumber(),
+            'Account_holder' => fake()->name(),
+            'Bank_name' => fake()->company()
         ];
     }
 }

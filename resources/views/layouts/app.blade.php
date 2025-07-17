@@ -46,5 +46,6 @@
     @include('layouts.scripts.scripts')
     @include('layouts.scripts.chart_scripts')
     @yield('scripts')
+    @stack('scripts')
 </body>
 </html>

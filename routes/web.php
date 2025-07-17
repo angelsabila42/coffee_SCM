@@ -93,6 +93,8 @@ Route::middleware('auth')->group(function()
                                 Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
                                 Route::get('/staff/{staff}', [StaffController::class, 'show'])->name('staff.show');
                                 Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
+                                Route::patch('/staff/{staff}/status', [StaffController::class, 'updateStatus'])->name('staff.status');
+                                Route::post('/staff/{staff}/profile-picture', [StaffController::class, 'updateProfilePicture'])->name('staff.updateProfilePicture');
                                 Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
 
 
@@ -391,6 +393,10 @@ Route::post('/notifications/mark-as-read', function () {
     Auth::user()->unreadNotifications->markAsRead();
     return response()->json(['success' => true]);
 })->middleware('auth');
+
+// Staff profile picture routes
+Route::post('/staff/{id}/profile-picture', [StaffController::class, 'updateProfilePicture'])->name('staff.updateProfilePicture');
+Route::get('/staff/{id}/details', [StaffController::class, 'getStaffDetails'])->name('staff.get-details');
 
 
 

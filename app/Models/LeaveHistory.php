@@ -22,8 +22,7 @@ class LeaveHistory extends Model
         'leave_type',
         'start_date',
         'end_date',
-        'status',
-        'full_name',
+        'status'
     ];
 
     /**
