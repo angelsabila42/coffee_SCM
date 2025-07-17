@@ -14,9 +14,11 @@
         </div>
        
         <div class="card-body" style="background-color: #FAFAFA;">
-            @if($invoices->count())
+            @if(@isset($account_no )&& @isset($user))
+                
+            
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
+                    {{-- <div>
                         <div class="mb-2">
                             <i class="bx bx-building" style="color: #8B4513;"></i>
                             <strong style="color: #8B4513;">Company:</strong> {{ Auth::user()->name ?? 'Not Available' }}
@@ -36,6 +38,12 @@
                             <div style="color: #8B4513; font-weight: 600;">Total Transactions</div>
                             <div style="font-size: 1.5rem; font-weight: bold; color: #8B4513;">{{ $invoices->count() + $payments->count() }}</div>
                         </div>
+                    </div> --}}
+                    <div>
+                        <div><strong>Bank Name:</strong> {{ $transporter->bank_name ?? 'Not set' }}</div>
+                        <div><strong>Email:</strong> {{ Auth::user()->email ?? 'Not Available' }}</div>
+                       <div><strong>Account Number:</strong> {{ $account_no }}</div>
+                        <div><strong>Account Holder:</strong> {{ $user }}</div>
                     </div>
                 </div>
             @else

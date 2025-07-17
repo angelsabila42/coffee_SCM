@@ -2,9 +2,9 @@
     {{-- Tabs --}}
     <div class="card mb-3">
          <ul class="nav nav-pills m-3">
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a href="#" wire:click.prevent="$set('tab', 'invoices')" class="nav-link {{ $tab === 'invoices' ? 'active bg-primary text-white' : '' }}">Invoices</a>
-        </li>
+        </li> --}}
         <li class="nav-item">
             <a href="#" wire:click.prevent="$set('tab', 'payments')" class="nav-link {{ $tab === 'payments' ? 'active bg-primary text-white' : '' }}">Payments</a>
         </li>
@@ -43,7 +43,7 @@
     <div class=" card  card card-plain table-plain-bg">
         <table class="table table-hover table-responsive fw-bold fs-5">
             <thead>
-                @if ($tab === 'invoices')
+                {{-- @if ($tab === 'invoices')
                 <tr>
                     <th>InvoiceID</th>
                     <th>Issued on</th>
@@ -52,7 +52,7 @@
                     <th>Due date</th>
                     <th>Status</th>
                 </tr>
-                @else
+                @else --}}
                 <tr>
                     <th>InvoiceID</th>
                     <th>Payer</th>
@@ -63,7 +63,7 @@
                     <th>Coffee Type</th>
                     <th>Recipient Name</th>
                 </tr>
-                @endif
+                {{-- @endif --}}
             </thead>
             <tbody>
                 @forelse($records as $record)
@@ -81,8 +81,8 @@
                     
 
                 @endphp
-                    @if ($tab === 'invoices')
-                        <tr>
+                    {{-- @if ($tab === 'invoices')
+                        <tr >
                             <td>{{ $record->invoice_number }}</td>
                             <td>{{ $record->invoice_date }}</td>
                             <td>{{ $record->id }}</td>
@@ -90,8 +90,9 @@
                             <td>{{ $record->updated_at }}</td>
                             <td>{{ $record->status }}</td>
                         </tr>
-                    @else
-                        <tr>
+                    @else --}}
+                        <tr onclick="window.location='{{ route('ImporterPayments.show', $record->id) }}'"
+                                  style="cursor: pointer;">
                             <td>{{ $record->invoice_id }}</td>
                             <td>{{ $record->payer }}</td>
                             <td>{{ $record->amount_paid }}</td>
@@ -101,10 +102,10 @@
                             <td>{{ $record->coffee_type }}</td>
                             <td>{{ $record->recipient_name }}</td>
                         </tr>
-                    @endif
+                    {{-- @endif --}}
                 @empty
                     <tr>
-                        <td colspan="{{ $tab === 'invoices' ? 6 : 8 }}" class="text-center">No records found.</td>
+                        <td colspan="{{ $tab === 'payments' ? 6 : 8 }}" class="text-center">No records found.</td>
                     </tr>
                 @endforelse
             </tbody>
