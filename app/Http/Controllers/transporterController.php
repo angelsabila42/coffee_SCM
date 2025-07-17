@@ -204,19 +204,13 @@ class transporterController extends Controller
             'Bank_name' => 'required|string|max:255',
         ]);
         
-        try {
-            if ($transporter) {
-                $transporter->update($validated);
-            } else {
-                $validated['email'] = $user->email;
-                $validated['name'] = $user->name;
-                Transporter::create($validated);
-            }
-            
-            return redirect()->route('transporter.profile')->with('success', 'Profile updated successfully!');
-        } catch (\Exception $e) {
-            return redirect()->route('transporter.profile')->with('error', 'Failed to update profile. Please try again.');
+        if ($transporter) {
+            $transporter->update($validated);
+        } else {
+            Transporter::create($validated);
         }
+        
+        return redirect()->route('transporter.profile')->with('success', 'Profile updated successfully!');
     }
     
     public function updateBanking(Request $request) {
@@ -287,12 +281,15 @@ class transporterController extends Controller
                 'success' => true,
                 'delivery' => $delivery
             ]);
-        } catch (\Exception $e) {
+        } 
+        catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Delivery not found'
-            ], 404);
+            ]);
         }
     }
-    
 }
+   
+        
+    
