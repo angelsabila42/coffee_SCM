@@ -283,26 +283,17 @@ class transporterController extends Controller
                 'success' => true,
                 'delivery' => $delivery
             ]);
-        } catch (\Exception $e) {
+        } 
+        catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Delivery not found'
-            ], 404);
+
+            ]);
         }
     }
 
+}
+   
+        
     
-    public function showPayment($id)
-{
-    $payment = Payment::findOrFail($id); 
-    return view('payments.transporterPay', compact('payment'));
-}
-
-public function download($id)
-{
-    $payment = Payment::findOrFail($id);
-
-    $pdf = Pdf::loadView('payments.TransPayDownload', compact('payment'));
-    return $pdf->download('payment_details_' . $payment->invoice_id . '.pdf');
-}
-}
