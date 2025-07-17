@@ -17,13 +17,13 @@ class RedirectIfAuthenticated
      * @return mixed
      */
     public function handle(Request $request, Closure $next, ...$guards)
-    {
+    { dd('RedirectIfAuthenticated middleware hit');
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 // Change '/dashboard' to your desired route if needed
-                return redirect('/reg/vendor');
+                return redirect('/welcome');
             }
         }
 

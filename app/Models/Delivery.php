@@ -34,4 +34,12 @@ class Delivery extends Model
       public function notification(){
         return $this->belongsTo(Notification::class);
     }
+    
+    /**
+     * Get the order associated with this delivery.
+     */
+    public function order()
+    {
+        return $this->belongsTo(IncomingOrder::class, 'order_reference');
+    }
 }

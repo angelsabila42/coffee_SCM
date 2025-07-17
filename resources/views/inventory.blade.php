@@ -1,4 +1,4 @@
-@extends('layouts.app1')
+@extends('layouts.app')
 @section('page-title', 'Inventory Management')
 @section('sidebar-items')
 @include('layouts.sidebar-items.admin')

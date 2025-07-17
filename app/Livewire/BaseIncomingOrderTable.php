@@ -9,6 +9,7 @@ use App\Models\IncomingOrder;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Services\ActivityLogger;
+use Illuminate\Support\Facades\Auth;
 
 
 abstract class BaseIncomingOrderTable extends Component
@@ -61,7 +62,7 @@ abstract class BaseIncomingOrderTable extends Component
         ->get();
     }
 
-      #[On('statusChanged')]
+    #[On('statusChanged')]
    public function updateStatus($id, $status){
     $order= IncomingOrder::findOrFail($id);
     $oldStatus = $order->status;
@@ -73,6 +74,13 @@ abstract class BaseIncomingOrderTable extends Component
         title: "Changed status from $oldStatus to $status for order $order->orderID",
         type: 'update'
     );
+
+    \App\Models\OrderStatusLogger::create([
+        'user_id'=> Auth::id(),
+        'loggable_id'=>$order->id,
+        'loggable_type'=> get_class($order),
+        'action'=> "Status changed from $oldStatus to $status"
+    ]);
    }
 
 

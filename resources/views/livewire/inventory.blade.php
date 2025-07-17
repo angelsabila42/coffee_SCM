@@ -15,16 +15,13 @@
                     </div>
                     </div>
                     
-                   {{-- <div  x-data="adminOrderModal" x-init= "init()">
-                        <button @@click= "showModal= true" class="btn btn-success btn-fill btn-sm cur"><i class="fa-solid fa-plus pt-1 mr-3"></i>New</button>
-                            @include('partials.create-order-modal')
-                   </div> --}}
+                <div>
+                    <button type="button" class="btn btn-success btn-fill" data-bs-toggle="modal" data-bs-target="#addInventoryModal">+New</button>
+                </div>
                 </div>
                 @include('partials.inventory-filter')
 
                 <div class="card card-plain table-plain-bg">
-        <div class="card-header ">
-        </div>
         <div class="card-body table-full-width table-responsive">
             <table class="table table-hover">
                 <thead class="bg-light">

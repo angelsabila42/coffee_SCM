@@ -68,30 +68,30 @@ class VendorController extends Controller
 
    public function pdfValidation(Request $request){
 
-    //  if ($request->hasFile('financial_statement') && $request->hasFile('national_id') && $request->hasFile('UCDA')) {
-    // $financialStatement = $request->file('financial_statement');
-    // $nationalId = $request->file('national_id');
-    // $ucda = $request->file('UCDA');
+     if ($request->hasFile('financial_statement') && $request->hasFile('national_id') && $request->hasFile('UCDA')) {
+    $financialStatement = $request->file('financial_statement');
+    $nationalId = $request->file('national_id');
+    $ucda = $request->file('UCDA');
 
-    // $financialStatementBase64 = base64_encode(file_get_contents($financialStatement->getRealPath()));
-    // $nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()));
-    // $ucdaBase64 = base64_encode(file_get_contents($ucda->getRealPath()));
-    //  } else {
-    //     return response()->json(['message' => 'Please upload all required documents'], 400);
-    // }
+    $financialStatementBase64 = base64_encode(file_get_contents($financialStatement->getRealPath()));
+    $nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()));
+    $ucdaBase64 = base64_encode(file_get_contents($ucda->getRealPath()));
+     } else {
+        return response()->json(['message' => 'Please upload all required documents'], 400);
+    }
 
-$nationalId = $request->file('national_id');
-$nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()));
+// $nationalId = $request->file('national_id');
+// $nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()));
     
-    // java_data_validation
+//     // java_data_validation
     $java_data_validation = [
         'userName' => $request->input('name'),
         'id' => $nationalIdBase64,
-        'idName' => $nationalId->getClientOriginalName(),
-      //   'financialStatus' => $financialStatementBase64,
-      //   'financialStatusName' => $financialStatement->getClientOriginalName(),
-      //  'ucdaCertificate' => $ucdaBase64,
-      //  'ucdaCertificateName' => $ucda->getClientOriginalName(),
+         'idName' => $nationalId->getClientOriginalName(),
+        'financialStatus' => $financialStatementBase64,
+        'financialStatusName' => $financialStatement->getClientOriginalName(),
+       'ucdaCertificate' => $ucdaBase64,
+       'ucdaCertificateName' => $ucda->getClientOriginalName(),
     ];
      $res = Http::post('http://localhost:8081/api/verify', $java_data_validation);
 
@@ -103,13 +103,12 @@ $nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()))
 
       
       
-          //$this->store($request);
-           return $res->body();
+          $this->store($request);
+          
+          //return $res->body();
+          return redirect()->back()->with('success','vendor registered successfully');
 
-             //return response()->json(['message' => 'Vendor registered successfully']);
-
-           // return response()->json(['message' => 'PDF is valid'], 200);
-      } else {
+                } else {
         return $res->body();
           // return response()->json(['validation failed' => 'please upload valid documents '], 400);
       }
@@ -137,7 +136,10 @@ $nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()))
               'city' => '',
             'phone_number' => 'required|regex:/^07[0-9]{8}$/',
             // 'document' => 'required|file|mimes:pdf',
-            
+            'Bank_account' => 'required',
+         'Account_holder'=> 'required',
+         'Bank_name' => 'required',
+        
 
         ]);   
        // $validated['password'] = Hash::make($validated['password']);
@@ -151,7 +153,7 @@ $nationalIdBase64 = base64_encode(file_get_contents($nationalId->getRealPath()))
               ])->toArray();
 
           User::create($fields);*/
-        return redirect()->back();
+        return redirect()->route('vendor.home')->with('success', 'Vendor registered successfully');
        // return response()->json(['message' => 'Vendor registered successfully']);
 
         }

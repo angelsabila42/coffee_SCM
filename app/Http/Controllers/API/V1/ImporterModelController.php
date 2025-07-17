@@ -2,7 +2,7 @@
 
 
 namespace App\Http\Controllers\API\V1;
-
+use App\Models\ImporterRecentActivities;
 use App\Http\Controllers\Controller;
 use App\Models\IncomingOrder;
 use App\Models\Payment;
@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\importerModel;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,17 +22,46 @@ class ImporterModelController extends Controller
         return view('importer_payments');
     }
   
+    // public function index(){
+    //     $orders = IncomingOrder::paginate(10);
 
-    public function index(){
+    public function index()
+    {
+            $user = Auth::user();    
+          $importer = ImporterModel::where('email', $user->email)->first();
+             $importerId = $importer->id;
         $orders = IncomingOrder::paginate(10);
+         $orders2 = IncomingOrder::where('id',$importerId )->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as total')
+        ->groupBy('year', 'month')
+        ->orderBy('year')
+        ->orderBy('month')
+        ->get();
+
+
+    $orderData = $orders2->pluck('total');
+     $months = $orders2->map(function ($order) {
+        return Carbon::create($order->year, $order->month)->format('M Y'); // e.g. "Jan 2024"
+    });
 
     
 
-     $ordersSent = IncomingOrder::all()->count();
-     $pending = IncomingOrder::where('status', 'Pending')->count();
-    $inTransit = IncomingOrder::where('status', 'in transit')->count();
-    $delivered = IncomingOrder::where('status', 'Delivered')->count();
- return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
+    //  $ordersSent = IncomingOrder::all()->count();
+    //  $pending = IncomingOrder::where('status', 'Pending')->count();
+    // $inTransit = IncomingOrder::where('status', 'in transit')->count();
+    // $delivered = IncomingOrder::where('status', 'Delivered')->count();
+ //return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered','orderData','months'));
+   $user = Auth::user();     
+ // Logged-in user
+$importer = ImporterModel::where('email', $user->email)->first();
+
+if ($importer) {
+    $importerId = $importer->id;
+
+//      $ordersSent = IncomingOrder::all()->count();
+//      $pending = IncomingOrder::where('status', 'Pending')->count();
+//     $inTransit = IncomingOrder::where('status', 'in transit')->count();
+//     $delivered = IncomingOrder::where('status', 'Delivered')->count();
+//  return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
 //    $user = Auth::user();     
 //  // Logged-in user
 // $importer = ImporterModel::where('email', $user->email)->first();
@@ -51,18 +81,37 @@ class ImporterModelController extends Controller
     
 //     return redirect()->route('login')->with('error', 'No importer record found.');
 // }
-       }
    
-    public function transactions(){
-    $user = Auth::user();
-    // $importerId = ImporterModel::where('email', $user->email)->first()->id;
+    // public function transactions(){
+    // $user = Auth::user();
+    // // $importerId = ImporterModel::where('email', $user->email)->first()->id;
        
-        // $invoices = Invoice::/*where('importer_model_id', $importerId)->*/paginate(10);
+    //     // $invoices = Invoice::/*where('importer_model_id', $importerId)->*/paginate(10);
+    //     //   $payments = Payment::where('importerID', $importerId)->paginate(10);
+    //     $payments = Payment::paginate(10);
+    // // Get the logged-in user's importer model
+    //      $invoices = Invoice::paginate(10);
+    // return view('importer_transactions', compact('invoices', 'payments'));
+    return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered', 'orderData', 'months', 'importer'))
+        ->with('success', 'Welcome to your dashboard, ' . $importer->name . '!');
+         }else{
+        return redirect()->route('login')->with('error', 'No importer record found.');
+           }
+    }
+   
+public function transactions(){
+    $user = Auth::user();
+       $importerId = ImporterModel::where('email', $user->email)->first()->id;
+       //dd($importerId);
+         $invoices = Invoice::where('importer_id', $importerId)->paginate(10);
         //   $payments = Payment::where('importerID', $importerId)->paginate(10);
-        $payments = Payment::paginate(10);
-    // Get the logged-in user's importer model
-         $invoices = Invoice::paginate(10);
-    return view('importer_transactions', compact('invoices', 'payments'));
+        $payments = Payment::where('importerID', $importerId)->paginate(10);
+        $account_no = ImporterModel::where('email', $user->email)->first()->bank_account_no;
+        $user = ImporterModel::where('email', $user->email)->first()->name;
+        
+     
+       //  $invoices = Invoice::paginate(10);
+    return view('importer_transactions', compact('invoices', 'payments', 'account_no', 'user'));
  }
       
     
@@ -73,8 +122,18 @@ class ImporterModelController extends Controller
 
     
 public function destroy(IncomingOrder $order)
-{
+{   $orderId = $order->id;
     $order->delete();
+      ImporterRecentActivities::create([
+        'user_id' => Auth::id(),
+        'title' => 'Order deleted',
+        'type' => 'delete',
+        'ip_address' => request()->ip(),
+        'data' => [
+            'order_id' => $orderId,
+            'reason' => 'User manually deleted order'
+        ]
+    ]);
     return redirect()->back()->with('success', 'Order deleted successfully!');
 }
 
@@ -87,7 +146,10 @@ public function destroy(IncomingOrder $order)
         'country' => '',
         'address' => '',
         'phone_number' => 'required|regex:/^07[0-9]{8}$/',
-         
+           'Bank_account' => 'required',
+         'Account_holder'=> 'required',
+         'Bank_name' => 'required',
+        
         
 
     ]);   
@@ -95,11 +157,7 @@ public function destroy(IncomingOrder $order)
     
     importerModel::create($validated);
 
-    //  $fields = collect($validated)->only([
-    //     'name','email','password'
-    //      ])->toArray();
-
-    // User::create($fields);
-    // return redirect()->back();
+     return redirect()->route('importer.dashboard')->with('success', 'registration successful');
     }
-}
+    }
+

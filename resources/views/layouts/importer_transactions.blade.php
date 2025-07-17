@@ -6,11 +6,11 @@
              </div>
        
         <div class="card-body">
-            @if($invoices->count())
+            @if(isset($account_no) && isset($user))
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
-                        <div><strong>Total income:</strong> {{ $invoices->first()->vendor_name }}</div>
-                        <div><strong>Account Number:</strong> {{ $invoices->first()->bank_account_no }}</div>
+                        {{-- <div><strong>Total income:</strong> {{ $ }}</div> --}}
+                        <div><strong>Account Number:</strong> {{ $account_no }}</div>
                         <div><strong>Account Holder:</strong> {{ $user }}</div>
                 
                     </div>
@@ -26,16 +26,9 @@
                 <div>No account details available.</div>
             @endif
         </div>
-    </div>
-
-
-
-      
-        <div>
-         
+    </div> 
+        <div>        
             <livewire:importer-transactions />
-
-
         </div>
 </div>
       

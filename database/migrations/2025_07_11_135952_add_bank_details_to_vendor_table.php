@@ -12,15 +12,10 @@ return new class extends Migration
     public function up(): void 
     {
         Schema::table('vendor', function (Blueprint $table) {
-            if (!Schema::hasColumn('vendor', 'Bank_account')) {
-                $table->string('Bank_account')->nullable();
-            }
-            if (!Schema::hasColumn('vendor', 'Account_holder')) {
-                $table->string('Account_holder')->nullable();
-            }
-            if (!Schema::hasColumn('vendor', 'Bank_name')) {
-                $table->string('Bank_name')->nullable();
-            }
+            $table->string('Bank_account');
+            $table->string('Account_holder');
+            $table->string('Bank_name');
+             //$table->dropColumn('password');
         });
     }
 

@@ -34,6 +34,7 @@ class IncomingOrderController extends Controller
             'order' => $order
         ]);
     }
+    
     public function dropdown(){
     return ImporterDropDownResource::collection(IncomingOrder::select('id', 'destination', 'grade')->get());
 }

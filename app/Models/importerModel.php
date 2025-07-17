@@ -16,9 +16,10 @@ class ImporterModel extends Model
         'country',
         'phone_number',
         'address',
+        'confirm password',
         'Bank_account',
         'Account_holder',
-        'Bank_name'
+        'Bank_name',
      ];
 
      public function incoming_order(){
@@ -33,6 +34,14 @@ class ImporterModel extends Model
      */
     public function invoices(){
         return $this->hasMany(Invoice::class);
+    }
+
+    public function demands(){
+        return $this->hasMany(ImporterDemand::class, 'importer_model_id');
+    }
+
+    public function demandQuantity(){
+        return $this->hasMany(QuantitiyDemand::class);
     }
 
 }

@@ -1,7 +1,7 @@
 <div wire:poll.10s class="modern-card ">
                         <div class="col-md-12">
                             <div class=" table-plain-bg">
-                                <h4 class="card-header ">Recent Orders</h4>
+                                <h4 class="card-header">Recent Orders</h4>
                                 
                                 <div class="card-body table-full-width table-responsive">
                                     <table class="table table-hover">

@@ -19,12 +19,25 @@ class importerModelFactory extends Factory
         return [
             'name'=> fake()->name(),
             'email'=> fake()->email(),
+            'password'=> fake()->password(),
+            'Bank_account' => fake()->bankAccountNumber(),
+            'Account_holder'=> fake()->name(),
+            'Bank_name'=> fake()->randomElement([
+                                'Stanbic Bank Uganda',
+                                'Centenary Bank',
+                                'DFCU Bank',
+                                'Equity Bank',
+                                'ABSA Uganda',
+                                'Bank of Africa',
+                                'PostBank Uganda',
+                            ]),
             'country'=> fake()->country(),
+            'continent'=> fake()->country(),
             'phone_number'=> fake()->phoneNumber(),
             'address'=> fake()->address(),
-            'Bank_account' => fake()->bankAccountNumber(),
-            'Account_holder' => fake()->name(),
-            'Bank_name' => fake()->company()
+            
+            
+          
         ];
     }
 }

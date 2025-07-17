@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Vendor extends Model
 {
-     use Notifiable;
+    use Notifiable;
     use HasFactory;
     protected $table = 'vendor';
 
@@ -17,9 +17,10 @@ class Vendor extends Model
         'email',
         'password',
         'phone_number',
+        'region',
         'street',
         'city',
-        'confirm password',
+        //'confirm password',
     ];
 
     public function outgoingOrder(){
@@ -31,6 +32,10 @@ class Vendor extends Model
      */
     public function invoices(){
         return $this->hasMany(Invoice::class);
+    }
+
+    public function vendorClusters(){
+         return $this->hasMany(VendorCluster::class);
     }
 
     public function qaReports()
