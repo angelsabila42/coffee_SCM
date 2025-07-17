@@ -22,81 +22,43 @@ class ImporterModelController extends Controller
         return view('importer_payments');
     }
   
-    // public function index(){
-    //     $orders = IncomingOrder::paginate(10);
-
     public function index()
     {
-            $user = Auth::user();    
-          $importer = ImporterModel::where('email', $user->email)->first();
-             $importerId = $importer->id;
+        $user = Auth::user();    
+        $importer = ImporterModel::where('email', $user->email)->first();
+        if (!$importer) {
+            return redirect()->route('login')->with('error', 'No importer record found.');
+        }
+        
+        $importerId = $importer->id;
         $orders = IncomingOrder::paginate(10);
-         $orders2 = IncomingOrder::where('id',$importerId )->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as total')
-        ->groupBy('year', 'month')
-        ->orderBy('year')
-        ->orderBy('month')
-        ->get();
 
+        // Get monthly order statistics
+        $orders2 = IncomingOrder::where('importer_model_id', $importerId)
+            ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as total')
+            ->groupBy('year', 'month')
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get();
 
-    $orderData = $orders2->pluck('total');
-     $months = $orders2->map(function ($order) {
-        return Carbon::create($order->year, $order->month)->format('M Y'); // e.g. "Jan 2024"
-    });
+        $orderData = $orders2->pluck('total');
+        $months = $orders2->map(function ($order) {
+            return Carbon::create($order->year, $order->month)->format('M Y');
+        });
 
-    
+        // Calculate order statistics for the importer
+        $ordersSent = IncomingOrder::where('importer_model_id', $importerId)->count();
+        $pending = IncomingOrder::where('importer_model_id', $importerId)
+            ->where('status', 'Pending')->count();
+        $inTransit = IncomingOrder::where('importer_model_id', $importerId)
+            ->where('status', 'in transit')->count();
+        $delivered = IncomingOrder::where('importer_model_id', $importerId)
+            ->where('status', 'Delivered')->count();
 
-    //  $ordersSent = IncomingOrder::all()->count();
-    //  $pending = IncomingOrder::where('status', 'Pending')->count();
-    // $inTransit = IncomingOrder::where('status', 'in transit')->count();
-    // $delivered = IncomingOrder::where('status', 'Delivered')->count();
- //return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered','orderData','months'));
-   $user = Auth::user();     
- // Logged-in user
-$importer = ImporterModel::where('email', $user->email)->first();
-
-if ($importer) {
-    $importerId = $importer->id;
-
-//      $ordersSent = IncomingOrder::all()->count();
-//      $pending = IncomingOrder::where('status', 'Pending')->count();
-//     $inTransit = IncomingOrder::where('status', 'in transit')->count();
-//     $delivered = IncomingOrder::where('status', 'Delivered')->count();
-//  return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
-//    $user = Auth::user();     
-//  // Logged-in user
-// $importer = ImporterModel::where('email', $user->email)->first();
-
-// if ($importer) {
-//     $importerId = $importer->id;
-
-    
-//     $orders = IncomingOrder::where('importer_model_id', $importerId)->paginate(10);
-//     $ordersSent = IncomingOrder::where('importer_model_id', $importerId)->count();
-//     $pending = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Pending')->count();
-//     $inTransit = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'in transit')->count();
-//     $delivered = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Delivered')->count();
-
-//     return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
-// } else {
-    
-//     return redirect()->route('login')->with('error', 'No importer record found.');
-// }
-   
-    // public function transactions(){
-    // $user = Auth::user();
-    // // $importerId = ImporterModel::where('email', $user->email)->first()->id;
-       
-    //     // $invoices = Invoice::/*where('importer_model_id', $importerId)->*/paginate(10);
-    //     //   $payments = Payment::where('importerID', $importerId)->paginate(10);
-    //     $payments = Payment::paginate(10);
-    // // Get the logged-in user's importer model
-    //      $invoices = Invoice::paginate(10);
-    // return view('importer_transactions', compact('invoices', 'payments'));
-    return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered', 'orderData', 'months', 'importer'))
-        ->with('success', 'Welcome to your dashboard, ' . $importer->name . '!');
-         }else{
-        return redirect()->route('login')->with('error', 'No importer record found.');
-           }
+        return view('importer_dashboard', compact(
+            'orders', 'ordersSent', 'pending', 'inTransit', 
+            'delivered', 'orderData', 'months', 'importer'
+        ))->with('success', 'Welcome to your dashboard, ' . $importer->name . '!');
     }
    
 public function transactions(){

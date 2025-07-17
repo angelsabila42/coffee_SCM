@@ -411,7 +411,6 @@ body, html {
                 <img src="{{ $otherUser->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($otherUser->name) . '&background=8B5E3C&color=fff' }}" class="avatar" alt="User">
                 <span class="name">{{ $otherUser->name }}</span>
                 <span class="role-badge text-capitalize">{{ $otherUser->role == 'supplier' ? 'Importer' : $otherUser->role ?? 'Partner' }}</span>
-                <span class="status"><i class="fas fa-circle"></i> Online</span>
             </div>
             <div class="chat-body flex-grow-1" id="messagesContainer">
                 @forelse($conversation->messages as $message)
@@ -543,36 +542,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Received real-time message:', data);
                 
                 const isOwn = data.sender_id == {{ auth()->id() }};
-                // Create a date object and format it in EAT timezone
-                const messageTime = new Date(data.created_at).toLocaleString('en-GB', { 
-                    timeZone: 'Africa/Nairobi',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
+                
+                // Only add messages from other users to prevent duplicates
+                if (!isOwn) {
+                    // data.created_at is already formatted as H:i (e.g., "15:51")
+                    const messageTime = data.created_at;
 
-                const messageHtml = `
-                    <div class="message-row ${isOwn ? 'own' : ''}">
-                        <div class="message-bubble">
-                            ${data.message}
-                            <div class="message-meta">
-                                ${messageTime}
-                                ${isOwn ? '<i class="fas fa-check text-secondary"></i>' : ''}
+                    const messageHtml = `
+                        <div class="message-row">
+                            <div class="message-bubble">
+                                ${data.message}
+                                <div class="message-meta">
+                                    ${messageTime}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                
-                messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
-                scrollToBottom();
-                // Play a notification sound if the message is not from the current user
-                if (!isOwn) {
+                    `;
+                    
+                    messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
+                    scrollToBottom();
+                    
+                    // Play notification sound for incoming messages
                     try {
                         new Audio('/assets/notification.mp3').play().catch(e => console.log('No notification sound available'));
                     } catch (e) {
                         console.log('Audio playback failed:', e);
                     }
                 }
+            })
+            .listen('MessageRead', (data) => {
+                console.log('Messages marked as read:', data);
+                
+                // Update all unread message ticks to double green ticks
+                const ownMessages = messagesContainer.querySelectorAll('.message-row.own .message-meta i.fa-check:not(.fa-check-double)');
+                ownMessages.forEach(tick => {
+                    tick.className = 'fas fa-check-double text-success';
+                });
             });
     } else {
         console.error('Echo is not defined! Real-time messaging will not work.');
