@@ -57,6 +57,14 @@ use App\Http\Middleware\AutMiddleware;
 use GuzzleHttp\Middleware;
 
 //transporter transactions
+Route::get('/payments/{id}/download', [transporterController::class, 'download'])->name('payments.download');
+
+Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
+
+
+Route::get('/payments/importer/{id}', [ImporterModelController::class, 'showPayment'])->name('ImporterPayments.show');
+Route::get('/payments/importer/{id}/download', [ImporterModelController::class, 'download'])->name('ImporterPayments.download');
+
    
 Route::get('/alpine',function(){
     return view('alpine');
@@ -81,7 +89,9 @@ require __DIR__.'/auth.php';
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-
+      Route::get('/adminDashboard', function () {
+          return view('Dashboards.admin');
+      })->middleware('admin')->name('admin.dashboard');
 
 
 
