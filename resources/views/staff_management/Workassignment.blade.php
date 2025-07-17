@@ -78,12 +78,12 @@
 
     <div class="card-header d-flex justify-content-between align-items-center bg-white">
         <h4 class="mb-0">Work Assignment History</h4>
-        {{-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addWorkAssignmentModal">
+      {{--  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addWorkAssignmentModal">
             + New
         </button> --}}
     </div>
 
-    <livewire:work-assignment-model/>
+   <livewire:work-assignment-model/>
 
 
     <div class="card-body table-full-width table-responsive">
@@ -184,6 +184,57 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    // Handle add work assignment form submission (AJAX)
+    const addWorkAssignForm = document.getElementById('addWorkAssignForm');
+    addWorkAssignForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest' // Ensure Laravel detects AJAX
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            if (response.headers.get('content-type').includes('application/json')) {
+                return response.json();
+            } else {
+                throw new Error('Server did not return JSON.');
+            }
+        })
+        .then(data => {
+            if (data.success) {
+                // Close modal (Bootstrap 4)
+                $('#addWorkAssignmentModal').modal('hide');
+                // Reset form
+                this.reset();
+                // Optionally reload the page or fetch new assignments
+                window.location.reload();
+                // Show success message
+                Swal.fire({
+                    title: 'Success!',
+                    text: data.message || 'Work assignment has been created successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                throw new Error(data.message || 'Something went wrong');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: error.message || 'Something went wrong',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        });
+    });
     var editWorkAssignmentModal = document.getElementById('editWorkAssignmentModal');
     editWorkAssignmentModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
@@ -222,3 +273,5 @@ function confirmDeleteWorkAssignment(assignmentId) {
     })
 }
 </script>
+<!-- Bootstrap 4 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>

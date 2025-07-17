@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void 
     {
         Schema::table('vendor', function (Blueprint $table) {
-            $table->string('Bank_account');
-            $table->string('Account_holder');
-            $table->string('Bank_name');
-             //$table->dropColumn('password');
+            //$table->string('Bank_account');
+            //$table->string('Account_holder');
+            //$table->string('Bank_name');
+            //$table->dropColumn('password');
         });
     }
 
@@ -25,7 +25,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('vendor', function (Blueprint $table) {
-            $table->dropColumn(['Bank_account', 'Account_holder', 'Bank_name']);
+            //$table->string('Bank_account');
+            //$table->string('Account_holder');
+           // $table->string('Bank_name');
+             //$table->dropColumn('password');
         });
     }
 };

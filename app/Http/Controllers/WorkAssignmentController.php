@@ -35,17 +35,9 @@ class WorkAssignmentController extends Controller
             return response()->json($formattedAssignments);
         }
         
-        // For normal requests, get all required variables for the staff view
-        $staff = Staff::orderBy('id', 'asc')->get(); // All staff for the main table
-        $totalStaffCount = Staff::count();
-        $absentStaffCount = Staff::whereIn('status', ['On Leave', 'Suspended'])->count();
-        $warehouseCount = 4; // Hardcoded value from StaffController
-        $leaveHistory = \App\Models\LeaveHistory::with('staff')->get(); // For Leave History tab
-        
-        // Return the view with all required variables
-        return view('staff_management.staff', compact(
-            'staff', 'totalStaffCount', 'absentStaffCount', 'warehouseCount',
-            'workAssignments', 'staffMembersForDropdown', 'workCenters', 'leaveHistory'
+        // Return the Workassignment view with work assignments and dropdowns
+        return view('staff_management.Workassignment', compact(
+            'workAssignments', 'staffMembersForDropdown', 'workCenters'
         ));
     }
 
@@ -120,7 +112,7 @@ class WorkAssignmentController extends Controller
             }
 
             // Fallback for non-AJAX
-            return redirect()->route('staff_management.workassignment.workassign')
+            return redirect()->route('staff_management.staff')
                              ->with('success_work_assignment', 'Work assignment added successfully!')
                              ->with('active_tab', 'work');
 

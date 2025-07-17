@@ -20,11 +20,8 @@
                       + New
                    </button>
                     
-                   {{-- <div  x-data="adminOrderModal" x-init= "init()">
-                        <button @@click= "showModal= true" class="btn btn-success btn-fill btn-sm cur"><i class="fa-solid fa-plus pt-1 mr-3"></i>New</button>
-                            @include('partials.create-order-modal')
-                   </div> --}}
+                 
                 </div>
-                {{-- @include('partials.work-assignment-filter')  --}}
+                
             </div>
             </div>
