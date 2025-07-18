@@ -6,6 +6,7 @@ use App\Models\ImporterRecentActivities;
 use App\Http\Controllers\Controller;
 use App\Models\IncomingOrder;
 use App\Models\Payment;
+use App\Models\PesaPalTransaction;
 use App\Models\User;
 use App\Models\importerModel;
 use App\Models\Invoice;
@@ -25,9 +26,15 @@ class ImporterModelController extends Controller
   
     public function index()
     {
-        $user = Auth::user();    
-        $importer = ImporterModel::where('email', $user->email)->first();
-        
+            $user = Auth::user();    
+          $importer = ImporterModel::where('email', $user->email)->first();
+             $importerId = $importer->id;
+         $orders2 = IncomingOrder::where('importer_model_id',$importerId )->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as total')
+        ->groupBy('year', 'month')
+        ->orderBy('year')
+        ->orderBy('month')
+        ->get();
+    
         if (!$importer) {
             return redirect()->route('login')->with('error', 'No importer record found.');
         }
@@ -57,8 +64,27 @@ class ImporterModelController extends Controller
             $orderData[] = $monthlyOrders;
         }
 
-        return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered', 'importer', 'orderData', 'months'))
-            ->with('success', 'Welcome to your dashboard, ' . $importer->name . '!');
+    $orderData = $orders2->pluck('total');
+     $months = $orders2->map(function ($order) {
+        return Carbon::create($order->year, $order->month)->format('M Y'); // e.g. "Jan 2024"
+    });
+
+    
+if ($importer) {
+ 
+     $importerId = $importer->id;
+
+    
+    $orders = IncomingOrder::where('importer_model_id', $importerId)->paginate(10);
+    $ordersSent = IncomingOrder::where('importer_model_id', $importerId)->count();
+    $pending = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Pending')->count();
+    $inTransit = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'in transit')->count();
+    $delivered = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Delivered')->count();
+  return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered', 'orderData', 'months', 'importer'))
+        ->with('success', 'Welcome to your dashboard, ' . $importer->name . '!');
+         }else{
+        return redirect()->route('login')->with('error', 'No importer record found.');
+           }
     }
    
 public function transactions(){
@@ -72,7 +98,11 @@ public function transactions(){
     $importerId = $importer->id;
     
     $invoices = Invoice::where('importer_id', $importerId)->paginate(10);
-    $payments = Payment::where('importerID', $importerId)->paginate(10);
+    
+    // Fetch payments from pesapal_transactions table instead of old Payment table
+    $payments = PesaPalTransaction::where('importer_id', $importerId)
+                                  ->orderBy('created_at', 'desc')
+                                  ->get();
     
     // Get account details from the importer record
     $account_no = $importer->Bank_account;
@@ -84,14 +114,15 @@ public function transactions(){
     $requestedOrders = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Requested')->get();
     $pendingOrders = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Pending')->get();
     
-    \Log::info('Debug transactions page:', [
-        'user' => $user->email,
-        'importer_id' => $importerId,
-        'total_orders' => $allOrders->count(),
-        'requested_orders' => $requestedOrders->count(),
-        'pending_orders' => $pendingOrders->count(),
-        'all_orders_statuses' => $allOrders->pluck('status', 'id')->toArray()
-    ]);
+    // \Log::info('Debug transactions page:', [
+    //     'user' => $user->email,
+    //     'importer_id' => $importerId,
+    //     'total_orders' => $allOrders->count(),
+    //     'requested_orders' => $requestedOrders->count(),
+    //     'pending_orders' => $pendingOrders->count(),
+    //     'payments_count' => $payments->count(),
+    //     'all_orders_statuses' => $allOrders->pluck('status', 'id')->toArray()
+    // ]);
     
     return view('importer_transactions', compact('invoices', 'payments', 'account_no', 'account_holder', 'bank_name', 'importer'));
 }
@@ -145,6 +176,15 @@ public function destroy(IncomingOrder $order)
     $payment = Payment::findOrFail($id); 
     return view('payments.ImporterPay', compact('payment'));
 }
+
+
+  public function showOrder($id)
+{
+    $order = IncomingOrder::findOrFail($id); 
+    return view('payments.ImporterPay', compact('order'));
+}
+
+
 
 public function download($id)
 {

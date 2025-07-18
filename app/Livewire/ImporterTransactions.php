@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Models\Invoice;
 use App\Models\Payment;
+use App\Models\PesaPalTransaction;
 use Illuminate\Support\Facades\Auth;
 
 class ImporterTransactions extends Component
@@ -17,23 +18,17 @@ class ImporterTransactions extends Component
     protected $paginationTheme = 'bootstrap';
 
     #[Url]
-    public $tab = 'invoices';
+    public $tab = 'payments';
 
     #[Url]
     public $search = '';
 
     #[Url]
-    public $status = '';
-
-    #[Url]
-    public $coffeeType = '';
-
-    #[Url]
-    public $paymentMode = '';
+    public $paymentMethod = '';
 
     public function updating($property)
     {
-        if (in_array($property, ['tab', 'search', 'status', 'coffeeType', 'paymentMode'])) {
+        if (in_array($property, ['tab', 'search', 'paymentMethod'])) {
             $this->resetPage();
         }
     }
@@ -47,30 +42,31 @@ class ImporterTransactions extends Component
     public function clearFilters()
     {
         $this->search = '';
-        $this->status = '';
-        $this->coffeeType = '';
-        $this->paymentMode = '';
+        $this->paymentMethod = '';
         $this->resetPage();
     }
 
     public function getRecordsProperty()
     {  
-         $user = Auth::user();
+        $user = Auth::user();
         $importerId = ImporterModel::where('email', $user->email)->first()->id;
+        
         if ($this->tab === 'invoices') {
             return Invoice::query()
                 ->where('importer_id', $importerId)
                 ->when($this->search, fn($q) => $q->where('invoice_number', 'like', "%{$this->search}%"))
-                ->when($this->status, fn($q) => $q->where('status', $this->status))
                 ->paginate(10);
         }
 
-        return Payment::query()
-            ->where('importerID', $importerId)
-            ->when($this->search, fn($q) => $q->where('payer', 'like', "%{$this->search}%"))
-            ->when($this->status, fn($q) => $q->where('status', $this->status))
-            ->when($this->coffeeType, fn($q) => $q->where('coffee_type', $this->coffeeType))
-            ->when($this->paymentMode, fn($q) => $q->where('payment_mode', $this->paymentMode))
+        // Fetch payments from pesapal_transactions table
+        return PesaPalTransaction::with('importer')
+            ->where('importer_id', $importerId)
+            ->when($this->search, function($query) {
+                $query->where('pesapal_merchant_reference', 'like', "%{$this->search}%")
+                      ->orWhere('description', 'like', "%{$this->search}%");
+            })
+            ->when($this->paymentMethod, fn($q) => $q->where('payment_method', $this->paymentMethod))
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
     }
 

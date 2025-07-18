@@ -14,12 +14,12 @@ class TriggerMLModel extends Command
     {
         Log::info('ML model batch trigger started at ' . now());
 
-        // List all 4 script paths (adjust these to your actual locations)
+        // names of the ML scripts to be executed
         $scripts = [
-            base_path('ml/script1.py'),
-            base_path('ml/script2.py'),
-            base_path('ml/script3.py'),
-            base_path('ml/script4.py'),
+            base_path('python/df_annual_coffee.py'),
+            base_path('python/df_coffee_destinations.py'),
+            base_path('python/df_coffee_qtn_supplier.py'),
+            base_path('python/df_export_qtn_importer.py'),
         ];
 
         foreach ($scripts as $index => $scriptPath) {
@@ -35,7 +35,7 @@ class TriggerMLModel extends Command
             $returnVar = 0;
 
             Log::info(" Running ML script: {$scriptName}");
-            exec("python3 {$scriptPath}", $output, $returnVar);
+            exec("\"C:\\Program Files\\Python313\\python.exe\" {$scriptPath}", $output, $returnVar);
 
             if ($returnVar === 0) {
                 Log::info(" ML script {$scriptName} completed successfully at " . now());

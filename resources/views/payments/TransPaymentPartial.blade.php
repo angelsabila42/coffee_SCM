@@ -1,4 +1,4 @@
-<div class="modern-card m-3 p-3 rounded-pill">
+<div class="modern-card m-3 p-3 rounded-pill w-50">
     <div>
     <h2>Payment Details</h2>
     <p><strong>Invoice ID:</strong> {{ $payment->invoice_id }}</p>

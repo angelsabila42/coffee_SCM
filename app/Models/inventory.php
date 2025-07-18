@@ -13,7 +13,6 @@ class inventory extends Model
         'warehouse_name',
         'quantity',
         'threshold',
-        'status',
         'last_updated',
         
 

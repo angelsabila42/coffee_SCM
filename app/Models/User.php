@@ -29,6 +29,8 @@ class User extends Authenticatable
         'vehicle_number',
         'experience',
         'is_available',
+        'transporter_company',
+        'transporter_company_id',
     ];
 
     /**
@@ -67,5 +69,13 @@ class User extends Authenticatable
 
     public function statusLog(){
         return $this->hasMany(\App\Models\OrderStatusLogger::class);
+    }
+    
+    /**
+     * Get the transporter company that the driver belongs to.
+     */
+    public function transporterCompany()
+    {
+        return $this->belongsTo(Transporter::class, 'transporter_company_id');
     }
 }
