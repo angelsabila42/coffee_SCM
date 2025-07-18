@@ -32,15 +32,23 @@
                                 <div class="card-body table-full-width table-responsive">
                                     <table class="table table-hover">
                                         <thead class="bg-light">
-                                            <th>ReportID</th>
-                                            <th>Date Created</th>
+                                            <th>Report ID</th>
+                                            <th>Title</th>
+                                            <th>Start</th>
+                                            <th>End</th>
+                                            <th>Total Sales</th>
+                                            <th>Total Quantity</th>
                                             <th  class=" d-flex justify-content-center align-items-center">Actions</th>
                                         </thead>
                                         <tbody>
                                         @foreach($sales as $sale)
                                             <tr wire:key= "{{$sale->id}}" >
-                                                <td class=""> {{$sale->id}} </td>
-                                                <td class=""> {{$sale->created_at}} </td>
+                                                <td>{{ $sale->reportID }}</td>
+                                                <td>{{ $sale->title }}</td>
+                                                <td>{{ $sale->start_period }}</td>
+                                                <td>{{ $sale->end_period }}</td>
+                                                <td>${{ number_format($sale->total_sales, 2) }}</td>
+                                                <td>{{ $sale->total_quantity }} kg</td>
                                                 <td class=" d-flex justify-content-center align-items-center">
                                                 <button wire:click="delete({{$sale->id}})" class="btn btn-danger btn-sm btn-fill py-1 px-3"><i class="fa-solid fa-trash"></i></button>
                                                 </td>

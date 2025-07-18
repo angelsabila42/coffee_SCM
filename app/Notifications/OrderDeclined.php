@@ -49,7 +49,7 @@ class OrderDeclined extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'title' => 'Order Accepted',
+            'title' => 'Order Declined',
             'message' => 'Your order '. $this->order->orderID . ' has been declined by the vendor.'
         ];
     }
