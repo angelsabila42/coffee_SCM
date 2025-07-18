@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\VendorController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\transporterController;
+use App\Http\Controllers\ImporterPaymentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Vendor\VendorHomeController;
@@ -61,6 +62,53 @@ Route::get('/payments/{id}/download', [transporterController::class, 'download']
 
 Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
 
+// PesaPal payment routes for importers
+Route::middleware('auth')->prefix('importer/payment')->group(function () {
+    Route::post('/initiate', [ImporterPaymentController::class, 'initiatePayment'])->name('importer.payment.initiate');
+    Route::get('/form', [ImporterPaymentController::class, 'showPaymentForm'])->name('pesapal.form');
+    Route::post('/pesapal-iframe', [ImporterPaymentController::class, 'processPesapalForm'])->name('pesapal.iframe');
+    Route::get('/callback', [ImporterPaymentController::class, 'paymentCallback'])->name('importer.payment.callback');
+    Route::post('/callback', [ImporterPaymentController::class, 'paymentCallback']);
+    Route::get('/status/{merchantReference}', [ImporterPaymentController::class, 'paymentStatus'])->name('importer.payment.status');
+    Route::get('/unpaid-orders', [ImporterPaymentController::class, 'getUnpaidOrders'])->name('importer.payment.unpaid-orders');
+    Route::get('/debug', function() {
+        $user = Auth::user();
+        $importer = \App\Models\ImporterModel::where('email', $user->email)->first();
+        $orders = \App\Models\IncomingOrder::where('importer_model_id', $importer ? $importer->id : 0)->get();
+        return response()->json([
+            'user' => $user,
+            'importer' => $importer,
+            'orders' => $orders,
+            'total_orders' => $orders->count()
+        ]);
+    })->name('importer.payment.debug');
+    Route::get('/create-test-orders', function() {
+        $user = Auth::user();
+        $importer = \App\Models\ImporterModel::where('email', $user->email)->first();
+        
+        if (!$importer) {
+            return response()->json(['error' => 'No importer found']);
+        }
+        
+        // Create 3 test orders
+        $orders = [];
+        for ($i = 1; $i <= 3; $i++) {
+            $order = \App\Models\IncomingOrder::create([
+                'orderID' => 'KX' . str_pad($i, 5, '0', STR_PAD_LEFT),
+                'quantity' => rand(100, 500),
+                'coffeeType' => ['Arabica', 'Robusta', 'Liberica'][rand(0, 2)],
+                'status' => ['Requested', 'Pending'][rand(0, 1)],
+                'deadline' => now()->addDays(30),
+                'grade' => ['AA', 'A', 'B'][rand(0, 2)],
+                'destination' => ['Kenya', 'Tanzania', 'Rwanda'][rand(0, 2)],
+                'importer_model_id' => $importer->id
+            ]);
+            $orders[] = $order;
+        }
+        
+        return response()->json(['message' => 'Created 3 test orders', 'orders' => $orders]);
+    })->name('importer.payment.create-test-orders');
+});
 
 Route::get('/payments/importer/{id}', [ImporterModelController::class, 'showPayment'])->name('ImporterPayments.show');
 Route::get('/payments/importer/{id}/download', [ImporterModelController::class, 'download'])->name('ImporterPayments.download');

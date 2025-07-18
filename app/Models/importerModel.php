@@ -16,7 +16,6 @@ class ImporterModel extends Model
         'country',
         'phone_number',
         'address',
-        'confirm password',
         'Bank_account',
         'Account_holder',
         'Bank_name',
