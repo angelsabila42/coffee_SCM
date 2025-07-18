@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             VendorSeeder::class,
            importerModelSeeder::class,
             IncomingOrderSeeder::class,
-           // OutgoingOrderSeeder::class,
+            //OutgoingOrderSeeder::class,
             SalesReportSeeder::class,
            DeliveryReportSeeder::class,
             StaffSeeder::class,

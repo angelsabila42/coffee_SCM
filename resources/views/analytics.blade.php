@@ -1,3 +1,5 @@
+@php dd(isset($deliveryStatusData), $deliveryStatusData ?? 'Not passed'); @endphp
+
 @extends('layouts.app')
 @section('page-title', 'Analytics')
 @section('sidebar-items')
@@ -9,6 +11,7 @@
 
 @section('content')
    <div class="row">
+   @if(isset($deliveryStatusData))
       <div class="col-md-5" >
          <div class="card">
             <div class="card-header ">
@@ -20,6 +23,7 @@
                </div>
          </div>
       </div>
+      @endif
          <div class="col-md-7">
             <div class="card">
                <div class="card-header ">
@@ -59,7 +63,7 @@
                <div class="col-md-12">
                   <div class="card ">
                      <div class="card-header ">
-                        {{-- <h4 class="card-title">Predicted Sales</h4> --}}
+                        {{-- <h4 class="card-title">Predicted Demand</h4> --}}
                      </div>
                         <div class="card-body ">
                            <!--Apex Line graph-->

@@ -93,7 +93,7 @@
                         <div class="col-md-7">
                             <div class="card">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Sales Performance</h4>
+                                    {{-- <h4 class="card-title">Sales Performance</h4> --}}
                                 </div>
                                 <div class="card-body ">
                                     <div id="chart-e"></div>
@@ -103,7 +103,7 @@
                 <div class="col-md-5">
                    <div class="card ">
                      <div class="card-header ">
-                     <h4 class="card-title">Sales Per type</h4>
+                     {{-- <h4 class="card-title">Sales Per type</h4> --}}
                      </div>
                         <!--Apex donut chart-->
                         <div class="card-body ">

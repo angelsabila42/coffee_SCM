@@ -64,16 +64,13 @@ class HomeController extends Controller
         } 
 
          return $percentageChange;
-     }
-    
-     
+     } 
 
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-
 
     public function index()
     {

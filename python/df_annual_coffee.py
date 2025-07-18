@@ -1,12 +1,15 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
-import os
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error
-from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+import json
 
+from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
+from prophet import Prophet
+from sklearn.linear_model import LinearRegression
+from datetime import timedelta
+
+
+#---Cleaning the data---#
 def convert_year(val):
     try:
         val_str = str(val).strip().replace('"','')
@@ -25,140 +28,124 @@ def convert_year(val):
     except Exception as e:
         print(f"Could not convert year: {val} -> Error: {e} ")
         return None
-    
-
 
 df = pd.read_json('http://127.0.0.1:8000/api/v1/annual-sales')
 #type:ignore
 df = pd.json_normalize(df['data'])#type:ignore
+# Drop fully empty rows (if any)
+# df.dropna(how='all', inplace=True)
 
 # Rename columns to meaningful names
+print(df.columns)
+
 df.columns = ['Year', '60Kg_Bags', 'Metric_Tons', 'Value_USD', 'Unit_Value_USD_per_Kg']
 
-# Drop the row that accidentally has 'Year' as a string in the 'Year' column
-df = df[df['Year'] != 'Year']
+#Converting the years
+forecast_years = 5
 df['Year'] = df['Year'].apply(convert_year)
+# print(df.head())
+
 df.dropna(subset=['Year', 'Value_USD'], inplace=True)
-df['ds'] = pd.to_datetime(df['Year'].astype(int) ,format='%Y')
-df = df[df['ds'] >= '1990-01-01']
 
-df['60Kg_Bags'] = pd.to_numeric(df['60Kg_Bags'], errors='coerce')
-df['Metric_Tons'] = pd.to_numeric(df['Metric_Tons'], errors='coerce')
-df['Value_USD'] = pd.to_numeric(df['Value_USD'], errors='coerce')
-df['Unit_Value_USD_per_Kg'] = pd.to_numeric(df['Unit_Value_USD_per_Kg'], errors='coerce')
+#Preparing the data for Prophet
+df['ds']= pd.to_datetime(df['Year'].astype(str) + '-07-07', format= '%Y-%m-%d')
+df = df[df['ds'] >= '1990-07-07']
+df = df.rename(columns={'Value_USD': 'y'})
 
-print("\nCleaned Data:")
-print(df.head())
-print(df.tail())
+#Safe Log transformation
+df['y'] = np.log(df['y'])
 
+#Renaming the regressors
+df['unit_value'] = df['Unit_Value_USD_per_Kg']
+df['volume'] = df['60Kg_Bags']
 
+#Splitting training and test data
+train = df[df['ds'] < '2013-07-07'].copy()
+test =  df[df['ds'] >= '2013-07-07'].copy()
 
-# Drop the "Year" row and convert Year to a usable format
-# df = df[df['Year'] != 'Year'].copy()
-# df['Year'] = df['Year'].astype(str)
+#Preparing the linear regression model for the regressors
+df['year_num'] = df['ds'].dt.year
 
-#SkLearn Create features, Target Variables
-df['Revenue_Estimate'] = df['60Kg_Bags'] * df['Unit_Value_USD_per_Kg']
-df['price_per_bag'] = df['Unit_Value_USD_per_Kg'] * 60
-df['usd_per_bag'] = df['Value_USD'] / df['60Kg_Bags']
+#Creating the future DataFrame
+future = pd.DataFrame()
+future_years =[year for year in range(2025, 2025 + forecast_years)]
+future['ds'] = pd.to_datetime([f"{year}-07-07" for year in future_years])
+future['year_num'] = future['ds'].dt.year
 
-scaler = StandardScaler()
+#Unit Value
+reg1 = LinearRegression()
+reg1.fit(df[['year_num']], df['unit_value'])
 
-features= ['60Kg_Bags','Unit_Value_USD_per_Kg']
-X = df[features]
-X_scaled = scaler.fit_transform(X)
-y = df['Value_USD']
+#Volume
+reg2 = LinearRegression()
+reg2.fit(df[['year_num']], df['volume'])
 
-print("Shape of X:", X.shape)
-print("Shape of y:", y.shape)
-print(df.head())
+future['unit_value'] = reg1.predict(future[['year_num']])
+future['volume'] = reg2.predict(future[['year_num']])
 
+#Using Prophet
+#Defining the number of changepoints
+num_changepoints = 5
 
-X_train, X_test,  y_train , y_test = train_test_split(
-    X_scaled, y,
-    test_size=0.2,
-    shuffle=False
-)
+start_date = train['ds'].min()
+end_date = train['ds'].max()
 
-#training the model
-model = LinearRegression()
-model.fit(X_train, y_train)
+#Generating evenly spaced change[points within the training range
+changepoints = pd.date_range(start=start_date, end=end_date, periods=num_changepoints + 2)[1:-1].tolist()
 
-#y_pred = model.predict(X_test)
-y_pred = model.predict(X_test)
+print("Using changepoints at: ", changepoints)
 
-#Evaluation Results
-rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-print("Mean Squared Error:", mean_squared_error(y_test, y_pred))
-print("R^2 Score:", r2_score(y_test, y_pred))
-print("Root Mean Squared Value:", rmse)
+model = Prophet(yearly_seasonality=False,
+                      seasonality_mode='multiplicative',
+                      growth="linear",
+                      changepoint_prior_scale=0.15,
+                      changepoints= changepoints) #['1995-07-07', '2005-07-07'])
+model.add_seasonality(name='yearly_custom', period=365.25, fourier_order=5)
 
+model.add_regressor('unit_value')
+model.add_regressor('volume')
+model.fit(train[['ds','y','unit_value','volume']])
 
-###---Predicting the features---###
-df['Year'] = df['ds'].dt.year
-X_years = df['Year'].to_numpy().reshape(-1,1)
+#Predicting on historical data
+historical_with_regressors = df[['ds', 'unit_value', 'volume']].copy()
+historical_forecast = model.predict(historical_with_regressors)
 
-#Fitting the values
-bags_model = LinearRegression().fit(X_years, df['60Kg_Bags'])
-price_model =LinearRegression().fit(X_years, df['Unit_Value_USD_per_Kg'])
+historical_forecast['yhat'] = np.exp(historical_forecast['yhat'])
 
-#Creating the next 5 years
-future_years = np.arange(2024, 2030).reshape(-1,1)
-future_dates = pd.to_datetime(future_years.flatten(), format= '%Y')
+df_eval = df.copy()
+#df_eval['ds'] = pd.to_datetime(df_eval['ds'].dt.year.astype(str) + '-07-07')
+df_eval['y'] = np.exp(df_eval['y'])
+historical_merged = pd.merge(df_eval, historical_forecast[['ds','yhat']], on='ds', how='inner')
+print(historical_merged[['ds', 'y', 'yhat']].tail(10))
 
-#Making the feature predictions
-future_bags = bags_model.predict(future_years)
-future_prices = price_model.predict(future_years)
+#Accuracy of the prediction
+eval_df = historical_merged[historical_merged['ds'] >= '2013-07-07']
+mae = mean_absolute_error(eval_df['y'], eval_df['yhat'])
+rmse = np.sqrt(mean_squared_error(eval_df['y'], eval_df['yhat']))
+r2 = r2_score(eval_df['y'], eval_df['yhat'])
 
-#Building the new Dataframe for the prediction
-future_df = pd.DataFrame({
-    'Year': future_years.flatten(),
-    'ds': future_dates,
-    '60Kg_Bags': future_bags,
-    'Unit_Value_USD_per_Kg': future_prices,
-})
+print("MAE", mae)
+print("RMSE", rmse)
+print("R2 Score", r2)
+print("Merged shape:", historical_merged.shape)
 
-future_df['Manual_Estimate'] = future_df['60Kg_Bags'] * future_df['Unit_Value_USD_per_Kg'] * 60
+#Predicting for the next forecast years
+forecast =model.predict(future)
+forecast['yhat'] = np.exp(forecast['yhat'])
+print("\nForecast Dates:")
+print(forecast['ds'].tail(10))
 
-#Scaling the features
-future_X = future_df[['60Kg_Bags', 'Unit_Value_USD_per_Kg']]
-future_X_scaled = scaler.transform(future_X)
-future_df['Predicted_Value_USD'] = model.predict(future_X_scaled)
-print(future_df[['Year', '60Kg_Bags', 'Unit_Value_USD_per_Kg', 'Predicted_Value_USD', 'Manual_Estimate']])
+# Safely serialize datetime columns
+historical_merged['ds'] = pd.to_datetime(historical_merged['ds']).dt.strftime('%Y-%m-%d')
+forecast['ds'] = pd.to_datetime(forecast['ds']).dt.strftime('%Y-%m-%d')
 
-# Append 2024 actuals to future_df for smooth graph
-last_actual = df[['ds', 'Value_USD']].iloc[-1:]
-future_plot_df = pd.concat([
-    last_actual.rename(columns={'Value_USD': 'Predicted_Value_USD'}),
-    future_df[['ds', 'Predicted_Value_USD']]
-])
+#Saving the values in json
+historical_json = historical_merged[['ds', 'y', 'yhat']].rename(columns={'y': 'actual', 'yhat': 'predicted'}).to_dict(orient='records')
 
-plot_df = df[(df['Year'] >= 2010) & (df['Year'] < 2024)]
+with open('public/data/historical_annual_sales.json', 'w') as f:
+    json.dump(historical_json, f, indent=2)
 
-#Preparing Historical data
-historical_data = plot_df[['Year', 'Value_USD']].copy()
-historical_data.rename(columns={'Value_USD': 'Value in US Dollars', 'Year': 'year'}, inplace=True)
-#Preparing predictions
-forecast_data = future_df[['Year', 'Predicted_Value_USD']].copy()
-forecast_data.rename(columns={'Predicted_Value_USD': 'Value in US Dollars', 'Year': 'year'}, inplace=True)
-
-#Converting to json
-# Ensuring the directory exists
-os.makedirs('../public/data', exist_ok=True)
-historical_data.to_json('public/data/historical_sales.json', orient='records')
-forecast_data.to_json('public/data/forecasted_sales.json', orient='records')
-
-# Final Plot
-plt.figure(figsize=(12,6))
-plt.plot(plot_df['ds'], plot_df['Value_USD'], label='Actual (2010–2023)', color='blue')
-plt.plot(future_plot_df['ds'], future_plot_df['Predicted_Value_USD'], linestyle='--', label='Model Forecast (2024–2029)', color='orange')
-plt.title('Coffee Export Sales Forecast')
-plt.xlabel('Year')
-plt.ylabel('Value in USD')
-plt.legend()
-plt.grid(True)
-plt.tight_layout()
-plt.show()
-
-
+forecast_json = forecast[['ds', 'yhat']].rename(columns={'yhat': 'forecast'}).to_dict(orient='records')
+with open('public/data/forecasted_annual_sales.json', 'w') as f:
+    json.dump(forecast_json, f, indent=2)
 
