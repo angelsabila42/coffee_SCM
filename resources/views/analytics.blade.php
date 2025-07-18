@@ -1,5 +1,3 @@
-@php dd(isset($deliveryStatusData), $deliveryStatusData ?? 'Not passed'); @endphp
-
 @extends('layouts.app')
 @section('page-title', 'Analytics')
 @section('sidebar-items')

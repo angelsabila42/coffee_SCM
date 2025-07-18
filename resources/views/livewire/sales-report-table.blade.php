@@ -38,7 +38,7 @@
                                         </thead>
                                         <tbody>
                                         @foreach($sales as $sale)
-                                            <tr wire:key= "{{$sale->id}}" >
+                                            <tr wire:key= "{{$sale->id}}" class="cur">
                                                 <td class=""> {{$sale->id}} </td>
                                                 <td class=""> {{$sale->created_at}} </td>
                                                 <td class=" d-flex justify-content-center align-items-center">
@@ -55,16 +55,7 @@
                         </div>
                     </div>
         <div class="d-flex justify-content-center align-items-center col-md-12">
-                            <!--div>
-                            <label class="w-32 text-sm text-muted font-weight-bold">Per Page</label>
-                            <select>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                            </div-->
+
         {{$sales->links('pagination::bootstrap-4')}}
         </div>
 </div>

@@ -32,6 +32,10 @@ class OutgoingOrder extends Model
         return $this->belongsTo(User::class,'vendor_id');
     }
 
+    public function vendorProfile(){
+        return $this->belongsTo(Vendor::class,'vendor_id');
+    }
+
     public function workCenter(){
         return $this->belongsTo(WorkCenter::class);
     }

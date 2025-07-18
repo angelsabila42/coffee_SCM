@@ -45,7 +45,7 @@ class AdminOrderDetails extends Component
     }
     public function declineOrder()
     {
-     $this->order->status = 'declined';
+     $this->order->status = 'Declined';
      $this->order->save();
      
      // Notify the importer about the declined order

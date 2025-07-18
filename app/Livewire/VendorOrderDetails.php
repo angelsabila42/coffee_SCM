@@ -34,7 +34,7 @@ class VendorOrderDetails extends Component
     }
     public function declineOrder()
     {
-     $this->order->status = 'declined';
+     $this->order->status = 'Declined';
      $this->order->save();
      $this->order->refresh();
     //    if($this->order->vendor){

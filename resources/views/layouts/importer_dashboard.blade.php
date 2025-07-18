@@ -152,7 +152,7 @@
                              else $class = 'bg-success';
                         @endphp
 
-                    <tr onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">
+                    <tr {{--onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'"--}} style="cursor: pointer;">
                         <td>{{ $order->orderID }}</td>
                         <td>{{ $order->coffeeType }}</td>
                         <td>{{ $order->quantity }}kg</td>
