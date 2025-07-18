@@ -6,6 +6,7 @@ use App\Models\ImporterRecentActivities;
 use App\Http\Controllers\Controller;
 use App\Models\IncomingOrder;
 use App\Models\Payment;
+use App\Models\PesaPalTransaction;
 use App\Models\User;
 use App\Models\importerModel;
 use App\Models\Invoice;
@@ -72,7 +73,11 @@ public function transactions(){
     $importerId = $importer->id;
     
     $invoices = Invoice::where('importer_id', $importerId)->paginate(10);
-    $payments = Payment::where('importerID', $importerId)->paginate(10);
+    
+    // Fetch payments from pesapal_transactions table instead of old Payment table
+    $payments = PesaPalTransaction::where('importer_id', $importerId)
+                                  ->orderBy('created_at', 'desc')
+                                  ->get();
     
     // Get account details from the importer record
     $account_no = $importer->Bank_account;
@@ -90,6 +95,7 @@ public function transactions(){
         'total_orders' => $allOrders->count(),
         'requested_orders' => $requestedOrders->count(),
         'pending_orders' => $pendingOrders->count(),
+        'payments_count' => $payments->count(),
         'all_orders_statuses' => $allOrders->pluck('status', 'id')->toArray()
     ]);
     

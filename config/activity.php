@@ -5,6 +5,11 @@ return [
         'icon_bg'=> 'bg-success-soft',
         'icon_text'=> 'text-success'
     ],
+    'logout'=> [
+        'icon'=> 'fas fa-sign-out-alt',
+        'icon_bg'=> 'bg-warning-soft',
+        'icon_text'=> 'text-warning'
+    ],
     'security'=> [
         'icon'=> 'fas fa-shield-alt',
         'icon_bg'=> ' bg-warning-soft',
