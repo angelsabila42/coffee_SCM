@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('warehouse_name');
             $table->integer('quantity');
             $table->integer('threshold');
-            $table->string('status');
             $table->date('last_updated');
         });
     }

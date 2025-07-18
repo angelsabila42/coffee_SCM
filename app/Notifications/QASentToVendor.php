@@ -7,17 +7,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderDispatched extends Notification
+class QASentToVendor extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public $order;
-    public function __construct($order)
+    public $qaReport;
+    public function __construct($qaReport)
     {
-        $this->order = $order;
+        $this->qaReport = $qaReport;
     }
 
     /**
@@ -49,8 +49,8 @@ class OrderDispatched extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-             'title' => 'Order Dispatched',
-            'message' => 'Your order '. $this->order->orderID . ' has been dispatched by the vendor.'
+            'title'=> 'QA Report',
+            'message' => 'Quality Assessment report sent to you by Admin '. $this->qaReport->report_id .' status '. $this->qaReport->status,
         ];
     }
 }

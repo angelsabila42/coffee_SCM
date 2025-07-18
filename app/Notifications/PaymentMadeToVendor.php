@@ -7,17 +7,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderDispatched extends Notification
+class PaymentMadeToVendor extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public $order;
-    public function __construct($order)
+    public $payment;
+    public function __construct($payment)
     {
-        $this->order = $order;
+        $this->payment = $payment;
     }
 
     /**
@@ -49,8 +49,8 @@ class OrderDispatched extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-             'title' => 'Order Dispatched',
-            'message' => 'Your order '. $this->order->orderID . ' has been dispatched by the vendor.'
+            'title' => 'Payment Received',
+            'message' => 'Payment made to you by admin payment_id '.$this->payment->id . ' amount '.$this->payment->amount_paid,
         ];
     }
 }

@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('type'); //eg delivery inventory etc
-           
-           
+        Schema::table('inventories', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::table('inventories', function (Blueprint $table) {
+           $table->string('status')->nullable();
+        });
     }
 };
