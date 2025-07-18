@@ -59,6 +59,12 @@
             
              </a>
         </li>
+        <li class="sidebar-item">
+             <a href="{{ route('admin.user-audits.index') }}" class="sidebar-link {{request()->routeIs('admin.user-audits.*') ? 'active' : ''}}">
+             <i class='bx bx-history'></i>
+             <span>User Audits</span>
+             </a>
+        </li>
         {{-- <li class="sidebar-item">
              <a href="#" class="sidebar-link">
              <i class='bx  bx-cog'  ></i> 

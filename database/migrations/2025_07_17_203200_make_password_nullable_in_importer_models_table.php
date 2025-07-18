@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('importer_models', function (Blueprint $table) {
-
             $table->string('password')->nullable()->change();
         });
     }

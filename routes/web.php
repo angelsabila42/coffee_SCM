@@ -50,15 +50,20 @@ use App\Http\Controllers\API\V1\OutgoingOrderController;
 use App\Http\Controllers\API\V1\QuantityDemandController;
 use App\Http\Controllers\API\V1\VendorClusterController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\UserAuditController;
 use App\Http\Controllers\Vendor\VendorOrderController;
 //use App\Models\inventory;
 
 use App\Http\Controllers\InvoiceExportController;
 use App\Http\Middleware\AutMiddleware;
+use App\Models\QA;
 use GuzzleHttp\Middleware;
-
+Route::get('/qa-vendor', function (QA $qa) {
+    return view('qa.vendor-report', [
+        'report' => $qa->all(),
+    ]);
+})->name('qa.vendor');
 //transporter transactions
-Route::get('/payments/{id}/download', [transporterController::class, 'download'])->name('payments.download');
 
 Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
 
@@ -109,9 +114,6 @@ Route::middleware('auth')->prefix('importer/payment')->group(function () {
         return response()->json(['message' => 'Created 3 test orders', 'orders' => $orders]);
     })->name('importer.payment.create-test-orders');
 });
-
-Route::get('/payments/importer/{id}', [ImporterModelController::class, 'showPayment'])->name('ImporterPayments.show');
-Route::get('/payments/importer/{id}/download', [ImporterModelController::class, 'download'])->name('ImporterPayments.download');
 
    
 Route::get('/alpine',function(){
@@ -211,9 +213,14 @@ Route::middleware('auth')->group(function()
                     /*transactions Routes*/
                     Route::resource('invoices', InvoiceController::class);
                     Route::resource('payments', PaymentController::class);
+                    Route::get('/pesapal-transaction/{id}/details', [PaymentController::class, 'getPesapalTransactionDetails'])->name('admin.pesapal.transaction.details');
 
                     /*Delivery Routes*/
                     Route::resource('deliveries', DeliveryController::class);
+
+                    /*User Audit Routes*/
+                    Route::get('/user-audits', [UserAuditController::class, 'index'])->name('admin.user-audits.index');
+                    Route::get('/user-audits/{id}', [UserAuditController::class, 'show'])->name('admin.user-audits.show');
 
 
                                     
@@ -401,48 +408,59 @@ Route::middleware(['vendor'])->group(function(){
     Route::get('/importer/dashboard', [ImporterModelController::class,'index'])->name('importer.dashboard');
     Route::get('/importer/transactions', [ImporterModelController::class,'transactions'])->name('importer.transactions');
     Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
+    
+Route::get('/payments/importer/{id}', [ImporterModelController::class, 'showPayment'])->name('ImporterPayments.show');
+Route::get('/payments/importer/{id}/download', [ImporterModelController::class, 'download'])->name('ImporterPayments.download');
+
+
+Route::get('/payments/{id}', [ImporterModelController::class, 'showOrder'])->name('ImporterOrders.show');
+
 
     });
 
 
 //all transporter routes
 
-Route::middleware('transporter')->group(function(){
+                Route::middleware('transporter')->group(function(){
 
-// Transporter Dashboard
-Route::get('/transporter/dashboard', [transporterController::class, 'dashboard'])->name('transporter.dashboard');
-// Transporter Deliveries
-Route::get('/transporter/deliveries', [transporterController::class, 'deliveries'])->name('transporter.deliveries');
-// Transporter Drivers Management
-Route::get('/transporter/drivers', [transporterController::class, 'drivers'])->name('transporter.drivers');
-Route::get('/transporter/drivers/create', [transporterController::class, 'createDriver'])->name('transporter.drivers.create');
-Route::post('/transporter/drivers', [transporterController::class, 'storeDriver'])->name('transporter.drivers.store');
-Route::get('/transporter/drivers/{id}/edit', [transporterController::class, 'editDriver'])->name('transporter.drivers.edit');
-Route::put('/transporter/drivers/{id}', [transporterController::class, 'updateDriver'])->name('transporter.drivers.update');
-Route::delete('/transporter/drivers/{id}', [transporterController::class, 'destroyDriver'])->name('transporter.drivers.destroy');
-// Delivery Assignment Routes
-Route::put('/transporter/deliveries/{delivery}/assign-driver', [transporterController::class, 'assignDriver'])->name('transporter.deliveries.assign-driver');
-Route::post('/transporter/deliveries/{delivery}/mark-delivered', [transporterController::class, 'markDelivered'])->name('transporter.deliveries.mark-delivered');
-Route::get('/transporter/deliveries/{delivery}/details', [transporterController::class, 'deliveryDetails'])->name('transporter.deliveries.details');
-// Transporter Profile
-Route::get('/transporter/profile', [transporterController::class, 'profile'])->name('transporter.profile');
-Route::put('/transporter/profile', [transporterController::class, 'updateProfile'])->name('transporter.profile.update');
-Route::put('/transporter/banking', [transporterController::class, 'updateBanking'])->name('transporter.banking.update');
-// Legacy routes
-// Transporter Delivery Dashboard
-Route::get('/deliveries/transporter', [transporterController::class, 'deliveries'])->name('deliveries.transporter');
+                // Transporter Dashboard
+                Route::get('/transporter/dashboard', [transporterController::class, 'dashboard'])->name('transporter.dashboard');
+                // Transporter Deliveries
+                Route::get('/transporter/deliveries', [transporterController::class, 'deliveries'])->name('transporter.deliveries');
+                // Transporter Drivers Management
+                Route::get('/transporter/drivers', [transporterController::class, 'drivers'])->name('transporter.drivers');
+                Route::get('/transporter/drivers/create', [transporterController::class, 'createDriver'])->name('transporter.drivers.create');
+                Route::post('/transporter/drivers', [transporterController::class, 'storeDriver'])->name('transporter.drivers.store');
+                Route::get('/transporter/drivers/{id}/edit', [transporterController::class, 'editDriver'])->name('transporter.drivers.edit');
+                Route::put('/transporter/drivers/{id}', [transporterController::class, 'updateDriver'])->name('transporter.drivers.update');
+                Route::delete('/transporter/drivers/{id}', [transporterController::class, 'destroyDriver'])->name('transporter.drivers.destroy');
+                // Delivery Assignment Routes
+                Route::put('/transporter/deliveries/{delivery}/assign-driver', [transporterController::class, 'assignDriver'])->name('transporter.deliveries.assign-driver');
+                Route::post('/transporter/deliveries/{delivery}/mark-delivered', [transporterController::class, 'markDelivered'])->name('transporter.deliveries.mark-delivered');
+                Route::get('/transporter/deliveries/{delivery}/details', [transporterController::class, 'deliveryDetails'])->name('transporter.deliveries.details');
+                // Transporter Profile
+                Route::get('/transporter/profile', [transporterController::class, 'profile'])->name('transporter.profile');
+                Route::put('/transporter/profile', [transporterController::class, 'updateProfile'])->name('transporter.profile.update');
+                Route::put('/transporter/banking', [transporterController::class, 'updateBanking'])->name('transporter.banking.update');
+                // Legacy routes
+                // Transporter Delivery Dashboard
+                Route::get('/deliveries/transporter', [transporterController::class, 'deliveries'])->name('deliveries.transporter');
 
-// //transporter transactions
-  Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');
-  
- Route::get('/transporter',[DeliveryController::class,'merc']);
-        Route::delete('/transporter/{id}',[DeliveryController::class,'dismiss'])->name('transporter.dismiss');
-  Route::get('/transporter', function () {
-            return view('transporter');
-        });
-     
+                // //transporter transactions
+                Route::get('/transporter/transactions', [transporterController::class,'transactions'])->name('transporter.transactions');
+                
+                Route::get('/transporter',[DeliveryController::class,'merc']);
+                        Route::delete('/transporter/{id}',[DeliveryController::class,'dismiss'])->name('transporter.dismiss');
+                Route::get('/transporter', function () {
+                            return view('transporter');
+                        });
+                        Route::get('/payments/{id}/download', [transporterController::class, 'download'])->name('payments.download');
 
-});
+                Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
+
+                    
+
+                });
 //notification routes
 Route::post('/notifications/mark-as-read', function () {
     Auth::user()->unreadNotifications->markAsRead();

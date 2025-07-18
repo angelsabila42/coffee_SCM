@@ -46,7 +46,13 @@
                         <td>{{$item->warehouse_name}}</td>
                         <td>{{$item->quantity}}</td>
                         <td>{{$item->threshold}}</td>
-                        <td>{{$item->status}}</td>
+                        <td>
+                            @if($item->quantity < $item->threshold)
+                               <span class="badge bg-danger">Low</span>
+                            @else 
+                               <span class="badge bg-success">In Stock</span>
+                            @endif
+                        </td>
                         <td>{{$item->last_updated}}</td>
                         <td>
                             <form action="{{route('inventory.destroy', $item->id)}}"

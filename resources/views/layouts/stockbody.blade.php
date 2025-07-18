@@ -18,7 +18,7 @@
     <div class="container bg-white p-4 rounded shadow-sm">
       <div class="row">
         <div class="col-md-6">
-          <p><span class="detail-label">Inventory ID:</span> {{$inventory->inventory_id}}</p>
+          <p><span class="detail-label">Inventory ID:</span> {{$inventory->id}}</p>
           <p><span class="detail-label">Coffee Type:</span> {{$inventory->coffee_type}}</p>
           <p><span class="detail-label">Grade:</span>{{$inventory->grade}}</p>
           <p><span class="detail-label">Warehouse Name:</span> {{$inventory->warehouse_name}}</p>

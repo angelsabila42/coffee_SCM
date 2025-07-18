@@ -17,7 +17,11 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Address</th>
+                <th>Transporter Company</th>
+                <th>License No.</th>
+                <th>Vehicle No.</th>
+                <th>Experience</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -26,8 +30,20 @@
                 <tr>
                     <td>{{ $driver->name }}</td>
                     <td>{{ $driver->email }}</td>
-                    <td>{{ $driver->phone }}</td>
-                    <td>{{ $driver->address }}</td>
+                    <td>{{ $driver->phone ?? 'N/A' }}</td>
+                    <td>
+                        <span class="badge bg-primary">{{ $driver->transporter_company ?? 'Not Assigned' }}</span>
+                    </td>
+                    <td>{{ $driver->license_number ?? 'N/A' }}</td>
+                    <td>{{ $driver->vehicle_number ?? 'N/A' }}</td>
+                    <td>{{ $driver->experience ? $driver->experience . ' years' : 'N/A' }}</td>
+                    <td>
+                        @if($driver->is_available)
+                            <span class="badge bg-success">Available</span>
+                        @else
+                            <span class="badge bg-warning">Busy</span>
+                        @endif
+                    </td>
                     <td>
                         <a href="{{ route('drivers.show', $driver->id) }}" class="btn btn-info btn-sm">View</a>
                         <a href="{{ route('drivers.edit', $driver->id) }}" class="btn btn-primary btn-sm">Edit</a>
@@ -39,7 +55,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5" class="text-center">No drivers found.</td></tr>
+                <tr><td colspan="9" class="text-center">No drivers found.</td></tr>
             @endforelse
         </tbody>
     </table>
