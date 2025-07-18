@@ -1,4 +1,4 @@
-<div class="card m-3 p-3 rounded bg-light">
+<div class="modern-card m-3 p-3 rounded ">
     <div>
     <h2>Payment Details</h2>
     <p><strong>Invoice ID:</strong> {{ $payment->invoice_id }}</p>

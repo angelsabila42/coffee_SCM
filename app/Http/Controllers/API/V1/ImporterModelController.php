@@ -31,8 +31,7 @@ class ImporterModelController extends Controller
             $user = Auth::user();    
           $importer = ImporterModel::where('email', $user->email)->first();
              $importerId = $importer->id;
-        $orders = IncomingOrder::paginate(10);
-         $orders2 = IncomingOrder::where('id',$importerId )->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as total')
+         $orders2 = IncomingOrder::where('importer_model_id',$importerId )->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as total')
         ->groupBy('year', 'month')
         ->orderBy('year')
         ->orderBy('month')
@@ -45,29 +44,8 @@ class ImporterModelController extends Controller
     });
 
     
-
-    //  $ordersSent = IncomingOrder::all()->count();
-    //  $pending = IncomingOrder::where('status', 'Pending')->count();
-    // $inTransit = IncomingOrder::where('status', 'in transit')->count();
-    // $delivered = IncomingOrder::where('status', 'Delivered')->count();
- //return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered','orderData','months'));
-   $user = Auth::user();     
- // Logged-in user
-$importer = ImporterModel::where('email', $user->email)->first();
-
 if ($importer) {
-   // $importerId = $importer->id;
-
-//      $ordersSent = IncomingOrder::all()->count();
-//      $pending = IncomingOrder::where('status', 'Pending')->count();
-//     $inTransit = IncomingOrder::where('status', 'in transit')->count();
-//     $delivered = IncomingOrder::where('status', 'Delivered')->count();
-//  return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
-//    $user = Auth::user();     
-//  // Logged-in user
-// $importer = ImporterModel::where('email', $user->email)->first();
-
-// if ($importer) {
+ 
      $importerId = $importer->id;
 
     
@@ -76,24 +54,7 @@ if ($importer) {
     $pending = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Pending')->count();
     $inTransit = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'in transit')->count();
     $delivered = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Delivered')->count();
-
-//     return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered'));
-// } else {
-    
-//     return redirect()->route('login')->with('error', 'No importer record found.');
-// }
-   
-    // public function transactions(){
-    // $user = Auth::user();
-    // // $importerId = ImporterModel::where('email', $user->email)->first()->id;
-       
-    //     // $invoices = Invoice::/*where('importer_model_id', $importerId)->*/paginate(10);
-    //     //   $payments = Payment::where('importerID', $importerId)->paginate(10);
-    //     $payments = Payment::paginate(10);
-    // // Get the logged-in user's importer model
-    //      $invoices = Invoice::paginate(10);
-    // return view('importer_transactions', compact('invoices', 'payments'));
-    return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered', 'orderData', 'months', 'importer'))
+  return view('importer_dashboard', compact('orders', 'ordersSent', 'pending', 'inTransit', 'delivered', 'orderData', 'months', 'importer'))
         ->with('success', 'Welcome to your dashboard, ' . $importer->name . '!');
          }else{
         return redirect()->route('login')->with('error', 'No importer record found.');
@@ -166,6 +127,15 @@ public function destroy(IncomingOrder $order)
     $payment = Payment::findOrFail($id); 
     return view('payments.ImporterPay', compact('payment'));
 }
+
+
+  public function showOrder($id)
+{
+    $order = IncomingOrder::findOrFail($id); 
+    return view('payments.ImporterPay', compact('order'));
+}
+
+
 
 public function download($id)
 {

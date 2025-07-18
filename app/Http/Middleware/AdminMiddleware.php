@@ -22,7 +22,7 @@ class AdminMiddleware
             return redirect()->route('login')->with('error', 'You must be logged in to access this page.');
         }
         $staff = Staff::where('email', $user->email)->first();
-        $admin = $staff ? $staff->is_admin : false;
+        $admin =$staff->is_admin;
 
         if($admin){
              return $next($request);

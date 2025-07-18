@@ -152,16 +152,16 @@
                              else $class = 'bg-success';
                         @endphp
 
-                    <tr onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">
-                        <td>{{ $order->orderID }}</td>
-                        <td>{{ $order->coffeeType }}</td>
-                        <td>{{ $order->quantity }}kg</td>
-                        <td class="{{ $class }} rounded-pill text-white badge w-100">{{ $order->status }}</td>
+                    <tr >
+                        <td onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->orderID }}</td>
+                        <td onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->coffeeType }}</td>
+                        <td onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->quantity }}kg</td>
+                        <td class="{{ $class }} rounded-pill text-white badge w-100" onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->status }}</td>
 
 
 
-                        <td>{{ $order->created_at }}</td>
-                        <td>{{ $order->updated_at }}</td>
+                        <td onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->created_at }}</td>
+                        <td onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->updated_at }}</td>
                         <td>
                             <form action="{{ route('orders.destroy', $order->id )}} " method="POST" style="display: none;" id="delete-form-{{ $order->id }}">
                             @csrf

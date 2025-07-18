@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 use App\Models\ImporterModel;
+use App\Models\Staff;
 use App\Models\Vendor;
 use App\Models\Transporter;
 
@@ -37,14 +38,17 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         $user = Auth::user();
 
-       Log::info('LOGIN store() hit by user: ' . $user->email);
+      // Log::info('LOGIN store() hit by user: ' . $user->email);
 
+        $staff = Staff::where('email', $user->email)->first();
+        if($staff){
+            $admin = $staff->is_admin;
+        if ($admin) {
+            Log::info('Redirecting admin');
+            return redirect()->route('admin.dashboard');
+        }
 
-       // Vendor role check in users table
-        // if ($user->role === 'vendor') {
-        //     Log::info('Redirecting vendor (role check)');
-        //     return redirect()->route('vendor.home');
-        // }
+        }
 
         if(ImporterModel::where('email', $user->email)->exists()){
             //::info('Redirecting importer');
@@ -58,8 +62,9 @@ class AuthenticatedSessionController extends Controller
 
         if(Transporter::where('email', $user->email)->exists()){
            // Log::info('Redirecting transporter');
-            return redirect()->route('transporter.transactions');
+            return redirect()->route('transporter.dashboard');
         }
+
         
     //Log::warning('⚠️ None of the role-based redirects matched. Falling back to welcome.');
 

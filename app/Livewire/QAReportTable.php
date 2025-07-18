@@ -15,6 +15,7 @@ class QAReportTable extends Component
     public $search = '';
     public $perPage = 10;
     public $status = '';
+    public $reportID;
 
     protected $listeners = ['refreshTable' => '$refresh'];
 
