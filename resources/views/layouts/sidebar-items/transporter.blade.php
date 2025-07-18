@@ -17,6 +17,12 @@
              <i class='bx bx-user'></i>
              <span>Drivers</span>
              </a>
+        </li>
+        <li class="sidebar-item">
+             <a href="{{route('transporter.companies')}}" class="sidebar-link">
+             <i class='bx bx-buildings'></i>
+             <span>Transport Companies</span>
+             </a>
         </li> 
         <li class="sidebar-item">
              <a href="{{route('transporter.transactions')}}" class="sidebar-link">

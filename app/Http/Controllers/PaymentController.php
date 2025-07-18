@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Payment;
-
+use App\Models\PesaPalTransaction;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Storage;
 use App\Services\ActivityLogger;
@@ -16,13 +16,16 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $payments = Payment::paginate(10); // Fetch payments with pagination
+        // Fetch pesapal transactions with pagination and related importer data
+        $payments = PesaPalTransaction::with('importer')
+            ->orderByDesc('created_at')
+            ->paginate(10);
 
         // Get the latest invoice for account details
         $latestInvoice = Invoice::orderByDesc('id')->first();
 
-        // Calculate total earnings
-        $totalEarnings = Payment::sum('amount_paid');
+        // Calculate total earnings from pesapal transactions
+        $totalEarnings = PesaPalTransaction::where('status', 'COMPLETED')->sum('total_amount');
 
         $invoices = \App\Models\Invoice::paginate(10); // Fetch invoices for the invoices tab
 
@@ -137,6 +140,30 @@ class PaymentController extends Controller
         return redirect()->route('payments.index')->with('success', 'Payment record deleted successfully!');
     }
 
+    /**
+     * Get pesapal transaction details for modal display
+     */
+    public function getPesapalTransactionDetails($id)
+    {
+        try {
+            $transaction = PesaPalTransaction::with('importer')->find($id);
+            
+            if (!$transaction) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Transaction not found'
+                ], 404);
+            }
 
-
+            return response()->json([
+                'success' => true,
+                'transaction' => $transaction
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching transaction details: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

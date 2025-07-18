@@ -120,7 +120,7 @@
                                 @else
                                     <button class="btn btn-sm" onclick="openDriverModal({{ $delivery->id }}, '{{ $delivery->delivery_id }}')"
                                             style="background-color: #A0522D; color: white; border-radius: 15px;">
-                                        <i class="bx bx-edit"></i> Change Driver
+                                        <i class="bx bx-edit"></i> Assign Driver
                                     </button>
                                 @endif
                                 <a href="#" class="btn btn-sm" onclick="viewDelivery({{ $delivery->id }})" 
@@ -183,7 +183,7 @@
                                 </button>
                                 <button class="btn btn-sm" onclick="openDriverModal({{ $delivery->id }}, '{{ $delivery->delivery_id }}')"
                                         style="background-color: #A0522D; color: white; border-radius: 15px;">
-                                    <i class="bx bx-edit"></i> Change Driver
+                                    <i class="bx bx-edit"></i> Assign Driver
                                 </button>
                                 <a href="#" class="btn btn-sm" onclick="viewDelivery({{ $delivery->id }})"
                                    style="background-color: #CD853F; color: white; border-radius: 15px;">

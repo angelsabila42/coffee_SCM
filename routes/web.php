@@ -50,6 +50,7 @@ use App\Http\Controllers\API\V1\OutgoingOrderController;
 use App\Http\Controllers\API\V1\QuantityDemandController;
 use App\Http\Controllers\API\V1\VendorClusterController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\UserAuditController;
 use App\Http\Controllers\Vendor\VendorOrderController;
 //use App\Models\inventory;
 
@@ -211,9 +212,14 @@ Route::middleware('auth')->group(function()
                     /*transactions Routes*/
                     Route::resource('invoices', InvoiceController::class);
                     Route::resource('payments', PaymentController::class);
+                    Route::get('/pesapal-transaction/{id}/details', [PaymentController::class, 'getPesapalTransactionDetails'])->name('admin.pesapal.transaction.details');
 
                     /*Delivery Routes*/
                     Route::resource('deliveries', DeliveryController::class);
+
+                    /*User Audit Routes*/
+                    Route::get('/user-audits', [UserAuditController::class, 'index'])->name('admin.user-audits.index');
+                    Route::get('/user-audits/{id}', [UserAuditController::class, 'show'])->name('admin.user-audits.show');
 
 
                                     
@@ -427,6 +433,9 @@ Route::post('/transporter/drivers', [transporterController::class, 'storeDriver'
 Route::get('/transporter/drivers/{id}/edit', [transporterController::class, 'editDriver'])->name('transporter.drivers.edit');
 Route::put('/transporter/drivers/{id}', [transporterController::class, 'updateDriver'])->name('transporter.drivers.update');
 Route::delete('/transporter/drivers/{id}', [transporterController::class, 'destroyDriver'])->name('transporter.drivers.destroy');
+// Transporter Companies Management
+Route::get('/transporter/companies', [transporterController::class, 'companies'])->name('transporter.companies');
+Route::get('/transporter/companies/{id}', [transporterController::class, 'showCompany'])->name('transporter.companies.show');
 // Delivery Assignment Routes
 Route::put('/transporter/deliveries/{delivery}/assign-driver', [transporterController::class, 'assignDriver'])->name('transporter.deliveries.assign-driver');
 Route::post('/transporter/deliveries/{delivery}/mark-delivered', [transporterController::class, 'markDelivered'])->name('transporter.deliveries.mark-delivered');
