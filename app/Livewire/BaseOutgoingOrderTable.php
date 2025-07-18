@@ -48,6 +48,7 @@ abstract class BaseOutgoingOrderTable extends Component
         $this->maxQuantity = $this->maxQuantity  ?? '';
         $this->country = $this->country  ?? '';
         $this->vendor= Vendor::where('email', Auth::user()->email)->first();
+        
 
         $this->orderID= Helper::generateID(OutgoingOrder::class,'orderID','OX',5);
 
