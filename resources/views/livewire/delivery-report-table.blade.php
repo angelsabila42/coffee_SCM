@@ -31,46 +31,27 @@
                                     <table class="table table-hover" style="font-size: 0.92rem; min-width: 1200px;">
                                         <thead class="bg-light">
                                             <tr>
-                                                <th style="white-space:nowrap;">ID</th>
-                                                <th style="white-space:nowrap;">Delivery ID</th>
-                                                <th style="white-space:nowrap;">Pickup Location</th>
-                                                <th style="white-space:nowrap;">Dispatch Date/Time</th>
-                                                <th style="white-space:nowrap;">Destination</th>
-                                                <th style="white-space:nowrap;">Quantity</th>
-                                                <th style="white-space:nowrap;">Coffee Type</th>
-                                                <th style="white-space:nowrap;">Coffee Grade</th>
-                                                <th style="white-space:nowrap;">Status</th>
-                                                <th style="white-space:nowrap;">Assigned Driver</th>
-                                                <th style="white-space:nowrap;">ETA</th>
-                                                <th style="white-space:nowrap;">Date Ordered</th>
-                                                <th style="white-space:nowrap;">Created At</th>
-                                                <th style="white-space:nowrap;">Updated At</th>
+                                                <th>Report ID</th>
+                                                <th>Title</th>
+                                                <th>Start</th>
+                                                <th>End</th>
+                                                <th>Total Deliveries</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($deliveries as $delivery)
-                                            <tr wire:key= "{{$delivery->id}}" >
-                                                <td style="white-space:nowrap;">{{ $delivery->id }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->delivery_id }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->pickup_location }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->dispatch_date_time }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->delivery_destination }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->quantity }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->coffee_type }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->coffee_grade }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->status }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->assigned_driver }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->eta }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->date_ordered }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->created_at }}</td>
-                                                <td style="white-space:nowrap;">{{ $delivery->updated_at }}</td>
+                                        @foreach ($deliveries as $delivery)
+                                           <tr>
+                                                <td>{{ $delivery->reportID }}</td>
+                                                <td>{{ $delivery->title }}</td>
+                                                <td>{{ $delivery->start_period }}</td>
+                                                <td>{{ $delivery->end_period }}</td>
+                                                <td>{{ $delivery->total_deliveries }}</td>
                                             </tr>
-                                         @endforeach    
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="py-4 px-3">
-                   
                             </div>
                         </div>
                     </div>
