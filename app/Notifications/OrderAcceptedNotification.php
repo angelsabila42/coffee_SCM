@@ -44,8 +44,7 @@ class OrderAcceptedNotification extends Notification
 {
     return [
         'title' => 'Order Accepted',
-        'message' => 'Your order # ' . $this->order->orderID . 'has been accepted',
-        'order_id' => $this->order->id,
+        'message' => 'Your order  ' . $this->order->orderID . 'has been accepted',
         
     ];
 }
