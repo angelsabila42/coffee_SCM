@@ -24,7 +24,15 @@ class DeliveryController extends Controller
     {
         // Generate a new unique delivery_id for the form
         $newDeliveryId = 'NX_' . str_pad(Delivery::max('id') + 1, 3, '0', STR_PAD_LEFT);
-        return view('deliveries.create', compact('newDeliveryId'));
+        
+        // Get available orders for selection (orders that don't have deliveries yet)
+        $availableOrders = \App\Models\IncomingOrder::whereNotIn('id', function($query) {
+            $query->select('order_reference')
+                  ->from('deliveries')
+                  ->whereNotNull('order_reference');
+        })->where('status', '!=', 'Declined')->get();
+        
+        return view('deliveries.create', compact('newDeliveryId', 'availableOrders'));
     }
 
     /**
@@ -34,6 +42,7 @@ class DeliveryController extends Controller
     {
         $validated = $request->validate([
             'delivery_id' => 'required|unique:deliveries,delivery_id|max:255',
+            'order_reference' => 'nullable|exists:incoming_orders,id',
             'pickup_location' => 'nullable|string|max:255',
             'dispatch_date_time' => 'nullable|date',
             'delivery_destination' => 'required|string|max:255',
@@ -64,7 +73,15 @@ class DeliveryController extends Controller
      */
     public function edit(Delivery $delivery)
     {
-        return view('deliveries.edit', compact('delivery'));
+        // Get available orders for selection (excluding current delivery's order, and orders already assigned)
+        $availableOrders = \App\Models\IncomingOrder::whereNotIn('id', function($query) use ($delivery) {
+            $query->select('order_reference')
+                  ->from('deliveries')
+                  ->whereNotNull('order_reference')
+                  ->where('id', '!=', $delivery->id); // Exclude current delivery
+        })->where('status', '!=', 'Declined')->get();
+        
+        return view('deliveries.edit', compact('delivery', 'availableOrders'));
     }
 
     /**

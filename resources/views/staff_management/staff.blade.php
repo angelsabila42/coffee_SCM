@@ -4,7 +4,7 @@
 @include('layouts.sidebar-items.admin')
 @endsection
 <div class="container">
-    <h2>Staff Management</h2>
+    <h1>Staff Management</h1>
 
     <!-- Summary Cards -->
    <div class="row mb-4 card-row-custom">
@@ -73,8 +73,55 @@
                         </button> --}}
 
                     </div>
-                     <livewire:stafff/>
+                     <livewire:staff-model/>
+                       <!-- Staff Details Panel -->
+            <div id="staffDetailsPanel" class="staff-details-panel d-none">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Staff Details</h5>
+                        <button type="button" class="btn-close" id="closeStaffDetails"></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <div class="profile-picture-container">
+                                <img id="staffProfilePicture" src="" alt="Profile Picture" class="rounded-circle profile-picture mb-2">
+                                <form id="profilePictureForm" class="mt-2">
+                                    @csrf
+                                    <label for="profilePictureInput" class="btn btn-sm btn-outline-primary">
+                                        Change Picture
+                                    </label>
+                                    <input type="file" id="profilePictureInput" name="profile_picture" class="d-none" accept="image/*">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="staff-info">
+                            <h6 class="staff-name mb-3"></h6>
+                            <div class="info-row">
+                                <span class="info-label">Staff ID:</span>
+                                <span class="staff-id"></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Role:</span>
+                                <span class="staff-role"></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Status:</span>
+                                <span class="staff-status"></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Phone:</span>
+                                <span class="staff-phone"></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Email:</span>
+                                <span class="staff-email"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Staff Tab Content End -->
                      <div class="card-body table-full-width table-responsive">
                         <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
 
@@ -188,8 +235,6 @@
             </div>
         </div>
 
-
-
             <!-- Work Assignment History Tab Content -->
             <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
                 @include('staff_management.Workassignment', [
@@ -251,9 +296,20 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="addStaffForm" action="{{ route('staff_management.staff.store') }}" method="POST">
+                            <form id="addStaffForm" action="{{ route('staff_management.staff.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <h6>Staff details</h6>
+                                <div class="text-center mb-4">
+                                    <div class="profile-picture-container">
+                                        <img id="addStaffProfilePreview" src="/assets/img/default-avatar.png" alt="Profile Picture Preview" class="rounded-circle profile-picture mb-2" style="width: 150px; height: 150px; object-fit: cover;">
+                                        <div class="mt-2">
+                                            <label for="add_profile_picture" class="btn btn-sm btn-outline-primary">
+                                                Upload Picture
+                                            </label>
+                                            <input type="file" id="add_profile_picture" name="profile_picture" class="d-none" accept="image/*" onchange="previewImage(this, 'addStaffProfilePreview')">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="full_name" class="form-label">Full Name</label>
@@ -327,15 +383,26 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="editStaffForm" method="POST"> {{-- Action will be set by JS --}}
+                            <form id="editStaffForm" method="POST" enctype="multipart/form-data"> {{-- Action will be set by JS --}}
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" id="edit_staff_id" name="id">
                                 <h6>Staff details</h6>
+                                <div class="text-center mb-4">
+                                    <div class="profile-picture-container">
+                                        <img id="editStaffProfilePreview" src="/assets/img/default-avatar.png" alt="Profile Picture Preview" class="rounded-circle profile-picture mb-2" style="width: 150px; height: 150px; object-fit: cover;">
+                                        <div class="mt-2">
+                                            <label for="edit_profile_picture" class="btn btn-sm btn-outline-primary">
+                                                Change Picture
+                                            </label>
+                                            <input type="file" id="edit_profile_picture" name="profile_picture" class="d-none" accept="image/*" onchange="previewImage(this, 'editStaffProfilePreview')">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="edit_full_name" class="form-label">Full Name</label>
-                                        <input type="text" class="form-control @error('full_name') is-invalid @enderror" id="edit_full_name" name="full_name" required value="{{ old('full_name') }}">
+                                        <input type="text" class="form-control @error('full_name') is-invalid @enderror" id="edit_full_name" name="full_name" required>
                                         @error('full_name')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -344,10 +411,10 @@
                                         <label for="edit_role" class="form-label">Role</label>
                                         <select class="form-select @error('role') is-invalid @enderror" id="edit_role" name="role" required>
                                             <option value="">Select Role</option>
-                                            <option value="Logistics Supervisor" {{ old('role') == 'Logistics Supervisor' ? 'selected' : '' }}>Logistics Supervisor</option>
-                                            <option value="Supervisor" {{ old('role') == 'Supervisor' ? 'selected' : '' }}>Supervisor</option>
-                                            <option value="Warehouse Clerk" {{ old('role') == 'Warehouse Clerk' ? 'selected' : '' }}>Warehouse Clerk</option>
-                                            <option value="QA" {{ old('role') == 'QA' ? 'selected' : '' }}>QA</option>
+                                            <option value="Logistics Supervisor">Logistics Supervisor</option>
+                                            <option value="Supervisor">Supervisor</option>
+                                            <option value="Warehouse Clerk">Warehouse Clerk</option>
+                                            <option value="QA">QA</option>
                                         </select>
                                         @error('role')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -359,9 +426,9 @@
                                         <label for="edit_status" class="form-label">Status</label>
                                         <select class="form-select @error('status') is-invalid @enderror" id="edit_status" name="status" required>
                                             <option value=""> Status</option>
-                                            <option value="Active" {{ old('status') == 'Active' ? 'selected' : '' }}>Active</option>
-                                            <option value="Suspended" {{ old('status') == 'Suspended' ? 'selected' : '' }}>Suspended</option>
-                                            <option value="On Leave" {{ old('status') == 'On Leave' ? 'selected' : '' }}>On Leave</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Suspended">Suspended</option>
+                                            <option value="On Leave">On Leave</option>
                                         </select>
                                         @error('status')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -370,16 +437,16 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_phone_number" class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-control @error('phone_number') is-invalid @enderror" id="edit_phone_number" name="phone_number" required value="{{ old('phone_number') }}">
+                                    <input type="tel" class="form-control @error('phone_number') is-invalid @enderror" id="edit_phone_number" name="phone_number" required>
                                     @error('phone_number')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_email" class="form-label">Email Address</label>
-                                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="edit_email" name="email" required value="{{ old('email') }}">
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="edit_email" name="email" required>
                                     @error('email')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback" id="edit_email_error">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="d-flex justify-content-end mt-4">
@@ -422,31 +489,58 @@ document.addEventListener('DOMContentLoaded', function () {
     var editStaffModal = document.getElementById('editStaffModal');
     if (editStaffModal) { // Check if the modal exists within the current view
         let currentEditStaffId = null;
+        const bootstrapModal = new bootstrap.Modal(editStaffModal);
+        
         editStaffModal.addEventListener('show.bs.modal', function (event) {
             var button = event.relatedTarget;
             var staffId = button.getAttribute('data-id');
             currentEditStaffId = staffId;
 
-            fetch('/staff_management/staff/' + staffId)
+            // Clear form first
+            document.getElementById('edit_staff_id').value = '';
+            document.getElementById('edit_full_name').value = '';
+            document.getElementById('edit_role').value = '';
+            document.getElementById('edit_status').value = '';
+            document.getElementById('edit_phone_number').value = '';
+            document.getElementById('edit_email').value = '';
+
+            fetch('/staff-management/staff/' + staffId)
                 .then(response => {
+                    console.log('Response status:', response.status); // Debug log
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
                     return response.json();
                 })
                 .then(data => {
-                    document.getElementById('edit_staff_id').value = data.id;
-                    document.getElementById('edit_full_name').value = data.full_name;
-                    document.getElementById('edit_role').value = data.role;
-                    document.getElementById('edit_work_center').value = data.work_center;
-                    document.getElementById('edit_status').value = data.status;
-                    document.getElementById('edit_phone_number').value = data.phone_number;
-                    document.getElementById('edit_email').value = data.email;
+                    console.log('Staff data received:', data); // Debug log
+                    document.getElementById('edit_staff_id').value = data.id || '';
+                    document.getElementById('edit_full_name').value = data.full_name || '';
+                    document.getElementById('edit_role').value = data.role || '';
+                    document.getElementById('edit_status').value = data.status || '';
+                    document.getElementById('edit_phone_number').value = data.phone_number || '';
+                    document.getElementById('edit_email').value = data.email || '';
 
                     document.getElementById('editStaffForm').setAttribute('action', '/staff-management/staff/' + data.id);
                 })
-                .catch(error => console.error('Error fetching staff data:', error));
+                .catch(error => {
+                    console.error('Error fetching staff data:', error);
+                    alert('Error loading staff data. Please try again.');
+                });
         });
+
+        // Handle modal hidden event to properly manage focus
+        editStaffModal.addEventListener('hidden.bs.modal', function () {
+            // Remove aria-hidden when modal is fully hidden
+            editStaffModal.removeAttribute('aria-hidden');
+        });
+
+        // Handle modal shown event
+        editStaffModal.addEventListener('shown.bs.modal', function () {
+            // Focus the first input field when modal is fully shown
+            document.getElementById('edit_full_name').focus();
+        });
+
         // Ensure the form action is set before submit
         document.getElementById('editStaffForm').addEventListener('submit', function(e) {
             const form = this;
@@ -804,3 +898,178 @@ function updateAbsentStaffCard() {
     }
 }
 </script>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const detailsPanel = document.getElementById('staffDetailsPanel');
+    const closeButton = document.getElementById('closeStaffDetails');
+    let currentStaffId = null;
+
+    // Handle row click to show staff details
+    document.querySelectorAll('.staff-row').forEach(row => {
+        row.addEventListener('click', async function() {
+            const staffId = this.dataset.id;
+            currentStaffId = staffId;
+            
+            try {
+                const response = await fetch(`/staff-management/staff/${staffId}`);
+                if (!response.ok) throw new Error('Failed to fetch staff details');
+                
+                const staff = await response.json();
+                
+                // Update panel content
+                document.querySelector('.staff-name').textContent = staff.full_name;
+                document.querySelector('.staff-id').textContent = staff.id;
+                document.querySelector('.staff-role').textContent = staff.role;
+                document.querySelector('.staff-status').textContent = staff.status;
+                document.querySelector('.staff-phone').textContent = staff.phone_number;
+                document.querySelector('.staff-email').textContent = staff.email;
+                
+                // Update profile picture
+                const profilePicture = document.getElementById('staffProfilePicture');
+                profilePicture.src = staff.profile_picture_url || '/assets/img/default-avatar.png';
+                
+                // Show panel
+                detailsPanel.classList.remove('d-none');
+            } catch (error) {
+                console.error('Error fetching staff details:', error);
+                alert('Failed to load staff details');
+            }
+        });
+    });
+
+    // Handle profile picture upload
+    const profilePictureInput = document.getElementById('profilePictureInput');
+    profilePictureInput.addEventListener('change', async function() {
+        if (!currentStaffId) return;
+        
+        const formData = new FormData();
+        formData.append('profile_picture', this.files[0]);
+        formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+        
+        try {
+            const response = await fetch(`/staff-management/staff/${currentStaffId}/profile-picture`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (!response.ok) throw new Error('Failed to upload profile picture');
+            
+            const result = await response.json();
+            if (result.success) {
+                document.getElementById('staffProfilePicture').src = result.profile_picture_url;
+                if (window.Swal) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Profile picture updated successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    alert('Profile picture updated successfully');
+                }
+            }
+        } catch (error) {
+            console.error('Error uploading profile picture:', error);
+            alert('Failed to update profile picture');
+        }
+    });
+
+    // Handle close button click
+    closeButton.addEventListener('click', function() {
+        detailsPanel.classList.add('d-none');
+        currentStaffId = null;
+    });
+
+    // Close panel when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!detailsPanel.contains(event.target) && 
+            !event.target.closest('.staff-row') && 
+            !detailsPanel.classList.contains('d-none')) {
+            detailsPanel.classList.add('d-none');
+            currentStaffId = null;
+        }
+    });
+});
+</script>
+@endpush
+
+@push('styles')
+<style>
+    #staffDetailsPanel {
+        display: none;
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .staff-row {
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .staff-row:hover {
+        background-color: #f8f9fa;
+    }
+
+    #profilePicturePreview {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #eee;
+    }
+
+    .staff-details-content {
+        min-height: 300px;
+    }
+
+    .staff-details-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1040;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.staff-details-panel.d-none {
+    transform: translateX(100%);
+}
+
+.profile-picture-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.info-row {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #666;
+    display: inline-block;
+    width: 80px;
+}
+</style>
+@endpush

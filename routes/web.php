@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\VendorController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\transporterController;
+use App\Http\Controllers\ImporterPaymentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Vendor\VendorHomeController;
@@ -57,6 +58,61 @@ use App\Http\Middleware\AutMiddleware;
 use GuzzleHttp\Middleware;
 
 //transporter transactions
+Route::get('/payments/{id}/download', [transporterController::class, 'download'])->name('payments.download');
+
+Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
+
+// PesaPal payment routes for importers
+Route::middleware('auth')->prefix('importer/payment')->group(function () {
+    Route::post('/initiate', [ImporterPaymentController::class, 'initiatePayment'])->name('importer.payment.initiate');
+    Route::get('/form', [ImporterPaymentController::class, 'showPaymentForm'])->name('pesapal.form');
+    Route::post('/pesapal-iframe', [ImporterPaymentController::class, 'processPesapalForm'])->name('pesapal.iframe');
+    Route::get('/callback', [ImporterPaymentController::class, 'paymentCallback'])->name('importer.payment.callback');
+    Route::post('/callback', [ImporterPaymentController::class, 'paymentCallback']);
+    Route::get('/status/{merchantReference}', [ImporterPaymentController::class, 'paymentStatus'])->name('importer.payment.status');
+    Route::get('/unpaid-orders', [ImporterPaymentController::class, 'getUnpaidOrders'])->name('importer.payment.unpaid-orders');
+    Route::get('/debug', function() {
+        $user = Auth::user();
+        $importer = \App\Models\ImporterModel::where('email', $user->email)->first();
+        $orders = \App\Models\IncomingOrder::where('importer_model_id', $importer ? $importer->id : 0)->get();
+        return response()->json([
+            'user' => $user,
+            'importer' => $importer,
+            'orders' => $orders,
+            'total_orders' => $orders->count()
+        ]);
+    })->name('importer.payment.debug');
+    Route::get('/create-test-orders', function() {
+        $user = Auth::user();
+        $importer = \App\Models\ImporterModel::where('email', $user->email)->first();
+        
+        if (!$importer) {
+            return response()->json(['error' => 'No importer found']);
+        }
+        
+        // Create 3 test orders
+        $orders = [];
+        for ($i = 1; $i <= 3; $i++) {
+            $order = \App\Models\IncomingOrder::create([
+                'orderID' => 'KX' . str_pad($i, 5, '0', STR_PAD_LEFT),
+                'quantity' => rand(100, 500),
+                'coffeeType' => ['Arabica', 'Robusta', 'Liberica'][rand(0, 2)],
+                'status' => ['Requested', 'Pending'][rand(0, 1)],
+                'deadline' => now()->addDays(30),
+                'grade' => ['AA', 'A', 'B'][rand(0, 2)],
+                'destination' => ['Kenya', 'Tanzania', 'Rwanda'][rand(0, 2)],
+                'importer_model_id' => $importer->id
+            ]);
+            $orders[] = $order;
+        }
+        
+        return response()->json(['message' => 'Created 3 test orders', 'orders' => $orders]);
+    })->name('importer.payment.create-test-orders');
+});
+
+Route::get('/payments/importer/{id}', [ImporterModelController::class, 'showPayment'])->name('ImporterPayments.show');
+Route::get('/payments/importer/{id}/download', [ImporterModelController::class, 'download'])->name('ImporterPayments.download');
+
    
 Route::get('/alpine',function(){
     return view('alpine');
@@ -81,7 +137,9 @@ require __DIR__.'/auth.php';
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-
+      Route::get('/adminDashboard', function () {
+          return view('Dashboards.admin');
+      })->middleware('admin')->name('admin.dashboard');
 
 
 
@@ -100,6 +158,8 @@ Route::middleware('auth')->group(function()
                                 Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
                                 Route::get('/staff/{staff}', [StaffController::class, 'show'])->name('staff.show');
                                 Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
+                                Route::patch('/staff/{staff}/status', [StaffController::class, 'updateStatus'])->name('staff.status');
+                                Route::post('/staff/{staff}/profile-picture', [StaffController::class, 'updateProfilePicture'])->name('staff.updateProfilePicture');
                                 Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
 
 
@@ -183,12 +243,23 @@ Route::middleware('auth')->group(function()
     /*Dashboard routes*/
    Route::get('/admin-home', [HomeController::class, 'index'])->name('admin.home');
 
+
+
+   
+
+        /*Dashboard routes*/
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+        /*Analytics route*/
+        Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+
     /*Analytics routes*/
     Route::get('/admin-home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
     Route::get('/import-annual-coffee-sales', [AnnualCoffeeSaleAdminController::class, 'importCsv']);
     Route::get('/import-importer-demand', [ImporterDemandAdminController::class, 'importCsv']);
     Route::get('/import-vendor-cluster', [VendorClusterController::class, 'importCsv']);
     Route::get('/import-demand-quantity', [QuantityDemandController::class, 'importCsv']);
+
 
    
 
@@ -377,6 +448,10 @@ Route::post('/notifications/mark-as-read', function () {
     Auth::user()->unreadNotifications->markAsRead();
     return response()->json(['success' => true]);
 })->middleware('auth');
+
+// Staff profile picture routes
+Route::post('/staff/{id}/profile-picture', [StaffController::class, 'updateProfilePicture'])->name('staff.updateProfilePicture');
+Route::get('/staff/{id}/details', [StaffController::class, 'getStaffDetails'])->name('staff.get-details');
 
 
 

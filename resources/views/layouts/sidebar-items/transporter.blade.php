@@ -25,6 +25,12 @@
              </a>
         </li>   
         <li class="sidebar-item">
+          <a href="{{ route('chat') }}" class="sidebar-link">
+             <i class='bx bx-message-bubble'></i>
+             <span>Chat</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
              <a href="{{ route('transporter.profile') }}" class="sidebar-link">
              <i class='bx bx-user-circle'></i> 
              <span>Profile</span>

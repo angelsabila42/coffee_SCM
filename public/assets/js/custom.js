@@ -231,8 +231,48 @@ document.addEventListener('alpine:init', ()=>{
 
 });
 
+/*document.addEventListener('livewire:load', () => {
+    Livewire.on('show-toast', (message) => {
+    window.dispatchEvent(new CustomEvent('show-toast', {
+        detail: { message }
+    }));
+});
+});
 
+window.addEventListener('show-toast', e => {
+    alert(e.detail.message);
+});*/
 
+// Bootstrap 5 to Bootstrap 4 Compatibility Layer
+document.addEventListener('DOMContentLoaded', function() {
+    // Convert data-bs-toggle to data-toggle
+    document.querySelectorAll('[data-bs-toggle]').forEach(function(element) {
+        var toggleValue = element.getAttribute('data-bs-toggle');
+        element.setAttribute('data-toggle', toggleValue);
+    });
+
+    // Convert data-bs-target to data-target
+    document.querySelectorAll('[data-bs-target]').forEach(function(element) {
+        var targetValue = element.getAttribute('data-bs-target');
+        element.setAttribute('data-target', targetValue);
+    });
+
+    // Convert data-bs-dismiss to data-dismiss
+    document.querySelectorAll('[data-bs-dismiss]').forEach(function(element) {
+        var dismissValue = element.getAttribute('data-bs-dismiss');
+        element.setAttribute('data-dismiss', dismissValue);
+    });
+
+    // Fix modal buttons in Bootstrap 4
+    document.querySelectorAll('.btn-close').forEach(function(element) {
+        if (element.getAttribute('data-dismiss') === 'modal') {
+            element.classList.add('close');
+            element.innerHTML = '&times;';
+        }
+    });
+
+    console.log('Bootstrap 5 to 4 compatibility layer applied');
+});
 
 
 

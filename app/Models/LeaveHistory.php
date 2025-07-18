@@ -18,12 +18,10 @@ class LeaveHistory extends Model
     protected $fillable = [
         'leave_id',
         'staff_id',
-        'work_center',
         'leave_type',
         'start_date',
         'end_date',
-        'status',
-        'full_name',
+        'status'
     ];
 
     /**
@@ -39,6 +37,13 @@ class LeaveHistory extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'leave_histories';
 
     /**
      * relationship with Staff model

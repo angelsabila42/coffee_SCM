@@ -25,8 +25,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('vendor', function (Blueprint $table) {
-          $table->dropColumn('Bank_account','Account_holder','Bank_name');
-            // $table->string('password');
+            $table->dropColumn(['Bank_account', 'Account_holder', 'Bank_name']);
         });
     }
 };

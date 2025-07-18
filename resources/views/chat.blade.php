@@ -5,12 +5,8 @@
 @endphp
 
 @section('sidebar-items')
-    @php
-        $userRole = auth()->user()->role ?? 'admin'; // Default to 'admin' if role is null
-    @endphp
-    @includeIf('layouts.sidebar-items.' . $userRole)
+    @includeIf('layouts.sidebar-items.' . auth()->user()->role)
 @endsection
-
 @section('content')
 <style>
 :root {
@@ -415,8 +411,6 @@ body, html {
                 <img src="{{ $otherUser->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($otherUser->name) . '&background=8B5E3C&color=fff' }}" class="avatar" alt="User">
                 <span class="name">{{ $otherUser->name }}</span>
                 <span class="role-badge text-capitalize">{{ $otherUser->role == 'supplier' ? 'Importer' : $otherUser->role ?? 'Partner' }}</span>
-                <span class="status"><i class="fas fa-circle"></i> Online</span>
-               
             </div>
             <div class="chat-body flex-grow-1" id="messagesContainer">
                 @forelse($conversation->messages as $message)
@@ -509,9 +503,19 @@ if (window.Echo) {
     window.Echo.connector.pusher.connection.bind('connected', () => {
         console.log('Successfully connected to Pusher - Chat is ready for real-time messages');
         console.log('Current East Africa Time:', new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' }));
+        document.getElementById('connectionStatus').innerHTML = '<span class="text-success"><i class="fas fa-wifi"></i> Connected</span>';
     });
     window.Echo.connector.pusher.connection.bind('error', (error) => {
         console.error('Pusher connection error:', error);
+        document.getElementById('connectionStatus').innerHTML = '<span class="text-danger"><i class="fas fa-exclamation-triangle"></i> Connection Error</span>';
+    });
+    window.Echo.connector.pusher.connection.bind('disconnected', () => {
+        console.log('Disconnected from Pusher');
+        document.getElementById('connectionStatus').innerHTML = '<span class="text-warning"><i class="fas fa-plug"></i> Disconnected</span>';
+    });
+    window.Echo.connector.pusher.connection.bind('connecting', () => {
+        console.log('Connecting to Pusher...');
+        document.getElementById('connectionStatus').innerHTML = '<span class="text-info"><i class="fas fa-sync fa-spin"></i> Connecting...</span>';
     });
 } else {
     console.error('Echo is not initialized - Real-time chat will not work');
@@ -530,41 +534,50 @@ document.addEventListener('DOMContentLoaded', function() {
         // Remove any existing listeners to prevent duplicates
         window.Echo.leave('chat.{{ $conversation->id }}');
         
+        // Add debug statement to verify the channel name
+        console.log('Subscribing to private channel: chat.{{ $conversation->id }}');
+        
         window.Echo.private(`chat.{{ $conversation->id }}`)
-            .listen('.MessageSent', (data) => {
+            .listen('MessageSent', (data) => {
                 console.log('Received real-time message:', data);
                 
                 const isOwn = data.sender_id == {{ auth()->id() }};
-                // Create a date object and format it in EAT timezone
-                const messageTime = new Date(data.created_at).toLocaleString('en-GB', { 
-                    timeZone: 'Africa/Nairobi',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
+                
+                // Only add messages from other users to prevent duplicates
+                if (!isOwn) {
+                    // data.created_at is already formatted as H:i (e.g., "15:51")
+                    const messageTime = data.created_at;
 
-                const messageHtml = `
-                    <div class="message-row ${isOwn ? 'own' : ''}">
-                        <div class="message-bubble">
-                            ${data.message}
-                            <div class="message-meta">
-                                ${messageTime}
-                                ${isOwn ? '<i class="fas fa-check text-secondary"></i>' : ''}
+                    const messageHtml = `
+                        <div class="message-row">
+                            <div class="message-bubble">
+                                ${data.message}
+                                <div class="message-meta">
+                                    ${messageTime}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                
-                messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
-                scrollToBottom();
-                // Play a notification sound if the message is not from the current user
-                if (!isOwn) {
+                    `;
+                    
+                    messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
+                    scrollToBottom();
+                    
+                    // Play notification sound for incoming messages
                     try {
                         new Audio('/assets/notification.mp3').play().catch(e => console.log('No notification sound available'));
                     } catch (e) {
                         console.log('Audio playback failed:', e);
                     }
                 }
+            })
+            .listen('MessageRead', (data) => {
+                console.log('Messages marked as read:', data);
+                
+                // Update all unread message ticks to double green ticks
+                const ownMessages = messagesContainer.querySelectorAll('.message-row.own .message-meta i.fa-check:not(.fa-check-double)');
+                ownMessages.forEach(tick => {
+                    tick.className = 'fas fa-check-double text-success';
+                });
             });
     } else {
         console.error('Echo is not defined! Real-time messaging will not work.');

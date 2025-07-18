@@ -1,5 +1,24 @@
 # coffee_SCM
 A Supply Management System for the GlobalBean Connect, coffee exporters
+
+## Real-time Chat Setup
+
+This application includes a real-time chat system powered by Pusher. For development:
+
+### Option 1: Use Shared Development Credentials
+The `.env.example` file includes shared development Pusher credentials that allow team members to chat with each other in real-time during development.
+
+### Option 2: Create Your Own Pusher App
+1. Sign up at [Pusher.com](https://pusher.com)
+2. Create a new app
+3. Copy your credentials to `.env`
+4. Update `BROADCAST_DRIVER=pusher` in your `.env`
+
+### Option 3: Disable Real-time Features
+Set `BROADCAST_DRIVER=null` in your `.env` to disable real-time features.
+
+**Note**: For production deployment, always use your own Pusher credentials for security.
+
 [Instructions for Cloning the repository](https://www.bacancytechnology.com/qanda/laravel/clone-laravel-project-from-github)
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>

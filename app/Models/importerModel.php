@@ -13,11 +13,9 @@ class ImporterModel extends Model
       protected $fillable = [
         'name',
         'email',
-        //'password',
-         'country',
+        'country',
         'phone_number',
         'address',
-        'confirm password',
         'Bank_account',
         'Account_holder',
         'Bank_name',

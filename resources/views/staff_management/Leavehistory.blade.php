@@ -35,13 +35,14 @@
             <tbody>
                 @forelse($leaveHistory as $leave)
                     <tr>
-                        <td>{{ $leave->id ?? ($leave->leave_id ?? '') }}</td>
+                        <td>{{ $leave->leave_id }}</td>
                         <td>{{ $leave->staff->full_name ?? $leave->staff_id }}</td>
                         <td>{{ $leave->leave_type }}</td>
                         <td>{{ $leave->start_date }}</td>
                         <td>{{ $leave->end_date }}</td>
                         <td x-data="{
-                                selectedStatus: '{{$leave->status}}',
+                                leaveId: '{{ $leave->leave_id }}',
+                                selectedStatus: '{{ $leave->status }}',
                                 statuses: ['Pending', 'Approved', 'Rejected', 'Cancelled'],
                                 badgeClass: function(status) {
                                     if (status === 'Approved') return 'bg-success text-white';
@@ -49,42 +50,14 @@
                                     if (status === 'Rejected') return 'bg-danger text-white';
                                     return 'bg-secondary text-white';
                                 },
-                                async updateStatus() {
-                                    try {
-                                        const response = await fetch(`/staff-management/leavehistory/${{{ $leave->id }}}/status`, {
-                                            method: 'PATCH',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']')?.content
-                                            },
-                                            body: JSON.stringify({ status: this.selectedStatus })
-                                        });
-                                        
-                                        if (!response.ok) throw new Error('Failed to update status');
-                                        
-                                        const data = await response.json();
-                                        if (data.success) {
-                                            Swal.fire({
-                                                icon: 'success',
-                                                title: 'Status updated',
-                                                toast: true,
-                                                position: 'top-end',
-                                                showConfirmButton: false,
-                                                timer: 3000
-                                            });
+                                updateStatus() {
+                                    // Dispatch status change event
+                                    document.dispatchEvent(new CustomEvent('leaveStatusChanged', {
+                                        detail: {
+                                            id: this.leaveId,
+                                            status: this.selectedStatus
                                         }
-                                    } catch (err) {
-                                        console.error(err);
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: 'Failed to update status',
-                                            toast: true,
-                                            position: 'top-end',
-                                            showConfirmButton: false,
-                                            timer: 3000
-                                        });
-                                    }
+                                    }));
                                 }
                             }">
                             <select 
@@ -104,16 +77,16 @@
                         <td>
                             <div>
                                 <button type="button" class="btn btn-sm btn-info edit-leave-record-btn" 
-                                    data-id="{{ $leave->id }}" 
+                                    data-id="{{ $leave->leave_id }}" 
                                     data-bs-toggle="modal" 
                                     data-bs-target="#editLeaveRecordModal">
                                     Edit
                                 </button>
-                                <form action="{{ route('staff_management.leavehistory.destroy', $leave) }}" method="POST" style="display: none;" id="delete-leave-form-{{ $leave->id }}">
+                                <form action="{{ route('staff_management.leavehistory.destroy', $leave->leave_id) }}" method="POST" style="display: none;" id="delete-leave-form-{{ $leave->leave_id }}">
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <button class="btn btn-sm btn-danger" onclick="confirmDeleteLeaveHistory('{{ $leave->id }}')"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn btn-sm btn-danger" onclick="confirmDeleteLeaveHistory('{{ $leave->leave_id }}')"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -320,6 +293,55 @@ function confirmDeleteLeaveHistory(leaveId) {
         if (result.isConfirmed) {
             document.getElementById('delete-leave-form-' + leaveId).submit();
         }
-    })
+    });
 }
+
+// Listen for leaveStatusChanged event (from Alpine.js)
+document.addEventListener('leaveStatusChanged', function(e) {
+    const leaveId = e.detail.id;
+    const newStatus = e.detail.status;
+    const url = `/staff-management/leavehistory/${leaveId}/status`;
+    
+    fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(async response => {
+        if (!response.ok) {
+            const text = await response.text();
+            throw new Error(`Server returned ${response.status}: ${text}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Status updated',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        } else {
+            throw new Error(data.message || 'Update failed');
+        }
+    })
+    .catch(err => {
+        console.error('Status update error:', err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to update status. Please check the console for details.',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000
+        });
+    });
+});
 </script>

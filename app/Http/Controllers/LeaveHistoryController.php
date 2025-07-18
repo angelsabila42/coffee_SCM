@@ -48,8 +48,6 @@ class LeaveHistoryController extends Controller
         try {
             $staffMember = Staff::find($validatedData['staff_id']);
             if ($staffMember) {
-                $validatedData['full_name'] = $staffMember->full_name;
-
                 LeaveHistory::create($validatedData);
 
                 // Redirect back to the staff management page with a success message
@@ -126,14 +124,24 @@ class LeaveHistoryController extends Controller
     public function updateStatus(Request $request, $id)
     {
         try {
+            $validatedData = $request->validate([
+                'status' => 'required|string|in:Pending,Approved,Rejected,Cancelled'
+            ]);
+
             $leave = LeaveHistory::findOrFail($id);
-            $leave->status = $request->status;
+            $leave->status = $validatedData['status'];
             $leave->save();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Status updated successfully'
             ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid status value',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

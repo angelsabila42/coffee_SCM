@@ -34,7 +34,10 @@ class importerModelFactory extends Factory
             'country'=> fake()->country(),
             'continent'=> fake()->country(),
             'phone_number'=> fake()->phoneNumber(),
-            'address'=> fake()->address()
+            'address'=> fake()->address(),
+            
+            
+          
         ];
     }
 }

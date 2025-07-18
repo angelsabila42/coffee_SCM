@@ -13,10 +13,7 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('NotID')->unique();
             $table->timestamps();
-            $table->boolean('is_read');
-            $table->text('message');
             $table->string('type'); //eg delivery inventory etc
            
            

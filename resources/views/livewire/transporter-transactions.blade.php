@@ -2,9 +2,9 @@
     {{-- Tabs --}}
     <div class="card mb-3">
          <ul class="nav nav-pills m-3">
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a href="#" wire:click.prevent="$set('tab', 'invoices')" class="nav-link {{ $tab === 'invoices' ? 'active bg-primary text-white' : '' }}">Invoices</a>
-        </li>
+        </li> --}}
         <li class="nav-item">
             <a href="#" wire:click.prevent="$set('tab', 'payments')" class="nav-link {{ $tab === 'payments' ? 'active bg-primary text-white' : '' }}">Payments</a>
         </li>
@@ -13,10 +13,10 @@
     
 
 
-    <div class="d-flex flex-wrap gap-2 mb-3">
-        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..." class="form-control" style="max-width: 250px;">
+    <div class="d-flex flex-wrap gap-2 mb-3 ">
+        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Search..." class="form-control m-3" style="max-width: 250px;">
 
-        <select wire:model.live="status" class="form-select" style="max-width: 200px;">
+        <select wire:model.live="status" class="form-select m-3" style="max-width: 200px;">
             <option value="">All Statuses</option>
             <option value="partial" >partial</option>
             <option value="pending">Pending</option>
@@ -24,13 +24,13 @@
         </select>
 
         @if ($tab === 'payments')
-        <select wire:model.live="coffeeType" class="form-select" style="max-width: 200px;">
+        <select wire:model.live="coffeeType" class="form-select m-3" style="max-width: 200px;">
             <option value="">All Coffee Types</option>
             <option value="robusta">Robusta</option>
             <option value="arabicca">Arabicca</option>
         </select>
 
-        <select wire:model.live="paymentMode" class="form-select" style="max-width: 200px;">
+        <select wire:model.live="paymentMode" class="form-select m-3" style="max-width: 200px;">
             <option value="">All Payment Modes</option>
             <option value="Cash">Cash</option>
             <option value="Mobile Money">Mobile Money</option>
@@ -40,10 +40,10 @@
     </div>
 
     {{-- Table --}}
-    <div class=" card  card card-plain table-plain-bg">
+    <div class="  table-plain-bg">
         <table class="table table-hover table-responsive fw-bold fs-5">
             <thead>
-                @if ($tab === 'invoices')
+                {{-- @if ($tab === 'invoices')
                 <tr>
                     <th>InvoiceID</th>
                     <th>Issued on</th>
@@ -52,7 +52,7 @@
                     <th>Due date</th>
                     <th>Status</th>
                 </tr>
-                @else
+                @else --}}
                 <tr>
                     <th>InvoiceID</th>
                     <th>Payer</th>
@@ -63,7 +63,7 @@
                     <th>Coffee Type</th>
                     <th>Recipient Name</th>
                 </tr>
-                @endif
+                {{-- @endif --}}
             </thead>
             <tbody>
                 @forelse($records as $record)
@@ -81,7 +81,7 @@
                     
 
                 @endphp
-                    @if ($tab === 'invoices')
+                    {{-- @if ($tab === 'invoices')
                         <tr>
                             <td>{{ $record->invoice_number }}</td>
                             <td>{{ $record->invoice_date }}</td>
@@ -90,9 +90,10 @@
                             <td>{{ $record->updated_at }}</td>
                             <td>{{ $record->status }}</td>
                         </tr>
-                    @else
-                        <tr>
-                            <td>{{ $record->invoice_id }}</td>
+                    @else --}}
+                        <tr onclick="window.location='{{ route('TransPayments.show', $record->id) }}'"
+                                 style="cursor: pointer;">
+                            <td >{{ $record->invoice_id }}</td>
                             <td>{{ $record->payer }}</td>
                             <td>{{ $record->amount_paid }}</td>
                             <td>{{ $record->date_paid }}</td>
@@ -101,10 +102,10 @@
                             <td>{{ $record->coffee_type }}</td>
                             <td>{{ $record->recipient_name }}</td>
                         </tr>
-                    @endif
+                    {{-- @endif --}}
                 @empty
                     <tr>
-                        <td colspan="{{ $tab === 'invoices' ? 6 : 8 }}" class="text-center">No records found.</td>
+                        <td colspan="{{ $tab === 'payments' ? 6 : 8 }}" class="text-center">No records found.</td>
                     </tr>
                 @endforelse
             </tbody>

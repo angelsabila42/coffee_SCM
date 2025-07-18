@@ -26,7 +26,11 @@
     <link href="{{asset('assets/css/light-bootstrap-dashboard.css?v=2.0.0')}}" rel="stylesheet" />
     <link href="{{asset('assets/css/custom.css')}}" rel="stylesheet">
   
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="{{asset('assets/js/delete-confirmation.js')}}"></script>
+
+    <!-- Scripts -->
+    <!-- Only loading app.js for Echo functionality, but not Bootstrap 5 -->
+    @vite(['resources/js/app.js'])
     @livewireStyles
  
 </head>
