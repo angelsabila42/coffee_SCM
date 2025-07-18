@@ -3,7 +3,7 @@
                     <nav>
                         <ul class="footer-menu">
                             <li>
-                                <a href="{{route('home')}}">
+                                <a href="{{route('admin.home')}}">
                                     Home
                                 </a>
                             </li>

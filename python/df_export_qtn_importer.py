@@ -35,10 +35,10 @@ forecast_years = 5
 
 # print("\nCleaned Data")
 # print(df[['Importer', 'ds', 'y']].head())
-# print(df.head())
+# print(df.tail())
 
 historical_df = df[['Importer','ds','y']].rename(columns={'ds': 'date', 'y':'actual'})
-historical_df.to_json('public/data/historical_data.json', orient='records', date_format='iso')
+historical_df.to_json('public/data/historical_demand_data.json', orient='records', date_format='iso')
 
 importers = df['Importer'].unique()
 results = []
@@ -109,7 +109,7 @@ for imp in good_model['Importer']:
 
     #Forecasting
     last_date = data['ds'].max()
-    future_dates = pd.date_range(start=last_date + pd.DateOffset(years=1), periods=forecast_years, freq='YS') + pd.DateOffset(months=6)
+    future_dates = pd.date_range(start=last_date + pd.DateOffset(years=1), periods=forecast_years, freq='12MS')
     future = pd.DataFrame({'ds':future_dates})
     
     forecast =model_good.predict(future)
@@ -143,7 +143,7 @@ for imp in poor_model['Importer']:
 
     #Forecasting
     last_date = data['ds'].max()
-    future_years = pd.date_range(start=last_date + pd.DateOffset(years=1), periods=forecast_years, freq='YS') + pd.DateOffset(months=6)
+    future_years = pd.date_range(start=last_date + pd.DateOffset(years=1), periods=forecast_years, freq='12MS')
     future_log = pd.DataFrame({'ds':future_years})
 
     last_years_as_customer = int(data['YearsAsCustomer'].iloc[-1])
@@ -239,7 +239,7 @@ for imp in poor_log_model['Importer']:
     model_log_smoothed.fit(data[['ds','y_log', 'YearsAsCustomer']].rename(columns={'y_log':'y'}))
 
     last_date = data['ds'].max()
-    future_dates = pd.date_range(start=last_date + pd.DateOffset(years=1), periods=forecast_years, freq='YS') + pd.DateOffset(months=6)
+    future_dates = pd.date_range(start=last_date + pd.DateOffset(years=1), periods=forecast_years, freq='12MS')
     future_smooth =pd.DataFrame({'ds': future_dates})
 
     #For yearly increase

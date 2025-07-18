@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\OutgoingOrder;
+use App\Models\Vendor;
 use App\Services\ActivityLogger;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
@@ -21,6 +22,7 @@ abstract class BaseOutgoingOrderTable extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $orderID ;
+    public $vendor;
 
     #[Url] public $search = '';
     #[Url] public $type = '';
@@ -45,6 +47,7 @@ abstract class BaseOutgoingOrderTable extends Component
         $this->minQuantity = $this->minQuantity ?? '';
         $this->maxQuantity = $this->maxQuantity  ?? '';
         $this->country = $this->country  ?? '';
+        $this->vendor= Vendor::where('email', Auth::user()->email)->first();
 
         $this->orderID= Helper::generateID(OutgoingOrder::class,'orderID','OX',5);
 
@@ -89,7 +92,6 @@ abstract class BaseOutgoingOrderTable extends Component
 
 }
    
-
    protected function filter(){
     $model = $this->getModelName();
 

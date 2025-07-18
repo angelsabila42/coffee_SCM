@@ -26,9 +26,16 @@
                 <div>No account details available.</div>
             @endif
         </div>
-    </div> 
-        <div>        
+    </div>
+
+
+
+      
+        <div>
+         
             <livewire:importer-transactions />
+
+
         </div>
 </div>
       

@@ -15,6 +15,10 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
 <script src="{{asset('assets/js/demo.js')}}"></script>
+<script src="{{asset('assets/js/delete-confirmation.js')}}"></script>
+
+<!-- Scripts -->
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
 
 <!--  Google Maps Plugin    -->
@@ -38,7 +42,7 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  --}}
  
 <script>
 // Session keep-alive ping to prevent session expiry during chat

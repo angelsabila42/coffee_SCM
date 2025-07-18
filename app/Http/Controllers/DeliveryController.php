@@ -122,6 +122,7 @@ class DeliveryController extends Controller
      */
     public function transporterDashboard()
     {
+
         return view('deliveries.transporter-dashboard');
   
 }

@@ -13,7 +13,7 @@ class ImporterModel extends Model
       protected $fillable = [
         'name',
         'email',
-        'password',
+        //'password',
          'country',
         'phone_number',
         'address',
