@@ -120,9 +120,9 @@
                                 <tr style="color:#6c757d;">
                                     <th>Payment #</th>
                                     <th>Date</th>
-                                    <th>Coffee Type</th>
+                                    <th>Importer</th>
                                     <th>Amount</th>
-                                    <th>Description</th>
+                                    <th>Payment Method</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -130,22 +130,28 @@
                             <tbody>
                                 @foreach ($payments as $payment)
                                     <tr>
-                                        <td>{{ $payment->receipt_number }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($payment->date_paid)->format('d M, Y') }}</td>
-                                        <td>{{ $payment->coffee_type }}</td>
-                                        <td>Ugx {{ number_format($payment->amount_paid, 2) }}</td>
-                                        <td>{{ $payment->payment_description }}</td>
+                                        <td>{{ $payment->pesapal_merchant_reference }}</td>
                                         <td>
-                                            @if ($payment->status == 'Paid')
-                                                <span class="badge badge-success">{{ $payment->status }}</span>
-                                            @elseif ($payment->status == 'Awaiting')
-                                                <span class="badge badge-warning">{{ $payment->status }}</span>
+                                            {{ $payment->payment_date ? \Carbon\Carbon::parse($payment->payment_date)->format('d M, Y') : \Carbon\Carbon::parse($payment->created_at)->format('d M, Y') }}
+                                        </td>
+                                        <td>{{ $payment->importer->co_name ?? 'N/A' }}</td>
+                                        <td>Ugx {{ number_format($payment->total_amount, 2) }}</td>
+                                        <td>{{ $payment->payment_method ?? 'PesaPal' }}</td>
+                                        <td>
+                                            @if ($payment->status == 'COMPLETED')
+                                                <span class="badge badge-success">Completed</span>
+                                            @elseif ($payment->status == 'PENDING')
+                                                <span class="badge badge-warning">Pending</span>
+                                            @elseif ($payment->status == 'FAILED')
+                                                <span class="badge badge-danger">Failed</span>
+                                            @elseif ($payment->status == 'CANCELLED')
+                                                <span class="badge badge-secondary">Cancelled</span>
                                             @else
                                                 <span class="badge badge-secondary">{{ $payment->status }}</span>
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('payments.show', $payment->id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                            <button class="btn btn-sm btn-outline-primary" onclick="viewPesapalTransaction({{ $payment->id }})">View</button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -160,4 +166,137 @@
         </div>
     </div>
 </div>
+
+<!-- PesaPal Transaction Details Modal -->
+<div class="modal fade" id="pesapalTransactionModal" tabindex="-1" role="dialog" aria-labelledby="pesapalTransactionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="border-radius: 10px;">
+            <div class="modal-header" style="background-color: #8B4513; color: white; border-radius: 10px 10px 0 0;">
+                <h5 class="modal-title" id="pesapalTransactionModalLabel">
+                    <i class="bx bx-credit-card"></i> PesaPal Transaction Details
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="pesapalTransactionDetails" style="background-color: #FAFAFA;">
+                <!-- Transaction details will be loaded here -->
+            </div>
+            <div class="modal-footer" style="background-color: #F5F5DC;">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="bx bx-x"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function viewPesapalTransaction(transactionId) {
+    // Show loading in modal
+    document.getElementById('pesapalTransactionDetails').innerHTML = '<div class="text-center py-4"><i class="bx bx-loader-alt bx-spin" style="font-size: 2rem; color: #8B4513;"></i><br><span style="color: #8B4513;">Loading transaction details...</span></div>';
+    
+    // Show modal
+    $('#pesapalTransactionModal').modal('show');
+    
+    // Fetch transaction details
+    fetch('/admin/pesapal-transaction/' + transactionId + '/details', {
+        method: 'GET',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const transaction = data.transaction;
+            const orderIds = Array.isArray(transaction.order_ids) ? transaction.order_ids.join(', ') : (transaction.order_ids || 'N/A');
+            
+            document.getElementById('pesapalTransactionDetails').innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 style="color: #8B4513; border-bottom: 2px solid #F5F5DC; padding-bottom: 5px;">Transaction Information</h6>
+                        <p><strong>Merchant Reference:</strong> ${transaction.pesapal_merchant_reference || 'N/A'}</p>
+                        <p><strong>Tracking ID:</strong> ${transaction.pesapal_tracking_id || 'N/A'}</p>
+                        <p><strong>Total Amount:</strong> Ugx ${transaction.total_amount ? parseFloat(transaction.total_amount).toLocaleString() : '0.00'}</p>
+                        <p><strong>Status:</strong> 
+                            <span class="badge ${transaction.status === 'COMPLETED' ? 'badge-success' : transaction.status === 'PENDING' ? 'badge-warning' : transaction.status === 'FAILED' ? 'badge-danger' : 'badge-secondary'}">${transaction.status || 'N/A'}</span>
+                        </p>
+                        <p><strong>Payment Method:</strong> ${transaction.payment_method || 'PesaPal'}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 style="color: #8B4513; border-bottom: 2px solid #F5F5DC; padding-bottom: 5px;">Additional Details</h6>
+                        <p><strong>Importer:</strong> ${transaction.importer ? transaction.importer.co_name : 'N/A'}</p>
+                        <p><strong>Order IDs:</strong> ${orderIds}</p>
+                        <p><strong>Description:</strong> ${transaction.description || 'No description'}</p>
+                        <p><strong>Payment Date:</strong> ${transaction.payment_date ? new Date(transaction.payment_date).toLocaleDateString() : 'Not set'}</p>
+                        <p><strong>Created:</strong> ${transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : 'N/A'}</p>
+                    </div>
+                </div>
+                ${transaction.pesapal_response ? `
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6 style="color: #8B4513; border-bottom: 2px solid #F5F5DC; padding-bottom: 5px;">PesaPal Response</h6>
+                        <pre style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 12px;">${JSON.stringify(transaction.pesapal_response, null, 2)}</pre>
+                    </div>
+                </div>
+                ` : ''}
+            `;
+        } else {
+            document.getElementById('pesapalTransactionDetails').innerHTML = '<div class="text-center py-4 text-danger">Failed to load transaction details.</div>';
+        }
+    })
+    .catch(error => {
+        document.getElementById('pesapalTransactionDetails').innerHTML = '<div class="text-center py-4 text-danger">Error loading transaction details.</div>';
+        console.error('Error:', error);
+    });
+}
+</script>
+
+@section('styles')
+<style>
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.badge {
+    font-size: 0.8em;
+    padding: 0.4em 0.8em;
+    border-radius: 15px;
+}
+
+.table th {
+    border-top: none;
+    font-weight: 600;
+}
+
+.btn {
+    border-radius: 20px;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.modal-header {
+    border-bottom: 1px solid #F5F5DC;
+}
+
+.modal-footer {
+    border-top: 1px solid #F5F5DC;
+}
+
+h6 {
+    font-weight: 600;
+}
+
+pre {
+    max-height: 200px;
+    overflow-y: auto;
+}
+</style>
+@endsection
 @endsection

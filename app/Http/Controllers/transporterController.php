@@ -76,7 +76,8 @@ class transporterController extends Controller
     }
     
     public function createDriver() {
-        return view('transporter.drivers.create');
+        $transporters = Transporter::all();
+        return view('transporter.drivers.create', compact('transporters'));
     }
     
     public function storeDriver(Request $request) {
@@ -88,6 +89,8 @@ class transporterController extends Controller
             'vehicle_number' => 'nullable|string|max:50',
             'address' => 'nullable|string|max:255',
             'experience' => 'nullable|string',
+            'transporter_company' => 'required|string',
+            'transporter_company_id' => 'required|exists:transporters,id',
         ]);
         
         User::create([
@@ -98,6 +101,8 @@ class transporterController extends Controller
             'vehicle_number' => $validated['vehicle_number'],
             'address' => $validated['address'],
             'experience' => $validated['experience'],
+            'transporter_company' => $validated['transporter_company'],
+            'transporter_company_id' => $validated['transporter_company_id'],
             'role' => 'driver',
             'password' => bcrypt('password123'), // Default password
         ]);
@@ -275,6 +280,31 @@ class transporterController extends Controller
         return redirect()->route('transporter.drivers')->with('success', 'Driver deleted successfully!');
     }
     
+    public function companies() {
+        $companies = Transporter::paginate(10);
+        $totalCompanies = Transporter::count();
+        $activeCompanies = Transporter::whereNotNull('email')->count();
+        $totalDrivers = User::where('role', 'driver')->count();
+        
+        return view('transporter.companies.index', compact(
+            'companies', 'totalCompanies', 'activeCompanies', 'totalDrivers'
+        ));
+    }
+    
+    public function showCompany($id) {
+        $company = Transporter::findOrFail($id);
+        $companyDrivers = User::where('role', 'driver')
+                             ->where('transporter_company_id', $id)
+                             ->get();
+        $driverCount = $companyDrivers->count();
+        $availableDrivers = $companyDrivers->where('is_available', true)->count();
+        $busyDrivers = $companyDrivers->where('is_available', false)->count();
+        
+        return view('transporter.companies.show', compact(
+            'company', 'companyDrivers', 'driverCount', 'availableDrivers', 'busyDrivers'
+        ));
+    }
+    
     public function deliveryDetails($deliveryId) {
         try {
             $delivery = Delivery::findOrFail($deliveryId);
@@ -283,26 +313,14 @@ class transporterController extends Controller
                 'success' => true,
                 'delivery' => $delivery
             ]);
-        } catch (\Exception $e) {
+        } 
+        catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Delivery not found'
-            ], 404);
+
+            ]);
         }
     }
-
-    
-    public function showPayment($id)
-{
-    $payment = Payment::findOrFail($id); 
-    return view('payments.transporterPay', compact('payment'));
 }
 
-public function download($id)
-{
-    $payment = Payment::findOrFail($id);
-
-    $pdf = Pdf::loadView('payments.TransPayDownload', compact('payment'));
-    return $pdf->download('payment_details_' . $payment->invoice_id . '.pdf');
-}
-}

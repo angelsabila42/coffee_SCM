@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AnalyticsController extends Controller
 {
@@ -14,6 +15,17 @@ class AnalyticsController extends Controller
 
     public function index()
     {
-        return view('analytics');
+        $deliveryStatusData = collect([
+            ['status' => 'Pending', 'total' => 15],
+            ['status' => 'Completed', 'total' => 45],
+             ]);
+
+                // $deliveryStatusData = DB::table('deliveries')
+                //             ->select('status', DB::raw('COUNT(*) as total'))
+                //             ->whereIn('status', ['Pending', 'Completed'])
+                //             ->groupBy('status')
+                //             ->get();
+                            // dd(DB::table('deliveries')->count());
+        return view('analytics',compact('deliveryStatusData'));
     }
 }

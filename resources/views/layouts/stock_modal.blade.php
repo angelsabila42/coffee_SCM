@@ -42,14 +42,14 @@
             <input type="number" name="threshold" class="form-control" required>
           </div>
 
-          <div class="col-md-6">
+          {{-- <div class="col-md-6">
             <label for="status" class="form-label">Status</label>
             <select name="status" class="form-select" required>
               <option value="">Select</option>
               <option value="in stock">in stock</option>
               <option value="low">Low</option>
             </select>
-          </div>
+          </div> --}}
 
           <div class="col-md-6">
             <label for="warehouse_name" class="form-label">Warehouse</label>

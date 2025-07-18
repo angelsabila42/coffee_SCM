@@ -15,7 +15,6 @@ class InventoryController extends Controller
          $inventory->warehouse_name = $request->warehouse_name;
          $inventory->quantity = $request->quantity;
          $inventory->threshold = $request->threshold;
-         $inventory->status = $request->status;
          $inventory->last_updated = $request->last_updated;
          $result= $inventory->save();
 
@@ -52,7 +51,7 @@ class InventoryController extends Controller
     }
      public function alber(){
         $inventories = inventory::paginate(5);
-        $belowMinimumCount = inventory::where('status', 'low')->count();
+        $belowMinimumCount = inventory::where('quantity', '<', 'threshold')->count();
         $totalStock = inventory::sum('quantity');
         $totalWarehouses = inventory::distinct('warehouse_name')->count('warehouse_name');
 

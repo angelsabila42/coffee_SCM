@@ -6,6 +6,7 @@ use App\Models\ImporterRecentActivities;
 use App\Http\Controllers\Controller;
 use App\Models\IncomingOrder;
 use App\Models\Payment;
+use App\Models\PesaPalTransaction;
 use App\Models\User;
 use App\Models\importerModel;
 use App\Models\Invoice;
@@ -23,9 +24,6 @@ class ImporterModelController extends Controller
         return view('importer_payments');
     }
   
-    // public function index(){
-    //     $orders = IncomingOrder::paginate(10);
-
     public function index()
     {
             $user = Auth::user();    
@@ -36,7 +34,35 @@ class ImporterModelController extends Controller
         ->orderBy('year')
         ->orderBy('month')
         ->get();
+    
+        if (!$importer) {
+            return redirect()->route('login')->with('error', 'No importer record found.');
+        }
+        
+        $importerId = $importer->id;
+        
+        // Get orders and statistics for this specific importer
+        $orders = IncomingOrder::where('importer_model_id', $importerId)->paginate(10);
+        $ordersSent = IncomingOrder::where('importer_model_id', $importerId)->count();
+        $pending = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Pending')->count();
+        $inTransit = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'in transit')->count();
+        $delivered = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Delivered')->count();
 
+        // Generate chart data for the last 12 months
+        $months = [];
+        $orderData = [];
+        
+        for ($i = 11; $i >= 0; $i--) {
+            $date = Carbon::now()->subMonths($i);
+            $months[] = $date->format('M Y');
+            
+            $monthlyOrders = IncomingOrder::where('importer_model_id', $importerId)
+                ->whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->count();
+            
+            $orderData[] = $monthlyOrders;
+        }
 
     $orderData = $orders2->pluck('total');
      $months = $orders2->map(function ($order) {
@@ -63,18 +89,43 @@ if ($importer) {
    
 public function transactions(){
     $user = Auth::user();
-       $importerId = ImporterModel::where('email', $user->email)->first()->id;
-       //dd($importerId);
-         $invoices = Invoice::where('importer_id', $importerId)->paginate(10);
-        //   $payments = Payment::where('importerID', $importerId)->paginate(10);
-        $payments = Payment::where('importerID', $importerId)->paginate(10);
-        $account_no = ImporterModel::where('email', $user->email)->first()->bank_account_no;
-        $user = ImporterModel::where('email', $user->email)->first()->name;
-        
-     
-       //  $invoices = Invoice::paginate(10);
-    return view('importer_transactions', compact('invoices', 'payments', 'account_no', 'user'));
- }
+    $importer = ImporterModel::where('email', $user->email)->first();
+    
+    if (!$importer) {
+        return redirect()->route('login')->with('error', 'No importer record found.');
+    }
+    
+    $importerId = $importer->id;
+    
+    $invoices = Invoice::where('importer_id', $importerId)->paginate(10);
+    
+    // Fetch payments from pesapal_transactions table instead of old Payment table
+    $payments = PesaPalTransaction::where('importer_id', $importerId)
+                                  ->orderBy('created_at', 'desc')
+                                  ->get();
+    
+    // Get account details from the importer record
+    $account_no = $importer->Bank_account;
+    $account_holder = $importer->Account_holder;
+    $bank_name = $importer->Bank_name;
+    
+    // Debug: Check orders for this importer
+    $allOrders = IncomingOrder::where('importer_model_id', $importerId)->get();
+    $requestedOrders = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Requested')->get();
+    $pendingOrders = IncomingOrder::where('importer_model_id', $importerId)->where('status', 'Pending')->get();
+    
+    // \Log::info('Debug transactions page:', [
+    //     'user' => $user->email,
+    //     'importer_id' => $importerId,
+    //     'total_orders' => $allOrders->count(),
+    //     'requested_orders' => $requestedOrders->count(),
+    //     'pending_orders' => $pendingOrders->count(),
+    //     'payments_count' => $payments->count(),
+    //     'all_orders_statuses' => $allOrders->pluck('status', 'id')->toArray()
+    // ]);
+    
+    return view('importer_transactions', compact('invoices', 'payments', 'account_no', 'account_holder', 'bank_name', 'importer'));
+}
       
     
  public function importer(){
@@ -104,7 +155,6 @@ public function destroy(IncomingOrder $order)
     $validated = $req->validate([
         'name' => 'required',
         'email' => 'required|email|unique:importer_models,email',
-        //'password' => ['required','confirmed','min:8'],
         'country' => '',
         'address' => '',
         'phone_number' => 'required|regex:/^07[0-9]{8}$/',
@@ -115,7 +165,6 @@ public function destroy(IncomingOrder $order)
         
 
     ]);   
-    // $validated['password'] = Hash::make($validated['password']);
     
     importerModel::create($validated);
 

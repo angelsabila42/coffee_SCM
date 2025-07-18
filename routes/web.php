@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\VendorController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\transporterController;
+use App\Http\Controllers\ImporterPaymentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Vendor\VendorHomeController;
@@ -49,6 +50,7 @@ use App\Http\Controllers\API\V1\OutgoingOrderController;
 use App\Http\Controllers\API\V1\QuantityDemandController;
 use App\Http\Controllers\API\V1\VendorClusterController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\UserAuditController;
 use App\Http\Controllers\Vendor\VendorOrderController;
 //use App\Models\inventory;
 
@@ -63,6 +65,55 @@ Route::get('/qa-vendor', function (QA $qa) {
 })->name('qa.vendor');
 //transporter transactions
 
+Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
+
+// PesaPal payment routes for importers
+Route::middleware('auth')->prefix('importer/payment')->group(function () {
+    Route::post('/initiate', [ImporterPaymentController::class, 'initiatePayment'])->name('importer.payment.initiate');
+    Route::get('/form', [ImporterPaymentController::class, 'showPaymentForm'])->name('pesapal.form');
+    Route::post('/pesapal-iframe', [ImporterPaymentController::class, 'processPesapalForm'])->name('pesapal.iframe');
+    Route::get('/callback', [ImporterPaymentController::class, 'paymentCallback'])->name('importer.payment.callback');
+    Route::post('/callback', [ImporterPaymentController::class, 'paymentCallback']);
+    Route::get('/status/{merchantReference}', [ImporterPaymentController::class, 'paymentStatus'])->name('importer.payment.status');
+    Route::get('/unpaid-orders', [ImporterPaymentController::class, 'getUnpaidOrders'])->name('importer.payment.unpaid-orders');
+    Route::get('/debug', function() {
+        $user = Auth::user();
+        $importer = \App\Models\ImporterModel::where('email', $user->email)->first();
+        $orders = \App\Models\IncomingOrder::where('importer_model_id', $importer ? $importer->id : 0)->get();
+        return response()->json([
+            'user' => $user,
+            'importer' => $importer,
+            'orders' => $orders,
+            'total_orders' => $orders->count()
+        ]);
+    })->name('importer.payment.debug');
+    Route::get('/create-test-orders', function() {
+        $user = Auth::user();
+        $importer = \App\Models\ImporterModel::where('email', $user->email)->first();
+        
+        if (!$importer) {
+            return response()->json(['error' => 'No importer found']);
+        }
+        
+        // Create 3 test orders
+        $orders = [];
+        for ($i = 1; $i <= 3; $i++) {
+            $order = \App\Models\IncomingOrder::create([
+                'orderID' => 'KX' . str_pad($i, 5, '0', STR_PAD_LEFT),
+                'quantity' => rand(100, 500),
+                'coffeeType' => ['Arabica', 'Robusta', 'Liberica'][rand(0, 2)],
+                'status' => ['Requested', 'Pending'][rand(0, 1)],
+                'deadline' => now()->addDays(30),
+                'grade' => ['AA', 'A', 'B'][rand(0, 2)],
+                'destination' => ['Kenya', 'Tanzania', 'Rwanda'][rand(0, 2)],
+                'importer_model_id' => $importer->id
+            ]);
+            $orders[] = $order;
+        }
+        
+        return response()->json(['message' => 'Created 3 test orders', 'orders' => $orders]);
+    })->name('importer.payment.create-test-orders');
+});
 
    
 Route::get('/alpine',function(){
@@ -162,9 +213,14 @@ Route::middleware('auth')->group(function()
                     /*transactions Routes*/
                     Route::resource('invoices', InvoiceController::class);
                     Route::resource('payments', PaymentController::class);
+                    Route::get('/pesapal-transaction/{id}/details', [PaymentController::class, 'getPesapalTransactionDetails'])->name('admin.pesapal.transaction.details');
 
                     /*Delivery Routes*/
                     Route::resource('deliveries', DeliveryController::class);
+
+                    /*User Audit Routes*/
+                    Route::get('/user-audits', [UserAuditController::class, 'index'])->name('admin.user-audits.index');
+                    Route::get('/user-audits/{id}', [UserAuditController::class, 'show'])->name('admin.user-audits.show');
 
 
                                     
@@ -192,7 +248,8 @@ Route::middleware('auth')->group(function()
 
            
     /*Dashboard routes*/
-   // Route::get('/home', [HomeController::class, 'index'])->name('home');
+   Route::get('/admin-home', [HomeController::class, 'index'])->name('admin.home');
+
 
 
    
@@ -203,8 +260,8 @@ Route::middleware('auth')->group(function()
         /*Analytics route*/
         Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
 
-    /*Analytics route*/
-    Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+    /*Analytics routes*/
+    Route::get('/admin-home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
     Route::get('/import-annual-coffee-sales', [AnnualCoffeeSaleAdminController::class, 'importCsv']);
     Route::get('/import-importer-demand', [ImporterDemandAdminController::class, 'importCsv']);
     Route::get('/import-vendor-cluster', [VendorClusterController::class, 'importCsv']);
@@ -215,7 +272,7 @@ Route::middleware('auth')->group(function()
 
 
         /*Report routes*/
-        Route::get('/home/report',[ReportController::class,'index'])->name('reports');
+        Route::get('/admin-home/report',[ReportController::class,'index'])->name('reports');
         Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name('vendor.reports');
 
         // QA Report Routes
@@ -228,16 +285,16 @@ Route::middleware('auth')->group(function()
         });
 
         /*Order Routes*/
-        Route::get('/home/orders', [OrderController::class, 'index'])->name('order.index');
-        Route::post('/home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
-        Route::get('/home/orders/{order}/Outgoing', [OutgoingOrderController::class, 'viewOutOrder'])->name( 'orders.view-vendor-order');
+        Route::get('/admin-home/orders', [OrderController::class, 'index'])->name('order.index');
+        Route::post('/admin-home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
+        Route::get('/admin-home/orders/{order}/Outgoing', [OutgoingOrderController::class, 'viewOutOrder'])->name( 'orders.view-vendor-order');
         Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewVendorOrder'])->name('vendor.order.show');
         Route::post('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'store'])->name('vendor.order.store');
         Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'downloadVendor'])->name('vendor.order.download');
-        Route::get('/home/orders/{order}/download/Outgoing', [OutgoingOrderController::class, 'downloadOutgoing'])->name('orders.view-vendor-order.download');
-        Route::get('/home/orders/{order}/Incoming', [IncomingOrderController::class, 'viewOrder'])->name('orders.view-importer-order');
-        Route::post('/home/orders/{order}', [IncomingOrderController::class, 'store'])->name('order.store-in');
-        Route::get('/home/orders/{order}/download/Incoming', [IncomingOrderController::class, 'download'])->name('order.download-in');
+        Route::get('/admin-home/orders/{order}/download/Outgoing', [OutgoingOrderController::class, 'downloadOutgoing'])->name('orders.view-vendor-order.download');
+        Route::get('/admin-home/orders/{order}/Incoming', [IncomingOrderController::class, 'viewOrder'])->name('orders.view-importer-order');
+        Route::post('/admin-home/orders/{order}', [IncomingOrderController::class, 'store'])->name('order.store-in');
+        Route::get('/admin-home/orders/{order}/download/Incoming', [IncomingOrderController::class, 'download'])->name('order.download-in');
         Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
         Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
 
@@ -338,7 +395,7 @@ Route::middleware(['vendor'])->group(function(){
       Route::get('/transactions/vendor',[VendorTransactionController::class, 'index'] )->name('vendor.transactions');
       Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
 
-      Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+      //Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
      
 });
 
@@ -362,15 +419,7 @@ Route::get('/payments/{id}', [ImporterModelController::class, 'showOrder'])->nam
     });
 
 
-
-
-
-
-
-
-
-
-                //all transporter routes
+//all transporter routes
 
                 Route::middleware('transporter')->group(function(){
 

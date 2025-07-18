@@ -120,37 +120,48 @@ var options = {
 <!--Apex Line Chart-->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const historicalURL = "/data/historical_sales.json";
-  const forecastURL = "/data/forecasted_sales.json";
+  const historicalURL = "/data/historical_annual_sales.json";
+  const forecastURL = "/data/forecasted_annual_sales.json";
   Promise.all([
     fetch(historicalURL).then(res => res.json()),
     fetch(forecastURL).then(res => res.json())
   ])
   .then(([historical, forecast]) => {
-    const historicalSeries = historical.map(row => ({
-      x:new Date(row.year.toString()),
-      y: parseFloat(row['Value in US Dollars'])
+
+    const actualSeries = historical.map(row => ({
+      x:new Date(row.ds),
+      y: parseFloat(row.actual)
     }));
 
+      /*const fittedSeries = historical.map(row => ({
+      x:new Date(row.ds),
+      y: parseFloat(row.predicted)
+    }));*/
+
     const forecastSeries = forecast.map(row => ({
-      x:new Date(row.year.toString()),
-      y: parseFloat(row['Value in US Dollars'])
+      x:new Date(row.ds),
+      y: parseFloat(row.forecast)
     }));
-    const lastActualPoint = historicalSeries[historicalSeries.length - 1];
-    forecastSeries.unshift(lastActualPoint);
-    //console.log('Forecast Years:', forecastSeries.map(d => d.x));
+
+    if(actualSeries.length && forecastSeries.length){
+      forecastSeries.unshift(actualSeries[actualSeries.length - 1]);
+    }
  
 var options = {
           series: [
         {
             name: "Actual Sales",
-            data: historicalSeries
-          
+            data: actualSeries,
         },
+       /* {
+          name: "Fitted Sales",
+          data: fittedSeries,
+        },*/
         {
-          name: "Predicted Sales",
-          data: forecastSeries
-        }],
+          name: "Forecasted Sales",
+          data: forecastSeries,
+        }
+        ],
           chart: {
           height: 350,
           type: 'line',
@@ -159,7 +170,7 @@ var options = {
           }
         },
 
-        colors:['#10b981','#d97706'],
+        colors:['#10b981',/*'#3b82f6',*/'#d97706'],
 
         dataLabels: {
           enabled: false
@@ -183,11 +194,11 @@ var options = {
         annotations:{
           xaxis: [
             {
-              x: new Date('2023').getTime(),
+              x: new Date('2024-07-07').getTime(),
               strokeDashArray: 4,
               borderColor: '#F97316',
               label: {
-                text: 'Forecast Start',
+                //text: 'Forecast Start',
                 style: {
                   color: '#fff',
                   background: '#F97316'
@@ -195,12 +206,12 @@ var options = {
               }
             },
             {
-              x: new Date('2023').getTime(),
-              x2: new Date('2029').getTime(),
+              x: new Date('2024-07-07').getTime(),
+              x2: new Date('2029-07-07').getTime(),
               fillColor: '#FEF3C7',
               opacity:0.3,
               label:{
-                text: 'Forecast Period',
+                //text: 'Forecast Period',
                 style: {
                   color: '#fff',
                   background: '#F59E0B'
@@ -213,6 +224,7 @@ var options = {
         xaxis: {
           title: {text: 'Year'},
           type: 'datetime',
+          min: new Date('2015-07-07').getTime(),
         },
 
         yaxis: {
@@ -252,9 +264,11 @@ chart: {
 
 <!--Apex Pie chart-->
 <!--1-->
+@if(isset($deliveryStatusData))
 <script>
+document.addEventListener('DOMContentLoaded', () => {
  var options = {
-          series: [44, 55],
+          series: {!! json_encode($deliveryStatusData->pluck('total')) !!},
           chart: {
           type: 'pie',
         },
@@ -271,7 +285,7 @@ chart: {
           text: 'Deliveries'
         }, 
 
-        labels: ['Completed', 'Pending'],
+        labels: {!! json_encode($deliveryStatusData->pluck('status')) !!},
         responsive: [{
           breakpoint: 480,
           options: {
@@ -287,7 +301,9 @@ chart: {
 
         var chartC = new ApexCharts(document.querySelector("#chart-c"), options);
         chartC.render();
+          });
 </script>
+@endif
 
 <!--2-->
 <script>
@@ -568,88 +584,134 @@ document.addEventListener('DOMContentLoaded', async() => {
         stackedBar.render();
 });
 </script>
+
 <!--Forecasting line graph Row 3-->
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-  const historicalData = '/data/historical_data.json';
-  const forecastGood = '/data/forecast_good.json';
-  const forecastLog = '/data/forecast_log.json';
-  const forecastSmooth = '/data/forecast_smoothed.json';
+  function stringToColor(str){
+    let hash = 0;
+    for (let i = 0; i < str.length; i++){
+      hash = str.charCodeAt(i) + ((hash << 5) - hash); 
+    }
+    const hue = (hash) % 360;
+    return `hsl(${hue}, 70%, 50%)`;
+  }
 
-  Promise.all([
-    fetch(historicalData).then(res => res.json()),
-    fetch(forecastGood).then(res => res.json()),
-    fetch(forecastLog).then(res => res.json()),
-    fetch(forecastSmooth).then(res => res.json())
-  ])
-  .then(([historical, forecastGood, forecastLog, forecastSmooth]) => {
-    const groupBy = (data, key) => {
-      return data.reduce((acc, item) => {
-        if(!acc[item[key]]) acc[item[key]] =[];
-        acc[item[key]].push(item);
+  const historicalDataURL = '/data/historical_demand_data.json';
+  const forecastGoodURL = '/data/forecast_good.json';
+  const forecastLogURL = '/data/forecast_log.json';
+  const forecastSmoothURL = '/data/forecast_smoothed.json';
 
-        return acc;
-      },{});
-    };
-    const historicalByImporter = groupBy(historical, 'Importer');
+  const[historicalData, forecastGood, forecastLog, forecastSmooth] = await Promise.all([
+    fetch(historicalDataURL).then(res => res.json()),
+    fetch(forecastGoodURL).then(res => res.json()),
+    fetch(forecastLogURL).then(res => res.json()),
+    fetch(forecastSmoothURL).then(res => res.json())
+  ]);
+
+  const groupBy = (data, key) => {
+    return data.reduce((acc, item) => {
+      const group = item[key];
+      if(!acc[group]) acc[group] = [];
+      acc[group].push(item);
+      return acc;
+    }, {});
+  };
+
+    const allImporters  = new Set([
+        ...historicalData.map(item => item.Importer),
+    ]);
+
+    const historicalByImporter = groupBy(historicalData, 'Importer');
     const goodByImporter = groupBy(forecastGood, 'Importer');
     const logByImporter = groupBy(forecastLog, 'Importer');
     const smoothedByImporter = groupBy(forecastSmooth,'Importer');
 
     const series = [];
 
-    Object.keys(historicalByImporter).forEach(importer => {
-      const historicalPoints = historicalByImporter[importer].map(d => ({
-        x: new Date(d.date).getFullYear(),
-        y:parseFloat(d.actual.toFixed(2))
-      }));
+    allImporters.forEach(imp => {
 
       series.push({
-        name: `${importer} (Actual)`,
-        data: historicalPoints,
-        type: 'line',
-        stroke: {
-          dashArray: 0
-        }
+        name: `${imp} (Actual)`, 
+        data: (historicalByImporter[imp] || []).map(row => ({
+          x:new Date(row.date).getTime(),
+          y:parseFloat(row.actual)
+      })),
+       color: seriesName.includes('(Actual)') ? stringToColor(imp) : '#ffffff00',
       });
 
-      let forecastSource = goodByImporter[importer] || logByImporter[importer] ||smoothedByImporter[importer];
 
-      if(forecastSource){
-        const forecastPoints = forecastSource.map(d => ({
-          x: new Date(d.date).getFullYear(),
-          y: parseFloat(d.forecast.toFixed(2))
-        }));
+  if(goodByImporter[imp]){
+    const forecastData = goodByImporter[imp].map(row => ({
+      x:new Date(row.date).getTime(),
+      y:parseFloat(row.forecast)
+    }));
 
-        const lastHistoricalYear = Math.max(...historicalPoints.map(p => p.x));
-        const firstForecastYear = Math.min(...forecastPoints.map(p => p.x));
-
-        if(firstForecastYear > lastHistoricalYear + 1){
-          series.push({
-            name: `${importer} (Connector)`,
-            data: [{
-              x: lastHistoricalYear + 1,
-              y: null
-            }],
-            type: 'line',
-            stroke: {
-              dashArray: 5
-            }
-          });
-        }
-
-        series.push({
-          name: `${importer} (Forecast)`,
-          data: forecastPoints,
-          type: 'line',
-          stroke: {
-            dashArray: 5
-          }
+    const actualData = historicalByImporter[imp] || [];
+    const lastActual = actualData[actualData.length - 1];
+    const firstForecast = forecastData[0];
+      if(lastActual && firstForecast && new Date(lastActual.date) < new Date(firstForecast.x)){
+        forecastData.unshift({
+          x: new Date(lastActual.date).getTime(),
+          y: lastActual.actual
         });
       }
+      
+    series.push({
+      name: `${imp} (Forecast)`,
+      data: forecastData,
+      color: seriesName.includes('(Actual)') ? stringToColor(imp) : '#ffffff00',
+      dashStyle: 'dash',
+    });
+  }
+
+  else if (logByImporter[imp]){
+    const forecastData = logByImporter[imp].map(row => ({
+        x:new Date(row.date).getTime(),
+        y:parseFloat(row.forecast)
+      }));
+
+    const actualData = historicalByImporter[imp] || [];  
+    const lastActual = actualData[actualData.length - 1];
+    const firstForecast = forecastData[0];
+      if(lastActual && firstForecast && new Date(lastActual.date) < new Date(firstForecast.x)){
+        forecastData.unshift({
+          x: new Date(lastActual.date).getTime(),
+          y: lastActual.actual
+        });
+      }
+
+      series.push({
+        name: `${imp} (Log Forecast)`,
+        data: forecastData,
+        color: seriesName.includes('(Actual)') ? stringToColor(imp) : '#ffffff00',
       });
-    
-        var options = {
+ }
+  else if(smoothedByImporter[imp]){
+    const forecastData = smoothedByImporter[imp].map(row => ({
+        x:new Date(row.date).getTime(),
+        y:parseFloat(row.forecast)
+      }));
+
+    const actualData = historicalByImporter[imp] || [];  
+    const lastActual = actualData[actualData.length - 1];
+    const firstForecast = forecastData[0];
+      if(lastActual && firstForecast && new Date(lastActual.date) < new Date(firstForecast.x)){
+        forecastData.unshift({
+          x: new Date(lastActual.date).getTime(),
+          y: lastActual.actual
+        });
+      }
+
+        series.push({
+        name: `${imp} (Smoothed Forecast)`,
+        data: forecastData,
+        color: seriesName.includes('(Actual)') ? stringToColor(imp) : '#ffffff00',
+      });
+  }
+}); 
+
+  var options = {
           series: series,
           chart: {
           height: 500,
@@ -662,22 +724,23 @@ document.addEventListener('DOMContentLoaded', async () => {
           enabled: false
         },
         stroke: {
-          curve: 'smooth',
-          width: 2
+          curve: 'straight',
+          width: 2,
+          dashArray: series.map(s => s.name.includes('Actual') ? 0 : 5)
         },
 
         annotations: {
           xaxis: [
             {
-              x: 2023,
-              strokeDashArray: 0,
+              x: new Date('2023-07-01').getTime(),
+              strokeDashArray: 4,
               borderColor:  '#F59E0B',
               label:{
                 style:{
                   color: '#fff',
                   background:  '#F59E0B'
                 },
-                text: 'Forecast Start'
+                //text: 'Forecast Start'
               }
             }
             
@@ -685,13 +748,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         tooltip:{
           shared: true,
-          intersect: false
-
+          intersect: false,
+          x: {format: 'yyyy'}
+          y:{
+            formatter : function(val){
+              if(val >= 1e9) rturn (val/1e9).toFixed(2) + 'B';
+              if(val >= 1e6) rturn (val/1e6).toFixed(2) + 'M';
+              return Number(val).toFixed(0);
+            }
+          }
         },
 
         legend:{
           show: true,
-          position: 'bottom'
+          showForSingleSeries: false,
+          formatter: function(seriesName, opts){
+            if(seriesName.includes('(Actual)')) {
+              return seriesName;
+            }
+            return '';
+          },
+         
+          //position: 'bottom'
         },
         title: {
           text: 'Product Trends by Month',
@@ -704,20 +782,23 @@ document.addEventListener('DOMContentLoaded', async () => {
           },
         },
         xaxis: {
-          type: 'category',
+          type: 'datetime',
           title: {text: 'Year'}
         },
         yaxis: {
           title: {
             text: 'Quantity (60kg Bags)'
           },
+          labels: {
+            formatter: function(val){
+              return Number(val).toFixed(0);
+            }
+          }
         }
         };
-
-        var forecastDemand = new ApexCharts(document.querySelector("#chart-x"), options);
-        forecastDemand.render();
-      });
-    });
+    const chartForecastDemand = new ApexCharts(document.querySelector("#chart-x"), options);
+    chartForecastDemand.render(); 
+ });  
 </script>
 
 <!--Home-->
@@ -765,15 +846,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!--Vendor Home-->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-        var options = {
+document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('vendor-chart-data', function(event) => {
+   console.log('Chart data received:', event.detail.data);
+  const chartData = event.detail.data;
+var options = {
           series: [{
-            name: "Orders",
-            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+            name: 'Orders',
+            data: chartData
         }],
           chart: {
-          height: 350,
+          height: '100%',
           type: 'line',
+          sparkline: {
+            enabled: true
+          },
+          toolbar: {
+            enabled: false
+          },
           zoom: {
             enabled: false
           }
@@ -782,20 +872,34 @@ document.addEventListener('DOMContentLoaded', () => {
           enabled: false
         },
         stroke: {
-          curve: 'straight'
+          curve: 'straight',
+          width: 1,
         },
-        grid: {
-          row: {
-            colors: ['#ffffff', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
+        tooltip: {
+          enabled: false
+        },
+        markers: {
+          size: 0,
         },
         xaxis: {
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+          type: 'category',
+          title: {
+            text: 'Date'
+          }
+        },
+        yaxis: {
+          title: {
+            text: 'Coffee Quantity'
+          }
+        },
+        title: {
+          text: 'Order Activity',
+          align:'left'
         }
         };
 
         var chartV = new ApexCharts(document.querySelector("#chart-v"), options);
         chartV.render();
-        });
+});
+});
 </script>

@@ -49,7 +49,8 @@ class OrderDispatched extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'message' => 'Your order '. $this->order->orderID . ' has been dispatched by vendor'
+             'title' => 'Order Dispatched',
+            'message' => 'Your order '. $this->order->orderID . ' has been dispatched by the vendor.'
         ];
     }
 }

@@ -3,7 +3,7 @@
 @include('layouts.head')
 <body>
     {{-- SweetAlert2 --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
    
     <div>
         <main>       
@@ -17,14 +17,13 @@
                     @include('layouts.nav')
                     <!-- End Navbar -->
 
-                    <x-session-message/>
-                     @if(session('error'))
-                     <div class="alert alert-danger">
-                     {{ session('error') }}
-                     </div>
-@endif
-
                     <div class="content">
+                    <x-session-message/>
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
                         <x-page-header >
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
                             @yield('page-title')

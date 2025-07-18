@@ -19,7 +19,7 @@ class importerModelFactory extends Factory
         return [
             'name'=> fake()->name(),
             'email'=> fake()->email(),
-            'password'=> fake()->password(),
+            //'password'=> fake()->password(),
             'Bank_account' => fake()->bankAccountNumber(),
             'Account_holder'=> fake()->name(),
             'Bank_name'=> fake()->randomElement([

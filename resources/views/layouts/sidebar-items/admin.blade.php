@@ -1,7 +1,7 @@
 @section('sidebar-items')
 <ul class="sidebar-nav">
         <li class="sidebar-item">
-             <a href="{{route('home')}}" class="sidebar-link {{request()->routeIs('home') ? 'active' : ''}}">
+             <a href="{{route('admin.home')}}" class="sidebar-link {{request()->routeIs('admin.*') ? 'active' : ''}}">
              <i class='bxr  bx-grid-column-right'  ></i> 
              <span>Dashboard</span>
              </a>
@@ -57,6 +57,12 @@
              </svg>
              <span>Staff Management</span>
             
+             </a>
+        </li>
+        <li class="sidebar-item">
+             <a href="{{ route('admin.user-audits.index') }}" class="sidebar-link {{request()->routeIs('admin.user-audits.*') ? 'active' : ''}}">
+             <i class='bx bx-history'></i>
+             <span>User Audits</span>
              </a>
         </li>
         {{-- <li class="sidebar-item">

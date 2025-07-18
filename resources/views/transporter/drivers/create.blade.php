@@ -83,7 +83,8 @@
                                     <label for="vehicle_number">Vehicle Registration Number</label>
                                     <input type="text" class="form-control @error('vehicle_number') is-invalid @enderror" 
                                            id="vehicle_number" name="vehicle_number" value="{{ old('vehicle_number') }}" 
-                                           placeholder="e.g., UBE 123A">
+                                           placeholder="e.g., UBE 123A"
+                                           style="border: 2px solid #F5F5DC; border-radius: 8px;">
                                     @error('vehicle_number')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -95,8 +96,37 @@
                                     <label for="address">Address</label>
                                     <input type="text" class="form-control @error('address') is-invalid @enderror" 
                                            id="address" name="address" value="{{ old('address') }}" 
-                                           placeholder="Driver's address">
+                                           placeholder="Driver's address"
+                                           style="border: 2px solid #F5F5DC; border-radius: 8px;">
                                     @error('address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Transporter Company Section -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mb-3">
+                                    <label for="transporter_company" style="color: #8B4513; font-weight: 600;">Transporter Company <span class="text-danger">*</span></label>
+                                    <select class="form-control @error('transporter_company') is-invalid @enderror" 
+                                            id="transporter_company" name="transporter_company" required
+                                            style="border: 2px solid #F5F5DC; border-radius: 8px;">
+                                        <option value="">Select Transporter Company</option>
+                                        @foreach($transporters as $transporter)
+                                            <option value="{{ $transporter->co_name }}" 
+                                                    data-id="{{ $transporter->id }}"
+                                                    {{ old('transporter_company') == $transporter->co_name ? 'selected' : '' }}>
+                                                {{ $transporter->co_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" id="transporter_company_id" name="transporter_company_id" value="{{ old('transporter_company_id') }}">
+                                    @error('transporter_company')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    @error('transporter_company_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -181,4 +211,28 @@ label {
     color: #A0522D !important;
 }
 </style>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const transporterSelect = document.getElementById('transporter_company');
+    const transporterIdInput = document.getElementById('transporter_company_id');
+    
+    transporterSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption.value) {
+            transporterIdInput.value = selectedOption.getAttribute('data-id');
+        } else {
+            transporterIdInput.value = '';
+        }
+    });
+    
+    // Set initial value if there's an old value
+    if (transporterSelect.value) {
+        const selectedOption = transporterSelect.options[transporterSelect.selectedIndex];
+        transporterIdInput.value = selectedOption.getAttribute('data-id');
+    }
+});
+</script>
 @endsection
