@@ -43,7 +43,23 @@ class Kernel extends ConsoleKernel
          $schedule->command('ml:process-data')
              ->dailyAt('03:00')
              ->withoutOverlapping();
-    }
+
+             // Sales reports
+             // Every Monday at 1 AM
+              $schedule->command('generate:weekly-sales-report')
+              ->weeklyOn(1, '01:00') 
+              ->withoutOverlapping();
+
+             // Monthly report on 1st of each month at 2 AM
+                $schedule->command('generate:monthly-sales-report')
+                ->monthlyOn(1, '02:00')
+                ->withoutOverlapping();
+
+                // Annual report on Jan 1st at 3 AM
+                $schedule->command('generate:annual-sales-report')
+                ->yearlyOn(1, 1, '03:00')
+                ->withoutOverlapping();
+            }
 
     protected function commands()
     {
