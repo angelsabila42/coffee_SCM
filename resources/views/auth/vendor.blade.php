@@ -91,8 +91,18 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>                         
+                        </div>   
 
+                        <div class="row mb-3">
+                           <label for="region" class="card-title col-md-4 col-form-label text-md-end">{{ __('Region') }}</label>
+                        <select name="region" id="" class="form-control w-50">
+                             <option value="">Select Region</option>
+                            <option value="north">Northern</option>
+                             <option value="south">Southern</option>
+                              <option value="west">Western</option>
+                               <option value="east">Eastern</option>
+                        </select>
+                        </div>
                         
                          <div class="row mb-3">
                             <label for="Bank_account" class="card-title col-md-4 col-form-label text-md-end">{{ __('Bank Account') }}</label>
