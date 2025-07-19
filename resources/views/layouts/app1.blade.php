@@ -1,8 +1,10 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-@include('layouts.head1')
+@include('layouts.head')
 <body>
-
+    {{-- SweetAlert2 --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+   
     <div>
         <main>       
             <div id="wrapper" x-data= "sideBar">
@@ -15,14 +17,13 @@
                     @include('layouts.nav')
                     <!-- End Navbar -->
 
-                    <x-session-message/>
-                    @if(session('error'))
-                     <div class="alert alert-danger">
-                     {{ session('error') }}
-                     </div>
-                    @endif
-
                     <div class="content">
+                    <x-session-message/>
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
                         <x-page-header >
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
                             @yield('page-title')
@@ -43,5 +44,7 @@
     </div>
     @include('layouts.scripts.scripts')
     @include('layouts.scripts.chart_scripts')
+    @yield('scripts')
+    @stack('scripts')
 </body>
 </html>

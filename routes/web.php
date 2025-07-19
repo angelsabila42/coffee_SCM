@@ -59,7 +59,18 @@ use App\Http\Middleware\AutMiddleware;
 use App\Models\QA;
 use App\Models\Vendor;
 use GuzzleHttp\Middleware;
+
+use App\Http\Controllers\SaleReport;
+use App\Http\Controllers\DeliveriesReport;
+
+Route::get('/qa-vendor', function (QA $qa) {
+    return view('qa.vendor-report', [
+        'report' => $qa->all(),
+    ]);
+})->name('qa.vendor');
+
 Route::get('/qa-vendor',[QAReportController::class, 'store'])->name('qa.store');
+
 //transporter transactions
 
 Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
@@ -470,5 +481,7 @@ Route::post('/notifications/mark-as-read', function () {
 Route::post('/staff/{id}/profile-picture', [StaffController::class, 'updateProfilePicture'])->name('staff.updateProfilePicture');
 Route::get('/staff/{id}/details', [StaffController::class, 'getStaffDetails'])->name('staff.get-details');
 
+Route::get('/SalesReportDetails/{id}', [SaleReport::class, 'show'])->name('sales-details');
+Route::get('/DeliveryReportDetails/{id}', [DeliveriesReport::class, 'show'])->name('delivery-details');
 
 

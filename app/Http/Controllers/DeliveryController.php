@@ -40,6 +40,7 @@ class DeliveryController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'delivery_id' => 'required|unique:deliveries,delivery_id|max:255',
             'order_reference' => 'nullable|exists:incoming_orders,id',
@@ -51,7 +52,7 @@ class DeliveryController extends Controller
             'coffee_grade' => 'nullable|string|max:255',
             'status' => 'required|string|max:255',
             'assigned_driver' => 'nullable|string|max:255',
-            'eta' => 'nullable|date',
+            'transporter_id' => 'required|exists:transporters,id',
             'date_ordered' => 'required|date',
         ]);
 
@@ -89,6 +90,7 @@ class DeliveryController extends Controller
      */
     public function update(Request $request, Delivery $delivery)
     {
+
         $validated = $request->validate([
             'pickup_location' => 'nullable|string|max:255',
             'dispatch_date_time' => 'nullable|date',
@@ -98,7 +100,7 @@ class DeliveryController extends Controller
             'coffee_grade' => 'nullable|string|max:255',
             'status' => 'required|string|max:255',
             'assigned_driver' => 'nullable|string|max:255',
-            'eta' => 'nullable|date',
+            'transporter_id' => 'required|exists:transporters,id',
             'date_ordered' => 'required|date',
         ]);
 
