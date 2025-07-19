@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('work_centers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('workCenterID');
             $table->string('location');
             $table->string('centerName');
           

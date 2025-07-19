@@ -5,7 +5,7 @@
 @endsection
 <div class="container">
     <h1>Staff Management</h1>
-
+   
     <!-- Summary Cards -->
    <div class="row mb-4 card-row-custom">
     <div class="col-md-4 mb-3">
@@ -41,7 +41,7 @@
                     <i class="fas fa-warehouse"></i>
                 </div>
                 <div class="text-right">
-                    <div class="main-number">4</div>
+                    <div class="main-number">10</div>
                     <div class="sub-text">Warehouses</div>
                 </div>
             </div>
@@ -68,12 +68,12 @@
                 
                     <div class="card-header d-flex justify-content-between align-items-center bg-white">
                         <h4 class="mb-0">Staff</h4>
-                       {{-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+                       <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addStaffModal">
                             + New
-                        </button> --}}
+                        </button>
 
                     </div>
-                     <livewire:staff-model/>
+                    {{-- <livewire:staff-model/> --}}
                        <!-- Staff Details Panel -->
             <div id="staffDetailsPanel" class="staff-details-panel d-none">
                 <div class="card">
@@ -84,7 +84,7 @@
                     <div class="card-body">
                         <div class="text-center mb-4">
                             <div class="profile-picture-container">
-                                <img id="staffProfilePicture" src="" alt="Profile Picture" class="rounded-circle profile-picture mb-2">
+                                <img id="staffProfilePicture" src="{{ $member->profile_picture_url ?? asset('assets/img/default-avatar.png') }}" alt="Profile Picture" class="rounded-circle profile-picture mb-2">
                                 <form id="profilePictureForm" class="mt-2">
                                     @csrf
                                     <label for="profilePictureInput" class="btn btn-sm btn-outline-primary">
@@ -207,14 +207,14 @@
                                 <td>{{ $member->phone_number }}</td>
                                 <td>{{ $member->email }}</td>
                                 <td>
-                                    {{-- Edit Button --}}
-                                    <div class= "d inline">
+                                   
+                                  {{--  <div class= "d inline">
                                         <button type="button" class="btn btn-sm btn-info edit-staff-btn"
                                           data-bs-toggle="modal"
                                           data-bs-target="#editStaffModal"
                                           data-id="{{ $member->id }}">
                                              Edit
-                                         </button>
+                                         </button>--}}
                                     
                                     {{-- Delete Form --}}
                                     <form action="{{ route('staff_management.staff.destroy', $member->id) }}" method="POST" style="display: none;" id="delete-form-{{ $member->id }}">
@@ -1000,7 +1000,6 @@ document.addEventListener('DOMContentLoaded', function() {
 @push('styles')
 <style>
     #staffDetailsPanel {
-        display: none;
         background: white;
         padding: 20px;
         margin-bottom: 20px;
