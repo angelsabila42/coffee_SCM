@@ -66,8 +66,8 @@
     <div class="welcome-section">
         <div class="overlay"></div>
         <div class="content">
-            <h1 class="display-3 fw-bold card">Welcome to Globalbean connect</h1>
-            <div class="lead mb-4 text-white card card-title bg-primary " style="max-width: 1500px">Your one-stop solution for coffee supply chain management
+            <h1 class="display-3 fw-bold ">Welcome to Globalbean connect</h1>
+            <div class="lead mb-4 text-white   " style="max-width: 1500px">Your one-stop solution for coffee supply chain management
                 
             We combine the love of coffee with the power of technology.
             Our intelligent supply platform connects coffee producers, suppliers, and buyers in one seamless ecosystem.

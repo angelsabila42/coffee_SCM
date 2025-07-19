@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section('sidebar-items')
-@include('layouts.sidebar-items.admin')
+@include('layouts.sidebar-items.vendor')
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -41,7 +41,7 @@
                 </table>
 
                 <div class="mt-4">
-                    {{-- {{ $reports->links() }} --}}
+                    {{ $reports->links() }}
                 </div>
             </div>
                             </div>
