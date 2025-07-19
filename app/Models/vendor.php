@@ -38,6 +38,10 @@ class Vendor extends Model
          return $this->hasMany(VendorCluster::class);
     }
 
+    public function dummyClusters(){
+         return $this->hasMany(DummyVendorCluster::class);
+    }
+
     public function qaReports()
     {
         return $this->hasMany(QA::class);

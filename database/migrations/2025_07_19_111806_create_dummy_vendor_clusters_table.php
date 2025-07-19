@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vendor_clusters', function (Blueprint $table) {
+        Schema::create('dummy_vendor_clusters', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vendor_id')->constrained('vendor')->onDelete('cascade');
             $table->integer('total_(60kg_bags)')->default(0);
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vendor_clusters');
+        Schema::dropIfExists('dummy_vendor_clusters');
     }
 };
