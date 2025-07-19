@@ -76,12 +76,12 @@
                         </td>
                         <td>
                             <div>
-                                <button type="button" class="btn btn-sm btn-info edit-leave-record-btn" 
+                               {{--   <button type="button" class="btn btn-sm btn-info edit-leave-record-btn" 
                                     data-id="{{ $leave->leave_id }}" 
                                     data-bs-toggle="modal" 
                                     data-bs-target="#editLeaveRecordModal">
                                     Edit
-                                </button>
+                                </button>--}}
                                 <form action="{{ route('staff_management.leavehistory.destroy', $leave->leave_id) }}" method="POST" style="display: none;" id="delete-leave-form-{{ $leave->leave_id }}">
                                     @csrf
                                     @method('DELETE')

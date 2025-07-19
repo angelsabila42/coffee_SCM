@@ -110,7 +110,7 @@
                         <td>{{ $assignment->end_date ?? 'N/A' }}</td>
                         <td>
                             <div>
-                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editWorkAssignmentModal" data-id="{{ $assignment->assignment_id }}">Edit</button>
+                              {{--  <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editWorkAssignmentModal" data-id="{{ $assignment->assignment_id }}">Edit</button> --}} 
                                 <form action="{{ route('staff_management.workassignment.destroy', $assignment->assignment_id) }}" method="POST" style="display: none;" id="delete-work-form-{{ $assignment->assignment_id }}">
                                     @csrf
                                     @method('DELETE')
