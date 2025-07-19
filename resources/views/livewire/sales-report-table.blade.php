@@ -42,7 +42,7 @@
                                         </thead>
                                         <tbody>
                                         @foreach($sales as $sale)
-                                            <tr wire:key= "{{$sale->id}}" >
+                                            <tr onclick = "window.location='{{route('sales-details', $sale->id)}}'" style="cursor: pointer" >
                                                 <td>{{ $sale->reportID }}</td>
                                                 <td>{{ $sale->title }}</td>
                                                 <td>{{ $sale->start_period }}</td>
@@ -66,6 +66,7 @@
                             <!--div>
                             <label class="w-32 text-sm text-muted font-weight-bold">Per Page</label>
                             <select>
+                                wire:key= "{{$sale->id}}
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="20">20</option>
