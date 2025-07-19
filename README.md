@@ -134,3 +134,10 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 8. **Access the application**  
    Open [http://localhost:8000](http://localhost:8000) in your browser.
+
+
+## java server 
+requirements 
+1. need to install spring boot.
+2. need to install tesseract
+3. set the TESSDATA_PREFIX in your environment variables and give it value of the path to your tesseract testdata.

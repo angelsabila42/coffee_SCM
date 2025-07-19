@@ -237,9 +237,9 @@ Route::middleware('auth')->group(function()
         });
 
 
-         Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+         Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
      
-        Route::get("/java",[VendorController::class, 'store'])-> name('java'); 
+        //Route::get("/java",[VendorController::class, 'store'])-> name('java'); 
 
        Route::get('/reg/vendor', [VendorController::class, 'vendor'])->name('vendor');
         //Route::get('/reg/transporter', [transporterController::class, 'transporter'])->name('transporter');
