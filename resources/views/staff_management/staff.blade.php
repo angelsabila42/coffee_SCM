@@ -234,7 +234,11 @@
                 </table>
             </div>
         </div>
-
+   <div class="d-flex justify-content-center align-items-center my-2">
+    <nav>
+        {{ $staff->links('pagination::bootstrap-4') }}
+    </nav>
+</div>
             <!-- Work Assignment History Tab Content -->
             <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
                 @include('staff_management.Workassignment', [

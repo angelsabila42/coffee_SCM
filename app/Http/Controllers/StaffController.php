@@ -14,8 +14,8 @@ class StaffController extends Controller
 public function staff()
 {
         // Use regular staff data (Livewire component will take care of filtering)
-        $staff = Staff::orderBy('id', 'asc')->get(); // All staff for the main table, oldest first
-        
+        $staff = Staff::orderBy('id', 'asc')->paginate(10); // All staff for the main table, oldest first
+
         $totalStaffCount = Staff::count();
         $absentStaffCount = Staff::whereIn('status', ['On Leave', 'Suspended'])->count();
         $warehouseCount = 4;
