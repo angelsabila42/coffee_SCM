@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\PesaPalTransaction;
 use App\Models\Invoice;
+use App\Models\Vendor;
+use App\Models\Transporter;
 use Illuminate\Support\Facades\Storage;
 use App\Services\ActivityLogger;
 
@@ -165,5 +167,52 @@ class PaymentController extends Controller
                 'message' => 'Error fetching transaction details: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Show vendor payment form
+     */
+    public function showVendorPaymentForm(Request $request)
+    {
+        // Get vendor data if needed - you may need to adjust this based on your vendor model
+        $vendors = Vendor::all(); // Using the correct Vendor model
+        
+        // Prepare payment data
+        $paymentData = [
+            'amount' => $request->get('amount', ''),
+            'type' => 'VENDOR',
+            'description' => 'Vendor Payment for Coffee Supply',
+            'reference' => 'VEN-' . date('YmdHis'),
+            'first_name' => 'Admin',
+            'last_name' => 'User',
+            'email' => 'admin@coffeetrade.com',
+            'phone_number' => $request->get('phone_number', '')
+        ];
+
+        return view('payments.vendor-payment-form', compact('paymentData', 'vendors'));
+    }
+
+    /**
+     * Show transporter payment form
+     */
+    public function showTransporterPaymentForm(Request $request)
+    {
+        // Get transporter data if needed - you may need to adjust this based on your transporter model
+        $transporters = Transporter::all(); // Using the correct Transporter model
+        
+        // Prepare payment data
+        $paymentData = [
+            'amount' => $request->get('amount', ''),
+            'type' => 'TRANSPORTER',
+            'description' => 'Transporter Payment for Coffee Delivery',
+            'reference' => 'TRA-' . date('YmdHis'),
+            'first_name' => 'Admin',
+            'last_name' => 'User',
+            'email' => 'admin@coffeetrade.com',
+            'phone_number' => $request->get('phone_number', ''),
+            'delivery_route' => $request->get('delivery_route', '')
+        ];
+
+        return view('payments.transporter-payment-form', compact('paymentData', 'transporters'));
     }
 }

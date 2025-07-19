@@ -247,13 +247,27 @@ class ImporterPaymentController extends Controller
             'first_name' => 'required|string|max:50',
             'last_name' => 'required|string|max:50',
             'email' => 'required|email|max:100',
+            'payment_type' => 'nullable|string|in:vendor,transporter,general',
+            'vendor_id' => 'nullable|exists:vendor,id',
+            'transporter_id' => 'nullable|exists:transporters,id',
+            'delivery_route' => 'nullable|string|max:255'
         ]);
 
-        // Get payment data from session
+        // Check payment type specific validations
+        $paymentType = $request->input('payment_type', 'general');
+        if ($paymentType === 'vendor' && !$request->input('vendor_id')) {
+            return back()->with('error', 'Please select a vendor to pay.');
+        }
+        if ($paymentType === 'transporter' && !$request->input('transporter_id')) {
+            return back()->with('error', 'Please select a transporter to pay.');
+        }
+
+        // Get payment data from session (for general payments) or use form data directly
         $paymentData = session('payment_data');
         $transactionId = session('transaction_id');
         
-        if (!$paymentData || !$transactionId) {
+        // For vendor and transporter payments, we don't require session data
+        if ($paymentType === 'general' && (!$paymentData || !$transactionId)) {
             return redirect()->route('importer.dashboard')->with('error', 'Session expired. Please try again.');
         }
 
@@ -261,6 +275,29 @@ class ImporterPaymentController extends Controller
         $amount = $request->input('amount');
         if ($amount > 1000) {
             return back()->with('error', 'Payment amount cannot exceed UGX 1,000 due to PesaPal limits. Please reduce the amount.');
+        }
+
+        // For vendor/transporter payments, create a new transaction record if needed
+        if (in_array($paymentType, ['vendor', 'transporter']) && !$transactionId) {
+            $user = Auth::user();
+            $merchantReference = strtoupper($paymentType) . '_TXN_' . $user->id . '_' . time();
+            
+            $transaction = PesaPalTransaction::create([
+                'pesapal_merchant_reference' => $merchantReference,
+                'pesapal_tracking_id' => null,
+                'total_amount' => $amount,
+                'status' => 'PENDING',
+                'importer_id' => null, // Admin payment
+                'order_ids' => null,
+                'description' => $request->input('description'),
+                'payment_method' => 'PesaPal',
+                'payment_type' => $paymentType,
+                'vendor_id' => $request->input('vendor_id'),
+                'transporter_id' => $request->input('transporter_id'),
+                'delivery_route' => $request->input('delivery_route')
+            ]);
+            
+            $transactionId = $transaction->id;
         }
 
         // Include your existing OAuth.php file
@@ -303,8 +340,10 @@ class ImporterPaymentController extends Controller
             ]);
         }
 
-        // Clear session data
-        session()->forget(['payment_data', 'transaction_id']);
+        // Clear session data for general payments
+        if ($paymentType === 'general') {
+            session()->forget(['payment_data', 'transaction_id']);
+        }
 
         // Display PesaPal iframe
         return view('payments.pesapal-iframe', compact('iframe_src'));

@@ -13,7 +13,21 @@
 <div class="container py-4">
     <div class="card shadow-sm rounded-lg">
         <div class="card-body">
-            <h3 class="mb-4 font-weight-bold" style="color:#222">Account Details</h3>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0 font-weight-bold" style="color:#222">Account Details</h3>
+                <!-- Payment Action Buttons -->
+                <div class="d-flex gap-3">
+                    <a href="{{ route('payments.vendor.form') }}" class="btn btn-brown btn-lg d-flex align-items-center shadow-sm" style="background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%); border: none; border-radius: 25px; padding: 10px 20px; color: white; text-decoration: none; transition: all 0.3s ease;">
+                        <span class="me-2" style="font-size: 1.1em;">🌱</span>
+                        <span class="fw-bold">Pay Vendor</span>
+                    </a>
+                    
+                    <a href="{{ route('payments.transporter.form') }}" class="btn btn-brown btn-lg d-flex align-items-center shadow-sm" style="background: linear-gradient(135deg, #A0522D 0%, #CD853F 100%); border: none; border-radius: 25px; padding: 10px 20px; color: white; text-decoration: none; transition: all 0.3s ease;">
+                        <span class="me-2" style="font-size: 1.1em;">🚛</span>
+                        <span class="fw-bold">Pay Transporter</span>
+                    </a>
+                </div>
+            </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <div class="bg-light p-3 rounded">
@@ -42,6 +56,7 @@
             </div>
 
             <h3 class="mt-4 font-weight-bold" style="color:#222">Payments and Billing</h3>
+            
             <!-- Tabs -->
             <ul class="nav nav-tabs modern-tabs mb-4" id="paymentTabs" role="tablist">
                 <li class="nav-item">
@@ -279,6 +294,47 @@ function viewPesapalTransaction(transactionId) {
 
 .btn:hover {
     transform: scale(1.05);
+}
+
+/* Payment Button Styles */
+.btn-brown:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4) !important;
+}
+
+.btn-brown:first-child:hover {
+    background: linear-gradient(135deg, #654321 0%, #8B4513 100%) !important;
+}
+
+.btn-brown:last-child:hover {
+    background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%) !important;
+}
+
+.gap-3 {
+    gap: 1rem !important;
+}
+
+@media (max-width: 768px) {
+    .d-flex.gap-3 {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-brown {
+        width: 100%;
+        margin-bottom: 10px;
+        justify-content: center;
+    }
+    
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .d-flex.justify-content-between .d-flex.gap-3 {
+        margin-top: 15px;
+        width: 100%;
+    }
 }
 
 .modal-header {

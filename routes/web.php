@@ -123,6 +123,13 @@ Route::middleware('auth')->prefix('importer/payment')->group(function () {
     })->name('importer.payment.create-test-orders');
 });
 
+// Additional payment routes for vendor and transporter payments
+Route::middleware('auth')->prefix('payments')->group(function () {
+    Route::get('/vendor/form', [PaymentController::class, 'showVendorPaymentForm'])->name('payments.vendor.form');
+    Route::get('/transporter/form', [PaymentController::class, 'showTransporterPaymentForm'])->name('payments.transporter.form');
+    Route::get('/form', [ImporterPaymentController::class, 'showPaymentForm'])->name('payments.form');
+});
+
    
 Route::get('/alpine',function(){
     return view('alpine');

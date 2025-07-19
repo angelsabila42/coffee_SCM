@@ -22,6 +22,10 @@ class PesaPalTransaction extends Model
         'payment_date',
         'pesapal_response',
         'description',
+        'payment_type',
+        'vendor_id',
+        'transporter_id',
+        'delivery_route',
     ];
 
     protected $casts = [
@@ -54,5 +58,15 @@ class PesaPalTransaction extends Model
     public function scopeFailed($query)
     {
         return $query->where('status', 'FAILED');
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
+
+    public function transporter()
+    {
+        return $this->belongsTo(Transporter::class);
     }
 }
