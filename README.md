@@ -141,3 +141,4 @@ requirements
 1. need to install spring boot.
 2. need to install tesseract
 3. set the TESSDATA_PREFIX in your environment variables and give it value of the path to your tesseract testdata.
+4. you need to start the java server before using it... u can use "mvn spring-boot run" command.
