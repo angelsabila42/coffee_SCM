@@ -60,9 +60,6 @@ use App\Models\QA;
 use App\Models\Vendor;
 use GuzzleHttp\Middleware;
 Route::get('/qa-vendor',[QAReportController::class, 'store'])->name('qa.store');
-Route::get('/qa-vendor',[VendorController::class, 'venReport'])->name('qa.vendor');
-
-Route::get('/qa-vendor/report/{reportID}', [VendorController::class,'venReportDetails'])->name('qa.vendor.report');
 //transporter transactions
 
 Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
@@ -394,6 +391,10 @@ Route::middleware(['vendor'])->group(function(){
       Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
 
       //Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+      Route::get('/qa-vendor',[VendorController::class, 'venReport'])->name('qa.vendor');
+
+     Route::get('/qa-vendor/report/{reportID}', [VendorController::class,'venReportDetails'])->name('qa.vendor.report');
+
      
 });
 
