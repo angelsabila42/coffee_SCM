@@ -11,6 +11,8 @@ use App\Http\Requests\V1\UpdateVendorRequest;
 use App\Http\Resources\V1\VendorDropDownResource;
 use App\Models\User;
 use App\Models\Vendor;
+use App\Models\QA;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
@@ -171,7 +173,30 @@ class VendorController extends Controller
        // return response()->json(['message' => 'Vendor registered successfully']);
 
         }
-    }
+        public function venReport(){
+                    
+          $user = Auth::user();
+          $vendor = Vendor::where('email', $user->email)->first();
+
+          if($vendor){
+              $reports = QA::where('vendor_id', $vendor->id)->paginate(10);
+          } else {
+              $reports = collect(); // Empty collection if no vendor found
+          }
+
+        return view('qa.vendor-report',compact('reports'));
+   }
+
+   public function venReportDetails($reportID){
+                
+          $user = Auth::user();
+          $vendor = Vendor::where('email', $user->email)->first();
+
+       $report = QA::where('reportID', $reportID)->firstOrFail();
+       if($report)
+      return view('qa.vendor-report-details', compact('report'));
+  }
+   }
 
 
 // end of vendorController.php   
