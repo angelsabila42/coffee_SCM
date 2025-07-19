@@ -2,39 +2,59 @@
     @php
         $notifications = auth()->check() ? auth()->user()->unreadNotifications : collect([]);
     @endphp
-
     <div class="container-fluid">
-        <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div class="row w-100 align-items-center flex-nowrap">
+            <div class="col-auto d-flex align-items-center">
+                <a class="navbar-brand me-3" href="{{ url('/') }}">
+                    <img src="{{ asset('images/globalbean-logo.png') }}" alt="Global Bean Connect Logo" class="navbar-logo" style="height:48px; width:auto;">
+                </a>
+            </div>
+            <div class="col d-flex justify-content-center">
                 @livewire('search-bar')
-            </ul> 
-
-            <ul class="navbar-nav ml-auto">
-                <!-- Notification Bell -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#notificationsModal">
-                        <i class="fas fa-bell"></i>
-                        @if($notifications->count() > 0)
-                            <span class="badge bg-danger notification">{{ $notifications->count() }}</span>
-                        @endif
-                    </a> 
-                </li>
-
-                <!-- User Profile -->
-                <li class="nav-item d-flex align-items-center">
+            </div>
+            <div class="col-auto">
+                <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    <!-- Notification Bell -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#notificationsModal">
+                            <i class="fas fa-bell"></i>
+                            @if($notifications->count() > 0)
+                                <span class="badge bg-danger notification">{{ $notifications->count() }}</span>
+                            @endif
+                        </a> 
+                    </li>
+                    <!-- User Profile Dropdown -->
+                    <li class="nav-item dropdown d-flex align-items-center">
                     @if(Auth::check())
                         <span class="me-2">{{ Auth::user()->name }}</span>
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#userProfileModal">
-                            <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="Profile" class="rounded-circle" width="30" height="30">
+                        <a class="nav-link dropdown-toggle p-0" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
                         </a>
+                         <div class="dropdown-menu dropdown-menu-right p-3 mt-2 shadow-lg" aria-labelledby="userDropdown" style="min-width: 280px; max-width: 300px;">
+                            <div class="text-center">
+                                <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}" class="rounded-circle mb-2" width="60" height="60" style="object-fit: cover;">
+                                <h6 class="mb-2 text-capitalize" >{{ Auth::user()->name }}</h6>
+                                <p class="text-muted small mb-0" style="text-transform: none;">{{ Auth::user()->email }}</p>
+                            </div>
+                            <a class="dropdown-item" href="{{ url('/editprofile') }}">
+                                <i class="fas fa-user-edit mr-2"></i> Edit Profile
+                            </a>
+                            <form action="/logout" method="POST" class="m-0 p-0">
+                              @csrf
+                                <button type="submit" class="btn btn-link dropdown-item">
+                                    <i class="fas fa-sign-out-alt mr-2"></i> Log out
+                                </button>
+                            </form>
+                        </div>
                     @else
-                        <span>Guest</span>
+                        <span class="me-2">Guest</span>
                         <a href="{{ route('login') }}" class="nav-link">
-                            <i class="fas fa-user-circle"></i>
+                            <i class="fas fa-user-circle fa-lg"></i>
                         </a>
                     @endif
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 

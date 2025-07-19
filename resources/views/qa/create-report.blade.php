@@ -229,7 +229,7 @@
                         <div class="d-flex justify-content-end gap-2">
                             <button type="submit" name="save_draft" value="1" class="btn btn-secondary">Save as Draft</button>
                             <a href="{{ route('qa.index') }}" class="btn btn-light">Back</a>
-                            <button type="submit" name="status" value="submitted" class="btn btn-primary">Submit</button>
+                            <button onclick="window.location='{{ route('qa.store', $record->id) }}'" type="submit" name="status" value="submitted" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>

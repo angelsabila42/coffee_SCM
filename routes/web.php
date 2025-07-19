@@ -57,7 +57,9 @@ use App\Http\Controllers\Vendor\VendorOrderController;
 use App\Http\Controllers\InvoiceExportController;
 use App\Http\Middleware\AutMiddleware;
 use App\Models\QA;
+use App\Models\Vendor;
 use GuzzleHttp\Middleware;
+
 use App\Http\Controllers\SaleReport;
 use App\Http\Controllers\DeliveriesReport;
 
@@ -66,6 +68,8 @@ Route::get('/qa-vendor', function (QA $qa) {
         'report' => $qa->all(),
     ]);
 })->name('qa.vendor');
+
+Route::get('/qa-vendor',[QAReportController::class, 'store'])->name('qa.st
 //transporter transactions
 
 Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
@@ -340,8 +344,6 @@ Route::middleware('auth')->group(function()
         // end of Arnest added
 
 
-        Route::post("/java",[VendorController::class, 'pdfValidation'])-> name('java.store');
-
 
         Route::delete('/orders/{order}', [ImporterModelController::class, 'destroy'])->name('orders.destroy');
 
@@ -399,6 +401,10 @@ Route::middleware(['vendor'])->group(function(){
       Route::get('/vendor-home', [VendorHomeController::class, 'index'])->name('vendor.home');
 
       //Route::post("/java",[VendorController::class, 'register'])-> name('java.store');
+      Route::get('/qa-vendor',[VendorController::class, 'venReport'])->name('qa.vendor');
+
+     Route::get('/qa-vendor/report/{reportID}', [VendorController::class,'venReportDetails'])->name('qa.vendor.report');
+
      
 });
 

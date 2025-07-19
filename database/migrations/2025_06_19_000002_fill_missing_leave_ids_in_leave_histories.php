@@ -32,7 +32,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Optionally, set leave_id to null for those records
-        DB::table('leave_histories')->update(['leave_id' => null]);
+        // Set leave_id to empty string for all records to avoid NOT NULL constraint violation
+        DB::table('leave_histories')->update(['leave_id' => '']);
     }
 };

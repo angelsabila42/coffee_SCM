@@ -73,9 +73,16 @@
     <input type="text" class="form-control" id="assigned_driver" name="assigned_driver" value="{{ old('assigned_driver', $delivery->assigned_driver ?? '') }}">
 </div>
 
+
+<!-- Transporter Company Dropdown -->
 <div class="form-group">
-    <label for="eta">ETA (Estimated Time of Arrival):</label>
-    <input type="date" class="form-control" id="eta" name="eta" value="{{ old('eta', isset($delivery->eta) ? \Carbon\Carbon::parse($delivery->eta)->format('Y-m-d') : '') }}">
+    <label for="transporter_id">Transporter Company:</label>
+    <select class="form-control" id="transporter_id" name="transporter_id" required>
+        <option value="">-- Select Transporter Company --</option>
+        @foreach(App\Models\Transporter::all() as $transporter)
+            <option value="{{ $transporter->id }}" {{ old('transporter_id', $delivery->transporter_id ?? '') == $transporter->id ? 'selected' : '' }}>{{ $transporter->co_name ?? $transporter->name }}</option>
+        @endforeach
+    </select>
 </div>
 
 <div class="form-group">

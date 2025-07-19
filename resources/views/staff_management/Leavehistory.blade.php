@@ -14,11 +14,11 @@
 
     <div class="card-header d-flex justify-content-between align-items-center bg-white">
         <h4 class="mb-0">Leave History</h4>
-       {{-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addLeaveRecordModal">
+     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addLeaveRecordModal">
             + New
-        </button> --}}
+        </button>
     </div>
-    <livewire:leave-history />
+   {{-- <livewire:leave-history /> --}}
     <div class="card-body table-full-width table-responsive">
         <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
             <thead>
@@ -76,12 +76,12 @@
                         </td>
                         <td>
                             <div>
-                                <button type="button" class="btn btn-sm btn-info edit-leave-record-btn" 
+                               {{--   <button type="button" class="btn btn-sm btn-info edit-leave-record-btn" 
                                     data-id="{{ $leave->leave_id }}" 
                                     data-bs-toggle="modal" 
                                     data-bs-target="#editLeaveRecordModal">
                                     Edit
-                                </button>
+                                </button>--}}
                                 <form action="{{ route('staff_management.leavehistory.destroy', $leave->leave_id) }}" method="POST" style="display: none;" id="delete-leave-form-{{ $leave->leave_id }}">
                                     @csrf
                                     @method('DELETE')

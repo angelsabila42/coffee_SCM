@@ -34,10 +34,18 @@ public function store(Request $request)
         'role' => 'required|string|max:255',
         'status' => 'required|string',
         'phone_number' => 'required|string',
-        'email' => 'required|email'
+        'email' => 'required|email',
+        'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
     ]);
 
-    Staff::create($request->all());
+    $data = $request->except('profile_picture');
+
+    if ($request->hasFile('profile_picture')) {
+        $path = $request->file('profile_picture')->store('profile-pictures', 'public');
+        $data['profile_picture'] = $path;
+    }
+
+    Staff::create($data);
 
     return redirect()->route('staff_management.staff')->with('success', 'Staff added successfully!');
 }
@@ -52,7 +60,16 @@ public function destroy($id)
 
 public function show(Staff $staff) 
 {
-    return response()->json($staff);
+    return response()->json([
+        'id' => $staff->id,
+        'full_name' => $staff->full_name,
+        'role' => $staff->role,
+        'status' => $staff->status,
+        'phone_number' => $staff->phone_number,
+        'email' => $staff->email,
+        'profile_picture_url' => $staff->profile_picture_url,
+        // add other fields as needed
+    ]);
 }
 
 public function update(Request $request, Staff $staff)
@@ -62,10 +79,22 @@ public function update(Request $request, Staff $staff)
         'role' => 'required|string|max:255',
         'status' => 'required|string',
         'phone_number' => 'required|string',
-        'email' => 'required|email'
+        'email' => 'required|email',
+        'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
     ]);
 
-    $staff->update($request->all());
+    $data = $request->except('profile_picture');
+
+    if ($request->hasFile('profile_picture')) {
+        // Delete old profile picture if it exists
+        if ($staff->profile_picture) {
+            \Storage::disk('public')->delete($staff->profile_picture);
+        }
+        $path = $request->file('profile_picture')->store('profile-pictures', 'public');
+        $data['profile_picture'] = $path;
+    }
+
+    $staff->update($data);
 
     return redirect()->route('staff_management.staff')->with('success', 'Staff updated successfully!');
 }
@@ -103,7 +132,7 @@ public function edit(Staff $staff)
             $staff->save();
 
             return response()->json([
-                'success' => true,
+                'success' => true, 
                 'message' => 'Profile picture updated successfully',
                 'profile_picture_url' => $staff->profile_picture_url
             ]);
