@@ -22,6 +22,7 @@ Route::prefix('v1')->group(function(){
     Route::get('/quantity-demand',[QuantityDemandController::class, 'exportJSON']);
     Route::get('/vendor-cluster',[VendorClusterController::class, 'exportJSON']);
     Route::get('work-center/dropdown',[WorkCenterController::class, 'dropdown']);
+    Route::get('outgoing-order/vendor-chart',[OutgoingOrderController::class, 'displayChartOrders']);
     Route::get('outgoing-order/dropdown',[OutgoingOrderController::class, 'dropdown']);
     Route::get('incoming-order/dropdown',[IncomingOrderController::class, 'dropdown']);
     Route::apiResource('incoming-order',IncomingOrderController::class);

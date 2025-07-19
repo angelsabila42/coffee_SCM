@@ -24,6 +24,9 @@ df= df.rename(columns={'robusta_(60kg_bags)':'Robusta_(60kg_Bags)',
                         )
 
 #print(df[~df['Arabica_pct'].str.replace('.', '', regex=False).str.isnumeric()])
+for col in ['Robusta_(60kg_Bags)', 'Arabica_(60kg_Bags)', 'Total_(60kg_Bags)',
+            'YearsAsCustomer', 'OrderFreqPerYear', 'Arabica_pct', 'AvgOrderSize']:
+    df[col] = pd.to_numeric(df[col], errors='coerce')
 
 print("\nCleaned Data")
 print(df.head())

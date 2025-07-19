@@ -154,6 +154,66 @@ document.addEventListener('alpine:init', ()=>{
 
     }));
 
+    Alpine.data('viewImporterCluster',() => ({
+        showModal: false,
+        clusters: [],
+        clustersInfo: [],
+
+
+        async init(){
+            try{
+            const labelRes = await fetch('/data/importer_cluster_labels.json');
+            const clusterRes = await fetch('/data/importer_by_cluster_labels.json');
+            const radialRes = await fetch('/data/importer_radial_data.json');               
+
+            const clusterMap = await clusterRes.json();
+            const labels = await labelRes.json();
+            const radial = await radialRes.json();
+
+            this.clusters = Object.entries(clusterMap).map(([clusterId, importers]) => {
+                const meta = radial.find(item => item.cluster == clusterId);
+                return {
+                    id: clusterId,
+                    label: labels[clusterId],
+                    importers: importers,
+                    totalBags: meta ? meta["Total_(60kg_bags)"] : 0,
+                    avgOrderSize: meta ? meta["AvgOrderSize"] : 0,
+                    arabicaPct: meta ? meta["Arabica_pct"] : 0
+                };
+            });
+
+            }catch(error){
+                console.error('Fetch request failed', error);
+            }
+
+        }
+
+    }));
+
+Alpine.data('viewVendorCluster', () => ({
+    showModal: false,
+    clusters: [],
+
+    async init() {
+        try {
+            const response = await fetch('/data/vendor_cluster_stacked_bar.json');
+            const data = await response.json();
+
+            this.clusters = data.map((cluster, index) => ({
+                label: cluster.cluster_label || `Cluster ${index + 1}`,
+                vendorList: cluster.Vendor || [],
+                arabica: Number(cluster.arabica) || 0,
+                robusta: Number(cluster.robusta) || 0,
+                total: (Number(cluster.arabica) || 0) + (Number(cluster.robusta) || 0),
+            }));
+        } catch (error) {
+            console.error('Error fetching vendor cluster data:', error);
+        }
+    }
+}));
+
+
+
     Alpine.data('importerOrderModal',() => ({
         showModal: false,
         selectedDestination: '',
@@ -273,6 +333,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('Bootstrap 5 to 4 compatibility layer applied');
 });
+
+
+
+  
 
 
 

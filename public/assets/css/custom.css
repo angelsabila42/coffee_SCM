@@ -16,6 +16,10 @@ h1, h2, h3, p, label, input, textarea, button, select {
   font-family: "Rubik", sans-serif;
 }
 
+.nav-scroll{
+  overflow-y: hidden;
+}
+
 /* form & inputs */
  /* form {
   width: 100%;
@@ -100,6 +104,7 @@ button[type="submit"] {
   text-align: center;
   margin: 20px auto; 
 }
+
 
 /* modal */
 .overlay {
@@ -197,10 +202,14 @@ li{
     z-index: 1000;
     top:0;
     left:0;
-    overflow-y: hidden;
+    overflow-y:hidden;
     overflow-x: hidden;
     position: fixed;
     height: 100vh;
+}
+
+.text-brown{
+  color: #4b2e2e;
 }
 
 
@@ -357,6 +366,10 @@ a.sidebar-link:hover{
 /*Flash*/
 .bg-green-light{
   background-color: #f0fdf4;
+}
+
+.bg-orange{
+  background-color: #f59e0b;
 }
 
 .card-row-custom .custom-card {

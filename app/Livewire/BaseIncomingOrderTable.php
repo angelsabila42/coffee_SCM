@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Helpers\Helper;
+use App\Models\ImporterModel;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\IncomingOrder;
@@ -19,6 +20,7 @@ abstract class BaseIncomingOrderTable extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $orderID;
+    public $importer;
 
     #[Url] public $search = '';
     #[Url] public $type = '';
@@ -44,6 +46,7 @@ abstract class BaseIncomingOrderTable extends Component
         $this->maxQuantity = $this->maxQuantity  ?? '';
         $this->country = $this->country  ?? '';
         $this->grade = $this->grade  ?? '';
+        $this->importer= ImporterModel::where('email', Auth::user()->email)->first();
 
         $this->orderID= Helper::generateID(IncomingOrder::class,'orderID','IX',5);
     }

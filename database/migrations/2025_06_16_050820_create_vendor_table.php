@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('phone_number', 20);
             $table->string('street');
             $table->string('city');
-            $table->string('Bank_account')->nullable();
-            $table->string('Account_holder')->nullable();
-            $table->string('Bank_name')->nullable();
+            //$table->string('Bank_account')->nullable();
+            //$table->string('Account_holder')->nullable();
+            //$table->string('Bank_name')->nullable();
              $table->string('region')->nullable();
             $table->boolean('organicCertified')->default(false);
 

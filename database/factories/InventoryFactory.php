@@ -24,7 +24,7 @@ class InventoryFactory extends Factory
             'warehouse_name'=> fake()->company(),
             'quantity'=> fake()->numberBetween(100,1000),
             'threshold'=> fake()->numberBetween(50,100),
-            'status'=> fake()->randomElement(['in stock','low',]), 
+            //'status'=> fake()->randomElement(['in stock','low',]), 
             'last_updated'=> fake()->date()
         ];
     }

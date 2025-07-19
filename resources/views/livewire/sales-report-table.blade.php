@@ -63,17 +63,7 @@
                         </div>
                     </div>
         <div class="d-flex justify-content-center align-items-center col-md-12">
-                            <!--div>
-                            <label class="w-32 text-sm text-muted font-weight-bold">Per Page</label>
-                            <select>
-                                wire:key= "{{$sale->id}}
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                            </div-->
+
         {{$sales->links('pagination::bootstrap-4')}}
         </div>
 </div>

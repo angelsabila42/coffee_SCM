@@ -627,6 +627,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     const logByImporter = groupBy(forecastLog, 'Importer');
     const smoothedByImporter = groupBy(forecastSmooth,'Importer');
 
+    const allFirstForecastDates = [
+      ...Object.values(goodByImporter).flat(),
+      ...Object.values(logByImporter).flat(),
+      ...Object.values(smoothedByImporter).flat()
+          ]
+    .map(entry => new Date(entry.date).getTime());
+
+     const forecastStartDate = Math.min(...allFirstForecastDates);
+
+    const allForecastDates = [
+      ...Object.values(goodByImporter).flat(),
+      ...Object.values(logByImporter).flat(),
+      ...Object.values(smoothedByImporter).flat()
+    ];
+const chartEndDate = Math.max(...allForecastDates.map(d => new Date(d.date).getTime()));
+
+
     const series = [];
 
     allImporters.forEach(imp => {
@@ -637,7 +654,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           x:new Date(row.date).getTime(),
           y:parseFloat(row.actual)
       })),
-       color: seriesName.includes('(Actual)') ? stringToColor(imp) : '#ffffff00',
+       color: stringToColor(imp),
       });
 
 
@@ -660,8 +677,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     series.push({
       name: `${imp} (Forecast)`,
       data: forecastData,
-      color: seriesName.includes('(Actual)') ? stringToColor(imp) : '#ffffff00',
+      color: stringToColor(imp),
       dashStyle: 'dash',
+      showInLegend: false 
     });
   }
 
@@ -684,7 +702,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       series.push({
         name: `${imp} (Log Forecast)`,
         data: forecastData,
-        color: seriesName.includes('(Actual)') ? stringToColor(imp) : '#ffffff00',
+        color: stringToColor(imp),
+        showInLegend: false 
       });
  }
   else if(smoothedByImporter[imp]){
@@ -706,7 +725,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         series.push({
         name: `${imp} (Smoothed Forecast)`,
         data: forecastData,
-        color: seriesName.includes('(Actual)') ? stringToColor(imp) : '#ffffff00',
+        color: stringToColor(imp),
+        showInLegend: false 
       });
   }
 }); 
@@ -729,31 +749,50 @@ document.addEventListener('DOMContentLoaded', async () => {
           dashArray: series.map(s => s.name.includes('Actual') ? 0 : 5)
         },
 
-        annotations: {
-          xaxis: [
-            {
-              x: new Date('2023-07-01').getTime(),
-              strokeDashArray: 4,
-              borderColor:  '#F59E0B',
-              label:{
-                style:{
-                  color: '#fff',
-                  background:  '#F59E0B'
-                },
-                //text: 'Forecast Start'
-              }
-            }
-            
-          ]
+      annotations: {
+  xaxis: [
+    {
+      
+      x: forecastStartDate - (365 * 24 * 60 * 60 * 1000),
+      strokeDashArray: 4,
+      borderColor: '#F59E0B',
+      label: {
+        text: 'Forecast Start',
+        orientation: 'horizontal',
+        offsetY: -10,
+        style: {
+          color: '#fff',
+          background: '#F59E0B',
+          fontWeight: 600,
         },
+      },
+    },
+    {
+      
+      x: forecastStartDate - (365 * 24 * 60 * 60 * 1000),
+      x2: chartEndDate,
+      fillColor: '#FEF3C7',
+      opacity: 0.2,
+      borderColor: 'transparent',
+      label: {
+        //text: 'Forecast Period',
+        style: {
+          background: '#FEF3C7',
+          color: '#92400E',
+          fontWeight: 600,
+        },
+      },
+    }
+  ]
+},
         tooltip:{
           shared: true,
           intersect: false,
-          x: {format: 'yyyy'}
+          x: {format: 'yyyy'},
           y:{
             formatter : function(val){
-              if(val >= 1e9) rturn (val/1e9).toFixed(2) + 'B';
-              if(val >= 1e6) rturn (val/1e6).toFixed(2) + 'M';
+              if(val >= 1e9) return (val/1e9).toFixed(2) + 'B';
+              if(val >= 1e6) return (val/1e6).toFixed(2) + 'M';
               return Number(val).toFixed(0);
             }
           }
@@ -798,7 +837,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     const chartForecastDemand = new ApexCharts(document.querySelector("#chart-x"), options);
     chartForecastDemand.render(); 
- });  
+ });
 </script>
 
 <!--Home-->
@@ -846,21 +885,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!--Vendor Home-->
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-document.addEventListener('vendor-chart-data', function(event) => {
-   console.log('Chart data received:', event.detail.data);
-  const chartData = event.detail.data;
+document.addEventListener("DOMContentLoaded", async() => {
+  const response = await fetch('/api/v1/outgoing-order/vendor-chart');
+  const orders = await response.json();
+
+  const chartData = orders.data.map(order => ({
+    x: order.created_at,
+    y: order.quantity,
+  }));
+
 var options = {
           series: [{
-            name: 'Orders',
+            name: 'Quantity',
             data: chartData
         }],
           chart: {
           height: '100%',
           type: 'line',
-          sparkline: {
-            enabled: true
-          },
           toolbar: {
             enabled: false
           },
@@ -872,7 +913,7 @@ var options = {
           enabled: false
         },
         stroke: {
-          curve: 'straight',
+          curve: 'smooth',
           width: 1,
         },
         tooltip: {
@@ -881,8 +922,15 @@ var options = {
         markers: {
           size: 0,
         },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+
         xaxis: {
-          type: 'category',
+          type: 'datetime',
           title: {
             text: 'Date'
           }
@@ -892,14 +940,9 @@ var options = {
             text: 'Coffee Quantity'
           }
         },
-        title: {
-          text: 'Order Activity',
-          align:'left'
-        }
         };
 
         var chartV = new ApexCharts(document.querySelector("#chart-v"), options);
         chartV.render();
-});
 });
 </script>

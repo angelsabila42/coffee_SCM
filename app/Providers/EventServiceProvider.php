@@ -8,6 +8,10 @@ use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Events\MessageSent;
+use App\Listeners\ImportAnnualCoffeeSalesOnLogin;
+use App\Listeners\ImportDemandQuantitiesOnLogin;
+use App\Listeners\ImporterDemandImportOnLogin;
+use App\Listeners\ImportVendorClusterOnLogin;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,7 +22,11 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Login::class => [
-            LogSuccessfulLogin::class
+            LogSuccessfulLogin::class,
+            ImportAnnualCoffeeSalesOnLogin::class,
+            ImporterDemandImportOnLogin::class,
+            ImportDemandQuantitiesOnLogin::class,
+            ImportVendorClusterOnLogin::class,
         ],
         Failed::class => [
             LogFailedLogin::class

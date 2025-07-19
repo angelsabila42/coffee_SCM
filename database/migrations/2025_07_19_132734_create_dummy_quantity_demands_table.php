@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quantitiy_demands', function (Blueprint $table) {
+        Schema::create('dummy_quantity_demands', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId('importer_model_id')->constrained()->onDelete('cascade'); 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('quantitiy_demands');
+        Schema::dropIfExists('dummy_quantity_demands');
     }
 };

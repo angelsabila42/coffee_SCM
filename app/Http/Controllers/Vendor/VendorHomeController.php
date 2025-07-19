@@ -7,10 +7,12 @@ use App\Models\Invoice;
 use App\Models\OutgoingOrder;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class VendorHomeController extends Controller
 {
+    
     public function countOrders(){
         $vendorID = 1; //testing purposes
         $count = OutgoingOrder::where('vendor_id', $vendorID)
@@ -46,8 +48,7 @@ class VendorHomeController extends Controller
         return $count;
 
     }
-    public function index(){
-        
+    public function index(){     
         return view('Dashboards.vendor-home',[
             'orders' => $this->countOrders(),
             'delivered' => $this->countDeliveredBatches(),

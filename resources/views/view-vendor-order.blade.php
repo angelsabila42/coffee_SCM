@@ -24,7 +24,7 @@
          data-show-form= "{{old('declineReason')? 'true' : 'false' }}" 
          x-init= "showForm = $el.dataset.showForm ==='true'; init();">
         @livewire('vendor-order-details', ['orderId' => $order->id])
-            <div class="d-flex justify-content-end">
+            <div class="mt-5 d-flex justify-content-start">
                 @include('partials.vendor-order-decline-form')
             </div>
         </div>

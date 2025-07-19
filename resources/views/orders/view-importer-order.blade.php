@@ -33,7 +33,7 @@
                 <button type= "button" class="btn btn-light btn-fill mr-2" onclick="window.location= '{{route('order.download-in', $order->id)}}' " >Download</button>
             </div>
         </div>
-            <div class="d-flex justify-content-start">
+            <div class="mt-5 d-flex justify-content-start">
                 @include('partials.admin-order-decline-form')
             </div>
         </div>

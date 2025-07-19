@@ -2,7 +2,7 @@
     <div class = "custom-modal">
         <div class="container">
             <div class="d-flex justify-content-between">
-                <h3 class="mt-3">Confirm Dispatch</h3>
+                <h3 class="mt-3 text-brown">Confirm Dispatch</h3>
                 <span @@click="showModal = false"><i class="fa-solid fa-xmark cur"></i></span>
             </div>
                                    

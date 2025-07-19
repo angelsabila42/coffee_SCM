@@ -29,7 +29,6 @@ print(df.columns)
 
 #Extracting features for clustering
 features = ['Robusta_(60kg_Bags)', 'Arabica_(60kg_Bags)', 'AvgPricePerKg_UGX', 'YearsActive', 'MarketShare_pct', 'Arabica_pct', 'OrganicCertified']
-
 X = df[features]
 
 #---Using K-Means---
