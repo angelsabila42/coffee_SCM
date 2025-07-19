@@ -58,7 +58,7 @@
                                     <form action="{{ route('deliveries.destroy', $delivery->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>
+<button type="submit" class="btn btn-danger btn-sm bg-danger" title="Delete"><i class="fa fa-trash" style="color: white;"></i></button>
                                     </form>
                                 </td>
                             </tr>

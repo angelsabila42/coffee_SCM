@@ -10,6 +10,15 @@ class Delivery extends Model
     use HasFactory;
 
     /**
+     * Get the transporter for this delivery.
+     */
+    public function transporter()
+    {
+        return $this->belongsTo(Transporter::class);
+    }
+    use HasFactory;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -24,11 +33,11 @@ class Delivery extends Model
         'coffee_grade',
         'status',
         'assigned_driver',
-        'eta',
         'date_ordered',
         'order_reference',
         'confirmed_by_admin',
         'admin_confirmed_at',
+        'transporter_id',
     ];
 
       public function notification(){
