@@ -40,7 +40,7 @@
                                         </thead>
                                         <tbody>
                                         @foreach ($deliveries as $delivery)
-                                           <tr>
+                                           <tr onclick = "window.location='{{route('delivery-details', $delivery->id)}}'" style="cursor: pointer">
                                                 <td>{{ $delivery->reportID }}</td>
                                                 <td>{{ $delivery->title }}</td>
                                                 <td>{{ $delivery->start_period }}</td>

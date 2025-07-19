@@ -39,9 +39,10 @@ class AdminOrderDetails extends Component
         // $this->order->save();
 
         //notify importer
-        if($this->order->importer){
-           $this->order->importer->notify(new OrderAcceptedNotification($this->order));
-        }
+if ($this->order->importerModel) {
+    $this->order->importerModel->notify(new OrderAcceptedNotification($this->order));
+}
+
     }
     public function declineOrder()
     {
@@ -49,9 +50,10 @@ class AdminOrderDetails extends Component
      $this->order->save();
      
      // Notify the importer about the declined order
-     if($this->order->importer){
-           $this->order->importer->notify(new OrderDeclinedNotification($this->order));
-        }
+     if ($this->order->importerModel) {
+    $this->order->importerModel->notify(new OrderDeclinedNotification($this->order));
+}
+
     }
     public function render()
     {

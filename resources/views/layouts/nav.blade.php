@@ -57,6 +57,7 @@
             </div>
         </div>
     </div>
+
     <!-- Notifications Modal -->
     <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -91,6 +92,7 @@
             </div>
         </div>
     </div>
+
     <!-- Notification Settings Modal -->
     <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -119,8 +121,9 @@
             </form>
         </div>
     </div>
+
     <!-- Profile Modal -->
-    {{-- <div class="modal fade" id="userProfileModal" tabindex="-1" aria-labelledby="userProfileLabel" aria-hidden="true">
+    <div class="modal fade" id="userProfileModal" tabindex="-1" aria-labelledby="userProfileLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center">
                 <div class="modal-body">
@@ -145,14 +148,15 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 </nav>
+
 <!-- JavaScript to mark notifications as read -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const notificationModal = document.getElementById('notificationsModal');
 
-        notificationModal.addEventListener('show.bs.modal', function () {
+        notificationModal.addEventListener('shown.bs.modal', function () {
             fetch('/notifications/mark-as-read', {
                 method: 'POST',
                 headers: {
@@ -166,6 +170,8 @@
                     if (badge) {
                         badge.remove();
                     }
+                } else {
+                    console.error('Failed to mark notifications as read');
                 }
             });
         });

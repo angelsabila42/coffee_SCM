@@ -82,8 +82,15 @@ class ProfileController extends Controller
             $path = $file->store('profile_pictures', 'public');
             $user->profile_picture = $path;
         }
-        $user->save();
-        return back()->with('success', 'profile updated successfully.');
+        if($user->save()){
+    session()->flash('success', 'Profile updated successfully.');
+    return back();
+} else {
+    session()->flash('error', 'Failed to update profile. Please try again.');
+    return back();
+}
+
+        
     }
     public function changePassword(Request $request){
         $request->validate([
