@@ -8,7 +8,7 @@
                     
                    {{-- Dynamically get total staff count --}}
                     <p class=" fw-bold">Orders sent</p>
-                    <h4>{{ $ordersSent }}</h4> 
+                    <h3>{{ $ordersSent }}</h3> 
                 </div>
                 <i class="fa-solid fa-bag-shopping stat-icon bg-partner-soft"> </i>
            
@@ -39,7 +39,7 @@
                         <h3>{{ $inTransit }}</h3>
                           
                    </div>
-                   <i class="fa-solid fa-truck stat-icon bg-info-soft text-primary"></i>
+                   <i class="fa-solid fa-truck stat-icon bg-info-soft"></i>
                
                 </div>
             </div>
@@ -59,7 +59,7 @@
             </div>
         </div>
     </div>
-<div class="modern-card">
+<div >
 
                     <div class="row">
                         <div class="col-md-7">
@@ -95,12 +95,12 @@
                             </script>
 
                         <div class="col-md-5 mb-5" >    
-                            <livewire:importer-recent-logs/>           
+                            <livewire:recent-activity/>           
                         </div>
                     </div>
 
 {{-- delivery table     --}}
-<div>
+<div class="modern-card">
    <div class="col-md-12 mt-5">
         <div class="d-flex justify justify-content-between align-items-center">
             <!--Search bar-->
@@ -152,16 +152,13 @@
                              else $class = 'bg-success';
                         @endphp
 
-                    <tr >
-                        <td onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->orderID }}</td>
-                        <td onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->coffeeType }}</td>
-                        <td onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->quantity }}kg</td>
-                        <td class="{{ $class }} rounded-pill text-white badge w-100" onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->status }}</td>
-
-
-
-                        <td onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->created_at }}</td>
-                        <td onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'" style="cursor: pointer;">{{ $order->updated_at }}</td>
+                    <tr {{--onclick="window.location.href='{{ route('ImporterOrders.show', $order->id) }}'"--}} style="cursor: pointer;">
+                        <td>{{ $order->orderID }}</td>
+                        <td>{{ $order->coffeeType }}</td>
+                        <td>{{ $order->quantity }}kg</td>
+                        <td class="{{ $class }} rounded-pill text-white badge w-100">{{ $order->status }}</td>
+                        <td>{{ $order->created_at }}</td>
+                        <td >{{ $order->updated_at }}</td>
                         <td>
                             <form action="{{ route('orders.destroy', $order->id )}} " method="POST" style="display: none;" id="delete-form-{{ $order->id }}">
                             @csrf

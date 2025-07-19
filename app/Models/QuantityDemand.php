@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class QuantitiyDemand extends Model
+class QuantityDemand extends Model
 {
     protected $fillable = ['importer_model_id','year','quantity_(60kg_bags)','yearsAsCustomer','orderFreqPerYear','avgOrderSize_kg'];
 

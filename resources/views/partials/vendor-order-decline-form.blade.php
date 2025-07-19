@@ -2,9 +2,10 @@
 <form x-show= "showForm" x-cloak x-transition method="POST" action="{{route('vendor.order.store', ['order'=>$order->id])}}">
 @csrf
 <div class="form-group">
-  <label for="declineReason">Reason for Decline:</label>
+  <label for="declineReason" class="font-weight-bold">Reason for Decline:</label>
   <textarea
-    rows="10"
+    rows="180"
+    cols="200"
     id="declineReason" 
     name="declineReason" 
     required
@@ -14,6 +15,6 @@
     @error('declineReason') <span class="error">{{ $message }}</span> @enderror
  </div>
 
-  <button type="submit" class="btn mt-3">Submit</button>
+  <button type="submit" class="btn mt-3 save">Submit</button>
 
 </form>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\StoreOutgoingOrderRequest;
+use App\Http\Resources\V1\OutgoingOrderChartResource;
 use App\Http\Resources\V1\OutgoingOrderStatusDropDownResource;
 use App\Models\OutgoingOrder;
 use Illuminate\Http\Request;
@@ -70,5 +71,10 @@ class OutgoingOrderController extends Controller
 
     public function dropdown(){
          return OutgoingOrderStatusDropDownResource::collection(OutgoingOrder::select('id', 'status')->get());
+    }
+
+    public function displayChartOrders(){
+             $order = OutgoingOrder::with('vendor')->get();
+        return OutgoingOrderChartResource::collection($order);
     }
 }

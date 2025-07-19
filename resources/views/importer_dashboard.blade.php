@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('page-title', 'Importer Dashboard')
+@section('page-title', 'Dashboard')
 @section('sidebar-items')
 @include('layouts.sidebar-items.importer')
 @endsection

@@ -21,7 +21,7 @@ class IncomingOrderFactory extends Factory
             'quantity'=> fake()->numberBetween(100,1000),
             'status'=> fake()->randomElement(['Pending','Confirmed','Delivered','Requested','Declined']),
             'deadline'=> fake()->dateTimeBetween('now','+2 weeks'),
-            'grade'=> fake()->randomElement(['A','B', 'C', 'screen 8']),
+            'grade'=> fake()->randomElement(['A','B', 'C']),
             'coffeeType'=> fake()->randomElement(['Arabica','Robusta']),
             'destination'=> fake()->country(),
             'importer_model_id'=> importerModel::inRandomOrder()->first()->id,

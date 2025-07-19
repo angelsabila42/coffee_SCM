@@ -1,5 +1,3 @@
-@php dd(isset($deliveryStatusData), $deliveryStatusData ?? 'Not passed'); @endphp
-
 @extends('layouts.app')
 @section('page-title', 'Analytics')
 @section('sidebar-items')
@@ -36,6 +34,10 @@
             </div>
          </div>
    </div>
+
+   <div >
+      @include('partials.cluster-importer-info')
+   </div>
          <div class="row">
             <div class="col-md-7">
                <div class="card ">
@@ -56,9 +58,10 @@
                         <div class="card-body ">
                            <div id="chart-r" ></div>
                         </div>
+                        
                   </div>
                </div>
-         </div>
+         </div>                               
                      <div class="row">
                <div class="col-md-12">
                   <div class="card ">
@@ -71,7 +74,11 @@
                         </div>
                   </div>
                </div>
-            </div> 
+            </div>
+
+   <div >
+      @include('partials.cluster-vendor-info')
+   </div> 
          <div class="row">
             <div class="col-md-5">
                <div class="card ">

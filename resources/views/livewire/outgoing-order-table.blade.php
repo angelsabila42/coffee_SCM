@@ -26,7 +26,7 @@
             </div>
 
                         <div class="card card-plain table-plain-bg">
-                            <div class="card-body table-full-width table-responsive">
+                            <div class="card-body table-full-width table-responsive" wire:poll.5s>
                                 <div x-data= "confirmDeleteModal">
                                     <table class="table table-hover" >
                                         <thead class="bg-light">
@@ -42,10 +42,10 @@
                                         </thead>
                                         <tbody>
                                         @foreach($orders as $order)
-                                            <tr wire:key= "{{$order->id}}" onclick="window.location= '{{route('orders.view-vendor-order', $order->id)}}' " class="cur">
+                                            <tr wire:key="order-{{ $order->id }}-{{ $order->updated_at }}" onclick="window.location= '{{route('orders.view-vendor-order', $order->id)}}' " class="cur">
                                                 <td class=""> {{$order->id}} </td>
                                                 <td class=""> {{$order->orderID}} </td>
-                                                <td class=""> {{$order->vendor ? $order->vendor->name : 'No vendor'}} </td>
+                                                <td class=""> {{$order->vendorProfile ? $order->vendorProfile->name : 'No vendor'}} </td>
                                                 <td class=""> {{$order->coffeeType}} </td>
                                                 <td class=""> {{$order->quantity}} </td>
                                                 <td x-data= "{selectedStatus: '{{$order->status}}',

@@ -10,25 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class VendorOrder extends BaseOutgoingOrderTable
 {
-    public $chartData = [];
-    public function mount(){
-        $this->vendor = Auth::user()?->vendor;
-        if($this->vendor){
-            $this->chartData = OutgoingOrder::where('vendor_id', $this->vendor->id)
-                 ->orderBy('created_at')
-                 ->get()
-                 ->map(function ($order){
-                    return[
-                        'x' => $order->created_at->format('Y-m-d'),
-                        'y' => $order->quantity ?? 0,
-                    ];
-                 })
-                 ->toArray();
-        }
-        $this->dispatchBrowserEvent('vendor-chart-data',[
-            'data'=> $this->chartData,
-        ]);
-    }
 
     public function getPageName(){
     return 'vendor-orders';
