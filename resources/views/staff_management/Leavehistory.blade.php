@@ -14,11 +14,11 @@
 
     <div class="card-header d-flex justify-content-between align-items-center bg-white">
         <h4 class="mb-0">Leave History</h4>
-       {{-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addLeaveRecordModal">
+     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addLeaveRecordModal">
             + New
-        </button> --}}
+        </button>
     </div>
-    <livewire:leave-history />
+   {{-- <livewire:leave-history /> --}}
     <div class="card-body table-full-width table-responsive">
         <table class="table table-sm table-hover mb-0 align-middle" style="font-size: 14px; line-height: 1.2;">
             <thead>
