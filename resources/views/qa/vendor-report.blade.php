@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section('sidebar-items')
-@include('layouts.sidebar-items.admin')
+@include('layouts.sidebar-items.vendor')
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -17,22 +17,33 @@
                     <!-- Report Header -->
                     <div class="report-header mb-5">
                         <div class="row align-items-center">
-                            <div class="col-md-6">
-                                <h3 class="text-primary mb-3">Report Details</h3>
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <p class="text-muted mb-1">Report ID</p>
-                                        <h5 class="fw-bold">2</h5>
-                                    </div>
-                                    <div>
-                                        <p class="text-muted mb-1">Date created</p>
-                                        <h5 class="fw-bold">3</h5>
-                                    </div>
-                                                                        <div>
-                                        <p class="text-muted mb-1">Actions</p>
-                                        <h5 class="fw-bold">3</h5>
-                                    </div>
-                                </div>
+  <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ReportID</th>
+                            <th>Date Created</th>
+                            <th>status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($reports as $report)
+                        <tr onclick="window.location='{{ route('qa.vendor.report', $record->id) }}'" style="cursor: pointer;">
+                            <td>{{ $report->reportID }}</td>
+                            <td>{{ $report->date ? $report->date->format('Y-m-d') : 'N/A' }}</td>
+                            <td> {{ $report->status }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="text-center">No QA reports found.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+
+                <div class="mt-4">
+                    {{ $reports->links() }}
+                </div>
+            </div>
                             </div>
                             <div class="col-md-6 text-md-end">
                                 <span class="badge-lg  text-white px-4 py-2 rounded-pill">

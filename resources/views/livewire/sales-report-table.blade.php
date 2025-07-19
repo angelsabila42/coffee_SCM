@@ -42,7 +42,7 @@
                                         </thead>
                                         <tbody>
                                         @foreach($sales as $sale)
-                                            <tr wire:key= "{{$sale->id}}" >
+                                            <tr onclick = "window.location='{{route('sales-details', $sale->id)}}'" style="cursor: pointer" >
                                                 <td>{{ $sale->reportID }}</td>
                                                 <td>{{ $sale->title }}</td>
                                                 <td>{{ $sale->start_period }}</td>

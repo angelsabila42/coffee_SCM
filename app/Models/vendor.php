@@ -20,6 +20,10 @@ class Vendor extends Model
         'region',
         'street',
         'city',
+        'Bank_account',
+        'Account_holder',
+        'Bank_name',
+        'region'
         //'confirm password',
     ];
 
