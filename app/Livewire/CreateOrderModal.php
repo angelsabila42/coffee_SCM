@@ -72,7 +72,7 @@ class CreateOrderModal extends Component
 
         session()->flash('success','Order Sent!');
 
-        $this->redirect('/home/orders');
+        $this->redirect('/admin-home/orders');
 
         ActivityLogger::log(
             title: 'Created new Order',

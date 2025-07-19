@@ -5,6 +5,10 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
+        <h1 class="text-2xl font-semibold text-center text-gray-800 dark:text-white my-6">
+            Login 
+        </h1>
+
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
@@ -33,35 +37,30 @@
         </div>
 
         
+<!-- Links -->
+<div class="flex flex-col gap-4 mt-6">
+    <div class="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
+        @if (Route::has('password.request'))
+            <a href="{{ route('password.request') }}"
+               class="hover:text-gray-900 dark:hover:text-gray-100 transition">
+                {{ __('Forgot your password?') }}
+            </a>
+        @endif
 
-            <div style="display:  flex; justify-content:space-between; align-items:flex-end;gap:1rem">
-               
-               <div class="" >
-                 @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-            
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('register') }}"
-             style="display:  flex; justify-content:flex-end; align-items:flex-end; margin-top:5px" >
-                    {{ __('do not have an account?') }}
-                </a>
-            
-               </div>
-               <div>
-                  <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+        <a href="{{ route('register') }}"
+           class="hover:text-gray-900 dark:hover:text-gray-100 transition">
+            {{ __('Don’t have an account?') }}
+        </a>
+    </div>
 
-               </div>
+    <!-- login button -->
+    <div>
+        <x-primary-button class="w-full justify-center text-center">
+            {{ __('Log in') }}
+        </x-primary-button>
+    </div>
 
-          
-            </div>
-           
-           
-            
-            
+</div>
         
     </form>
 

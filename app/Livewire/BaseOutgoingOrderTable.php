@@ -92,7 +92,6 @@ abstract class BaseOutgoingOrderTable extends Component
        // $this->dispatch('show-toast', message: 'Record Deleted');   
 
 }
-   
    protected function filter(){
     $model = $this->getModelName();
 
@@ -108,7 +107,6 @@ abstract class BaseOutgoingOrderTable extends Component
             ->when($this->startDate !== '', fn($q) => $q->where('created_at', '>=', $this->startDate))
             ->when($this->endDate !== '', fn($q) => $q->where('created_at', '<=', $this->endDate))
             ->paginate(10, pageName: $this->getPageName());
-
 
    }
 

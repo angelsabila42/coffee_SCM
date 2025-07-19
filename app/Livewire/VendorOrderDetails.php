@@ -19,8 +19,9 @@ class VendorOrderDetails extends Component
     }
     public function acceptOrder(){
         //update status
-        $this->order->status = 'confirmed';
+        $this->order->status = 'Confirmed';
         $this->order->save();
+        $this->order->refresh();
          
     // $this->order->vendor->notify(new OrderAccepted($this->order));
     //notify admin
@@ -30,7 +31,8 @@ class VendorOrderDetails extends Component
     }
         // change admin view status to pending
         // $this->order->status = 'pending';
-        // $this->order->save();    
+        // $this->order->save(); 
+        $this->dispatch('vendorOrderStatusUpdated');   
     }
     public function declineOrder()
     {
@@ -48,8 +50,9 @@ class VendorOrderDetails extends Component
     }
     public function confirmDispatch()
     {
-        $this->order->status = 'dispatched';
+        $this->order->status = 'Dispatched';
         $this->order->save();
+        $this->order->refresh();
 
         //send a notification to admin
         //   $this->order->vendor->notify(new OrderDispatched($this->order));
@@ -64,6 +67,7 @@ class VendorOrderDetails extends Component
          $inventory->last_updated = now();
          $inventory->save();
         }
+        $this->dispatch('vendorOrderStatusUpdated');
     }
     public function render()
     {

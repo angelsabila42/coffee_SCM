@@ -105,6 +105,7 @@ button[type="submit"] {
   margin: 20px auto; 
 }
 
+
 /* modal */
 .overlay {
   position: fixed;
@@ -201,10 +202,14 @@ li{
     z-index: 1000;
     top:0;
     left:0;
-    
+    overflow-y:hidden;
     overflow-x: hidden;
     position: fixed;
     height: 100vh;
+}
+
+.text-brown{
+  color: #4b2e2e;
 }
 
 
@@ -361,6 +366,10 @@ a.sidebar-link:hover{
 /*Flash*/
 .bg-green-light{
   background-color: #f0fdf4;
+}
+
+.bg-orange{
+  background-color: #f59e0b;
 }
 
 .card-row-custom .custom-card {

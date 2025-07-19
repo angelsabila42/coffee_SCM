@@ -15,7 +15,7 @@
         }
 
         .welcome-section {
-            background-image: url('/images/bean-bg.jpg'); /* You can change this to any URL or local image path */
+            background-image: url('/images/bean-bg.jpg'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -25,7 +25,7 @@
         }
 
         .overlay {
-            background-color: rgba(0, 0, 0, 0.5); /* Dark semi-transparent overlay */
+            background-color: rgba(0, 0, 0, 0.5); 
             position: absolute;
             top: 0;
             left: 0;
@@ -46,37 +46,36 @@
         }
 
         .btn-welcome {
-            background-color: #ffffff;
-            color: #007bff;
-            font-weight: 500;
-            border-radius: 30px;
+            color: #ffffff;
+            border: solid 1px white; 
             padding: 0.75rem 2rem;
-            border: none;
             transition: 0.3s;
         }
 
         .btn-welcome:hover {
-            background-color: #f0f8ff;
-            color: #0056b3;
+            background-color: #6F4E37;
+            color: #f0f8ff;
         }
     </style>
 </head>
 <body>
- @include('layouts.nav')
+
     <div class="welcome-section">
         <div class="overlay"></div>
         <div class="content">
-            <h1 class="display-3 fw-bold card">Welcome to Globalbean connect</h1>
-            <div class="lead mb-4 text-white card card-title bg-primary " style="max-width: 1500px">Your one-stop solution for coffee supply chain management
+            <h2 class="display-4 fw-bold " style=" font-family: 'Playfair Display', serif;">Welcome </h2>
+            <h2 class="display-4 fw-bold" style=" font-family: 'Playfair Display', serif;">to Globalbean connect</h2>
+            <div class="lead mb-4 text-white " style="max-width: 1500px">Your one-stop solution for coffee supply chain management.
                 
             We combine the love of coffee with the power of technology.
             Our intelligent supply platform connects coffee producers, suppliers, and buyers in one seamless ecosystem.
-            With transparent sourcing and reliable delivery, we’re redefining how coffee moves.
+            With transparent sourcing and reliable delivery, we're redefining how coffee moves.
+            <p class="fs-5 fw-bold mt-3">Join Our Network Today</p>
              </div>
-               <div> <span class="fs-5 fw-bold">follow the links below to become an </span>
-                <a href="{{ route('vendor') }}" class="btn btn-welcome">Vendor</a>
-                <a href="{{ route('importer') }}" class="btn btn-welcome">importer</a>
-                <a href="{{ route('transporter') }}" class="btn btn-welcome">transporter</a>
+            <div class="fs-5 fw-bold">
+                <span class="fs-5 fw-bold"><a href="{{ route('vendor') }}" class="btn btn-welcome">Vendor</a></span>
+                <span class="fs-5 fw-bold"><a href="{{ route('importer') }}" class="btn btn-welcome">Importer</a></span>
+                <span class="fs-5 fw-bold"><a href="{{ route('transporter') }}" class="btn btn-welcome">Transporter</a></span>
             </div>
             
         </div>

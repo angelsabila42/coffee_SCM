@@ -19,8 +19,9 @@ class AdminOrderDetails extends Component
     }
     public function acceptOrder(){
         //update status
-        $this->order->status = 'confirmed';
+        $this->order->status = 'Confirmed';
         $this->order->save();
+        $this->order->refresh();
 
         //update inventory
         $inventory = inventory::where('coffee_type', $this->order->coffeeType)
@@ -47,6 +48,7 @@ class AdminOrderDetails extends Component
     {
      $this->order->status = 'Declined';
      $this->order->save();
+    $this->order->refresh();
      
      // Notify the importer about the declined order
      if($this->order->importer){
@@ -55,6 +57,7 @@ class AdminOrderDetails extends Component
     }
     public function render()
     {
+        $this->order->refresh(); 
         return view('livewire.admin-order-details');
     }
 }

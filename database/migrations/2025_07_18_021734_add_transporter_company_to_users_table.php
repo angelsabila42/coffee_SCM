@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             if (!Schema::hasColumn('users', 'transporter_company')) {
-                $table->string('transporter_company')->nullable()->after('address');
+                $table->string('transporter_company')->nullable()->after('email');
             }
             if (!Schema::hasColumn('users', 'transporter_company_id')) {
                 $table->unsignedBigInteger('transporter_company_id')->nullable()->after('transporter_company');

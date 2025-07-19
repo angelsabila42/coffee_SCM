@@ -627,6 +627,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     const logByImporter = groupBy(forecastLog, 'Importer');
     const smoothedByImporter = groupBy(forecastSmooth,'Importer');
 
+    const allFirstForecastDates = [
+      ...Object.values(goodByImporter).flat(),
+      ...Object.values(logByImporter).flat(),
+      ...Object.values(smoothedByImporter).flat()
+          ]
+    .map(entry => new Date(entry.date).getTime());
+
+     const forecastStartDate = Math.min(...allFirstForecastDates);
+
+    const allForecastDates = [
+      ...Object.values(goodByImporter).flat(),
+      ...Object.values(logByImporter).flat(),
+      ...Object.values(smoothedByImporter).flat()
+    ];
+const chartEndDate = Math.max(...allForecastDates.map(d => new Date(d.date).getTime()));
+
+
     const series = [];
 
     allImporters.forEach(imp => {
@@ -732,23 +749,42 @@ document.addEventListener('DOMContentLoaded', async () => {
           dashArray: series.map(s => s.name.includes('Actual') ? 0 : 5)
         },
 
-        annotations: {
-          xaxis: [
-            {
-              x: new Date('2023-07-01').getTime(),
-              strokeDashArray: 4,
-              borderColor:  '#F59E0B',
-              label:{
-                style:{
-                  color: '#fff',
-                  background:  '#F59E0B'
-                },
-                //text: 'Forecast Start'
-              }
-            }
-            
-          ]
+      annotations: {
+  xaxis: [
+    {
+      
+      x: forecastStartDate - (365 * 24 * 60 * 60 * 1000),
+      strokeDashArray: 4,
+      borderColor: '#F59E0B',
+      label: {
+        text: 'Forecast Start',
+        orientation: 'horizontal',
+        offsetY: -10,
+        style: {
+          color: '#fff',
+          background: '#F59E0B',
+          fontWeight: 600,
         },
+      },
+    },
+    {
+      
+      x: forecastStartDate - (365 * 24 * 60 * 60 * 1000),
+      x2: chartEndDate,
+      fillColor: '#FEF3C7',
+      opacity: 0.2,
+      borderColor: 'transparent',
+      label: {
+        //text: 'Forecast Period',
+        style: {
+          background: '#FEF3C7',
+          color: '#92400E',
+          fontWeight: 600,
+        },
+      },
+    }
+  ]
+},
         tooltip:{
           shared: true,
           intersect: false,
