@@ -123,7 +123,7 @@
     </div>
 
     <!-- Profile Modal -->
-    <div class="modal fade" id="userProfileModal" tabindex="-1" aria-labelledby="userProfileLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="userProfileModal" tabindex="-1" aria-labelledby="userProfileLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-center">
                 <div class="modal-body">
@@ -148,7 +148,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </nav>
 
 <!-- JavaScript to mark notifications as read -->
