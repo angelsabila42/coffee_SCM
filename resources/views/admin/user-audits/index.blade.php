@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'User Audits')
+
 
 @section('sidebar-items')
     @include('layouts.sidebar-items.admin')
@@ -9,23 +9,19 @@
 @section('content')
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0" style="color: #8B4513; font-weight: 700;">User Audit Logs</h2>
-        <div>
-            <button class="btn" onclick="window.location.reload()" style="background-color: #8B4513; color: white; border-radius: 20px;">
-                <i class="bx bx-refresh"></i> Refresh
-            </button>
-        </div>
+        <h2 class="mb-0" style=" font-weight: 700;">User Audit Logs</h2>
+       
     </div>
 
     <!-- Stats Cards -->
     <div class="row mb-4">
         <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #D2B48C, #DEB887); border-radius: 10px;">
+            <div class="card text-black" style=" border-radius: 10px;">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h4 class="mb-0" style="color: #8B4513;">{{ $stats['total_logins'] }}</h4>
-                            <p class="mb-0" style="color: #8B4513;">Total Logins</p>
+                            <h4 class="mb-0" style="color: #0f0c0aff;">{{ $stats['total_logins'] }}</h4>
+                            <p class="mb-0" style="color: #030201ff;">Total Logins</p>
                         </div>
                         <i class="bx bx-log-in" style="font-size: 2.5rem; opacity: 0.7; color: #8B4513;"></i>
                     </div>
@@ -33,40 +29,40 @@
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #F5DEB3, #D2B48C); border-radius: 10px;">
+            <div class="card text-white" style=" border-radius: 10px;">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h4 class="mb-0" style="color: #8B4513;">{{ $stats['total_logouts'] }}</h4>
-                            <p class="mb-0" style="color: #8B4513;">Total Logouts</p>
+                            <h4 class="mb-0" style="color: #150c06ff;">{{ $stats['total_logouts'] }}</h4>
+                            <p class="mb-0" style="color: #070301ff;">Total Logouts</p>
                         </div>
-                        <i class="bx bx-log-out" style="font-size: 2.5rem; opacity: 0.7; color: #8B4513;"></i>
+                        <i class="bx bx-log-out" style="font-size: 2.5rem; opacity: 0.7; color: #22126dff;"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #DEB887, #CD853F); border-radius: 10px;">
+            <div class="card text-white" style=" border-radius: 10px;">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h4 class="mb-0" style="color: #8B4513;">{{ $stats['unique_users'] }}</h4>
-                            <p class="mb-0" style="color: #8B4513;">Unique Users</p>
+                            <h4 class="mb-0" style="color: #120904ff;">{{ $stats['unique_users'] }}</h4>
+                            <p class="mb-0" style="color: #170b02ff;">Unique Users</p>
                         </div>
-                        <i class="bx bx-user" style="font-size: 2.5rem; opacity: 0.7; color: #8B4513;"></i>
+                        <i class="bx bx-user" style="font-size: 2.5rem; opacity: 0.7; color: #8b4513ff;"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #F5F5DC, #F5DEB3); border-radius: 10px;">
+            <div class="card text-white" style=" border-radius: 10px;">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h4 class="mb-0" style="color: #8B4513;">{{ $stats['today_logins'] }}</h4>
-                            <p class="mb-0" style="color: #8B4513;">Today's Logins</p>
+                            <h4 class="mb-0" style="color: #1b0e04ff;">{{ $stats['today_logins'] }}</h4>
+                            <p class="mb-0" style="color: #120902ff;">Today's Logins</p>
                         </div>
-                        <i class="bx bx-calendar-today" style="font-size: 2.5rem; opacity: 0.7; color: #8B4513;"></i>
+                        <i class="fa-solid fa-calendar-days" style="font-size: 2.5rem; opacity: 0.7; color: #187e36ff;"></i>
                     </div>
                 </div>
             </div>
@@ -74,19 +70,19 @@
     </div>
 
     <!-- Filters -->
-    <div class="card mb-4" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); background-color: #F5F5DC;">
-        <div class="card-header" style="background-color: #8B4513; color: white; border-radius: 10px 10px 0 0;">
+    <div class="card mb-4" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); ">
+        <div class="card-header" style=" color: white; border-radius: 10px 10px 0 0;">
             <h5 class="mb-0">
-                <i class="bx bx-filter"></i> Filters
+                <i class="fa-solid fa-filter"></i>
             </h5>
         </div>
-        <div class="card-body" style="background-color: #F5F5DC;">
+        <div class="card-body" >
             <form method="GET" action="{{ route('admin.user-audits.index') }}">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="user_id" style="color: #8B4513; font-weight: 600;">User</label>
-                            <select name="user_id" id="user_id" class="form-control" style="border: 2px solid #DEB887; border-radius: 8px; background-color: #FEFEFE;">
+                            <label for="user_id" style=" font-weight: 600;">User</label>
+                            <select name="user_id" id="user_id" class="form-control" style="border: 2px solid ; border-radius: 8px; background-color: #FEFEFE;">
                                 <option value="">All Users</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
@@ -98,8 +94,8 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="activity_type" style="color: #8B4513; font-weight: 600;">Activity Type</label>
-                            <select name="activity_type" id="activity_type" class="form-control" style="border: 2px solid #DEB887; border-radius: 8px; background-color: #FEFEFE;">
+                            <label for="activity_type"  style= " font-weight: 600;">Activity Type</label>
+                            <select name="activity_type" id="activity_type" class="form-control" style="border: 2px solid; border-radius: 8px; background-color: #FEFEFE;">
                                 <option value="">All Activities</option>
                                 <option value="login" {{ request('activity_type') == 'login' ? 'selected' : '' }}>Login</option>
                                 <option value="logout" {{ request('activity_type') == 'logout' ? 'selected' : '' }}>Logout</option>
@@ -108,24 +104,24 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="date_from" style="color: #8B4513; font-weight: 600;">From Date</label>
-                            <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request('date_from') }}" style="border: 2px solid #DEB887; border-radius: 8px; background-color: #FEFEFE;">
+                            <label for="date_from" style=" font-weight: 600;">From Date</label>
+                            <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request('date_from') }}" style="border: 2px solid ; border-radius: 8px; background-color: #FEFEFE;">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="date_to" style="color: #8B4513; font-weight: 600;">To Date</label>
-                            <input type="date" name="date_to" id="date_to" class="form-control" value="{{ request('date_to') }}" style="border: 2px solid #DEB887; border-radius: 8px; background-color: #FEFEFE;">
+                            <label for="date_to" style="font-weight: 600;">To Date</label>
+                            <input type="date" name="date_to" id="date_to" class="form-control" value="{{ request('date_to') }}" style="border: 2px solid; border-radius: 8px; background-color: #FEFEFE;">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label style="color: #8B4513; font-weight: 600;">&nbsp;</label>
                             <div class="d-flex">
-                                <button type="submit" class="btn mr-2" style="background-color: #8B4513; color: white; border-radius: 20px;">
+                                <button type="submit" class="btn mr-2" style="background-color: #9b9997ff; color: white; border-radius: 20px;">
                                     <i class="bx bx-search"></i> Filter
                                 </button>
-                                <a href="{{ route('admin.user-audits.index') }}" class="btn" style="background-color: #A0522D; color: white; border-radius: 20px;">
+                                <a href="{{ route('admin.user-audits.index') }}" class="btn" style="background-color: #7b7a7aff; color: white; border-radius: 20px;">
                                     <i class="bx bx-refresh"></i> Clear
                                 </a>
                             </div>
@@ -137,24 +133,22 @@
     </div>
 
     <!-- Audit Logs Table -->
-    <div class="card" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); background-color: #F5F5DC;">
-        <div class="card-header" style="background-color: #8B4513; color: white; border-radius: 10px 10px 0 0;">
-            <h5 class="mb-0">
-                <i class="bx bx-list-ul"></i> User Activity Logs
-            </h5>
+    <div class="card" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); ">
+        <div class="card-header" style=" color: black; border-radius: 10px 10px 0 0;">
+           
         </div>
-        <div class="card-body" style="background-color: #F5F5DC;">
+        <div class="card-body" >
             <div class="table-responsive">
                 <table class="table table-striped">
-                    <thead style="background-color: #DEB887;">
+                    <thead >
                         <tr>
-                            <th style="color: #8B4513;">Date & Time</th>
-                            <th style="color: #8B4513;">User</th>
-                            <th style="color: #8B4513;">Role</th>
-                            <th style="color: #8B4513;">Activity</th>
-                            <th style="color: #8B4513;">IP Address</th>
-                            <th style="color: #8B4513;">Session Duration</th>
-                            <th style="color: #8B4513;">Actions</th>
+                            <th >Date & Time</th>
+                            <th >User</th>
+                            <th >Role</th>
+                            <th >Activity</th>
+                            <th >IP Address</th>
+                            <th >Session Duration</th>
+                            <th >Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -169,7 +163,7 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center mr-2" 
-                                         style="width: 32px; height: 32px; background-color: #8B4513; color: white; font-size: 12px;">
+                                         style="width: 32px; height: 32px; color: black; font-size: 12px;">
                                         {{ strtoupper(substr($activity->user->name ?? 'N/A', 0, 2)) }}
                                     </div>
                                     <span style="font-weight: 600;">{{ $activity->user->name ?? 'Unknown User' }}</span>
@@ -247,9 +241,9 @@
             <div class="modal-body" id="activityDetails" style="background-color: #F5F5DC;">
                 <!-- Activity details will be loaded here -->
             </div>
-            <div class="modal-footer" style="background-color: #DEB887;">
+            <div class="modal-footer" >
                 <button type="button" class="btn" data-dismiss="modal" 
-                        style="background-color: #8B4513; color: white; border-radius: 20px;">
+                        style=" color: black; border-radius: 20px;">
                     <i class="bx bx-x"></i> Close
                 </button>
             </div>
