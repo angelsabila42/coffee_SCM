@@ -69,7 +69,8 @@ Route::get('/qa-vendor', function (QA $qa) {
     ]);
 })->name('qa.vendor');
 
-Route::get('/qa-vendor',[QAReportController::class, 'store'])->name('qa.st
+Route::get('/qa-vendor',[QAReportController::class, 'store'])->name('qa.store');
+
 //transporter transactions
 
 Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
