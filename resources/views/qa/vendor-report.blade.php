@@ -8,29 +8,31 @@
     <div class="row">
         <div class="col-12 mb-4">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="fw-bold mb-0">Vendor QA reports</h2>
-                <a onclick="window.history.back()" class="btn btn-primary">Back</a>
+                <h3 class="font-weight-bold mb-0">QA reports</h3>
+                {{-- <a onclick="window.history.back()" class="btn btn-primary">Back</a> --}}
             </div>
         </div>
-        <div class="col-md-12">
-            <div class="card">                
+        <div class="col-md-12 modern-card">
+            <div class="card card-plain table-plain-bg" style="box-shadow: none;">                
                     <!-- Report Header -->
                     <div class="report-header mb-5">
-                        <div class="row align-items-center">
-  <table class="table table-hover">
-                    <thead>
+                        <div>
+                        <div class="card-body table-full-width table-responsive">
+                        <table class="table table-hover">
+                    <thead style="background-color: #F5F5DC;">
                         <tr>
                             <th>ReportID</th>
                             <th>Date Created</th>
-                            <th>status</th>
+                            <th>Overall Impression</th>
                         </tr>
                     </thead>
+                     {{-- onclick="window.location='{{ route('qa.vendor.report')  }}'" style="cursor: pointer;" --}}
                     <tbody>
                         @forelse($reports as $report)
-                        <tr onclick="window.location='{{ route('qa.vendor.report', $record->id) }}'" style="cursor: pointer;">
+                        <tr  onclick="window.location='{{ route('qa.vendor.report',$report->reportID)  }}'" style="cursor: pointer;">
                             <td>{{ $report->reportID }}</td>
                             <td>{{ $report->date ? $report->date->format('Y-m-d') : 'N/A' }}</td>
-                            <td> {{ $report->status }}</td>
+                            <td> {{ $report->overall_impression }}</td>
                         </tr>
                         @empty
                         <tr>
@@ -39,6 +41,8 @@
                         @endforelse
                     </tbody>
                 </table>
+                        </div>
+                    
 
                 <div class="mt-4">
                     {{ $reports->links() }}

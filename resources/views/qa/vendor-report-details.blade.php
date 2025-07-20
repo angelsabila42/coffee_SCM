@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section('sidebar-items')
-@include('layouts.sidebar-items.admin')
+@include('layouts.sidebar-items.vendor')
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -142,10 +142,11 @@
                                 </div>
                             </div>
                         </div>
+                          <button type="button" class="btn btn-primary m-3" onclick="window.history.back()">Back</button>
+                    
                     </div>@if($report->status === 'draft')
                         <div class="d-flex justify-content-end gap-2">
-                            <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route('qa.vendor') }}'">Back</button>
-                        </div>
+                              </div>
                     @endif
                 </div>
             </div>

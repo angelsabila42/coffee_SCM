@@ -74,7 +74,7 @@ abstract class BaseIncomingOrderTable extends Component
 
 
     ActivityLogger::log(
-        title: "Changed status from $oldStatus to $status for order $order->orderID",
+        title: "Changed status from $oldStatus to $status for order $order->id",
         type: 'update'
     );
 
@@ -85,7 +85,6 @@ abstract class BaseIncomingOrderTable extends Component
         'action'=> "Status changed from $oldStatus to $status"
     ]);
    }
-
 
 
       #[On('deleteConfirmed')]

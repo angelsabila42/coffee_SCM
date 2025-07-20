@@ -157,7 +157,7 @@ public function destroy(IncomingOrder $order)
         'email' => 'required|email|unique:importer_models,email',
         'country' => '',
         'address' => '',
-        'phone_number' => 'required|regex:/^07[0-9]{8}$/',
+        'phone_number' => 'required|regex:/[0-9+]$/|max:15',
            'Bank_account' => 'required',
          'Account_holder'=> 'required',
          'Bank_name' => 'required',

@@ -1,10 +1,10 @@
 <div class="container py-4">
-    <div class="card shadow-sm rounded-lg">
+    <div class="modern-card rounded-lg">
         <div class="card-body">
-            <h3 class="mb-4 font-weight-bold" style="color:#222">Reports</h3>
+            {{-- <h3 class="mb-4 font-weight-bold" style="color:#222">Reports</h3> --}}
             <div class="d-flex flex-wrap align-items-center mb-3 justify-content-between">
                 <div class="d-flex flex-wrap align-items-center">
-                    <ul class="nav nav-tabs modern-tabs mb-0" id="reportTabs" role="tablist">
+                    <ul class="nav nav-tabs modern-tabs mb-0" id="reportTabs" role="tablist" style="box-shadow: none; border-bottom: none;">
                         <li class="nav-item">
                             <a href="#" class="nav-link font-weight-bold {{$activeTab === 'Sales' ? 'active' : ''}}" wire:click="setActiveTab('Sales')" style="color:#6c757d;{{ $activeTab === 'Sales' ? 'background:#e5ded7;' : '' }}">Sales</a>
                         </li>
@@ -15,13 +15,13 @@
                             <a href="#" class="nav-link font-weight-bold {{$activeTab === 'QA' ? 'active' : ''}}" wire:click="setActiveTab('QA')" style="color:#6c757d;{{ $activeTab === 'QA' ? 'background:#e5ded7;' : '' }}">QA</a>
                         </li>
                     </ul>
-                    <div class="form ml-3 position-relative">
+                    {{-- <div class="form ml-3 position-relative">
                         <span class="position-absolute" style="left:10px;top:8px;color:#aaa;"><i class="nc-icon nc-zoom-split"></i></span>
                         <input type="text" class="form-control pl-4" placeholder="Search" style="width:200px;">
                     </div>
                     <button class="btn btn-light btn-fill btn-sm d-flex align-items-center ml-2" style="color:#6c757d;">
                         <span class="mr-2"><i class='bx bx-filter'></i></span>Filter
-                    </button>
+                    </button> --}}
                 </div>
              
             </div>

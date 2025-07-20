@@ -22,7 +22,7 @@ class ImporterOrder extends BaseIncomingOrderTable
         $order= IncomingOrder::findOrFail($id);
 
         ActivityLogger::log(
-        title: "Deleted $order->orderID",
+        title: "Deleted $order::orderID",
         type: 'delete'
        );
 

@@ -40,12 +40,15 @@
                     <div class="stat-icon bg-info-soft text-info">
                             <i class="fas fa-dollar-sign"></i>
                         </div>
-                        <span class="badge bg-danger trend-badge">
-                                <i class="fas fa-arrow-down me-1"></i>5.2%
+                        @if($incomeChange !==0)
+                            <span class="badge trend-badge {{$incomeChange > 0 ? 'bg-success' : 'bg-danger'}}">
+                                <i class="fas fa-arrow-{{$incomeChange > 0 ? 'up' : 'down'}} me-1"></i>
+                                {{ abs($incomeChange) }}%
                             </span>
+                        @endif
                     </div>
                     <h6 class="text-muted mb-2">Total Income</h6>
-                    <h4 class="mb-3">$1,453,221,324</h4>
+                    <h4 class="mb-3">{{ number_format($totalIncome) }} UGX</h4>
                 </div>
             </div>
         </div>
@@ -79,12 +82,15 @@
                      <div class="stat-icon bg-primary-soft text-primary">
                             <i class="fa-solid fa-truck-fast"></i>
                         </div>
-                        <span class="badge bg-success trend-badge">
-                                <i class="fas fa-arrow-up me-1"></i>15.7%
+                         @if($deliveryChange !==0)
+                            <span class="badge trend-badge {{$deliveryChange > 0 ? 'bg-success' : 'bg-danger'}}">
+                                <i class="fas fa-arrow-{{$deliveryChange > 0 ? 'up' : 'down'}} me-1"></i>
+                                {{ abs($deliveryChange) }}%
                             </span>
+                        @endif
                     </div>
                     <h6 class="text-muted mb-2">Active Deliveries</h6>
-                    <h4 class="mb-3">8</h4>
+                    <h4 class="mb-3"> {{$totalDeliveries}} </h4>
                 </div>
             </div>
         </div>

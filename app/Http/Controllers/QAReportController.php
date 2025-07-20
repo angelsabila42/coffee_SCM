@@ -21,7 +21,8 @@ class QAReportController extends Controller
     }
 
     public function store(Request $request)
-    {
+    { 
+        //  dd('the store method is accessed');
         $validated = $request->validate([           
              'date' => 'required|date',  // We'll map this to start_date
             'testers_initials' => 'required',

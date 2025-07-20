@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('page-title', 'Importer Transactions')
+{{-- @section('page-title', 'Importer Transactions') --}}
 @section('sidebar-items')
 @include('layouts.sidebar-items.importer')
 @endsection

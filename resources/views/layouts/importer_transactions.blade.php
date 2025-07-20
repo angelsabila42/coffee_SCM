@@ -1,5 +1,5 @@
 <div class="">
-    <h2 class="mb-4">Importer Transactions Dashboard</h2>
+    <h2 class="mb-4">Transactions</h2>
     <div class="card mb-4 rounded">
         <div class="card-header d-flex justify-content-between align-items-center">
              <div class="card-header">Account Details</div>

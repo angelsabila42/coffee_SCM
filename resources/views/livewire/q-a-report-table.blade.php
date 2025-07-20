@@ -10,7 +10,7 @@
             </div>
             
             <div>
-                <a href="{{ route('qa.create') }}" class="btn btn-primary btn-sm">
+                <a href="{{ route('qa.create') }}" class="btn btn-success btn-fill btn-sm">
                     + New
                 </a>
             </div>
@@ -32,7 +32,7 @@
                 @endif
                 
                 <table class="table table-hover">
-                    <thead>
+                    <thead class="bg-light">
                         <tr>
                             <th>ReportID</th>
                             <th>Date Created</th>

@@ -10,12 +10,15 @@ use App\Models\User;
 use App\Notifications;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewIncomingOrderNotification;
+use Illuminate\Support\Facades\Auth;
+ /** @var \App\Models\ImporterModel|null */
 
 class ImporterCreateOrderModal extends Component
 {
     public $order;
      public $status, $orderID;
-     public $importer_model_id = 1;
+
+     public $importer;
 
     #[Rule('required|numeric|min:20')]    
     public $quantity;
@@ -34,12 +37,17 @@ class ImporterCreateOrderModal extends Component
     
        public function mount(){
        $this->orderID= Helper::generateID(IncomingOrder::class,'orderID','IX',5);
+       $this->importer = \App\Models\importerModel::where('email', Auth::user()->email)->first();
 
     }
     
        public function save(){
 
         $this->validate();
+        if (!$this->importer) {
+          session()->flash('error', 'Importer not found. Cannot create order.');
+             return;
+        }
 
         $order = IncomingOrder::create([
             'orderID'=> $this->orderID,
@@ -49,8 +57,9 @@ class ImporterCreateOrderModal extends Component
             'destination' =>$this->destination,
             'status'=> 'Requested',
             'deadline'=> $this->deadline,
-            'importer_model_id' => $this->importer_model_id
+            'importer_model_id' => $this->importer->id,
         ]);
+        
             // Notify admin(s)
     $admins = \App\Models\User::where('role', 'admin')->get();
     if ($admins) {

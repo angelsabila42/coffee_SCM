@@ -19,11 +19,11 @@
                         <span class="position-absolute" style="left:10px;top:8px;color:#aaa;"><i class="nc-icon nc-zoom-split"></i></span>
                         <input type="text" class="form-control pl-4" placeholder="Search" style="width:200px;">
                     </div>
-                    <button class="btn btn-light btn-fill btn-sm d-flex align-items-center ml-2" style="color:#6c757d;">
+                    <button class="btn btn-light text-white btn-fill btn-sm d-flex align-items-center ml-2" style="color:#6c757d;">
                         <span class="mr-2"><i class='bx bx-filter'></i></span>Filter
                     </button>
                 </div>
-                <a href="{{ route('deliveries.create') }}" class="btn btn-primary btn-sm ml-2"><i class="nc-icon nc-simple-add"></i> New</a>
+                <a href="{{ route('deliveries.create') }}" class="btn btn-success btn-fill btn-sm ml-2"><i class="nc-icon nc-simple-add"></i> New</a>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover text-nowrap">

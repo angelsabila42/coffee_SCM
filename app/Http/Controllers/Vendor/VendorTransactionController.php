@@ -53,7 +53,7 @@ class VendorTransactionController extends Controller
         $lastPayment = Payment::whereIn('invoice_id', $vendorInvoiceIds)
                               ->orderByDesc('created_at')
                               ->first();
-
+   
         return view('vendor.transactions', compact(
             'payments', 
             'invoices', 

@@ -12,10 +12,25 @@ use Illuminate\Support\Facades\DB;
 
 class VendorHomeController extends Controller
 {
+    public $vendor;
+     public function __construct()
+    {
+        // Use the logged-in user's email to find the corresponding vendor
+        $this->middleware(function ($request, $next) {
+            $email = Auth::user()->email;
+
+            $this->vendor = Vendor::where('email', $email)->first();
+
+            if (!$this->vendor) {
+                abort(403, 'Unauthorized - No vendor account associated with your email.');
+            }
+
+            return $next($request);
+        });
+    }
     
     public function countOrders(){
-        $vendorID = 1; //testing purposes
-        $count = OutgoingOrder::where('vendor_id', $vendorID)
+        $count = OutgoingOrder::where('vendor_id', $this->vendor->id)
                 ->where('status','Confirmed')
                 ->count();
         return $count;
@@ -23,8 +38,8 @@ class VendorHomeController extends Controller
     }
 
     public function countDeliveredBatches(){
-        $vendorID = 3; //testing purposes
-        $count = OutgoingOrder::where('vendor_id', $vendorID)
+       
+        $count = OutgoingOrder::where('vendor_id', $this->vendor->id)
                 ->where('status','Delivered')
                 ->count();
         return $count;
@@ -33,7 +48,7 @@ class VendorHomeController extends Controller
 
     // public function countInvoices(){
     //     $vendorID = 3; //testing purposes
-    //     $count = Invoice::where('vendor_id', $vendorID)
+    //     $count = Invoice::where('vendor_id', $this->vendor->id)
     //             ->where('status','Pending')
     //             ->count();
     //     return $count;
@@ -41,8 +56,8 @@ class VendorHomeController extends Controller
     // }
 
     public function countPendingDeliveries(){
-        $vendorID = 3; //testing purposes
-        $count = OutgoingOrder::where('vendor_id', $vendorID)
+       
+        $count = OutgoingOrder::where('vendor_id', $this->vendor->id)
                 ->where('status','Pending')
                 ->count();
         return $count;
