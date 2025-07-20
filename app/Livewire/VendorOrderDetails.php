@@ -22,6 +22,9 @@ class VendorOrderDetails extends Component
         $this->order->status = 'Confirmed';
         $this->order->save();
         $this->order->refresh();
+
+        session()->flash('success','Order Accepted!');
+        $this->redirect('/vendor-home/orders');
          
     // $this->order->vendor->notify(new OrderAccepted($this->order));
     //notify admin

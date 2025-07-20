@@ -1,7 +1,7 @@
 <div class="modern-card ">
                 <!-- Header -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h4 class="mb-0 card-title ml-4">Activity Logs</h4>
+                            <h4 class="mb-0 card-title ml-4 text-brown font-weight-bold">Activity Logs</h4>
                         </div>
 
                     <div class="card-body p-4">

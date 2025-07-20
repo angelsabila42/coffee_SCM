@@ -1,11 +1,12 @@
 @extends('layouts.app')
-@section('page-title', 'Dashboard')
+{{-- @section('page-title', 'Dashboard') --}}
 @section('sidebar-items')
 @include('layouts.sidebar-items.vendor')
 @endsection
 @section('content')
 <!--top cards-->
 <div class="container">
+<h3 class="mb-3 font-weight-bold">Dashboard</h3>
 <div class="row">
       <div class="col-md-3" >
          <div class="card kpi-card">
@@ -47,7 +48,7 @@
             </div>
                <div class="card-body ">
                {{-- <div class="kpi-chart-container"></div> --}}
-               {{-- <h3 class="ml-2"> {{$invoices}} </h3>     --}}
+               <h3 class="ml-2"> 0 {{--$invoices--}} </h3>    
                </div>
          </div>
       </div>
@@ -71,7 +72,7 @@
                         <div class="col-md-7">
                             <div class="modern-card">
                                 <div class="card-header ">
-                                    <h4 class="card-title">Order Volume</h4>
+                                    <h4 class="card-title text-brown font-weight-bold">Order Volume</h4>
                                 </div>
                                 <div class="card-body ">
                                     <div id="chart-v"></div>
@@ -86,9 +87,6 @@
     <!-- Recent Orders Table -->
     <div class="card" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <div class="card-header" style="background-color: #8B4513; color: white; border-radius: 10px 10px 0 0;">
-            <h5 class="mb-0">
-                <i class="bx bx-list-ul"></i> Recent Orders
-            </h5>
         </div>
             <livewire:vendor-recent-orders-table/>
     </div>

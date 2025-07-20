@@ -10,6 +10,7 @@ use Livewire\Attributes\Url;
 use App\Notifications\OrderDeclinedNotification;
 use App\Notifications\OrderAcceptedNotification;
 use App\Models\inventory;
+use Illuminate\Support\Facades\Auth;
 
 class AdminOrderDetails extends Component
 {
@@ -19,9 +20,21 @@ class AdminOrderDetails extends Component
     }
     public function acceptOrder(){
         //update status
+        $oldStatus = $this->order->status;
         $this->order->status = 'Confirmed';
         $this->order->save();
         $this->order->refresh();
+
+        session()->flash('success','Order Accepted');
+
+        \App\Models\OrderStatusLogger::create([
+        'user_id'=> Auth::id(),
+        'loggable_id'=>$this->order->id,
+        'loggable_type'=> get_class($this->order),
+        'action'=> "Status changed from {$oldStatus} to {$this->order->status}"
+    ]);
+
+        $this->redirect('/admin-home/orders');
 
         //update inventory
         $inventory = inventory::where('coffee_type', $this->order->coffeeType)
@@ -47,9 +60,17 @@ if ($this->order->importerModel) {
     }
     public function declineOrder()
     {
+    $oldStatus = $this->order->status;
      $this->order->status = 'Declined';
      $this->order->save();
     $this->order->refresh();
+
+     \App\Models\OrderStatusLogger::create([
+        'user_id'=> Auth::id(),
+        'loggable_id'=>$this->order->id,
+        'loggable_type'=> get_class($this->order),
+        'action'=> "Status changed from {$oldStatus} to {$this->order->status}"
+    ]);
      
      // Notify the importer about the declined order
      if ($this->order->importerModel) {

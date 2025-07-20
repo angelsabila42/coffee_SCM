@@ -6,14 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::table('vendor', function (Blueprint $table) {
-            $table->string('region')->after('city');
+        Schema::table('staff', function (Blueprint $table) {
+            $table->boolean('is_admin');
         });
     }
 
@@ -22,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('vendor', function (Blueprint $table) {
-            $table->dropColumn('region');
+        Schema::table('staff', function (Blueprint $table) {
+            $table->dropColumn('is_admin');
         });
     }
 };

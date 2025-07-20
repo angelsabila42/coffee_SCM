@@ -6,6 +6,7 @@ use App\Models\Delivery;
 use App\Models\importerModel;
 use App\Models\IncomingOrder;
 use App\Models\Payment;
+use App\Models\PesaPalTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,6 +21,16 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
+
+    protected function calculatePercentageChange($previous, $current)
+{
+    if ($previous == 0) {
+        return $current > 0 ? 100 : 0;
+    }
+
+    return (($current - $previous) / $previous) * 100;
+}
+
 
     private function calculateOrderKpis(){
          $currentMonth = now()->month;
@@ -66,6 +77,36 @@ class HomeController extends Controller
          return $percentageChange;
      } 
 
+     protected function calculateDeliveryChange()
+{
+    $thisMonth = now()->startOfMonth();
+    $lastMonth = now()->subMonth()->startOfMonth();
+
+    $current = Delivery::where('created_at', '>=', $thisMonth)->count();
+
+    $previous = Delivery::whereBetween('created_at', [$lastMonth, $thisMonth])->count();
+
+    return $this->calculatePercentageChange($previous, $current) ;
+}
+
+protected function calculateIncomeChange()
+{
+    $thisMonth = now()->startOfMonth();
+    $lastMonth = now()->subMonth()->startOfMonth();
+
+    $current = PesapalTransaction::where('status', 'completed')
+        ->where('created_at', '>=', $thisMonth)
+        ->sum('total_amount');
+
+    $previous = PesaPalTransaction::where('status', 'paid')
+        ->whereBetween('created_at', [$lastMonth, $thisMonth])
+        ->sum('total_amount');
+
+    return $this->calculatePercentageChange($previous, $current);
+}
+
+
+
     /**
      * Show the application dashboard.
      *
@@ -90,10 +131,12 @@ class HomeController extends Controller
         return view('Dashboards.home', [
             'order'=> $orders,
             'partners' => $partners,
-            'income' => $income,
-            'deliveries' => $deliveries,
             'percentageChange' => $percentageOrderChange,
             'percentagePChange' => $percentagePartnerKpi,
+            'deliveryChange' => $this->calculateDeliveryChange(),
+            'incomeChange' => $this->calculateIncomeChange(),
+            'totalDeliveries' => Delivery::count(),
+            'totalIncome' => PesapalTransaction::where('status', 'completed')->sum('total_amount'),
         ]);
     }
 }

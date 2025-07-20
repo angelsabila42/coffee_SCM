@@ -25,7 +25,7 @@
              </a>
         </li>
              <li class="sidebar-item">
-             <a href="{{route('vendor.reports')}}" class="sidebar-link">
+             <a href="{{route('qa.vendor')}}" class="sidebar-link">
              <i class='bx  bx-file-report'></i>
              <span>Report</span>
              </a>    

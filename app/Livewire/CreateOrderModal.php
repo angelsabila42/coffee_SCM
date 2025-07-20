@@ -11,9 +11,9 @@ use App\Models\OutgoingOrder;
 
 use App\Notifications\NewOutgoingOrderNotification;
 use App\Models\User;
-
+use App\Models\Vendor;
 use App\Services\ActivityLogger;
-
+use Illuminate\Support\Facades\Auth;
 
 class CreateOrderModal extends Component
 {
@@ -43,10 +43,11 @@ class CreateOrderModal extends Component
        public function save(){
 
         $this->validate();
+        $vendor = Vendor::findOrFail($this->vendor_id);
 
        $order = OutgoingOrder::create([
             'work_center_id'=>$this->work_center_id,
-            'vendor_id'=>$this->vendor_id,
+            'vendor_id'=>$vendor->id,
             'orderID'=> $this->orderID,
             'coffeeType'=>$this->coffeeType,
             'quantity'=>$this->quantity,

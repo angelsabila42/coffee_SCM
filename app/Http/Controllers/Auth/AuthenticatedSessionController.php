@@ -47,7 +47,7 @@ class AuthenticatedSessionController extends Controller
             $admin = $staff->is_admin;
         if ($admin) {
             Log::info('Redirecting admin');
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin.home');
         }
         // Store login time in session for duration calculation
         $request->session()->put('login_time', now());
