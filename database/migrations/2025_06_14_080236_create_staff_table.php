@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('role', 50);
             $table->string('status', 20);
             $table->string('phone_number', 20);
-            $table->string('email', 50); // Increased length for email
+            $table->string('email', 50); 
+            $table->boolean('is_admin')->default(false);
             $table->timestamps();
         });
     }

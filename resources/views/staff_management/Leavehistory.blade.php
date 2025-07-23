@@ -181,7 +181,7 @@
     </div>
 </div>
 
-<!-- Edit Leave Record Modal -->n
+{{-- Edit Leave Record Modal 
 <div class="modal fade" id="editLeaveRecordModal" tabindex="-1" aria-labelledby="editLeaveRecordModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -250,10 +250,10 @@
             </div>
         </div>
     </div>
-</div>
+</div>--}}
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+  /*document.addEventListener('DOMContentLoaded', function () {
     var editLeaveModal = document.getElementById('editLeaveRecordModal');
     if (editLeaveModal) {
         editLeaveModal.addEventListener('show.bs.modal', function (event) {
@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
     }
-});
+}); */
 
 function confirmDeleteLeaveHistory(leaveId) {
     Swal.fire({

@@ -20,21 +20,24 @@ class StaffSeeder extends Seeder
             'role' => 'Supervisor',
             'status' => 'Active',
             'phone_number' => '0700123456',
-            'email' => 'johnaye@gmail.com'
+            'email' => 'johnaye@gmail.com',
+            'is_admin' => false, 
         ],
         [
             'full_name' => 'David Okello',
-            'role' => 'Supervisor',
+            'role' => 'Warehouse Clerk',
             'status' => 'On Leave',
             'phone_number' => '0787654321',
             'email' => 'davidokello2@gmail.com',
+            'is_admin' => true, // Make this staff an admin
         ],
         [
-            'full_name' => 'Sarah Nakitto',
-            'role' => 'Warehouse Clerk',
+            'full_name' => 'Alice Admin',
+            'role' => 'Supervisor',
             'status' => 'Active',
             'phone_number' => '0759988776',
-            'email' => 'nakisarah@gmail.com',
+            'email' => 'admin@example.com',
+            'is_admin' => true, 
             ],
         ];
 

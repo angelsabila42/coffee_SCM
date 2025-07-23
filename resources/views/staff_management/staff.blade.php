@@ -376,7 +376,7 @@
             </div>
 
             <!-- Edit Staff Modal -->
-            <div class="modal fade" id="editStaffModal" tabindex="-1" aria-labelledby="editStaffModalLabel" aria-hidden="true">
+           {{--   <div class="modal fade" id="editStaffModal" tabindex="-1" aria-labelledby="editStaffModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -384,7 +384,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="editStaffForm" method="POST" enctype="multipart/form-data"> {{-- Action will be set by JS --}}
+                            <form id="editStaffForm" method="POST" enctype="multipart/form-data"> 
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" id="edit_staff_id" name="id">
@@ -458,7 +458,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>--}}
 
     <!-- Staff Details Modal -->
 <div class="modal fade" id="staffDetailsModal" tabindex="-1" aria-labelledby="staffDetailsModalLabel" aria-hidden="true">
@@ -470,7 +470,7 @@
       </div>
       <div class="modal-body">
         <ul class="list-group" id="staffDetailsList">
-          <!-- Details will be populated by JS -->
+          <!-- Details to be populated by JS -->
         </ul>
       </div>
     </div>
@@ -482,7 +482,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     // Staff Tab related JavaScript
-    @if ($errors->any() && session('open_add_modal'))
+   /*  @if ($errors->any() && session('open_add_modal'))
         var addStaffModal = new bootstrap.Modal(document.getElementById('addStaffModal'));
         addStaffModal.show();
     @endif
@@ -556,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
-    }
+    } */
 
     // Work Assignment Tab related JavaScript
     const addWorkAssignForm = document.getElementById('addWorkAssignForm');
