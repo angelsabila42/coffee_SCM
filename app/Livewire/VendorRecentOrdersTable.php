@@ -15,7 +15,9 @@ class VendorRecentOrdersTable extends BaseOutgoingOrderTable
 
     public function mount()
     {
-        $this->vendor = Auth::user(); 
+    $user = Auth::user();
+
+    $this->vendor = Vendor::where('email', $user->email)->first();
 
     }
 

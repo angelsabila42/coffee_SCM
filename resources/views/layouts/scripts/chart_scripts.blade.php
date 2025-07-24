@@ -429,7 +429,8 @@ var barOptions = {
   const radialLabels = radialData.map(item => cluster_labels[item.cluster]);
 
   const totalValue = radialSeries.reduce((a, b) => a + b, 0);
-  const normalisedSeries = radialSeries.map(val=> (val/totalValue * 100).toFixed(2));
+  const normalisedSeries = radialSeries.map(val => Math.round((val / totalValue) * 100 * 100) / 100);
+
  
 var radialOptions = {
   chart: {
@@ -478,7 +479,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const radialLabels = radialData.map(item => item.cluster_label);
 
   const totalValue = radialSeries.reduce((a, b) => a + b, 0);
-  const normalisedSeries = radialSeries.map(val=> (val/totalValue * 100).toFixed(2));
+  const normalisedSeries = radialSeries.map(val=> +(val/totalValue * 100).toFixed(2));
  
 var radialOptions = {
   chart: {

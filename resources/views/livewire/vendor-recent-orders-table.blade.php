@@ -1,4 +1,4 @@
-<div wire:poll.10s class=" ">
+<div wire:poll.10s>
                         <div class="col-md-12">
                             <div class=" table-plain-bg">
                                 <h4 class="card-header">Recent Orders</h4>

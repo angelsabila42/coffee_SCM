@@ -169,7 +169,7 @@ class VendorController extends Controller
               ])->toArray();
 
           User::create($fields);*/
-        return redirect()->route('vendorhome')->with('success', 'Vendor registered successfully');
+        return redirect()->route('vendor.home')->with('success', 'Vendor registered successfully');
        // return response()->json(['message' => 'Vendor registered successfully']);
 
         }
