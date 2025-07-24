@@ -57,7 +57,7 @@
                                                     class="form-control form-control-sm badge badge-sm {{$order->status_badge}}"
                                                     x-model= "selectedStatus"
                                                     @@change= "$dispatch('statusChanged', {id: {{$order->id}}, status: $event.target.value})">
-                                                           {{-- <option :value="selectedStatus">{{$order->status}}</option> --}}
+                                                           <option :value="selectedStatus">{{$order->status}}</option>
                                                             <template x-for= "status in statuses" :key = "status + '-{{$order->id}}'">
                                                                 <option :value= "status" x-text= "status" :selected= "status === selectedStatus"></option>
                                                             </template>

@@ -24,11 +24,11 @@
                                 {{ session('error') }}
                             </div>
                         @endif
-                          @if(session('success'))
-                            <div class="alert alert-success">
+                          {{-- @if(session('success')) --}}
+                            {{-- <div class="alert alert-success">
                                 {{ session('success') }}
                             </div>
-                        @endif
+                        @endif --}}
                         <x-page-header >
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
                             @yield('page-title')
