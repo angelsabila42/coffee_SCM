@@ -60,9 +60,19 @@
 </head>
 <body>
 
+
     <div class="welcome-section">
-        <div class="overlay"></div>
+                   
+        <div class="overlay">
+
+        </div>
         <div class="content">
+            <form action="{{ route('logout') }}" method="Post">
+                @csrf
+                <a href="" class="d-flex justify-content-end"><button type="submit" 
+                 style="border: none; text-decoration :none;" class="btn text-white"
+                >Logout</button></a>
+        </form>
             <h2 class="display-4 fw-bold " style=" font-family: 'Playfair Display', serif;">Welcome </h2>
             <h2 class="display-4 fw-bold" style=" font-family: 'Playfair Display', serif;">to Globalbean connect</h2>
             <div class="lead mb-4 text-white " style="max-width: 1500px">Your one-stop solution for coffee supply chain management.

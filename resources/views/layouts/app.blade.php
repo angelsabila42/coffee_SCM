@@ -24,6 +24,11 @@
                                 {{ session('error') }}
                             </div>
                         @endif
+                          {{-- @if(session('success')) --}}
+                            {{-- <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif --}}
                         <x-page-header >
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
                             @yield('page-title')
@@ -37,7 +42,7 @@
                         </div>
                     </div>
 
-                    @include('layouts.footer')
+                    @include('layouts.footer2')
                 </div>
               </div>
         </main>

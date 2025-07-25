@@ -78,4 +78,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Transporter::class, 'transporter_company_id');
     }
+
+    
 }
+
+

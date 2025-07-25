@@ -429,7 +429,8 @@ var barOptions = {
   const radialLabels = radialData.map(item => cluster_labels[item.cluster]);
 
   const totalValue = radialSeries.reduce((a, b) => a + b, 0);
-  const normalisedSeries = radialSeries.map(val=> (val/totalValue * 100).toFixed(2));
+  const normalisedSeries = radialSeries.map(val => Math.round((val / totalValue) * 100 * 100) / 100);
+
  
 var radialOptions = {
   chart: {
@@ -478,7 +479,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const radialLabels = radialData.map(item => item.cluster_label);
 
   const totalValue = radialSeries.reduce((a, b) => a + b, 0);
-  const normalisedSeries = radialSeries.map(val=> (val/totalValue * 100).toFixed(2));
+  const normalisedSeries = radialSeries.map(val=> +(val/totalValue * 100).toFixed(2));
  
 var radialOptions = {
   chart: {
@@ -885,64 +886,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!--Vendor Home-->
 <script>
-document.addEventListener("DOMContentLoaded", async() => {
+document.addEventListener("DOMContentLoaded", async () => {
   const response = await fetch('/api/v1/outgoing-order/vendor-chart');
   const orders = await response.json();
 
-  const chartData = orders.data.map(order => ({
-    x: order.created_at,
-    y: order.quantity,
-  }));
+  const dateCounts = {};
 
-var options = {
-          series: [{
-            name: 'Quantity',
-            data: chartData
-        }],
-          chart: {
-          height: '100%',
-          type: 'line',
-          toolbar: {
-            enabled: false
-          },
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'smooth',
-          width: 1,
-        },
-        tooltip: {
-          enabled: false
-        },
-        markers: {
-          size: 0,
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
+  orders.data.forEach(order => {
+    const date = new Date(order.created_at).toISOString().split('T')[0];
+    dateCounts[date] = (dateCounts[date] || 0) + 1;
+  });
 
-        xaxis: {
-          type: 'datetime',
-          title: {
-            text: 'Date'
-          }
-        },
-        yaxis: {
-          title: {
-            text: 'Coffee Quantity'
-          }
-        },
-        };
+  const chartData = Object.entries(dateCounts).map(([date, count]) => ({
+    x: date,
+    y: count
+  })).sort((a, b) => new Date(a.x) - new Date(b.x));
 
-        var chartV = new ApexCharts(document.querySelector("#chart-v"), options);
-        chartV.render();
+  var options = {
+    series: [{
+      name: 'Orders Received',
+      data: chartData
+    }],
+    chart: {
+      height: '373',
+      type: 'line',
+      toolbar: {
+        enabled: false
+      },
+      zoom: {
+        enabled: false
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'smooth',
+      width: 2,
+    },
+    tooltip: {
+      enabled: true
+    },
+    markers: {
+      size: 4,
+    },
+    grid: {
+      row: {
+        colors: ['#f3f3f3', 'transparent'],
+        opacity: 0.5
+      },
+    },
+    xaxis: {
+      type: 'datetime',
+      title: {
+        text: 'Date'
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'Number of Orders'
+      },
+      min: 0,
+      forceNiceScale: true
+    }
+  };
+
+  var chartV = new ApexCharts(document.querySelector("#chart-v"), options);
+  chartV.render();
 });
+
 </script>
+
+

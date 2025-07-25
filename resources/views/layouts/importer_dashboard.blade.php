@@ -61,7 +61,7 @@
     </div>
 <div >
 
-                    <div class="row">
+                    <div class="row mb-4">
                         <div class="col-md-7">
                             <div class="modern-card">
                                 <div class="card-header ">
@@ -78,7 +78,7 @@
                                             var options = {
                                                 chart: {
                                                     type: 'line',
-                                                    height: 300
+                                                    height: 373
                                                 },
                                                 series: [{
                                                     name: 'Orders',

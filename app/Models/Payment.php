@@ -35,6 +35,9 @@ class Payment extends Model
     public function notification(){
         return $this->belongsTo(Notification::class);
     } 
+    public function vendor(){
+        return $this->belongsTo(Vendor::class);
+    } 
     public function invoice()
     {
         return $this->belongsTo(Invoice::class);

@@ -62,6 +62,14 @@ use GuzzleHttp\Middleware;
 
 use App\Http\Controllers\SaleReport;
 use App\Http\Controllers\DeliveriesReport;
+Route::get('/test', function () {
+    return view('livewire.vendor-livewire', [
+
+    ]);
+})->name('qa.vendor');
+
+
+
 
 Route::get('/qa-vendor', function (QA $qa) {
     return view('qa.vendor-report', [
@@ -69,7 +77,7 @@ Route::get('/qa-vendor', function (QA $qa) {
     ]);
 })->name('qa.vendor');
 
-Route::get('/qa-vendor',[QAReportController::class, 'store'])->name('qa.store');
+//Route::get('/qa-vendor',[QAReportController::class, 'store'])->name('qa.store');
 
 //transporter transactions
 
@@ -154,20 +162,25 @@ require __DIR__.'/auth.php';
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-      Route::get('/adminDashboard', function () {
-          return view('Dashboards.admin');
-      })->middleware('admin')->name('admin.dashboard');
-
-
-
-
-Route::middleware('auth')->group(function()
-{             
-                        Route::get('/welcome', function () {
-                         return view('welcome');
-                    });
-
-                                
+    //   Route::get('/adminDashboard', function () {
+    //       return view('Dashboards.admin');
+    //   })->middleware('admin')->name('admin.dashboard');
+   
+ Route::middleware('admin')->group(function(){
+     Route::get('/admin-home', [HomeController::class, 'index'])->name('admin.home');
+     Route::get('/admin-home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+     Route::get('/admin-home/orders', [OrderController::class, 'index'])->name('order.index');
+     Route::post('/admin-home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
+     Route::get('/admin-home/orders/{order}/Outgoing', [OutgoingOrderController::class, 'viewOutOrder'])->name( 'orders.view-vendor-order');
+      Route::get('/admin-home/orders/{order}/download/Outgoing', [OutgoingOrderController::class, 'downloadOutgoing'])->name('orders.view-vendor-order.download');
+      Route::get('/admin-home/orders/{order}/Incoming', [IncomingOrderController::class, 'viewOrder'])->name('orders.view-importer-order');
+      Route::post('/admin-home/orders/{order}', [IncomingOrderController::class, 'store'])->name('order.store-in');
+     Route::get('/admin-home/orders/{order}/download/Incoming', [IncomingOrderController::class, 'download'])->name('order.download-in');
+      Route::get('/admin-home/report',[ReportController::class,'index'])->name('reports');
+     Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
+    Route::post('/staff/{id}/profile-picture', [StaffController::class, 'updateProfilePicture'])->name('staff.updateProfilePicture');
+    Route::get('/staff/{id}/details', [StaffController::class, 'getStaffDetails'])->name('staff.get-details');
+               
                             Route::prefix('staff-management')->name('staff_management.')->group(function ()
                              {
 
@@ -196,6 +209,21 @@ Route::middleware('auth')->group(function()
 
                             });
 
+ 
+
+ });
+
+
+
+
+Route::middleware('auth')->group(function()
+{             
+                        Route::get('/welcome', function () {
+                         return view('welcome');
+                    });
+
+                     
+
 
 
                     // Route::get('/home/dashboard', [App\Http\Controllers\HomeController::class, 'index']);
@@ -209,20 +237,12 @@ Route::middleware('auth')->group(function()
 
 
                                                 
-                     Route::get('/home', function () {
-                         return view('welcome');
-                     })->name('index');
-                  //  Route::get('/', [HomeController::class, 'index'])->name('index');
-
+                    
                     Route::get('/', function () {
                         return view('auth.login');
                     });
 
-                    // Transporter Delivery Dashboard
-                    Route::get('/deliveries/transporter', function () {
-                        return view('deliveries.transporter-dashboard');
-                    })->name('deliveries.transporter');
-
+                 
                     Route::resource('deliveries', DeliveryController::class);
 
                     /*transactions Routes*/
@@ -263,21 +283,16 @@ Route::middleware('auth')->group(function()
 
            
     /*Dashboard routes*/
-   Route::get('/admin-home', [HomeController::class, 'index'])->name('admin.home');
-
-
+   
 
    
 
         /*Dashboard routes*/
-        Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+      
         /*Analytics route*/
-        Route::get('/home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
 
     /*Analytics routes*/
-    Route::get('/admin-home/analytics', [AnalyticsController::class, 'index'])->name('analytics');
-    Route::get('/import-annual-coffee-sales', [AnnualCoffeeSaleAdminController::class, 'importCsv']);
+   Route::get('/import-annual-coffee-sales', [AnnualCoffeeSaleAdminController::class, 'importCsv']);
     Route::get('/import-importer-demand', [ImporterDemandAdminController::class, 'importCsv']);
     Route::get('/import-vendor-cluster', [VendorClusterController::class, 'importCsv']);
     Route::get('/import-demand-quantity', [QuantityDemandController::class, 'importCsv']);
@@ -287,8 +302,7 @@ Route::middleware('auth')->group(function()
 
 
         /*Report routes*/
-        Route::get('/admin-home/report',[ReportController::class,'index'])->name('reports');
-        Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name('vendor.reports');
+          Route::get('/vendor-home/report',[VendorReportsController::class,'index'])->name('vendor.reports');
 
         // QA Report Routes
         Route::prefix('qa-reports')->name('qa.')->group(function() {
@@ -300,19 +314,7 @@ Route::middleware('auth')->group(function()
         });
 
         /*Order Routes*/
-        Route::get('/admin-home/orders', [OrderController::class, 'index'])->name('order.index');
-        Route::post('/admin-home/orders',[OutgoingOrderController::class, 'store'])->name('out-order.store');
-        Route::get('/admin-home/orders/{order}/Outgoing', [OutgoingOrderController::class, 'viewOutOrder'])->name( 'orders.view-vendor-order');
-        Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewVendorOrder'])->name('vendor.order.show');
-        Route::post('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'store'])->name('vendor.order.store');
-        Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'downloadVendor'])->name('vendor.order.download');
-        Route::get('/admin-home/orders/{order}/download/Outgoing', [OutgoingOrderController::class, 'downloadOutgoing'])->name('orders.view-vendor-order.download');
-        Route::get('/admin-home/orders/{order}/Incoming', [IncomingOrderController::class, 'viewOrder'])->name('orders.view-importer-order');
-        Route::post('/admin-home/orders/{order}', [IncomingOrderController::class, 'store'])->name('order.store-in');
-        Route::get('/admin-home/orders/{order}/download/Incoming', [IncomingOrderController::class, 'download'])->name('order.download-in');
-        Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
-        Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
-
+            
 
         // edit profile routes
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -412,7 +414,11 @@ Route::middleware(['vendor'])->group(function(){
       Route::get('/qa-vendor',[VendorController::class, 'venReport'])->name('qa.vendor');
 
      Route::get('/qa-vendor/report/{reportID}', [VendorController::class,'venReportDetails'])->name('qa.vendor.report');
-
+       Route::get('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'viewVendorOrder'])->name('vendor.order.show');
+        Route::post('/vendor-home/orders/{order}', [OutgoingOrderController::class, 'store'])->name('vendor.order.store');
+        Route::get('/vendor-home/orders/{order}/download', [OutgoingOrderController::class, 'downloadVendor'])->name('vendor.order.download');
+         Route::get('/vendor-home/orders', [VendorOrderController::class, 'index'])->name('vendor.orders');
+ 
      
 });
 
@@ -428,6 +434,7 @@ Route::middleware(['vendor'])->group(function(){
     
 Route::get('/payments/importer/{id}', [ImporterModelController::class, 'showPayment'])->name('ImporterPayments.show');
 Route::get('/payments/importer/{id}/download', [ImporterModelController::class, 'download'])->name('ImporterPayments.download');
+ Route::get('/importer-home/orders', [ImporterOrderController::class, 'index'])->name('importer.orders');
 
 
 Route::get('/payments/{id}', [ImporterModelController::class, 'showOrder'])->name('ImporterOrders.show');
@@ -474,6 +481,10 @@ Route::get('/payments/{id}', [ImporterModelController::class, 'showOrder'])->nam
                         Route::get('/payments/{id}/download', [transporterController::class, 'download'])->name('payments.download');
 
                 Route::get('/payments/{id}', [transporterController::class, 'showPayment'])->name('TransPayments.show');
+                   // Transporter Delivery Dashboard
+                    Route::get('/deliveries/transporter', function () {
+                        return view('deliveries.transporter-dashboard');
+                    })->name('deliveries.transporter');
 
                     
 
@@ -485,9 +496,6 @@ Route::post('/notifications/mark-as-read', function () {
 })->middleware('auth');
 
 // Staff profile picture routes
-Route::post('/staff/{id}/profile-picture', [StaffController::class, 'updateProfilePicture'])->name('staff.updateProfilePicture');
-Route::get('/staff/{id}/details', [StaffController::class, 'getStaffDetails'])->name('staff.get-details');
-
 Route::get('/SalesReportDetails/{id}', [SaleReport::class, 'show'])->name('sales-details');
 Route::get('/DeliveryReportDetails/{id}', [DeliveriesReport::class, 'show'])->name('delivery-details');
 

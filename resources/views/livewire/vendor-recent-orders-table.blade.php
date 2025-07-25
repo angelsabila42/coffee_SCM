@@ -1,4 +1,4 @@
-<div wire:poll.10s class=" ">
+<div wire:poll.10s>
                         <div class="col-md-12">
                             <div class=" table-plain-bg">
                                 <h4 class="card-header">Recent Orders</h4>
@@ -6,6 +6,7 @@
                                 <div class="card-body table-full-width table-responsive">
                                     <table class="table table-hover">
                                         <thead class="bg-light">
+                                            <th>#</th>
                                             <th>OrderID</th>
                                             <th>Coffee Type</th>
                                             <th>Quantity</th>
@@ -16,7 +17,8 @@
                                         <tbody>
                                         @foreach($orders as $order)
                                             <tr wire:key= "{{$order->id}}" onclick="window.location= '{{route('vendor.order.show', $order->id)}}' " class="cur" >
-                                                 <td class=""> {{$order->orderID}} </td>
+                                                <td class=""> {{$order->id}} </td>
+                                                <td class=""> {{$order->orderID}} </td>
                                                 <td class=""> {{$order->coffeeType}} </td>
                                                 <td class=""> {{$order->quantity}} </td>
                                                 <td x-data= "{selectedStatus: '{{$order->status}}',

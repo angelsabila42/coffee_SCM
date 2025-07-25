@@ -35,9 +35,10 @@
                     <option value="">All</option>
                     <option value="requested">Requested</option>
                     <option value="pending">Pending</option>
-                    <option value="cancelled">Cancelled</option> 
+                    <option value="declined">Declined</option> 
                     <option value="delivered">Delivered</option> 
                     <option value="confirmed">Confirmed</option>
+                    <option value="dispatched">Dispatched</option>
                 </select>
         </div>
        </div>

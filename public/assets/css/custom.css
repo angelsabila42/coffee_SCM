@@ -622,7 +622,7 @@ body {
 
 /*Pagination*/
 .pagination{
-  margin-left: 35rem;
+  margin-left: 30rem;
 }
 
 /*Recent Activity Table*/
@@ -717,7 +717,7 @@ body {
 }
 
 .scrollbar{
-  max-height: 373px !important;
+  height: 373px !important;
   overflow-y: auto !important;
   overflow-x: hidden!important;
   padding-right: 5px;

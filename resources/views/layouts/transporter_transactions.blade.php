@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <h2 class="mb-4" style="color: #8B4513; font-weight: 700;">Transporter Transactions Dashboard</h2>
+    <h2 class="mb-4" style="color: #8B4513; font-weight: 700;">Transactions</h2>
     
     <div class="card mb-4" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <div class="card-header" style="background-color: #8B4513; color: white; border-radius: 10px 10px 0 0;">

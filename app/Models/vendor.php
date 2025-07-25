@@ -50,4 +50,8 @@ class Vendor extends Model
     {
         return $this->hasMany(QA::class);
     }
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

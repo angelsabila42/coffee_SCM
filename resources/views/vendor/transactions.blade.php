@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'Vendor Transactions')
+{{-- @section('page-title', 'Vendor Transactions') --}}
 @section('sidebar-items')
     @include('layouts.sidebar-items.vendor')
 @endsection
@@ -8,7 +8,7 @@
 @section('content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0" style="color: #8B4513; font-weight: 700;">My Transactions</h2>
+        <h3 class="mb-0 font-weight-bold">Transactions</h3>
         <div>
             <button class="btn" onclick="window.location.reload()" style="background-color: #8B4513; color: white; border-radius: 20px;">
                 <i class="bx bx-refresh"></i> Refresh
@@ -19,53 +19,53 @@
     <!-- Stats Cards -->
     <div class="row mb-4">
         <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #CD853F, #D2691E); border-radius: 10px;">
+            <div class="card" style ="border-radius: 10px;"{{--style="background: linear-gradient(135deg, #CD853F, #D2691E); border-radius: 10px;"--}}>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h4 class="mb-0">Ugx {{ number_format($totalEarnings ?? 0, 2) }}</h4>
                             <p class="mb-0">Total Earnings</p>
                         </div>
-                        <i class="bx bx-dollar-circle" style="font-size: 2.5rem; opacity: 0.7;"></i>
+                        <i class="bx bx-dollar-circle stat-icon bg-primary-soft" style="font-size: 1.5rem; "></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #8B4513, #A0522D); border-radius: 10px;">
+            <div class="card" style ="border-radius: 10px;"{{--style="background: linear-gradient(135deg, #CD853F, #D2691E); border-radius: 10px;"--}}>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h4 class="mb-0">{{ $paidInvoices ?? 0 }}</h4>
                             <p class="mb-0">Paid Invoices</p>
                         </div>
-                        <i class="bx bx-check-circle" style="font-size: 2.5rem; opacity: 0.7;"></i>
+                        <i class="bx bx-check-circle stat-icon bg-success-soft" style="font-size: 1.5rem;"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #A0522D, #CD853F); border-radius: 10px;">
+            <div class="card" style ="border-radius: 10px;"{{--style="background: linear-gradient(135deg, #CD853F, #D2691E); border-radius: 10px;"--}}>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h4 class="mb-0">{{ $pendingInvoices ?? 0 }}</h4>
                             <p class="mb-0">Pending Invoices</p>
                         </div>
-                        <i class="bx bx-clock-alt" style="font-size: 2.5rem; opacity: 0.7;"></i>
+                        <i class="bx bx-clock-alt stat-icon bg-warning-soft" style="font-size: 1.5rem; "></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card text-white" style="background: linear-gradient(135deg, #6B4423, #8B4513); border-radius: 10px;">
+            <div class="card" style ="border-radius: 10px;"{{--style="background: linear-gradient(135deg, #CD853F, #D2691E); border-radius: 10px;"--}}>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h4 class="mb-0">{{ $totalPayments ?? 0 }}</h4>
                             <p class="mb-0">Total Payments</p>
                         </div>
-                        <i class="bx bx-money" style="font-size: 2.5rem; opacity: 0.7;"></i>
+                        <i class="bx bx-money stat-icon bg-partner-soft" style="font-size: 1.5rem;"></i>
                     </div>
                 </div>
             </div>
@@ -120,24 +120,24 @@
         </div>
         <div class="card-body">
             <!-- Tabs -->
-            <ul class="nav nav-tabs" id="transactionTabs" role="tablist" style="border-bottom: 2px solid #F5F5DC;">
-                <li class="nav-item">
+            {{-- <ul class="nav nav-tabs" id="transactionTabs" role="tablist" style="border-bottom: 2px solid #F5F5DC;"> --}}
+                {{-- <li class="nav-item">
                     <a class="nav-link active" id="invoices-tab" data-toggle="tab" href="#invoices" role="tab" 
                        style="color: #8B4513; font-weight: 600;">
                         <i class="bx bx-file"></i> My Invoices
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab"
                        style="color: #8B4513; font-weight: 600;">
                         <i class="bx bx-money"></i> My Payments
                     </a>
                 </li>
-            </ul>
+            {{-- </ul> --}}
 
             <div class="tab-content mt-3" id="transactionTabsContent">
                 <!-- Invoices Tab -->
-                <div class="tab-pane fade show active" id="invoices" role="tabpanel">
+                {{-- <div class="tab-pane fade show active" id="invoices" role="tabpanel">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead style="background-color: #F5F5DC;">
@@ -183,7 +183,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Payments Tab -->
                 <div class="tab-pane fade" id="payments" role="tabpanel">

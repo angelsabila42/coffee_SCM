@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'Transporter Registration')
+@section('page-title', 'Registration')
 
 
 

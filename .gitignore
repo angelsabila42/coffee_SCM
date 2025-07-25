@@ -23,4 +23,8 @@ venv/
 Homestead.json
 Homestead.yaml
 Thumbs.db
+# Ignore all files in storage/private but keep the folder
+/storage/private/*
+!/storage/private/.gitkeep
+
 

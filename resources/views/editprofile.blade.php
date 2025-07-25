@@ -1,6 +1,6 @@
 @extends('layouts.app')
-@section('page-title', 'Edit Profile')
 @section('content')
+<h3 class="text-center font-weight-bold text-brown">Edit Profile</h3>
 <div class="container mt-4 d-flex justify-content-center">
     <div class="card shadow p-4" style="max-width: 800px; width: 100%;">
         <div class="card-body">
