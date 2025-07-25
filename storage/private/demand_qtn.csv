@@ -1,0 +1,201 @@
+importer,year,quantity_(60kg_bags),country,continent,yearsAsCustomer,orderFreqPerYear,avgOrderSize_kg
+Sucafina,2004-05,530,Switzerland,Europe,7,6,5300
+Sucafina,2005-06,610,Switzerland,Europe,8,6,6100
+Sucafina,2006-07,690,Switzerland,Europe,9,6,6900
+Sucafina,2007-08,780,Switzerland,Europe,10,6,7800
+Sucafina,2008-09,880,Switzerland,Europe,11,5,10560
+Sucafina,2009-10,980,Switzerland,Europe,12,5,11760
+Sucafina,2010-11,1100,Switzerland,Europe,13,6,11000
+Sucafina,2011-12,1230,Switzerland,Europe,14,6,12300
+Sucafina,2012-13,1370,Switzerland,Europe,15,6,13700
+Sucafina,2013-14,1520,Switzerland,Europe,16,7,13029
+Sucafina,2014-15,1680,Switzerland,Europe,17,7,14400
+Sucafina,2015-16,1850,Switzerland,Europe,18,7,15857
+Sucafina,2016-17,2030,Switzerland,Europe,19,7,17400
+Sucafina,2017-18,2220,Switzerland,Europe,20,7,19029
+Sucafina,2018-19,2420,Switzerland,Europe,21,7,20743
+Sucafina,2019-20,2630,Switzerland,Europe,22,6,26300
+Sucafina,2020-21,2850,Switzerland,Europe,23,6,28500
+Sucafina,2021-22,3080,Switzerland,Europe,24,6,30800
+Sucafina,2022-23,3320,Switzerland,Europe,25,6,33200
+Sucafina,2023-24,3570,Switzerland,Europe,26,6,35700
+Olam International,2004-05,158040,Singapore,Asia,6,5,1896480
+Olam International,2005-06,165000,Singapore,Asia,7,5,1980000
+Olam International,2006-07,172000,Singapore,Asia,8,5,2064000
+Olam International,2007-08,179000,Singapore,Asia,9,5,2148000
+Olam International,2008-09,186000,Singapore,Asia,10,4,2790000
+Olam International,2009-10,194000,Singapore,Asia,11,4,2910000
+Olam International,2010-11,202000,Singapore,Asia,12,5,2424000
+Olam International,2011-12,210000,Singapore,Asia,13,5,2520000
+Olam International,2012-13,219000,Singapore,Asia,14,5,2628000
+Olam International,2013-14,228000,Singapore,Asia,15,6,2280000
+Olam International,2014-15,237000,Singapore,Asia,16,6,2370000
+Olam International,2015-16,246000,Singapore,Asia,17,6,2460000
+Olam International,2016-17,256000,Singapore,Asia,18,6,2560000
+Olam International,2017-18,266000,Singapore,Asia,19,6,2660000
+Olam International,2018-19,276000,Singapore,Asia,20,6,2760000
+Olam International,2019-20,287000,Singapore,Asia,21,5,3444000
+Olam International,2020-21,298000,Singapore,Asia,22,5,3576000
+Olam International,2021-22,310000,Singapore,Asia,23,5,3720000
+Olam International,2022-23,322000,Singapore,Asia,24,5,3864000
+Olam International,2023-24,335000,Singapore,Asia,25,5,4020000
+Bernhard Rothfos,2004-05,280,Germany,Europe,5,5,3360
+Bernhard Rothfos,2005-06,350,Germany,Europe,6,5,4200
+Bernhard Rothfos,2006-07,430,Germany,Europe,7,5,5160
+Bernhard Rothfos,2007-08,520,Germany,Europe,8,5,6240
+Bernhard Rothfos,2008-09,620,Germany,Europe,9,4,9300
+Bernhard Rothfos,2009-10,730,Germany,Europe,10,4,10950
+Bernhard Rothfos,2010-11,850,Germany,Europe,11,5,10200
+Bernhard Rothfos,2011-12,980,Germany,Europe,12,5,11760
+Bernhard Rothfos,2012-13,1120,Germany,Europe,13,5,13440
+Bernhard Rothfos,2013-14,1270,Germany,Europe,14,6,12700
+Bernhard Rothfos,2014-15,1430,Germany,Europe,15,6,14300
+Bernhard Rothfos,2015-16,1600,Germany,Europe,16,6,16000
+Bernhard Rothfos,2016-17,1780,Germany,Europe,17,6,17800
+Bernhard Rothfos,2017-18,1970,Germany,Europe,18,6,19700
+Bernhard Rothfos,2018-19,2170,Germany,Europe,19,6,21700
+Bernhard Rothfos,2019-20,2380,Germany,Europe,20,5,28560
+Bernhard Rothfos,2020-21,2600,Germany,Europe,21,5,31200
+Bernhard Rothfos,2021-22,2830,Germany,Europe,22,5,33960
+Bernhard Rothfos,2022-23,3070,Germany,Europe,23,5,36840
+Bernhard Rothfos,2023-24,3320,Germany,Europe,24,5,39840
+Touton SA,2004-05,90,France,Europe,5,5,1080
+Touton SA,2005-06,110,France,Europe,6,5,1320
+Touton SA,2006-07,130,France,Europe,7,5,1560
+Touton SA,2007-08,150,France,Europe,8,5,1800
+Touton SA,2008-09,180,France,Europe,9,4,2700
+Touton SA,2009-10,210,France,Europe,10,4,3150
+Touton SA,2010-11,240,France,Europe,11,5,2880
+Touton SA,2011-12,280,France,Europe,12,5,3360
+Touton SA,2012-13,320,France,Europe,13,5,3840
+Touton SA,2013-14,370,France,Europe,14,6,3700
+Touton SA,2014-15,420,France,Europe,15,6,4200
+Touton SA,2015-16,480,France,Europe,16,6,4800
+Touton SA,2016-17,540,France,Europe,17,6,5400
+Touton SA,2017-18,610,France,Europe,18,6,6100
+Touton SA,2018-19,690,France,Europe,19,6,6900
+Touton SA,2019-20,770,France,Europe,20,5,9240
+Touton SA,2020-21,860,France,Europe,21,5,10320
+Touton SA,2021-22,960,France,Europe,22,5,11520
+Touton SA,2022-23,1070,France,Europe,23,5,12840
+Touton SA,2023-24,1190,France,Europe,24,5,14280
+Hafco Trading,2004-05,5216,Sudan,Africa,4,4,78240
+Hafco Trading,2005-06,5500,Sudan,Africa,5,4,82500
+Hafco Trading,2006-07,5800,Sudan,Africa,6,4,87000
+Hafco Trading,2007-08,6100,Sudan,Africa,7,4,91500
+Hafco Trading,2008-09,6400,Sudan,Africa,8,3,128000
+Hafco Trading,2009-10,6700,Sudan,Africa,9,3,134000
+Hafco Trading,2010-11,7000,Sudan,Africa,10,4,105000
+Hafco Trading,2011-12,7300,Sudan,Africa,11,4,109500
+Hafco Trading,2012-13,7600,Sudan,Africa,12,4,114000
+Hafco Trading,2013-14,7900,Sudan,Africa,13,5,94800
+Hafco Trading,2014-15,8200,Sudan,Africa,14,5,98400
+Hafco Trading,2015-16,8500,Sudan,Africa,15,5,102000
+Hafco Trading,2016-17,8800,Sudan,Africa,16,5,105600
+Hafco Trading,2017-18,9100,Sudan,Africa,17,5,109200
+Hafco Trading,2018-19,9400,Sudan,Africa,18,5,112800
+Hafco Trading,2019-20,9700,Sudan,Africa,19,4,145500
+Hafco Trading,2020-21,10000,Sudan,Africa,20,4,150000
+Hafco Trading,2021-22,10300,Sudan,Africa,21,4,154500
+Hafco Trading,2022-23,10600,Sudan,Africa,22,4,159000
+Hafco Trading,2023-24,10900,Sudan,Africa,23,4,163500
+Ecom Agro Industrialist,2004-05,7894,Switzerland,Europe,6,5,94728
+Ecom Agro Industrialist,2005-06,8500,Switzerland,Europe,7,5,102000
+Ecom Agro Industrialist,2006-07,9200,Switzerland,Europe,8,5,110400
+Ecom Agro Industrialist,2007-08,9900,Switzerland,Europe,9,5,118800
+Ecom Agro Industrialist,2008-09,10700,Switzerland,Europe,10,4,160500
+Ecom Agro Industrialist,2009-10,11600,Switzerland,Europe,11,4,174000
+Ecom Agro Industrialist,2010-11,12500,Switzerland,Europe,12,5,150000
+Ecom Agro Industrialist,2011-12,13500,Switzerland,Europe,13,5,162000
+Ecom Agro Industrialist,2012-13,14600,Switzerland,Europe,14,5,175200
+Ecom Agro Industrialist,2013-14,15800,Switzerland,Europe,15,6,158000
+Ecom Agro Industrialist,2014-15,17000,Switzerland,Europe,16,6,170000
+Ecom Agro Industrialist,2015-16,18300,Switzerland,Europe,17,6,183000
+Ecom Agro Industrialist,2016-17,19700,Switzerland,Europe,18,6,197000
+Ecom Agro Industrialist,2017-18,21200,Switzerland,Europe,19,6,212000
+Ecom Agro Industrialist,2018-19,22800,Switzerland,Europe,20,6,228000
+Ecom Agro Industrialist,2019-20,24500,Switzerland,Europe,21,5,294000
+Ecom Agro Industrialist,2020-21,26300,Switzerland,Europe,22,5,315600
+Ecom Agro Industrialist,2021-22,28200,Switzerland,Europe,23,5,338400
+Ecom Agro Industrialist,2022-23,30200,Switzerland,Europe,24,5,362400
+Ecom Agro Industrialist,2023-24,32300,Switzerland,Europe,25,5,387600
+Volcafe,2004-05,8795,Switzerland,Europe,5,4,131925
+Volcafe,2005-06,9200,Switzerland,Europe,6,4,138000
+Volcafe,2006-07,9600,Switzerland,Europe,7,4,144000
+Volcafe,2007-08,10000,Switzerland,Europe,8,4,150000
+Volcafe,2008-09,10500,Switzerland,Europe,9,3,210000
+Volcafe,2009-10,11000,Switzerland,Europe,10,3,220000
+Volcafe,2010-11,11500,Switzerland,Europe,11,4,172500
+Volcafe,2011-12,12000,Switzerland,Europe,12,4,180000
+Volcafe,2012-13,12500,Switzerland,Europe,13,4,187500
+Volcafe,2013-14,13100,Switzerland,Europe,14,5,157200
+Volcafe,2014-15,13700,Switzerland,Europe,15,5,164400
+Volcafe,2015-16,14300,Switzerland,Europe,16,5,171600
+Volcafe,2016-17,14900,Switzerland,Europe,17,5,178800
+Volcafe,2017-18,15600,Switzerland,Europe,18,5,187200
+Volcafe,2018-19,16300,Switzerland,Europe,19,5,195600
+Volcafe,2019-20,17000,Switzerland,Europe,20,4,255000
+Volcafe,2020-21,17800,Switzerland,Europe,21,4,267000
+Volcafe,2021-22,18600,Switzerland,Europe,22,4,279000
+Volcafe,2022-23,19400,Switzerland,Europe,23,4,291000
+Volcafe,2023-24,20300,Switzerland,Europe,24,4,304500
+Louis Dreyfus,2004-05,50,Netherlands,Europe,6,4,750
+Louis Dreyfus,2005-06,60,Netherlands,Europe,7,4,900
+Louis Dreyfus,2006-07,70,Netherlands,Europe,8,4,1050
+Louis Dreyfus,2007-08,80,Netherlands,Europe,9,4,1200
+Louis Dreyfus,2008-09,100,Netherlands,Europe,10,3,2000
+Louis Dreyfus,2009-10,120,Netherlands,Europe,11,3,2400
+Louis Dreyfus,2010-11,150,Netherlands,Europe,12,4,2250
+Louis Dreyfus,2011-12,180,Netherlands,Europe,13,4,2700
+Louis Dreyfus,2012-13,220,Netherlands,Europe,14,4,3300
+Louis Dreyfus,2013-14,270,Netherlands,Europe,15,5,3240
+Louis Dreyfus,2014-15,320,Netherlands,Europe,16,5,3840
+Louis Dreyfus,2015-16,380,Netherlands,Europe,17,5,4560
+Louis Dreyfus,2016-17,450,Netherlands,Europe,18,5,5400
+Louis Dreyfus,2017-18,530,Netherlands,Europe,19,5,6360
+Louis Dreyfus,2018-19,620,Netherlands,Europe,20,5,7440
+Louis Dreyfus,2019-20,720,Netherlands,Europe,21,4,10800
+Louis Dreyfus,2020-21,830,Netherlands,Europe,22,4,12450
+Louis Dreyfus,2021-22,950,Netherlands,Europe,23,4,14250
+Louis Dreyfus,2022-23,1080,Netherlands,Europe,24,4,16200
+Louis Dreyfus,2023-24,1220,Netherlands,Europe,25,4,18300
+Aldwami Co,2004-05,9,Sudan,Africa,4,3,180
+Aldwami Co,2005-06,12,Sudan,Africa,5,3,240
+Aldwami Co,2006-07,15,Sudan,Africa,6,3,300
+Aldwami Co,2007-08,19,Sudan,Africa,7,3,380
+Aldwami Co,2008-09,24,Sudan,Africa,8,2,720
+Aldwami Co,2009-10,30,Sudan,Africa,9,2,900
+Aldwami Co,2010-11,37,Sudan,Africa,10,3,740
+Aldwami Co,2011-12,45,Sudan,Africa,11,3,900
+Aldwami Co,2012-13,54,Sudan,Africa,12,3,1080
+Aldwami Co,2013-14,64,Sudan,Africa,13,4,960
+Aldwami Co,2014-15,75,Sudan,Africa,14,4,1125
+Aldwami Co,2015-16,87,Sudan,Africa,15,4,1305
+Aldwami Co,2016-17,100,Sudan,Africa,16,4,1500
+Aldwami Co,2017-18,114,Sudan,Africa,17,4,1710
+Aldwami Co,2018-19,129,Sudan,Africa,18,4,1935
+Aldwami Co,2019-20,145,Sudan,Africa,19,3,2900
+Aldwami Co,2020-21,162,Sudan,Africa,20,3,3240
+Aldwami Co,2021-22,180,Sudan,Africa,21,3,3600
+Aldwami Co,2022-23,199,Sudan,Africa,22,3,3980
+Aldwami Co,2023-24,219,Sudan,Africa,23,3,4380
+Altasheel Import and Export,2004-05,264,Sudan,Africa,4,3,5280
+Altasheel Import and Export,2005-06,290,Sudan,Africa,5,3,5800
+Altasheel Import and Export,2006-07,320,Sudan,Africa,6,3,6400
+Altasheel Import and Export,2007-08,350,Sudan,Africa,7,3,7000
+Altasheel Import and Export,2008-09,385,Sudan,Africa,8,2,11550
+Altasheel Import and Export,2009-10,425,Sudan,Africa,9,2,12750
+Altasheel Import and Export,2010-11,470,Sudan,Africa,10,3,9400
+Altasheel Import and Export,2011-12,520,Sudan,Africa,11,3,10400
+Altasheel Import and Export,2012-13,575,Sudan,Africa,12,3,11500
+Altasheel Import and Export,2013-14,635,Sudan,Africa,13,4,9525
+Altasheel Import and Export,2014-15,700,Sudan,Africa,14,4,10500
+Altasheel Import and Export,2015-16,770,Sudan,Africa,15,4,11550
+Altasheel Import and Export,2016-17,850,Sudan,Africa,16,4,12750
+Altasheel Import and Export,2017-18,935,Sudan,Africa,17,4,14025
+Altasheel Import and Export,2018-19,1030,Sudan,Africa,18,4,15450
+Altasheel Import and Export,2019-20,1135,Sudan,Africa,19,3,22700
+Altasheel Import and Export,2020-21,1250,Sudan,Africa,20,3,25000
+Altasheel Import and Export,2021-22,1375,Sudan,Africa,21,3,27500
+Altasheel Import and Export,2022-23,1515,Sudan,Africa,22,3,30300
+Altasheel Import and Export,2023-24,1670,Sudan,Africa,23,3,33400
