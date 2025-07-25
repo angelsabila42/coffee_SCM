@@ -19,7 +19,7 @@ class VendorFactory extends Factory
     {
         return [
             'name'=> fake()->name(),
-            'password' => Hash::make('password'),
+         //   'password' => Hash::make('password'),
             'email'=> fake()->email(),
             'Bank_account' => fake()->bankAccountNumber(),
             'Account_holder'=> fake()->name(),

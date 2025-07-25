@@ -891,7 +891,7 @@ function updateAbsentStaffCard() {
     const selects = document.querySelectorAll('tr.staff-row select');
     let absentCount = 0;
     selects.forEach(sel => {
-        if (sel.value === 'On Leave') absentCount++;
+        if (sel.value === 'On Leave'|| sel.value === 'Suspended') absentCount++;
     });
     const absentCard = document.querySelector('.absent-staff-card .main-number');
     if (absentCard) {

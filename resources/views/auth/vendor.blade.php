@@ -98,7 +98,7 @@
                         <select name="region" id="" class="form-control w-50">
                              <option value="">Select Region</option>
                             <option value="north">Northern</option>
-                             <option value="south">Southern</option>
+                             <option value="south">Central</option>
                               <option value="west">Western</option>
                                <option value="east">Eastern</option>
                         </select>

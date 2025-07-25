@@ -13,7 +13,7 @@
         <h5 class="mt-3 mb-4"><strong> OrderID: {{$order->orderID}} </strong></h5>
 
         <div class="d-flex justify-content-between align-items-center">
-            <p class="mb-3"><b>From: </b> {{$order->vendor->name}} </p>
+            <p class="mb-3"><b>From: </b> {{$order->vendorProfile->name}} </p>
             <p class="mb-3"><b>Date Sent: </b> {{$order->created_at}} </p> 
         </div>
         <p class="mb-3"><b>Coffee Type: </b> {{$order->coffeeType}} </p>

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('assigned_driver')->nullable(); // e.g., Higenyi William
             $table->date('eta')->nullable(); // Estimated Time of Arrival
             $table->date('date_ordered');
-            $table->foreignId('incoming_order_id')->constrained()->onDelete('cascade');
+            //$table->foreignId('incoming_order_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

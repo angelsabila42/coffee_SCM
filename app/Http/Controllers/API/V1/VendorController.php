@@ -123,8 +123,7 @@ class VendorController extends Controller
           $this->store($request);
           
           //return $res->body();
-          return redirect()->back()->with('success','vendor registered successfully');
-
+return redirect()->route('vendor.home')->with('success', 'Vendor  registered successfully');
                 } else {
        // return $res->body();
            return  redirect()->back()->with('error','registration failed, please upload valid documents');}
@@ -158,18 +157,11 @@ class VendorController extends Controller
         
 
         ]);   
-       // $validated['password'] = Hash::make($validated['password']);
-         // $filepath = $req->file('financial_statement')->store('vendor_files','public');
-        
+     
 
+      Vendor::create($validated);
 
-        vendor::create($validated);
-/*$fields = collect($validated)->only([
-              'name','email','password'
-              ])->toArray();
-
-          User::create($fields);*/
-        return redirect()->route('vendor.home')->with('success', 'Vendor registered successfully');
+       // return redirect()->route('vendor.home')->with('success', 'Vendor registered successfully');
        // return response()->json(['message' => 'Vendor registered successfully']);
 
         }
